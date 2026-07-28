@@ -57,15 +57,33 @@
 .footer--ki .newsletter-form__field-wrapper .field,
 .footer--ki .newsletter-form__field-wrapper .field__input,
 .footer--ki .newsletter-form__button { width: 100% !important; max-width: 100% !important; box-sizing: border-box !important; }
-.footer--ki .newsletter-form__field-wrapper { display: block !important; margin: 0 !important; }
+.footer--ki .footer__newsletter.newsletter-form {
+  display: block !important;
+  max-width: none !important;
+  margin: 0 !important;
+  align-items: stretch !important;
+}
+.footer--ki .newsletter-form__field-wrapper { display: block !important; max-width: none !important; margin: 0 !important; }
 .footer--ki .newsletter-form__field-wrapper .field { position: relative !important; margin: 0 !important; }
+.footer--ki .newsletter-form__field-wrapper .field::before,
+.footer--ki .newsletter-form__field-wrapper .field::after {
+  content: none !important;
+  box-shadow: none !important;
+}
 .footer--ki .newsletter-form__field-wrapper .field__input {
   background: rgba(255,255,255,.07) !important; border: 1px solid rgba(255,255,255,.22) !important;
   border-radius: 8px !important; color: #fff !important; padding: 12px 13px !important; font-size: 13px !important;
-  height: auto !important;
+  height: auto !important; margin: 0 !important; box-shadow: none !important;
+}
+.footer--ki .newsletter-form__field-wrapper .field__input:focus,
+.footer--ki .newsletter-form__field-wrapper .field__input:focus-visible {
+  padding: 12px 13px !important;
+  margin: 0 !important;
+  outline: none !important;
+  box-shadow: 0 0 0 2px rgba(218,210,255,.55) !important;
 }
 .footer--ki .field__label { display: none !important; }
-.footer--ki .field__input::placeholder { color: rgba(255,255,255,.42) !important; }
+.footer--ki .field__input::placeholder { color: rgba(255,255,255,.42) !important; opacity: 1 !important; }
 .footer--ki .newsletter-form__button {
   position: static !important;
   border-radius: 8px !important; background: rgba(255,255,255,.1) !important;
@@ -77,7 +95,8 @@
 .footer--ki .newsletter-form__button:hover { background: rgba(178,165,255,.2) !important; border-color: var(--ki-lil) !important; }
 .footer--ki .newsletter-form__message { color: rgba(255,255,255,.85) !important; font-size: 12px !important; margin-top: 8px !important; display: flex !important; align-items: center !important; gap: 6px !important; }
 .footer--ki .newsletter-form__message .svg-wrapper { width: 14px !important; height: 14px !important; }
-.kif-nl-note { font-size: 11px !important; line-height: 1.5 !important; color: rgba(255,255,255,.4) !important; margin: 0 !important; }
+.kif-nl-note { font-size: 11px !important; line-height: 1.5 !important; color: rgba(255,255,255,.4) !important; margin: 10px 0 0 !important; }
+.kif-nl-note p { margin: 0 !important; }
 .kif-nl-note a { color: var(--ki-lil) !important; text-decoration: underline !important; }
 .kif-social { display: flex !important; flex-wrap: wrap !important; gap: 8px !important; }
 .kif-social a {

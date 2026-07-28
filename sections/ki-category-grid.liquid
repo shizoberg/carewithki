@@ -13,11 +13,11 @@
 .kcat-{{ section.id }} .kcat-eyebrow::before{content:'';display:inline-block;width:18px;height:1.5px;background:var(--p);opacity:.5;}
 .kcat-{{ section.id }} .kcat-heading{font-family:'Raleway',system-ui,sans-serif;font-size:clamp(22px,3.4vw,42px);font-weight:800;line-height:1.1;color:#1a1340;margin:0;letter-spacing:-.025em;}
 .kcat-{{ section.id }} .kcat-heading em{font-style:italic;color:var(--p);}
-.kcat-{{ section.id }} .kcat-layout{display:grid;grid-template-columns:1fr 2fr;gap:12px;}
-.kcat-{{ section.id }} .kcat-grid{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:12px;}
-.kcat-{{ section.id }} .kcat-card{position:relative;border-radius:16px;overflow:hidden;background:#1a1060;display:flex;flex-direction:column;justify-content:flex-end;text-decoration:none;transition:transform .3s,box-shadow .3s;min-height:200px;}
+.kcat-{{ section.id }} .kcat-layout{display:grid;grid-template-columns:minmax(0,1fr);gap:18px;}
+.kcat-{{ section.id }} .kcat-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr));gap:16px;}
+.kcat-{{ section.id }} .kcat-card{position:relative;border-radius:16px;overflow:hidden;background:#1a1060;display:flex;flex-direction:column;justify-content:flex-end;text-decoration:none;transition:transform .3s,box-shadow .3s;min-height:260px;}
 .kcat-{{ section.id }} .kcat-card:hover{transform:translateY(-4px);box-shadow:0 16px 40px rgba(73,61,154,.28);}
-.kcat-{{ section.id }} .kcat-card--big{min-height:420px;}
+.kcat-{{ section.id }} .kcat-card--big{min-height:260px;}
 .kcat-{{ section.id }} .kcat-card-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s;}
 .kcat-{{ section.id }} .kcat-card:hover .kcat-card-img{transform:scale(1.04);}
 .kcat-{{ section.id }} .kcat-card-ov{position:relative;z-index:2;padding:20px 20px 18px;background:linear-gradient(to top,rgba(10,5,40,.88) 0%,rgba(26,16,96,.55) 50%,transparent 100%);display:flex;align-items:flex-end;justify-content:space-between;gap:12px;}
@@ -50,8 +50,8 @@
   .kcat-{{ section.id }} .kcat-inner{padding:0 16px;}
 }
 @media(min-width:750px) and (max-width:1099px){
-  .kcat-{{ section.id }} .kcat-card--big{min-height:340px;}
-  .kcat-{{ section.id }} .kcat-card{min-height:160px;}
+  .kcat-{{ section.id }} .kcat-card--big{min-height:260px;}
+  .kcat-{{ section.id }} .kcat-card{min-height:220px;}
 }
 </style>
 {%- assign big = section.blocks | where: 'type', 'big_card' | first -%}
