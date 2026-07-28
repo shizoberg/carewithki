@@ -1,0 +1,290 @@
+{% comment %}theme-check-disable UndefinedObject{% endcomment %}
+{{ 'section-footer.css' | asset_url | stylesheet_tag }}
+{{ 'component-newsletter.css' | asset_url | stylesheet_tag }}
+{{ 'component-list-menu.css' | asset_url | stylesheet_tag }}
+{{ 'component-list-payment.css' | asset_url | stylesheet_tag }}
+{{ 'component-list-social.css' | asset_url | stylesheet_tag }}
+
+<style>
+.footer--ki {
+  --ki-p: #493d9a;
+  --ki-off: #f8f8f6;
+  --ki-lil: #dad2ff;
+  --ki-pur: #b2a5ff;
+  background: var(--ki-p) !important;
+  color: var(--ki-off) !important;
+}
+.footer--ki .page-width { max-width: 1240px !important; }
+.footer { margin-top: 0 !important; }
+.section-{{ section.id }}-padding {
+  padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+  padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+}
+@media screen and (min-width: 750px) {
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+  }
+}
+/* MOBILDE alt bar (sticky bottom nav ~66px) footer'i ortmesin */
+@media screen and (max-width: 989px) {
+  .footer--ki { padding-bottom: calc(24px + 66px + env(safe-area-inset-bottom, 0px)) !important; }
+}
+
+.kif-top {
+  display: grid !important;
+  grid-template-columns: 1.1fr 0.8fr 1.1fr !important;
+  gap: 48px !important;
+  align-items: start !important;
+}
+@media (max-width: 900px) {
+  .kif-top { grid-template-columns: 1fr 1fr !important; gap: 32px 28px !important; }
+}
+@media (max-width: 600px) {
+  .kif-top { grid-template-columns: 1fr !important; gap: 30px !important; }
+}
+.kif-nl-col {
+  display: flex !important; flex-direction: column !important;
+  align-items: flex-start !important; gap: 18px !important;
+}
+.kif-section-label {
+  font-size: 10px !important; font-weight: 700 !important;
+  letter-spacing: .12em !important; text-transform: uppercase !important;
+  color: rgba(255,255,255,.4) !important; margin: 0 0 10px !important; display: block !important;
+}
+.footer--ki .footer__newsletter,
+.footer--ki .newsletter-form__field-wrapper,
+.footer--ki .newsletter-form__field-wrapper .field,
+.footer--ki .newsletter-form__field-wrapper .field__input,
+.footer--ki .newsletter-form__button { width: 100% !important; max-width: 100% !important; box-sizing: border-box !important; }
+.footer--ki .newsletter-form__field-wrapper { display: block !important; margin: 0 !important; }
+.footer--ki .newsletter-form__field-wrapper .field { position: relative !important; margin: 0 !important; }
+.footer--ki .newsletter-form__field-wrapper .field__input {
+  background: rgba(255,255,255,.07) !important; border: 1px solid rgba(255,255,255,.22) !important;
+  border-radius: 8px !important; color: #fff !important; padding: 12px 13px !important; font-size: 13px !important;
+  height: auto !important;
+}
+.footer--ki .field__label { display: none !important; }
+.footer--ki .field__input::placeholder { color: rgba(255,255,255,.42) !important; }
+.footer--ki .newsletter-form__button {
+  position: static !important;
+  border-radius: 8px !important; background: rgba(255,255,255,.1) !important;
+  border: 1px solid rgba(255,255,255,.22) !important; padding: 11px 20px !important;
+  color: #fff !important; font-size: 13px !important; font-weight: 600 !important;
+  margin-top: 8px !important; cursor: pointer !important; width: 100% !important;
+  transition: background .2s, border-color .2s !important;
+}
+.footer--ki .newsletter-form__button:hover { background: rgba(178,165,255,.2) !important; border-color: var(--ki-lil) !important; }
+.footer--ki .newsletter-form__message { color: rgba(255,255,255,.85) !important; font-size: 12px !important; margin-top: 8px !important; display: flex !important; align-items: center !important; gap: 6px !important; }
+.footer--ki .newsletter-form__message .svg-wrapper { width: 14px !important; height: 14px !important; }
+.kif-nl-note { font-size: 11px !important; line-height: 1.5 !important; color: rgba(255,255,255,.4) !important; margin: 0 !important; }
+.kif-nl-note a { color: var(--ki-lil) !important; text-decoration: underline !important; }
+.kif-social { display: flex !important; flex-wrap: wrap !important; gap: 8px !important; }
+.kif-social a {
+  width: 36px !important; height: 36px !important; border-radius: 50% !important;
+  display: flex !important; align-items: center !important; justify-content: center !important;
+  background: transparent !important; border: 1px solid rgba(255,255,255,.25) !important;
+  color: #fff !important; text-decoration: none !important;
+  transition: transform .15s, background .15s, border-color .15s !important; flex-shrink: 0 !important;
+}
+.kif-social a:hover { transform: translateY(-2px) !important; background: rgba(178,165,255,.2) !important; border-color: var(--ki-lil) !important; }
+.kif-social svg { width: 16px !important; height: 16px !important; display: block !important; }
+
+/* Menu kolonu: masaustunde ortali, ama tablet/mobilde sola — tutarli hizalama */
+.kif-menu-col { display: flex !important; flex-direction: column !important; align-items: flex-start !important; }
+.kif-menu { list-style: none !important; padding: 0 !important; margin: 0 !important; display: flex !important; flex-direction: column !important; gap: 11px !important; text-align: left !important; }
+.kif-menu a { color: rgba(255,255,255,.78) !important; text-decoration: none !important; font-size: 13px !important; transition: color .15s !important; display: inline-block !important; }
+.kif-menu a:hover { color: var(--ki-lil) !important; }
+.kif-pharmacy {
+  display: inline-flex !important; align-items: center !important; gap: 5px !important;
+  color: var(--ki-lil) !important; text-decoration: none !important;
+  font-size: 12px !important; font-weight: 600 !important; margin-top: 16px !important;
+  transition: color .2s, gap .2s !important;
+}
+.kif-pharmacy:hover { color: #fff !important; gap: 9px !important; }
+.kif-pharmacy svg { width: 12px !important; height: 12px !important; }
+
+/* Trendyol footer linki */
+.kif-trendyol {
+  display: inline-flex !important; align-items: center !important; gap: 6px !important;
+  margin-top: 14px !important; text-decoration: none !important;
+  color: rgba(255,255,255,.7) !important;
+  font-size: 12px !important; font-weight: 600 !important;
+  padding: 7px 13px !important; border-radius: 8px !important;
+  background: rgba(255,110,0,.12) !important;
+  border: 1px solid rgba(255,110,0,.25) !important;
+  transition: background .15s, color .15s !important;
+}
+.kif-trendyol:hover { background: rgba(255,110,0,.22) !important; color: #fff !important; }
+.kif-trendyol svg { width: 13px !important; height: 13px !important; flex-shrink: 0 !important; }
+
+/* Promo kolonu: masaustunde saga, tablet/mobilde sola — taban hizasi */
+.kif-promo-col { display: flex !important; flex-direction: column !important; align-items: flex-start !important; }
+@media (min-width: 901px) { .kif-promo-col { align-items: flex-end !important; } }
+.kif-promo-card {
+  width: 100% !important; max-width: 290px !important; background: rgba(255,255,255,.07) !important;
+  border: 1px solid rgba(218,210,255,.18) !important; border-radius: 14px !important; padding: 20px 22px !important;
+  text-decoration: none !important; display: block !important; transition: transform .2s, background .2s !important; text-align: left !important;
+}
+@media (max-width: 900px) { .kif-promo-card { max-width: 100% !important; } }
+.kif-promo-card:hover { transform: translateY(-2px) !important; background: rgba(255,255,255,.11) !important; }
+.kif-promo-card__title { font-weight: 700 !important; color: #fff !important; font-size: 14px !important; margin: 0 0 5px !important; }
+.kif-promo-card__text { color: rgba(255,255,255,.58) !important; font-size: 12px !important; line-height: 1.6 !important; margin: 0 !important; }
+.kif-promo-card__arrow { display: inline-flex !important; align-items: center !important; gap: 5px !important; margin-top: 12px !important; font-size: 12px !important; font-weight: 600 !important; color: var(--ki-lil) !important; }
+.kif-promo-card__arrow svg { width: 12px !important; height: 12px !important; }
+.kif-divider { border: none !important; border-top: 1px solid rgba(218,210,255,.15) !important; margin: 32px 0 18px !important; }
+
+/* Alt kisim: mobilde tek kolon ortali, masaustunde iki yana yasli */
+.kif-bottom { display: flex !important; flex-wrap: wrap !important; justify-content: space-between !important; align-items: center !important; gap: 12px !important; }
+@media (max-width: 600px) {
+  .kif-bottom { flex-direction: column !important; align-items: center !important; text-align: center !important; gap: 14px !important; }
+  .kif-legal { justify-content: center !important; }
+}
+.kif-copy { color: rgba(255,255,255,.36) !important; font-size: 11px !important; margin: 0 !important; }
+.kif-legal { display: flex !important; flex-wrap: wrap !important; gap: 14px !important; }
+.kif-legal a { color: rgba(255,255,255,.4) !important; text-decoration: none !important; font-size: 11px !important; transition: color .15s !important; }
+.kif-legal a:hover { color: var(--ki-lil) !important; }
+.kif-lang { display: inline-flex !important; align-items: center !important; gap: 6px !important; color: rgba(255,255,255,.36) !important; font-size: 11px !important; }
+.kif-lang a { color: rgba(255,255,255,.36) !important; text-decoration: none !important; font-weight: 500 !important; transition: color .15s !important; }
+.kif-lang a:hover { color: var(--ki-lil) !important; }
+.kif-lang .sep { opacity: .35 !important; }
+.kif-payment { display: flex !important; justify-content: center !important; padding-top: 20px !important; margin-top: 4px !important; }
+.kif-payment img { height: 40px !important; width: auto !important; max-width: 100% !important; opacity: .7 !important; transition: opacity .2s !important; }
+.kif-payment img:hover { opacity: 1 !important; }
+</style>
+
+<footer class="footer footer--ki color-{{ section.settings.color_scheme }} gradient section-{{ section.id }}-padding">
+  <div class="page-width">
+    <div class="kif-top">
+
+      <!-- Sütun 1: Bülten + Sosyal -->
+      <div class="kif-nl-col">
+        {%- if section.settings.newsletter_enable -%}
+          <div style="width:100%">
+            <span class="kif-section-label">{{ section.settings.newsletter_title | escape }}</span>
+            {%- form 'customer', id: 'ContactFooter', class: 'footer__newsletter newsletter-form' -%}
+              <input type="hidden" name="contact[tags]" value="newsletter">
+              <div class="newsletter-form__field-wrapper">
+                <div class="field">
+                  <input id="NewsletterForm--{{ section.id }}" type="email" name="contact[email]" class="field__input" value="{{ form.email }}" autocorrect="off" autocapitalize="off" autocomplete="email" placeholder="{{ section.settings.newsletter_placeholder | escape }}" required {% if form.errors %}aria-invalid="true" aria-describedby="ContactFooter-error" {% elsif form.posted_successfully? %}aria-describedby="ContactFooter-success" {% endif %}>
+                </div>
+                <button type="submit" class="newsletter-form__button" name="commit">{{ section.settings.newsletter_button_label | escape }}</button>
+                {%- if form.errors -%}<small class="newsletter-form__message form__message" id="ContactFooter-error"><span class="svg-wrapper">{{- 'icon-error.svg' | inline_asset_content -}}</span>{{- form.errors.translated_fields.email | capitalize }} {{ form.errors.messages.email -}}</small>{%- endif -%}
+              </div>
+              {%- if form.posted_successfully? -%}<h3 class="newsletter-form__message newsletter-form__message--success form__message" id="ContactFooter-success" tabindex="-1" autofocus><span class="svg-wrapper">{{- 'icon-success.svg' | inline_asset_content -}}</span>{{ section.settings.newsletter_success | escape }}</h3>{%- endif -%}
+            {%- endform -%}
+            <div class="kif-nl-note">{{ section.settings.newsletter_note }}</div>
+          </div>
+        {%- endif -%}
+        <div class="kif-social">
+          <a href="https://www.instagram.com/carewithki" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
+          <a href="https://www.tiktok.com/@carewithki" target="_blank" rel="noopener" aria-label="TikTok"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.77 1.52V6.76a4.85 4.85 0 0 1-1-.07z"/></svg></a>
+          <a href="https://youtube.com/@carewithki" target="_blank" rel="noopener" aria-label="YouTube"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M23 7s-.3-2-1.2-2.7c-1.1-1.2-2.4-1.2-3-1.3C16.6 3 12 3 12 3s-4.6 0-6.8.1c-.6.1-1.9.1-3 1.3C1.3 5 1 7 1 7S.7 9.1.7 11.3v2c0 2.2.3 4.3.3 4.3s.3 2 1.2 2.7c1.1 1.2 2.6 1.1 3.3 1.2C7.3 21.7 12 21.7 12 21.7s4.6 0 6.8-.2c.6-.1 1.9-.1 3-1.3.9-.7 1.2-2.7 1.2-2.7s.3-2.1.3-4.3v-2C23.3 9.1 23 7 23 7zm-13.5 8.8V8.2l8 3.8-8 3.8z"/></svg></a>
+          <a href="https://www.linkedin.com/company/ki-care-for-you/" target="_blank" rel="noopener" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a>
+        </div>
+      </div>
+
+      <!-- Sütun 2: Menü + Trendyol -->
+      <div class="kif-menu-col">
+        {%- if section.settings.menu1_title != blank -%}
+          <span class="kif-section-label">{{ section.settings.menu1_title | escape }}</span>
+        {%- endif -%}
+        {%- if section.settings.menu1 != blank -%}
+          <ul class="kif-menu">
+            {%- for link in section.settings.menu1.links -%}
+              <li><a href="{{ link.url }}">{{ link.title | escape }}</a></li>
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
+        {%- if section.settings.pharmacy_link != blank -%}
+          <a href="{{ section.settings.pharmacy_link }}" class="kif-pharmacy">
+            {{ section.settings.pharmacy_link_text | default: 'Anlaşmalı Eczanelerimiz' | escape }}
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+        {%- endif -%}
+        <!-- Trendyol linki -->
+        <a href="https://www.trendyol.com/magaza/ki-shop-m-1205638" target="_blank" rel="noopener" class="kif-trendyol">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+          Trendyol Mağazamız
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17L17 7M7 7h10v10"/></svg>
+        </a>
+      </div>
+
+      <!-- Sütun 3: Promo Kart -->
+      <div class="kif-promo-col">
+        {%- if section.settings.promo_card_enable -%}
+          <a href="{{ section.settings.promo_card_link | default: '#' }}" class="kif-promo-card" target="_blank" rel="noopener noreferrer">
+            <p class="kif-promo-card__title">{{ section.settings.promo_card_title | escape }}</p>
+            <p class="kif-promo-card__text">{{ section.settings.promo_card_text | escape }}</p>
+            <span class="kif-promo-card__arrow">Ziyaret Et <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+          </a>
+        {%- endif -%}
+      </div>
+
+    </div>
+
+    <hr class="kif-divider">
+
+    <div class="kif-bottom">
+      <p class="kif-copy">&copy; {{ 'now' | date: '%Y' }} {{ section.settings.copyright_brand | default: shop.name | escape }}. {{ section.settings.copyright_text | escape }}</p>
+      <div class="kif-legal">
+        {%- if section.settings.legal_menu != blank -%}
+          {%- for link in section.settings.legal_menu.links -%}
+            <a href="{{ link.url }}">{{ link.title | escape }}</a>
+          {%- endfor -%}
+        {%- endif -%}
+      </div>
+      <div class="kif-lang">
+        {%- if section.settings.lang_left_label != blank -%}<a href="{{ section.settings.lang_left_link | default: '#' }}">{{ section.settings.lang_left_label | escape }}</a>{%- endif -%}
+        <span class="sep">|</span>
+        {%- if section.settings.lang_right_label != blank -%}<a href="{{ section.settings.lang_right_link | default: '#' }}">{{ section.settings.lang_right_label | escape }}</a>{%- endif -%}
+      </div>
+    </div>
+
+    {%- if section.settings.payment_logos != blank -%}
+      <div class="kif-payment">{{ section.settings.payment_logos | image_url: width: 600 | image_tag: loading: 'lazy', decoding: 'async', alt: section.settings.payment_logos_alt }}</div>
+    {%- endif -%}
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "Footer (Ki)",
+  "settings": [
+    {"type":"color_scheme","id":"color_scheme","label":"Color scheme","default":"scheme-1"},
+    {"type":"header","content":"── Bülten ──"},
+    {"type":"checkbox","id":"newsletter_enable","default":true,"label":"Bülteni göster"},
+    {"type":"text","id":"newsletter_title","label":"Bülten başlığı","default":"Arayı açmayalım!"},
+    {"type":"text","id":"newsletter_placeholder","label":"Email placeholder","default":"E-mail adresin"},
+    {"type":"text","id":"newsletter_button_label","label":"Buton yazısı","default":"Gönder"},
+    {"type":"text","id":"newsletter_success","label":"Başarı mesajı","default":"Kayıtınız alındı!"},
+    {"type":"richtext","id":"newsletter_note","label":"Bülten notu","default":"<p>Abone olarak <a href='#'>KVKK</a> ve <a href='#'>Gizlilik Politikası</a>'nı kabul ediyorum.</p>"},
+    {"type":"header","content":"── Menü ──"},
+    {"type":"text","id":"menu1_title","label":"Menü başlığı","default":"Mağaza"},
+    {"type":"link_list","id":"menu1","label":"Menü"},
+    {"type":"url","id":"pharmacy_link","label":"Eczane sayfası linki"},
+    {"type":"text","id":"pharmacy_link_text","label":"Eczane linki yazısı","default":"Anlaşmalı Eczanelerimiz"},
+    {"type":"header","content":"── Tanıtım Kartı ──"},
+    {"type":"checkbox","id":"promo_card_enable","default":true,"label":"Tanıtım kartını göster"},
+    {"type":"text","id":"promo_card_title","label":"Kart başlığı","default":"drawpms.com"},
+    {"type":"text","id":"promo_card_text","label":"Kart açıklaması","default":"Yakında başlatılacak yeni projemizi keşfedin!"},
+    {"type":"url","id":"promo_card_link","label":"Kart linki"},
+    {"type":"header","content":"── Alt Kısım ──"},
+    {"type":"text","id":"copyright_brand","label":"Telif marka","default":"ki"},
+    {"type":"text","id":"copyright_text","label":"Telif metni","default":"Tüm hakları saklıdır."},
+    {"type":"link_list","id":"legal_menu","label":"Yasal linkler menüsü"},
+    {"type":"text","id":"lang_left_label","label":"Sol dil etiketi","default":"EN"},
+    {"type":"url","id":"lang_left_link","label":"Sol dil linki"},
+    {"type":"text","id":"lang_right_label","label":"Sağ dil etiketi","default":"TR"},
+    {"type":"url","id":"lang_right_link","label":"Sağ dil linki"},
+    {"type":"header","content":"── Ödeme Logoları ──"},
+    {"type":"image_picker","id":"payment_logos","label":"Ödeme logoları (tek PNG)"},
+    {"type":"text","id":"payment_logos_alt","label":"Ödeme logoları alt text","default":"Mastercard, Visa, Troy, iyzico"},
+    {"type":"header","content":"── Boşluklar ──"},
+    {"type":"range","id":"margin_top","min":0,"max":100,"step":4,"unit":"px","label":"Üst margin","default":0},
+    {"type":"range","id":"padding_top","min":0,"max":120,"step":4,"unit":"px","label":"Üst padding","default":44},
+    {"type":"range","id":"padding_bottom","min":0,"max":120,"step":4,"unit":"px","label":"Alt padding","default":44}
+  ],
+  "presets":[{"name":"Footer (Ki)"}]
+}
+{% endschema %}

@@ -1,0 +1,230 @@
+{{ 'customer.css' | asset_url | stylesheet_tag }}
+<link href="https://fonts.googleapis.com/css2?family=Raleway:wght@700;800&display=swap" rel="stylesheet">
+
+<style>
+.ki-account {
+  --p:#493d9a;--lil:#dad2ff;--pur:#b2a5ff;--bg:#f8f8f6;--txt:#1a1340;--mut:#6b6b8a;
+  background:var(--bg); min-height:80vh;
+  padding: {{ section.settings.padding_top | default: 0 }}px 0 {{ section.settings.padding_bottom | default: 0 }}px;
+}
+/* HEADER BANNER */
+.ki-account__banner {
+  background:linear-gradient(135deg,#493d9a 0%,#7b6dd3 100%);
+  padding:40px 24px 36px; text-align:center;
+}
+.ki-account__avatar {
+  width:64px;height:64px;border-radius:50%;
+  background:rgba(255,255,255,.15);border:2px solid rgba(255,255,255,.3);
+  display:flex;align-items:center;justify-content:center;
+  margin:0 auto 12px;
+  font-size:22px;font-weight:800;color:#fff;
+  font-family:'Raleway',system-ui,sans-serif;
+}
+.ki-account__name {
+  font-family:'Raleway',system-ui,sans-serif;
+  font-size:22px;font-weight:800;color:#fff;
+  margin:0 0 4px;
+}
+.ki-account__email { font-size:12px;color:rgba(255,255,255,.65);margin:0 0 16px; }
+.ki-account__logout {
+  display:inline-flex;align-items:center;gap:6px;
+  background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);
+  color:#fff;font-size:12px;font-weight:600;
+  padding:7px 16px;border-radius:50px;
+  text-decoration:none;transition:background .15s;
+}
+.ki-account__logout:hover{background:rgba(255,255,255,.22);}
+/* MAIN */
+.ki-account__main {
+  max-width:960px;margin:0 auto;padding:32px 24px;
+  display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start;
+}
+@media(max-width:749px){
+  .ki-account__main{grid-template-columns:1fr;padding:20px 16px;}
+}
+/* KART */
+.ki-acc-card {
+  background:#fff;border-radius:16px;
+  border:1px solid rgba(73,61,154,.08);
+  box-shadow:0 2px 12px rgba(73,61,154,.06);
+  overflow:hidden;
+}
+.ki-acc-card__head {
+  padding:16px 20px 14px;
+  border-bottom:1px solid rgba(73,61,154,.08);
+  display:flex;align-items:center;justify-content:space-between;
+}
+.ki-acc-card__title {
+  font-size:13px;font-weight:700;color:var(--txt);
+  margin:0;letter-spacing:-.01em;
+}
+.ki-acc-card__link {
+  font-size:11px;font-weight:600;color:var(--p);
+  text-decoration:none;
+}
+.ki-acc-card__link:hover{text-decoration:underline;}
+.ki-acc-card__body{padding:16px 20px 20px;}
+/* Sipariş tablosu */
+.ki-orders-table{width:100%;border-collapse:collapse;font-size:12px;}
+.ki-orders-table th{
+  text-align:left;font-size:10px;font-weight:700;
+  letter-spacing:.08em;text-transform:uppercase;
+  color:var(--mut);padding:0 8px 10px 0;
+  border-bottom:1px solid rgba(73,61,154,.08);
+}
+.ki-orders-table td{
+  padding:10px 8px 10px 0;
+  border-bottom:1px solid rgba(73,61,154,.05);
+  color:var(--txt);
+  vertical-align:middle;
+}
+.ki-orders-table tr:last-child td{border-bottom:none;}
+.ki-orders-table a{color:var(--p);text-decoration:none;font-weight:600;}
+.ki-orders-table a:hover{text-decoration:underline;}
+.ki-status {
+  display:inline-block;padding:2px 8px;border-radius:50px;
+  font-size:10px;font-weight:700;
+  background:rgba(73,61,154,.08);color:var(--p);
+}
+.ki-status--paid{background:rgba(34,197,94,.1);color:#15803d;}
+.ki-status--fulfilled{background:rgba(34,197,94,.1);color:#15803d;}
+.ki-status--unfulfilled{background:rgba(245,158,11,.1);color:#b45309;}
+.ki-no-orders {
+  text-align:center;padding:32px 16px;
+  color:var(--mut);font-size:13px;
+}
+.ki-no-orders svg{width:40px;height:40px;color:var(--lil);display:block;margin:0 auto 10px;}
+/* Adres kartı */
+.ki-address-box {
+  background:rgba(73,61,154,.04);border-radius:10px;
+  padding:14px 16px;font-size:13px;
+  color:var(--txt);line-height:1.65;
+  border:1px solid rgba(73,61,154,.08);
+}
+.ki-address-box p{margin:0;}
+/* Pagination */
+.ki-pagination {
+  display:flex;justify-content:center;gap:5px;padding:16px 0 4px;
+}
+.ki-pagination a,.ki-pagination span {
+  display:inline-flex;align-items:center;justify-content:center;
+  width:32px;height:32px;border-radius:8px;font-size:12px;font-weight:600;
+  border:1px solid rgba(73,61,154,.18);color:var(--txt);text-decoration:none;
+  transition:all .15s;
+}
+.ki-pagination a:hover{background:var(--lil);border-color:var(--p);color:var(--p);}
+.ki-pagination span.current{background:var(--p);color:#fff;border-color:var(--p);}
+</style>
+
+<div class="ki-account">
+  <!-- Banner -->
+  <div class="ki-account__banner">
+    <div class="ki-account__avatar">
+      {{ customer.first_name | slice: 0 | upcase }}
+    </div>
+    <h1 class="ki-account__name">{{ customer.first_name }} {{ customer.last_name }}</h1>
+    <p class="ki-account__email">{{ customer.email }}</p>
+    <a href="{{ routes.account_logout_url }}" class="ki-account__logout">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      {{ 'customer.log_out' | t }}
+    </a>
+  </div>
+
+  <!-- Main grid -->
+  <div class="ki-account__main">
+
+    <!-- Siparislerim -->
+    <div class="ki-acc-card" style="grid-column:1/-1">
+      <div class="ki-acc-card__head">
+        <h2 class="ki-acc-card__title">{{ 'customer.orders.title' | t }}</h2>
+      </div>
+      <div class="ki-acc-card__body">
+        {%- paginate customer.orders by 10 -%}
+          {%- if customer.orders.size > 0 -%}
+            <table class="ki-orders-table">
+              <thead>
+                <tr>
+                  <th>{{ 'customer.orders.order_number' | t }}</th>
+                  <th>{{ 'customer.orders.date' | t }}</th>
+                  <th>{{ 'customer.orders.payment_status' | t }}</th>
+                  <th>{{ 'customer.orders.fulfillment_status' | t }}</th>
+                  <th style="text-align:right">{{ 'customer.orders.total' | t }}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {%- for order in customer.orders -%}
+                  <tr>
+                    <td><a href="{{ order.customer_url }}">{{ order.name }}</a></td>
+                    <td>{{ order.created_at | time_tag: format: 'date' }}</td>
+                    <td><span class="ki-status ki-status--{{ order.financial_status }}">{{ order.financial_status_label }}</span></td>
+                    <td><span class="ki-status ki-status--{{ order.fulfillment_status }}">{{ order.fulfillment_status_label }}</span></td>
+                    <td style="text-align:right;font-weight:700">{{ order.total_net_amount | money }}</td>
+                  </tr>
+                {%- endfor -%}
+              </tbody>
+            </table>
+            {%- if paginate.pages > 1 -%}
+              <div class="ki-pagination">
+                {%- if paginate.previous -%}<a href="{{ paginate.previous.url }}">&#8592;</a>{%- endif -%}
+                {%- for part in paginate.parts -%}
+                  {%- if part.is_link -%}<a href="{{ part.url }}">{{ part.title }}</a>
+                  {%- else -%}<span class="current">{{ part.title }}</span>{%- endif -%}
+                {%- endfor -%}
+                {%- if paginate.next -%}<a href="{{ paginate.next.url }}">&#8594;</a>{%- endif -%}
+              </div>
+            {%- endif -%}
+          {%- else -%}
+            <div class="ki-no-orders">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+              <p>{{ 'customer.orders.none' | t }}</p>
+            </div>
+          {%- endif -%}
+        {%- endpaginate -%}
+      </div>
+    </div>
+
+    <!-- Adres bilgileri -->
+    <div class="ki-acc-card">
+      <div class="ki-acc-card__head">
+        <h2 class="ki-acc-card__title">{{ 'customer.account.details' | t }}</h2>
+        <a href="{{ routes.account_addresses_url }}" class="ki-acc-card__link">{{ 'customer.account.view_addresses' | t }} ({{ customer.addresses_count }})</a>
+      </div>
+      <div class="ki-acc-card__body">
+        {%- if customer.default_address -%}
+          <div class="ki-address-box">{{ customer.default_address | format_address }}</div>
+        {%- else -%}
+          <p style="font-size:13px;color:var(--mut);">Henüz adres eklenmemiş.</p>
+        {%- endif -%}
+      </div>
+    </div>
+
+    <!-- Urun onerileri veya bos alan -->
+    <div class="ki-acc-card">
+      <div class="ki-acc-card__head">
+        <h2 class="ki-acc-card__title">Hızlı Erişim</h2>
+      </div>
+      <div class="ki-acc-card__body" style="display:flex;flex-direction:column;gap:10px;">
+        <a href="{{ routes.all_products_collection_url }}" style="display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:10px;background:rgba(73,61,154,.05);border:1px solid rgba(73,61,154,.1);text-decoration:none;color:var(--txt);font-size:13px;font-weight:600;transition:background .15s;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#493d9a" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          Tüm Ürünleri İncele
+        </a>
+        <a href="{{ routes.account_addresses_url }}" style="display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:10px;background:rgba(73,61,154,.05);border:1px solid rgba(73,61,154,.1);text-decoration:none;color:var(--txt);font-size:13px;font-weight:600;transition:background .15s;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#493d9a" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          Adreslerimi Yönet
+        </a>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.main-account.name",
+  "settings": [
+    {"type":"header","content":"t:sections.all.padding.section_padding_heading"},
+    {"type":"range","id":"padding_top","min":0,"max":100,"step":4,"unit":"px","label":"t:sections.all.padding.padding_top","default":0},
+    {"type":"range","id":"padding_bottom","min":0,"max":100,"step":4,"unit":"px","label":"t:sections.all.padding.padding_bottom","default":0}
+  ]
+}
+{% endschema %}

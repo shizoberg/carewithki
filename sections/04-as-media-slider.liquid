@@ -1,0 +1,245 @@
+{% comment %}
+  Media Slider — Testimonial video & görsel kartları
+  Pozisyon: Anasayfa #4
+  Sürekli kayan; hover & dokunmada pause; pointer drag desteği.
+  Block tipleri: video / image
+{% endcomment %}
+
+<section id="media-slider-{{ section.id }}" class="section media-slider">
+  <style>
+    #media-slider-{{ section.id }} {
+      --ms-bg: {{ section.settings.bg | default: '#fffaf3' }};
+      --ms-primary: {{ section.settings.primary_color | default: '#3a2d6e' }};
+      --ms-card-bg: {{ section.settings.card_bg | default: '#f4ede1' }};
+      background: var(--ms-bg);
+      padding: 24px 0 64px;
+      overflow: hidden;
+      font-family: system-ui, -apple-system, sans-serif;
+    }
+
+    #media-slider-{{ section.id }} .ms-head {
+      max-width: 1152px;
+      margin: 0 auto 32px;
+      padding: 0 20px;
+      text-align: center;
+    }
+    #media-slider-{{ section.id }} .ms-title {
+      font-size: 36px; line-height: 1.05;
+      font-weight: 500;
+      letter-spacing: -.02em;
+      color: var(--ms-primary);
+      margin: 0;
+    }
+    #media-slider-{{ section.id }} .ms-title em {
+      font-style: italic; font-weight: 300;
+    }
+
+    #media-slider-{{ section.id }} .ms-track-wrap { position: relative; }
+    #media-slider-{{ section.id }} .ms-fade {
+      position: absolute; inset-block: 0;
+      width: 48px; pointer-events: none; z-index: 2;
+    }
+    #media-slider-{{ section.id }} .ms-fade--l { left: 0; background: linear-gradient(to right, var(--ms-bg), transparent); }
+    #media-slider-{{ section.id }} .ms-fade--r { right: 0; background: linear-gradient(to left, var(--ms-bg), transparent); }
+
+    #media-slider-{{ section.id }} .ms-track {
+      display: flex; gap: 12px;
+      overflow-x: auto;
+      padding: 0 24px 8px;
+      scrollbar-width: none;
+      cursor: grab;
+    }
+    #media-slider-{{ section.id }} .ms-track::-webkit-scrollbar { display: none; }
+    #media-slider-{{ section.id }} .ms-track[data-dragging="true"] { cursor: grabbing; user-select: none; }
+
+    #media-slider-{{ section.id }} .ms-card {
+      flex: none;
+      width: 220px;
+      aspect-ratio: 9/16;
+      border-radius: 16px;
+      overflow: hidden;
+      background: var(--ms-card-bg);
+      box-shadow: 0 1px 3px rgba(0,0,0,.06);
+      position: relative;
+    }
+    #media-slider-{{ section.id }} .ms-card video,
+    #media-slider-{{ section.id }} .ms-card img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    #media-slider-{{ section.id }} .ms-card::after {
+      content: ''; position: absolute; left: 0; right: 0; bottom: 0;
+      height: 80px;
+      background: linear-gradient(to top, rgba(0,0,0,.55), transparent);
+      pointer-events: none;
+    }
+    #media-slider-{{ section.id }} .ms-caption {
+      position: absolute; left: 12px; bottom: 12px;
+      color: #fff;
+      font-size: 12px; font-weight: 600;
+      letter-spacing: .02em;
+      text-shadow: 0 2px 8px rgba(0,0,0,.6);
+      z-index: 2;
+    }
+
+    #media-slider-{{ section.id }} .ms-play {
+      position: absolute; right: 12px; bottom: 12px;
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background: rgba(255,255,255,.9);
+      color: var(--ms-primary);
+      border: 0; cursor: pointer;
+      display: grid; place-items: center;
+      backdrop-filter: blur(4px);
+      z-index: 3;
+    }
+
+    @media (min-width: 640px) {
+      #media-slider-{{ section.id }} { padding: 32px 0 80px; }
+      #media-slider-{{ section.id }} .ms-head { margin-bottom: 40px; }
+      #media-slider-{{ section.id }} .ms-title { font-size: 44px; }
+      #media-slider-{{ section.id }} .ms-track { gap: 16px; padding: 0 48px 8px; }
+      #media-slider-{{ section.id }} .ms-card { width: 260px; }
+      #media-slider-{{ section.id }} .ms-fade { width: 80px; }
+    }
+
+    @media (min-width: 1024px) {
+      #media-slider-{{ section.id }} .ms-title { font-size: 52px; }
+      #media-slider-{{ section.id }} .ms-track { padding: 0 80px 8px; }
+      #media-slider-{{ section.id }} .ms-card { width: 300px; }
+    }
+  </style>
+
+  <div class="ms-head">
+    <h2 class="ms-title">{{ section.settings.heading | default: 'Bizi bir de <em>onlardan</em> dinle.' }}</h2>
+  </div>
+
+  <div class="ms-track-wrap">
+    <div class="ms-fade ms-fade--l"></div>
+    <div class="ms-fade ms-fade--r"></div>
+
+    <div class="ms-track" data-ms-track>
+      {%- for repeat in (1..2) -%}
+        {%- for block in section.blocks -%}
+          <div class="ms-card" {{ block.shopify_attributes }}>
+            {%- if block.type == 'video' and block.settings.video_url != blank -%}
+              <video src="{{ block.settings.video_url }}" muted loop playsinline autoplay preload="metadata"></video>
+              <button type="button" class="ms-play" data-ms-toggle aria-label="Oynat / Duraklat">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>
+              </button>
+            {%- elsif block.settings.image != blank -%}
+              {{ block.settings.image | image_url: width: 600 | image_tag: alt: block.settings.caption, loading: 'lazy' }}
+            {%- endif -%}
+            {%- if block.settings.caption != blank -%}
+              <span class="ms-caption">{{ block.settings.caption }}</span>
+            {%- endif -%}
+          </div>
+        {%- endfor -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+<script>
+  (function () {
+    var root = document.getElementById('media-slider-{{ section.id }}');
+    if (!root) return;
+    var track = root.querySelector('[data-ms-track]');
+    if (!track) return;
+
+    /* Auto-scroll */
+    var paused = false, dragging = false;
+    var last = performance.now();
+    var speed = 40;
+    function tick(now) {
+      var dt = (now - last) / 1000; last = now;
+      if (!paused && !dragging) {
+        track.scrollLeft += speed * dt;
+        var half = track.scrollWidth / 2;
+        if (track.scrollLeft >= half) track.scrollLeft -= half;
+      }
+      requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+
+    track.addEventListener('mouseenter', function () { paused = true; });
+    track.addEventListener('mouseleave', function () { paused = false; });
+    track.addEventListener('touchstart', function () { paused = true; }, { passive: true });
+    track.addEventListener('touchend',   function () { paused = false; });
+
+    /* Pointer drag */
+    var startX = 0, scrollL = 0, moved = false;
+    track.addEventListener('pointerdown', function (e) {
+      dragging = true; moved = false;
+      startX = e.pageX; scrollL = track.scrollLeft;
+      track.setPointerCapture(e.pointerId);
+      track.dataset.dragging = 'true';
+    });
+    track.addEventListener('pointermove', function (e) {
+      if (!dragging) return;
+      var dx = e.pageX - startX;
+      if (Math.abs(dx) > 4) moved = true;
+      track.scrollLeft = scrollL - dx;
+    });
+    function endDrag() { dragging = false; track.dataset.dragging = 'false'; }
+    track.addEventListener('pointerup', endDrag);
+    track.addEventListener('pointercancel', endDrag);
+    track.addEventListener('click', function (e) { if (moved) { e.preventDefault(); e.stopPropagation(); } }, true);
+
+    /* Video play/pause buttons */
+    track.querySelectorAll('[data-ms-toggle]').forEach(function (btn) {
+      btn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        var v = btn.parentElement.querySelector('video');
+        if (!v) return;
+        if (v.paused) v.play().catch(function(){}); else v.pause();
+      });
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Media Slider",
+  "tag": "section",
+  "class": "media-slider",
+  "settings": [
+    { "type": "richtext", "id": "heading", "label": "Başlık", "default": "<p>Bizi bir de <em>onlardan</em> dinle.</p>" },
+    { "type": "color", "id": "bg", "label": "Arka plan", "default": "#fffaf3" },
+    { "type": "color", "id": "card_bg", "label": "Kart placeholder rengi", "default": "#f4ede1" },
+    { "type": "color", "id": "primary_color", "label": "Başlık rengi", "default": "#3a2d6e" }
+  ],
+  "blocks": [
+    {
+      "type": "video",
+      "name": "Video",
+      "settings": [
+        { "type": "url", "id": "video_url", "label": "Video URL (mp4)" },
+        { "type": "text", "id": "caption", "label": "Alt yazı", "default": "PMS günleri" }
+      ]
+    },
+    {
+      "type": "image",
+      "name": "Görsel",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Görsel" },
+        { "type": "text", "id": "caption", "label": "Alt yazı", "default": "Sinem · 25" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Media Slider",
+      "blocks": [
+        { "type": "video", "settings": { "caption": "PMS günleri" } },
+        { "type": "image", "settings": { "caption": "Ulyana · 21" } },
+        { "type": "video", "settings": { "caption": "Döngü hikayesi" } },
+        { "type": "image", "settings": { "caption": "Sinem · 25" } },
+        { "type": "video", "settings": { "caption": "Sabah rutini" } },
+        { "type": "image", "settings": { "caption": "Ulyana · mutfakta" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

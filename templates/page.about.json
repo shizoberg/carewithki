@@ -1,0 +1,31 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "legal-page",
+      "settings": {
+        "title": "Hakkımızda",
+        "show_date": false,
+        "last_updated": "20 Ocak 2026",
+        "show_divider": true,
+        "content": "<p><strong>.ki</strong>, Türkiye ve Birleşik Arap Emirlikleri merkezli, eczacılar tarafından kurulmuş, kadın sağlığını odağına alan bir iyi yaşam markasıdır. Kurulduğumuz günden bu yana, kadınların menstrual döngü, menopoz ve hormonal dengelerine ek olarak hijyen ve bakım ihtiyaçlarını da anlayabilmeleri için bilimsel temelli ve güvenilir çözümler üretmeyi hedefliyoruz.</p><p>Kadın sağlığına dair pek çok konu hâlâ yeterince konuşulmazken, doğru bilgiye erişim çoğu zaman zorlaşmaktadır. <strong>.ki</strong>, bu boşluğu eczacılık bilgisi, bilimsel veri ve gerçek yaşam deneyimlerini bir araya getirerek doldurmak üzere yapılandırılmıştır.</p><h2>Yaklaşımımız</h2><p><strong>.ki’de sağlık ve iyi olma hâli</strong>, yalnızca bir döneme veya tek bir ihtiyaca indirgenmez. Kadın bedeninin döngüsel yapısını, değişen hormonal ihtiyaçlarını ve yaşam evrelerini bütüncül bir bakış açısıyla ele alırız.</p><p>Ürünlerimizi ve dijital çözümlerimizi geliştirirken kısa vadeli vaatler yerine uzun vadeli faydayı esas alırız. Bilimsel temeli olmayan iddialardan kaçınır; her aşamada şeffaf, ölçülebilir ve anlaşılır olmayı önemseriz.</p><p>Eczacılar tarafından kurulmuş bir marka olarak, güvenilir içerik üretmeyi ve doğru yönlendirme yapmayı temel sorumluluğumuz olarak kabul ederiz.</p><h2>Ne Yapıyoruz?</h2><p><strong>.ki ekosistemi</strong>; kadınların ihtiyaçlarına yönelik geliştirilen takviye edici gıdalar, hijyen ve bakım ürünleri, menstrual döngü ve su takibi gibi alışkanlıkları destekleyen dijital araçlar, bilgilendirici ve kapsayıcı içerikler ile deneyim paylaşımını teşvik eden topluluk yapılarından oluşur.</p><p>Amacımız yalnızca ürün sunmak değildir; kadınların sağlık ve iyi oluş süreçlerini takip edebildiği, anlayabildiği ve bilinçli kararlar alabildiği bir sistem oluşturmaktır. <strong>.ki</strong>, kadınların kendi bedenleriyle daha sağlıklı ve sürdürülebilir bir ilişki kurmasına eşlik eder.</p><h2>Misyonumuz</h2><p>Kadın sağlığını bilimsel veriye ve kaliteye dayalı güvenli ürünler, dijital araçlar ve erişilebilir bilgilerle destekleyerek sağlık farkındalığını günlük yaşamın doğal bir parçası haline getirmek.</p><h2>Vizyonumuz</h2><p>Kadınların kendi bedenlerini tanıyabildiği, sağlık verilerini anlayabildiği ve bilinçli seçimler yapabildiği; güvenilir, sürdürülebilir ve uluslararası ölçekte bir kadın sağlığı markası olmak.</p><h2>Değerlerimiz</h2><p><strong>.ki’de bilimsellik, şeffaflık ve güven</strong> temel değerlerimizdir. Kadın bedenini tek tip bir yapı olarak görmeyiz; farklı ihtiyaçları ve yaşam evrelerini dikkate alırız. Erişilebilir bilgiye, etik üretime ve uzun vadeli sağlık alışkanlıkları oluşturmaya inanırız.</p>",
+        "show_contact": false,
+        "contact_title": "İletişim",
+        "contact_email": "help@carewithki.com",
+        "contact_phone": "",
+        "contact_address": ""
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

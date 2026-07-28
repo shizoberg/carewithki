@@ -1,0 +1,236 @@
+<style>
+  .ing-sec {
+    padding: 100px 24px;
+    font-family: 'Raleway', 'Segoe UI', system-ui, sans-serif;
+    color: #121212;
+    line-height: 1.7;
+    background: {{ section.settings.bg_color }};
+    overflow: hidden;
+  }
+  .ing-wrap {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .ing-split {
+    display: flex;
+    align-items: center;
+    gap: 80px;
+  }
+  .ing-split-reverse {
+    flex-direction: row-reverse;
+  }
+  .ing-img-col {
+    flex: 1;
+    position: relative;
+  }
+  .ing-text-col {
+    flex: 1;
+    max-width: 540px;
+  }
+  .ing-img-box {
+    position: relative;
+    border-radius: 32px;
+    aspect-ratio: 4/5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 120px;
+    z-index: 2;
+  }
+  .ing-img-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 32px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+  }
+  .ing-blob {
+    position: absolute;
+    top: -20px;
+    right: -20px;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(218,210,255,0.8) 0%, rgba(248,247,252,0) 100%);
+    border-radius: 32px;
+    filter: blur(40px);
+    z-index: 1;
+  }
+  .ing-sec-tag {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: #493D9A;
+    margin-bottom: 16px;
+    background: rgba(73, 61, 154, 0.06);
+    padding: 6px 16px;
+    border-radius: 999px;
+  }
+  .ing-sec h2 {
+    font-size: clamp(2rem, 4.5vw, 3rem);
+    font-weight: 300;
+    line-height: 1.1;
+    margin-top: 0;
+    margin-bottom: 24px;
+    color: #121212;
+    letter-spacing: -0.01em;
+  }
+  .ing-sec h2 strong {
+    font-weight: 800;
+  }
+  .ing-text-content {
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 24px;
+    line-height: 1.8;
+  }
+  .ing-text-content p {
+    margin-top: 0;
+    margin-bottom: 16px;
+  }
+  .ing-text-content p:last-child {
+    margin-bottom: 0;
+  }
+  .ing-text-content strong {
+    font-weight: 700;
+    color: #121212;
+  }
+  .ing-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 32px;
+  }
+  .ing-pill {
+    background: #fff;
+    color: #493D9A;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 10px 20px;
+    border-radius: 999px;
+    box-shadow: 0 4px 12px rgba(73, 61, 154, 0.08);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all .2s ease;
+  }
+  .ing-pill:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(73, 61, 154, 0.15);
+  }
+  .ing-pill svg {
+    width: 16px;
+    height: 16px;
+    fill: #493D9A;
+  }
+  .ing-pill .ico {
+    font-size: 16px;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  @media(max-width: 900px) {
+    .ing-sec { padding: 60px 20px; }
+    .ing-split, .ing-split-reverse { flex-direction: column; gap: 40px; }
+    .ing-img-box { aspect-ratio: 1/1; max-width: 400px; margin: 0 auto; }
+    .ing-text-col { text-align: center; margin: 0 auto; }
+    .ing-pills { justify-content: center; }
+  }
+</style>
+
+<section class="ing-sec">
+  <div class="ing-wrap">
+    <div class="ing-split {% if section.settings.image_position == 'right' %}ing-split-reverse{% endif %}">
+      
+      <div class="ing-img-col">
+        <div class="ing-blob"></div>
+        <div class="ing-img-box">
+          {%- if section.settings.image != blank -%}
+            {{ section.settings.image | image_url: width: 800 | image_tag: loading: 'lazy', alt: section.settings.title_bold }}
+          {%- else -%}
+            <div style="background:rgba(218,210,255,0.4);width:100%;height:100%;border-radius:32px;display:flex;align-items:center;justify-content:center;">
+              {{ section.settings.emoji }}
+            </div>
+          {%- endif -%}
+        </div>
+      </div>
+
+      <div class="ing-text-col">
+        {%- if section.settings.tag != blank -%}
+          <div class="ing-sec-tag">{{ section.settings.tag }}</div>
+        {%- endif -%}
+        
+        <h2>{{ section.settings.title_light }}<br><strong>{{ section.settings.title_bold }}</strong></h2>
+        
+        {%- if section.settings.text != blank -%}
+          <div class="ing-text-content">
+            {{ section.settings.text }}
+          </div>
+        {%- endif -%}
+        
+        {%- if section.blocks.size > 0 -%}
+        <div class="ing-pills">
+          {%- for block in section.blocks -%}
+            <span class="ing-pill" {{ block.shopify_attributes }}>
+              {%- if block.settings.icon != blank -%}
+                <span class="ico">{{ block.settings.icon }}</span>
+              {%- else -%}
+                <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+              {%- endif -%}
+              {{ block.settings.text }}
+            </span>
+          {%- endfor -%}
+        </div>
+        {%- endif -%}
+      </div>
+
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Ing: Premium Science",
+  "settings": [
+    { "type": "color", "id": "bg_color", "label": "Arka Plan Rengi", "default": "#ffffff" },
+    {
+      "type": "select",
+      "id": "image_position",
+      "label": "Görsel Yönü",
+      "options": [
+        { "value": "left", "label": "Solda" },
+        { "value": "right", "label": "Sağda" }
+      ],
+      "default": "left"
+    },
+    { "type": "text", "id": "tag", "label": "Bölüm Etiketi", "default": "Klinik Onaylı" },
+    { "type": "text", "id": "title_light", "label": "Başlık (İnce)", "default": "Bilim" },
+    { "type": "text", "id": "title_bold", "label": "Başlık (Kalın)", "default": "Ne Diyor?" },
+    { "type": "richtext", "id": "text", "label": "İçerik Metni (Eksiksiz Özgürlük)", "default": "<p>Karayılan Otu (Cimicifuga Racemosa), beyin sapındaki serotonin reseptörleri üzerinde etki göstererek vücudun ısı düzenleme mekanizmasını stabilize eder.</p>" },
+    { "type": "image_picker", "id": "image", "label": "Bölüm Görseli Seçin" },
+    { "type": "text", "id": "emoji", "label": "Görsel Yoksa Emojisi", "default": "🔬" }
+  ],
+  "blocks": [
+    {
+      "type": "pill",
+      "name": "Bileşen/Özellik (Etiket)",
+      "limit": 4,
+      "settings": [
+        { "type": "text", "id": "icon", "label": "İkon (Emoji vb.)", "default": "🛡️" },
+        { "type": "text", "id": "text", "label": "Özellik Yazısı" }
+      ]
+    }
+  ],
+  "presets": [
+    { 
+      "name": "Ing: Premium Science",
+      "blocks": [
+        { "type": "pill", "settings": { "text": "Yüksek Biyoyararlanım" } }, 
+        { "type": "pill", "settings": { "text": "Standardize Ekstre" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

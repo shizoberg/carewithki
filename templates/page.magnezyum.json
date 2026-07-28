@@ -1,0 +1,311 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "settings": {
+        "padding_top": 28,
+        "padding_bottom": 28
+      }
+    },
+    "ing_hero_TQErWr": {
+      "type": "ing-hero",
+      "name": "Ing: Premium Hero",
+      "settings": {
+        "bg_color": "#f8f7fc",
+        "bg_gradient": "linear-gradient(135deg, rgba(248,247,252,1) 0%, rgba(218,210,255,0.4) 100%)",
+        "bg_opacity": 0.1,
+        "text_color": "#121212",
+        "tag": "Hammadde Sırrı",
+        "title_light": "Doğanın Gücü:",
+        "title_bold": "Çin Melek Otu",
+        "text": "<p>Doğal içeriklerin arkasındaki bilimi keşfedin. Günlük rutininize katacağınız bu mucize ile tanışın.</p>",
+        "btn_text": "Formülü İncele",
+        "btn_link": ""
+      }
+    },
+    "ing_science_H7ByLm": {
+      "type": "ing-science",
+      "blocks": {
+        "pill_kBCEQr": {
+          "type": "pill",
+          "settings": {
+            "icon": "🛡️",
+            "text": ""
+          }
+        },
+        "pill_xd4FQL": {
+          "type": "pill",
+          "settings": {
+            "icon": "🛡️",
+            "text": "Yüksek Biyoyararlanım"
+          }
+        },
+        "pill_Azx6Qm": {
+          "type": "pill",
+          "settings": {
+            "icon": "🛡️",
+            "text": "Standardize Ekstre"
+          }
+        }
+      },
+      "block_order": [
+        "pill_kBCEQr",
+        "pill_xd4FQL",
+        "pill_Azx6Qm"
+      ],
+      "name": "Ing: Premium Science",
+      "settings": {
+        "bg_color": "#ffffff",
+        "image_position": "left",
+        "tag": "Klinik Onaylı",
+        "title_light": "Bilim",
+        "title_bold": "Ne Diyor?",
+        "text": "<p>Karayılan Otu (Cimicifuga Racemosa), beyin sapındaki serotonin reseptörleri üzerinde etki göstererek vücudun ısı düzenleme mekanizmasını stabilize eder.</p>",
+        "emoji": "🔬"
+      }
+    },
+    "ing_deficiency_VzEBkG": {
+      "type": "ing-deficiency",
+      "blocks": {
+        "deficiency_9ar6aG": {
+          "type": "deficiency",
+          "settings": {
+            "icon": "😤",
+            "text": ""
+          }
+        },
+        "deficiency_LzRwDm": {
+          "type": "deficiency",
+          "settings": {
+            "icon": "😤",
+            "text": ""
+          }
+        },
+        "deficiency_ExJYVU": {
+          "type": "deficiency",
+          "settings": {
+            "icon": "😤",
+            "text": ""
+          }
+        }
+      },
+      "block_order": [
+        "deficiency_9ar6aG",
+        "deficiency_LzRwDm",
+        "deficiency_ExJYVU"
+      ],
+      "name": "Ing: Premium Deficiency",
+      "settings": {
+        "bg_color": "#ffffff",
+        "tag": "Dikkat Çeken Belirtiler",
+        "title": "Magnezyum Eksikliğinin Yansımaları"
+      }
+    },
+    "ing_stats_Yc4xCh": {
+      "type": "ing-stats",
+      "blocks": {
+        "stat_h8tzpT": {
+          "type": "stat",
+          "settings": {
+            "number": "%100",
+            "label": "<p>Müşteri Memnuniyeti</p>"
+          }
+        },
+        "stat_9aULwG": {
+          "type": "stat",
+          "settings": {
+            "number": "%100",
+            "label": "<p>Müşteri Memnuniyeti</p>"
+          }
+        },
+        "stat_AtABxU": {
+          "type": "stat",
+          "settings": {
+            "number": "%100",
+            "label": "<p>Müşteri Memnuniyeti</p>"
+          }
+        }
+      },
+      "block_order": [
+        "stat_h8tzpT",
+        "stat_9aULwG",
+        "stat_AtABxU"
+      ],
+      "name": "Ing: Premium Stats",
+      "settings": {
+        "bg_color": "#f8f7fc",
+        "layout": "grid",
+        "bar_number": "2.000+",
+        "bar_text": "<p><strong>Yıllık geleneksel</strong> kullanım tarihi.</p>"
+      }
+    },
+    "ing_steps_VTQkmJ": {
+      "type": "ing-steps",
+      "blocks": {
+        "step_qyXjtL": {
+          "type": "step",
+          "settings": {
+            "title": "1. Aşama",
+            "text": "<p>Detaylı adım açıklaması arayüzde görünecek.</p>"
+          }
+        },
+        "step_iUyYVt": {
+          "type": "step",
+          "settings": {
+            "title": "1. Aşama",
+            "text": "<p>Detaylı adım açıklaması arayüzde görünecek.</p>"
+          }
+        },
+        "step_c9tKkU": {
+          "type": "step",
+          "settings": {
+            "title": "1. Aşama",
+            "text": "<p>Detaylı adım açıklaması arayüzde görünecek.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "step_qyXjtL",
+        "step_iUyYVt",
+        "step_c9tKkU"
+      ],
+      "name": "Ing: Premium Steps",
+      "settings": {
+        "bg_color": "#ffffff",
+        "tag": "Etki Mekanizması",
+        "title_light": "Vücutta",
+        "title_bold": "",
+        "text": "<p>Gelişmiş formül formunun vücut tarafından emilimi ve etki aşamaları.</p>"
+      }
+    },
+    "ing_benefits_X6qiJy": {
+      "type": "ing-benefits",
+      "blocks": {
+        "benefit_MDa43E": {
+          "type": "benefit",
+          "settings": {
+            "icon": "",
+            "title": "",
+            "text": ""
+          }
+        },
+        "benefit_Rf77A9": {
+          "type": "benefit",
+          "settings": {
+            "icon": "",
+            "title": "",
+            "text": ""
+          }
+        },
+        "benefit_T6VBNL": {
+          "type": "benefit",
+          "settings": {
+            "icon": "",
+            "title": "",
+            "text": ""
+          }
+        },
+        "benefit_VNHtQY": {
+          "type": "benefit",
+          "settings": {
+            "icon": "",
+            "title": "",
+            "text": ""
+          }
+        }
+      },
+      "block_order": [
+        "benefit_MDa43E",
+        "benefit_Rf77A9",
+        "benefit_T6VBNL",
+        "benefit_VNHtQY"
+      ],
+      "name": "Ing: Premium Benefits",
+      "settings": {
+        "bg_color": "#f8f7fc",
+        "tag": "Ne Sağlar?",
+        "title_light": "",
+        "title_bold": "",
+        "text": "<p>Klinik araştırmalarla desteklenen temel avantajlar.</p>"
+      }
+    },
+    "ing_quote_JCV9yU": {
+      "type": "ing-quote",
+      "name": "Ing: Premium Quote",
+      "settings": {
+        "bg_color": "#f8f7fc",
+        "avatar": "A",
+        "tag": "Eczacı Notu",
+        "text": "<p>Düzenli kullanımda %90'a varan şikayet azalması gözlemledik.</p>",
+        "author": "ARIN ALAN - Eczacı, .ki Bitki Bilimi Sorumlusu"
+      }
+    },
+    "ing_cta_YyyD7y": {
+      "type": "ing-cta",
+      "name": "Ing: Premium CTA",
+      "settings": {
+        "bg_color": "#ffffff",
+        "tag": "Gelişmiş Formül",
+        "title_light": "Bitki İsmi Sır Değil,",
+        "title_bold": "Formülün Parçasıdır.",
+        "text": "<p>Klinik destekli takviyeyi şimdi deneyin.</p>",
+        "btn_text": "Ürünü İncele",
+        "btn_link": "",
+        "enable_sticky": true,
+        "sticky_text": "Hayatınızı Değiştirmeye Hazır Mısınız?"
+      }
+    },
+    "ing_faq_zUyMr4": {
+      "type": "ing-faq",
+      "blocks": {
+        "faq_Vrgnkf": {
+          "type": "faq",
+          "settings": {
+            "question": "Nasıl kullanmalıyım?",
+            "answer": ""
+          }
+        },
+        "faq_TfQmGq": {
+          "type": "faq",
+          "settings": {
+            "question": "Yan etkisi var mı?",
+            "answer": ""
+          }
+        }
+      },
+      "block_order": [
+        "faq_Vrgnkf",
+        "faq_TfQmGq"
+      ],
+      "name": "Ing: Premium FAQ List",
+      "settings": {
+        "bg_color": "#ffffff",
+        "tag": "Sıkça Sorulan Sorular",
+        "title_light": "Merak",
+        "title_bold": "Ettiklerin"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "ing_hero_TQErWr",
+    "ing_science_H7ByLm",
+    "ing_deficiency_VzEBkG",
+    "ing_stats_Yc4xCh",
+    "ing_steps_VTQkmJ",
+    "ing_benefits_X6qiJy",
+    "ing_quote_JCV9yU",
+    "ing_cta_YyyD7y",
+    "ing_faq_zUyMr4"
+  ]
+}

@@ -1,0 +1,250 @@
+<style>
+  #shopify-section-{{ section.id }} {
+    --ki-purple-dark: #493d9a;
+    --ki-purple: #b2a5ff;
+    --card-bg: #ffffff;
+    --bg-secondary: #f4f0ff; /* Similar to bg-secondary */
+    --plum-pale: #fcfaff;
+    --text-main: #1a1a1a;
+    --text-muted: rgba(26,26,26,0.6);
+    --border-light: rgba(73,61,154,0.06);
+  }
+
+  .balance-ing {
+    padding: 40px 20px;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  }
+
+  .balance-ing__container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .balance-ing__title {
+    font-size: clamp(20px, 4vw, 24px);
+    font-weight: 800;
+    color: var(--text-main);
+    text-align: center;
+    margin: 0 0 24px 0;
+  }
+
+  .balance-ing__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  @media(min-width: 600px) {
+    .balance-ing__grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media(min-width: 900px) {
+    .balance-ing__grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  .balance-ing__card {
+    background: var(--card-bg);
+    border-radius: 12px;
+    padding: 16px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    border: 1px solid var(--border-light);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .balance-ing__card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(73,61,154,0.06);
+  }
+
+  .balance-ing__icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    background: var(--bg-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+
+  .balance-ing__info {
+    min-width: 0;
+  }
+
+  .balance-ing__name {
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--text-main);
+    margin: 0 0 2px 0;
+    line-height: 1.2;
+  }
+
+  .balance-ing__desc {
+    font-size: 12px;
+    color: var(--text-muted);
+    line-height: 1.4;
+    margin: 0;
+  }
+
+  .balance-ing__badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    margin-top: 24px;
+  }
+
+  .balance-ing__badge {
+    background: var(--plum-pale);
+    border-radius: 999px;
+    padding: 6px 14px;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--ki-purple-dark);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    border: 1px solid var(--border-light);
+  }
+
+  /* Reveal */
+  .bi-reveal {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  .bi-reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+</style>
+
+<div class="balance-ing">
+  <div class="balance-ing__container">
+    <h2 class="balance-ing__title bi-reveal">{{ section.settings.title }}</h2>
+    
+    <div class="balance-ing__grid">
+      {% for block in section.blocks %}
+        {% if block.type == 'ingredient' %}
+          <div class="balance-ing__card bi-reveal" style="transition-delay: {{ forloop.index | times: 0.1 }}s;">
+            <div class="balance-ing__icon">{{ block.settings.icon }}</div>
+            <div class="balance-ing__info">
+              <div class="balance-ing__name">{{ block.settings.title }}</div>
+              <div class="balance-ing__desc">{{ block.settings.description }}</div>
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+
+    <div class="balance-ing__badges bi-reveal" style="transition-delay: 0.3s;">
+      {% for block in section.blocks %}
+        {% if block.type == 'badge' %}
+          <div class="balance-ing__badge">
+            ✓ {{ block.settings.text }}
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+<script>
+  (function() {
+    function initReveal() {
+      var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+          }
+        });
+      }, { threshold: 0.1 });
+      
+      document.querySelectorAll('#shopify-section-{{ section.id }} .bi-reveal').forEach(function(el) {
+        observer.observe(el);
+      });
+    }
+
+    // Initialize immediately
+    initReveal();
+
+    // Re-initialize when section is reloaded in Shopify customizer
+    document.addEventListener('shopify:section:load', function(event) {
+      if (event.detail.sectionId === '{{ section.id }}') {
+        initReveal();
+      }
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Balance: Ingredients",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section Title",
+      "default": "İçindekiler"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "ingredient",
+      "name": "Ingredient",
+      "settings": [
+        {
+          "type": "text",
+          "id": "icon",
+          "label": "Emoji Icon",
+          "default": "🌿"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Ingredient Name",
+          "default": "Vitex (Hayıt)"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description",
+          "default": "Hormonal dengeyi destekler, PMS belirtilerini hafifletir"
+        }
+      ]
+    },
+    {
+      "type": "badge",
+      "name": "Badge",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Badge Text",
+          "default": "GMP sertifikalı"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Balance: Ingredients",
+      "blocks": [
+        { "type": "ingredient", "settings": { "icon": "🌿", "title": "Vitex (Hayıt)", "description": "Hormonal dengeyi destekler, PMS belirtilerini hafifletir" } },
+        { "type": "ingredient", "settings": { "icon": "🌱", "title": "Magnezyum Bisglisinat", "description": "Kas gevşetici, kramp azaltıcı, uyku desteği" } },
+        { "type": "ingredient", "settings": { "icon": "☀️", "title": "B6 Vitamini", "description": "Serotonin üretimini destekler, ruh halini dengeler" } },
+        { "type": "ingredient", "settings": { "icon": "🍋", "title": "Çinko", "description": "Cilt sağlığı, bağışıklık ve hormonal denge desteği" } },
+        { "type": "badge", "settings": { "text": "GMP sertifikalı" } },
+        { "type": "badge", "settings": { "text": "Vegan formül" } },
+        { "type": "badge", "settings": { "text": "Klinik dozaj" } },
+        { "type": "badge", "settings": { "text": "30 günlük kullanım" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

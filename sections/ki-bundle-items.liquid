@@ -1,0 +1,250 @@
+{% comment %}.ki Bundle Items Section — paketteki ürünleri + indirim vurgusu{% endcomment %}
+
+<style>
+.kibdl-{{ section.id }} {
+  --p: #493d9a;
+  --lil: #dad2ff;
+  --bg: {{ section.settings.bg | default: '#f8f6ff' }};
+  --txt: {{ section.settings.text_color | default: '#1a1340' }};
+  --mut: {{ section.settings.muted_color | default: '#6b6b8a' }};
+  background: var(--bg);
+  padding: {{ section.settings.pad_y | default: 56 }}px {{ section.settings.pad_x | default: 24 }}px;
+  font-family: system-ui, sans-serif;
+}
+.kibdl-{{ section.id }} .kibdl-inner {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+/* Başlık */
+.kibdl-{{ section.id }} .kibdl-head {
+  text-align: center;
+  margin-bottom: 32px;
+}
+.kibdl-{{ section.id }} .kibdl-eyebrow {
+  font-size: 10px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase;
+  color: var(--p); margin: 0 0 10px; display: block;
+}
+.kibdl-{{ section.id }} .kibdl-title {
+  font-size: clamp(20px, 3vw, 28px); font-weight: 800;
+  color: var(--txt); margin: 0 0 10px; line-height: 1.2;
+  font-family: 'Raleway', system-ui, sans-serif;
+}
+.kibdl-{{ section.id }} .kibdl-sub {
+  font-size: 14px; color: var(--mut); margin: 0;
+}
+
+/* indirim banner */
+.kibdl-{{ section.id }} .kibdl-discount-banner {
+  display: flex; align-items: center; justify-content: center; gap: 14px;
+  background: linear-gradient(135deg, #493d9a 0%, #6b5dd3 100%);
+  border-radius: 14px; padding: 18px 24px; margin-bottom: 28px;
+  flex-wrap: wrap;
+}
+.kibdl-{{ section.id }} .kibdl-discount-badge {
+  background: #fff; color: #493d9a;
+  font-size: 20px; font-weight: 900;
+  padding: 6px 18px; border-radius: 50px;
+  line-height: 1;
+  box-shadow: 0 4px 16px rgba(0,0,0,.15);
+  white-space: nowrap;
+}
+.kibdl-{{ section.id }} .kibdl-discount-text {
+  color: #fff; font-size: 15px; font-weight: 600; line-height: 1.35;
+  text-align: center;
+}
+.kibdl-{{ section.id }} .kibdl-discount-text strong {
+  display: block; font-size: 18px; font-weight: 800;
+}
+
+/* Ürün grid */
+.kibdl-{{ section.id }} .kibdl-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.kibdl-{{ section.id }} .kibdl-item {
+  background: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1.5px solid rgba(73,61,154,.1);
+  box-shadow: 0 2px 12px rgba(73,61,154,.07);
+  display: flex; flex-direction: column;
+  transition: transform .2s, box-shadow .2s;
+}
+.kibdl-{{ section.id }} .kibdl-item:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(73,61,154,.14);
+}
+.kibdl-{{ section.id }} .kibdl-item__img {
+  width: 100%; aspect-ratio: 1/1;
+  object-fit: cover; display: block;
+  background: #f0eeff;
+}
+.kibdl-{{ section.id }} .kibdl-item__ph {
+  width: 100%; aspect-ratio: 1/1;
+  background: linear-gradient(135deg, #e8e4ff, #f8f6ff);
+  display: flex; align-items: center; justify-content: center;
+}
+.kibdl-{{ section.id }} .kibdl-item__ph svg {
+  width: 40px; height: 40px; color: rgba(73,61,154,.2);
+}
+.kibdl-{{ section.id }} .kibdl-item__body {
+  padding: 12px 14px 14px;
+  flex: 1; display: flex; flex-direction: column; gap: 4px;
+}
+.kibdl-{{ section.id }} .kibdl-item__name {
+  font-size: 13px; font-weight: 700; color: var(--txt); line-height: 1.3; margin: 0;
+}
+.kibdl-{{ section.id }} .kibdl-item__sub {
+  font-size: 11px; color: var(--mut); margin: 0;
+}
+.kibdl-{{ section.id }} .kibdl-item__price {
+  display: flex; align-items: baseline; gap: 5px; margin-top: 6px;
+}
+.kibdl-{{ section.id }} .kibdl-item__price-main {
+  font-size: 15px; font-weight: 800; color: var(--p);
+}
+.kibdl-{{ section.id }} .kibdl-item__price-old {
+  font-size: 11px; color: #bbb; text-decoration: line-through;
+}
+
+/* Alt not */
+.kibdl-{{ section.id }} .kibdl-note {
+  text-align: center; font-size: 12px; color: var(--mut);
+  margin-top: 8px;
+}
+
+@media (max-width: 600px) {
+  .kibdl-{{ section.id }} .kibdl-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+  .kibdl-{{ section.id }} .kibdl-discount-banner {
+    flex-direction: column; gap: 10px; padding: 16px;
+  }
+}
+</style>
+
+<link href="https://fonts.googleapis.com/css2?family=Raleway:wght@700;800&display=swap" rel="stylesheet">
+
+{%- assign item_blocks = section.blocks | where: 'type', 'bundle_item' -%}
+
+<section class="kibdl-{{ section.id }}">
+  <div class="kibdl-inner">
+
+    <!-- Başlık -->
+    <div class="kibdl-head">
+      {%- if section.settings.eyebrow != blank -%}
+        <span class="kibdl-eyebrow">{{ section.settings.eyebrow | escape }}</span>
+      {%- endif -%}
+      <h2 class="kibdl-title">{{ section.settings.heading | escape }}</h2>
+      {%- if section.settings.subtext != blank -%}
+        <p class="kibdl-sub">{{ section.settings.subtext | escape }}</p>
+      {%- endif -%}
+    </div>
+
+    <!-- İndirim banner -->
+    {%- if section.settings.discount_badge != blank -%}
+    <div class="kibdl-discount-banner">
+      <div class="kibdl-discount-badge">{{ section.settings.discount_badge | escape }}</div>
+      <div class="kibdl-discount-text">
+        {%- if section.settings.discount_headline != blank -%}
+          <strong>{{ section.settings.discount_headline | escape }}</strong>
+        {%- endif -%}
+        {%- if section.settings.discount_detail != blank -%}
+          {{ section.settings.discount_detail | escape }}
+        {%- endif -%}
+      </div>
+    </div>
+    {%- endif -%}
+
+    <!-- Ü rün grid -->
+    {%- if item_blocks.size > 0 -%}
+    <div class="kibdl-grid">
+      {%- for block in item_blocks -%}
+      <div class="kibdl-item" {{ block.shopify_attributes }}>
+        {%- if block.settings.image != blank -%}
+          {{ block.settings.image | image_url: width: 400 | image_tag: class: 'kibdl-item__img', loading: 'lazy', alt: block.settings.name }}
+        {%- else -%}
+          <div class="kibdl-item__ph">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <rect x="3" y="3" width="18" height="18" rx="2"/>
+              <circle cx="8.5" cy="8.5" r="1.5"/>
+              <polyline points="21 15 16 10 5 21"/>
+            </svg>
+          </div>
+        {%- endif -%}
+        <div class="kibdl-item__body">
+          <p class="kibdl-item__name">{{ block.settings.name | escape }}</p>
+          {%- if block.settings.subtitle != blank -%}
+            <p class="kibdl-item__sub">{{ block.settings.subtitle | escape }}</p>
+          {%- endif -%}
+          {%- if block.settings.price != blank -%}
+          <div class="kibdl-item__price">
+            <span class="kibdl-item__price-main">{{ block.settings.price | escape }}</span>
+            {%- if block.settings.compare_price != blank -%}
+              <span class="kibdl-item__price-old">{{ block.settings.compare_price | escape }}</span>
+            {%- endif -%}
+          </div>
+          {%- endif -%}
+        </div>
+      </div>
+      {%- endfor -%}
+    </div>
+    {%- endif -%}
+
+    {%- if section.settings.note != blank -%}
+      <p class="kibdl-note">{{ section.settings.note | escape }}</p>
+    {%- endif -%}
+
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Bundle Ürünleri (.ki)",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    { "type": "header", "content": "Başlık" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "BU PAKETTE" },
+    { "type": "text", "id": "heading", "label": "Başlık", "default": "Bu paketi aldığınızda sahip olacaklarınız" },
+    { "type": "textarea", "id": "subtext", "label": "Alt metin" },
+    { "type": "header", "content": "İndirim Vurgusu" },
+    { "type": "text", "id": "discount_badge", "label": "İndirim rozeti", "default": "%17 İndirim", "info": "Mor bannerın içindeki beyaz etiket" },
+    { "type": "text", "id": "discount_headline", "label": "Banner başlığı", "default": "3 al, 1’ini hediye kazan" },
+    { "type": "text", "id": "discount_detail", "label": "Banner detay", "default": "Toplam 700₺ tasarruf edersiniz" },
+    { "type": "text", "id": "note", "label": "Alt not", "default": "500₺ üzeri ücretsiz kargo · 30 gün iade" },
+    { "type": "header", "content": "Renk & Boyut" },
+    { "type": "color", "id": "bg", "label": "Arka plan", "default": "#f8f6ff" },
+    { "type": "color", "id": "text_color", "label": "Başlık rengi", "default": "#1a1340" },
+    { "type": "color", "id": "muted_color", "label": "İkincil metin", "default": "#6b6b8a" },
+    { "type": "range", "id": "pad_y", "min": 24, "max": 96, "step": 8, "unit": "px", "label": "Dikey dolgu", "default": 56 },
+    { "type": "range", "id": "pad_x", "min": 8, "max": 48, "step": 4, "unit": "px", "label": "Yatay dolgu", "default": 24 }
+  ],
+  "blocks": [
+    {
+      "type": "bundle_item",
+      "name": "Paket Ürünü",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Görsel" },
+        { "type": "text", "id": "name", "label": "Ürün adı", "default": ".ki Balance" },
+        { "type": "text", "id": "subtitle", "label": "Alt metin", "default": "Döngü takviyesi · 30 saşe" },
+        { "type": "text", "id": "price", "label": "Bundle fiyatı", "default": "1.167₺" },
+        { "type": "text", "id": "compare_price", "label": "Normal fiyat", "default": "1.400₺" }
+      ]
+    }
+  ],
+  "presets": [{
+    "name": "Bundle Ürünleri (.ki)",
+    "blocks": [
+      { "type": "bundle_item", "settings": { "name": ".ki Balance", "subtitle": "Döngü takviyesi · 30 saşe", "price": "1.167₺", "compare_price": "1.400₺" } },
+      { "type": "bundle_item", "settings": { "name": ".ki Balance", "subtitle": "Döngü takviyesi · 30 saşe", "price": "1.167₺", "compare_price": "1.400₺" } },
+      { "type": "bundle_item", "settings": { "name": ".ki Balance", "subtitle": "Döngü takviyesi · 30 saşe", "price": "1.167₺", "compare_price": "1.400₺" } }
+    ]
+  }]
+}
+{% endschema %}

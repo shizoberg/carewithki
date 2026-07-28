@@ -1,0 +1,173 @@
+{% comment %}
+  .ki Pricing (scoped) — Brand Kit
+  Radio-selectable plan cards + CTA that adds to cart (if product selected).
+
+  Brand kit:
+    #493d9a (main)
+    #f8f8f6 (offwhite)
+    #b2a5ff (primary)
+    #dad2ff (lilac)
+{% endcomment %}
+
+{%- assign product = all_products[section.settings.product] -%}
+
+<section id="kpr-{{ section.id }}" class="section">
+  <style>
+    #kpr-{{ section.id }}{
+      --ki-purple-dark: #493d9a;
+      --ki-offwhite: #f8f8f6;
+      --ki-purple: #b2a5ff;
+      --ki-lilac: #dad2ff;
+
+      --bg: {{ section.settings.bg | default: '#ffffff' }};
+      --text: {{ section.settings.text | default: '#1a1a1a' }};
+      --muted: {{ section.settings.muted | default: 'rgba(26,26,26,.72)' }};
+
+      --maxw: {{ section.settings.max_width | default: 760 }}px;
+      --py: {{ section.settings.pad_y | default: 88 }}px;
+      --px: {{ section.settings.pad_x | default: 40 }}px;
+
+      background: var(--bg);
+      color: var(--text);
+    }
+    #kpr-{{ section.id }} .kpr__wrap{ max-width: var(--maxw); margin: 0 auto; padding: var(--py) var(--px); }
+    #kpr-{{ section.id }} .kpr__head{ text-align: center; margin-bottom: 32px; }
+    #kpr-{{ section.id }} .kpr__eyebrow{
+      font-size: 12px; font-weight: 700; letter-spacing: 1.6px; text-transform: uppercase;
+      color: var(--ki-purple-dark); margin: 0 0 10px;
+    }
+    #kpr-{{ section.id }} .kpr__title{
+      font-size: clamp(32px,4.6vw,50px); font-weight: 650; letter-spacing: -0.02em;
+      line-height: 1.1; color: var(--ki-purple-dark);
+      text-shadow: 0 10px 26px rgba(73,61,154,.10); margin: 0;
+    }
+    #kpr-{{ section.id }} .kpr__options{ display: flex; flex-direction: column; gap: 14px; }
+    #kpr-{{ section.id }} .kpr__card{
+      display: block; padding: 20px 22px; border-radius: 18px; position: relative; cursor: pointer;
+      background: #fff; border: 2px solid rgba(73,61,154,.14);
+      box-shadow: 0 18px 40px rgba(73,61,154,.10);
+      transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    }
+    #kpr-{{ section.id }} .kpr__card:hover{
+      transform: translateY(-2px); border-color: rgba(73,61,154,.30);
+      box-shadow: 0 22px 50px rgba(73,61,154,.18);
+    }
+    #kpr-{{ section.id }} .kpr__card--rec{ border-color: var(--ki-purple-dark); }
+    #kpr-{{ section.id }} .kpr__card:has(input:checked){
+      border-color: var(--ki-purple-dark); background: var(--ki-lilac);
+    }
+    #kpr-{{ section.id }} .kpr__card input[type="radio"]{
+      position: absolute; opacity: 0; pointer-events: none;
+    }
+    #kpr-{{ section.id }} .kpr__rec{
+      position: absolute; top: -12px; left: 22px;
+      background: var(--ki-purple-dark); color: #fff;
+      font-size: 11px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase;
+      padding: 6px 14px; border-radius: 999px;
+      box-shadow: 0 12px 26px rgba(73,61,154,.22);
+    }
+    #kpr-{{ section.id }} .kpr__row{ display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+    #kpr-{{ section.id }} .kpr__t{ font-weight: 700; color: var(--ki-purple-dark); font-size: 16px; }
+    #kpr-{{ section.id }} .kpr__d{ font-size: 13px; color: var(--muted); margin-top: 2px; }
+    #kpr-{{ section.id }} .kpr__save{ font-size: 12px; color: var(--ki-purple-dark); font-weight: 700; margin-top: 6px; }
+    #kpr-{{ section.id }} .kpr__amt{ font-weight: 700; color: var(--ki-purple-dark); font-size: 20px; text-align: right; letter-spacing: -0.01em; }
+    #kpr-{{ section.id }} .kpr__cmp{ font-size: 13px; color: var(--muted); text-decoration: line-through; text-align: right; }
+    #kpr-{{ section.id }} .kpr__cta{
+      width: 100%; margin-top: 24px; padding: 16px 22px;
+      background: var(--ki-purple-dark); color: #fff;
+      border: 0; border-radius: 999px;
+      font-size: 15px; font-weight: 650; letter-spacing: 0.02em; cursor: pointer;
+      box-shadow: 0 14px 32px rgba(73,61,154,.22);
+      transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+    }
+    #kpr-{{ section.id }} .kpr__cta:hover{ transform: translateY(-2px); background: #3f347f; box-shadow: 0 18px 40px rgba(73,61,154,.28); }
+    #kpr-{{ section.id }} .kpr__cta:focus-visible{ outline: 2px solid var(--ki-purple); outline-offset: 2px; }
+    #kpr-{{ section.id }} .kpr__note{ text-align: center; font-size: 13px; color: var(--muted); margin-top: 14px; }
+    @media (max-width: 990px){ #kpr-{{ section.id }} .kpr__wrap{ padding: 64px 20px; } }
+    @media (max-width: 750px){ #kpr-{{ section.id }} .kpr__wrap{ padding: 48px 16px; } }
+  </style>
+
+  <div class="kpr__wrap" {% if section.settings.anchor_id != blank %}id="{{ section.settings.anchor_id }}"{% endif %}>
+    <div class="kpr__head">
+      {% if section.settings.eyebrow != blank %}<p class="kpr__eyebrow">{{ section.settings.eyebrow }}</p>{% endif %}
+      {% if section.settings.title != blank %}<h2 class="kpr__title">{{ section.settings.title }}</h2>{% endif %}
+    </div>
+
+    <form method="post" action="{{ routes.cart_add_url }}" enctype="multipart/form-data" class="kpr__form">
+      <div class="kpr__options">
+        {% for block in section.blocks %}
+          {%- assign variant = product.variants[forloop.index0] -%}
+          <label class="kpr__card {% if block.settings.recommended %}kpr__card--rec{% endif %}" {{ block.shopify_attributes }}>
+            <input type="radio" name="id" value="{{ variant.id | default: '0' }}" {% if forloop.first %}checked{% endif %}>
+            {% if block.settings.recommended %}<span class="kpr__rec">{{ block.settings.recommended_label }}</span>{% endif %}
+            <div class="kpr__row">
+              <div>
+                <div class="kpr__t">{{ block.settings.title }}</div>
+                <div class="kpr__d">{{ block.settings.description }}</div>
+                {% if block.settings.savings != blank %}<div class="kpr__save">{{ block.settings.savings }}</div>{% endif %}
+              </div>
+              <div>
+                <div class="kpr__amt">{{ block.settings.price }}</div>
+                {% if block.settings.compare_at != blank %}<div class="kpr__cmp">{{ block.settings.compare_at }}</div>{% endif %}
+              </div>
+            </div>
+          </label>
+        {% endfor %}
+      </div>
+
+      <button type="submit" class="kpr__cta">{{ section.settings.cta_text | default: 'Sepete ekle' }}</button>
+
+      {% if section.settings.note != blank %}
+        <p class="kpr__note">{{ section.settings.note }}</p>
+      {% endif %}
+    </form>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": ".ki Pricing",
+  "tag": "section",
+  "settings": [
+    { "type": "text",     "id": "eyebrow",   "label": "Üst etiket",  "default": "FİYATLANDIRMA" },
+    { "type": "text",     "id": "title",     "label": "Başlık",      "default": "Sana en uygun planı seç" },
+    { "type": "product",  "id": "product",   "label": "Ürün (varyantlar bloklarla eşlenir)" },
+    { "type": "text",     "id": "anchor_id", "label": "Anchor ID",   "default": "pricing" },
+    { "type": "text",     "id": "cta_text",  "label": "Buton metni", "default": "Sepete ekle" },
+    { "type": "textarea", "id": "note",      "label": "Buton altı not", "default": "İstediğin zaman, koşulsuz iptal." },
+
+    { "type": "header", "content": "Style" },
+    { "type": "color", "id": "bg",    "label": "Background", "default": "#ffffff" },
+    { "type": "color", "id": "text",  "label": "Text",       "default": "#1a1a1a" },
+    { "type": "color", "id": "muted", "label": "Muted text", "default": "#493d9a" },
+    { "type": "range", "id": "max_width", "label": "Max width (px)", "min": 600, "max": 1200, "step": 10, "default": 760 },
+    { "type": "range", "id": "pad_y",     "label": "Vertical padding (px)", "min": 24, "max": 160, "step": 4, "default": 88 },
+    { "type": "range", "id": "pad_x",     "label": "Horizontal padding (px)", "min": 16, "max": 90, "step": 2, "default": 40 }
+  ],
+  "blocks": [
+    {
+      "type": "plan",
+      "name": "Plan",
+      "settings": [
+        { "type": "text",     "id": "title",             "label": "Başlık",         "default": "Tek seferlik" },
+        { "type": "text",     "id": "description",       "label": "Açıklama",       "default": "30 günlük kutu" },
+        { "type": "text",     "id": "price",             "label": "Fiyat",          "default": "₺350" },
+        { "type": "text",     "id": "compare_at",        "label": "Eski fiyat" },
+        { "type": "text",     "id": "savings",           "label": "Tasarruf metni" },
+        { "type": "checkbox", "id": "recommended",       "label": "Önerilen olarak işaretle" },
+        { "type": "text",     "id": "recommended_label", "label": "Önerilen rozeti", "default": "EN POPÜLER" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": ".ki Pricing",
+      "blocks": [
+        { "type": "plan", "settings": { "title": "Tek seferlik",   "description": "30 günlük kutu",           "price": "₺350" } },
+        { "type": "plan", "settings": { "title": "3 ay abonelik",  "description": "Her ay otomatik gönderim", "price": "₺299/ay", "compare_at": "₺350/ay", "savings": "%15 tasarruf", "recommended": true, "recommended_label": "EN POPÜLER" } },
+        { "type": "plan", "settings": { "title": "6 ay abonelik",  "description": "Her ay otomatik gönderim", "price": "₺249/ay", "compare_at": "₺350/ay", "savings": "%30 tasarruf" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

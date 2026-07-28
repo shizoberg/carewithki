@@ -1,0 +1,435 @@
+<style>
+  /* ── Brand Kit (birebir header.liquid) ── */
+  .camp-header {
+    --ki-purple-dark: #493d9a;
+    --ki-offwhite: #ffffff;
+    --ki-purple: #b2a5ff;
+    --ki-lilac: #dad2ff;
+  }
+
+  .camp-header-wrapper {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background: var(--ki-offwhite);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  }
+
+  /* ── Desktop bar ── */
+  .camp-header-bar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 2px 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  /* ── Logo ── */
+  .camp-header__heading {
+    order: 1;
+    margin-right: auto;
+    flex-shrink: 0;
+  }
+  .camp-header__heading-link {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+  }
+  .camp-header__heading-logo-wrapper {
+    transform: scale(0.7);
+    transform-origin: left center;
+  }
+  .camp-header__heading-logo-wrapper img {
+    width: {{ section.settings.logo_width }}px;
+    height: auto;
+  }
+
+  /* ── Nav links ── */
+  .camp-header__inline-menu {
+    order: 2;
+    margin-left: auto;
+    display: none;
+  }
+  @media screen and (min-width: 990px) {
+    .camp-header__inline-menu {
+      display: block;
+    }
+  }
+  .camp-list-menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .camp-list-menu__item--link {
+    display: flex;
+    align-items: center;
+    padding: 10px 14px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--ki-purple-dark);
+    transition: color .2s ease;
+    border-radius: 6px;
+    text-decoration: none;
+  }
+  .camp-list-menu__item--link:hover {
+    color: var(--ki-purple);
+    background: rgba(178,165,255,.1);
+  }
+
+  /* ── CTA container ── */
+  .camp-header__icons {
+    order: 3;
+    display: none;
+    align-items: center;
+    gap: 12px;
+    padding-right: 0;
+    margin-left: 0;
+  }
+  @media screen and (min-width: 990px) {
+    .camp-header__icons {
+      display: flex;
+    }
+  }
+
+  /* ── CTA Button ── */
+  .camp-header__cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    padding: 12px 20px;
+    min-height: 44px;
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 1;
+    border: 0;
+    text-decoration: none;
+    background: var(--ki-purple-dark);
+    color: #fff;
+    transition: background .2s ease, transform .2s ease;
+    white-space: nowrap;
+  }
+  .camp-header__cta:hover {
+    background: var(--ki-purple);
+    color: var(--ki-purple-dark);
+    transform: translateY(-1px);
+  }
+
+  /* ── Mobile ── */
+  .camp-mobile-toggle {
+    display: none;
+  }
+  @media screen and (max-width: 989px) {
+    .camp-header__inline-menu {
+      display: none !important;
+    }
+    .camp-header__icons {
+      display: none !important;
+    }
+
+    .camp-header-bar {
+      position: relative;
+      padding: 0;
+      min-height: 52px;
+      max-height: 52px;
+      height: 52px;
+      width: 100%;
+      box-sizing: border-box;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    /* Logo centered */
+    .camp-header__heading {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      margin: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      width: auto;
+      z-index: 50;
+    }
+    .camp-header__heading-logo-wrapper {
+      transform: scale(0.35);
+      transform-origin: center center;
+      margin: auto 0;
+    }
+
+    /* Hamburger left */
+    .camp-mobile-toggle {
+      display: flex;
+      align-items: center;
+      margin-left: 14px;
+      flex-shrink: 0;
+    }
+    .camp-mobile-toggle__btn {
+      width: 38px;
+      height: 38px;
+      display: grid;
+      place-items: center;
+      padding: 0;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--ki-purple-dark);
+    }
+    .camp-mobile-toggle__btn svg {
+      width: 22px;
+      height: 22px;
+    }
+  }
+
+  @media screen and (max-width: 600px) {
+    .camp-header-bar {
+      min-height: 44px;
+      max-height: 44px;
+      height: 44px;
+    }
+    .camp-header__heading-logo-wrapper {
+      transform: scale(0.3);
+    }
+    .camp-mobile-toggle {
+      margin-left: 12px;
+    }
+    .camp-mobile-toggle__btn {
+      width: 34px;
+      height: 34px;
+    }
+    .camp-mobile-toggle__btn svg {
+      width: 20px;
+      height: 20px;
+    }
+  }
+
+  /* ── Mobile Menu Drawer ── */
+  .camp-mobile-menu {
+    display: none;
+    background: var(--ki-offwhite);
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+    flex-direction: column;
+    padding: 0;
+  }
+  .camp-mobile-menu.is-open {
+    display: flex;
+  }
+  .camp-mobile-menu__link {
+    padding: 14px 20px;
+    border-bottom: 1px solid rgba(0,0,0,0.04);
+    font-weight: 500;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: #333;
+    line-height: 1.4;
+    word-break: break-word;
+  }
+  .camp-mobile-menu__link:hover {
+    color: var(--ki-purple-dark);
+  }
+
+  /* ── Mobile CTA ── */
+  .camp-mobile-cta-wrapper {
+    padding: 8px 16px;
+    margin-top: 4px;
+    border-top: 1px solid rgba(0,0,0,0.05);
+    background: #fff;
+  }
+  .camp-mobile-cta-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    background: var(--ki-purple-dark);
+    color: #fff !important;
+    padding: 10px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 13px;
+    transition: transform .2s ease, background .2s ease;
+    box-shadow: 0 4px 8px rgba(73,61,154,0.1);
+  }
+  .camp-mobile-cta-btn:active {
+    transform: scale(0.98);
+  }
+  .camp-mobile-cta-btn svg {
+    width: 18px;
+    height: 18px;
+  }
+</style>
+
+<div class="camp-header">
+  <div class="camp-header-wrapper">
+    <header class="camp-header-bar">
+      {%- comment -%} Mobile hamburger {%- endcomment -%}
+      <div class="camp-mobile-toggle">
+        <button class="camp-mobile-toggle__btn" onclick="document.getElementById('campMobileMenu').classList.toggle('is-open')" aria-label="Menü">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <line x1="3" y1="6" x2="21" y2="6"/>
+            <line x1="3" y1="12" x2="21" y2="12"/>
+            <line x1="3" y1="18" x2="21" y2="18"/>
+          </svg>
+        </button>
+      </div>
+
+      {%- comment -%} Logo {%- endcomment -%}
+      <div class="camp-header__heading">
+        <a href="{{ routes.root_url }}" class="camp-header__heading-link">
+          <div class="camp-header__heading-logo-wrapper">
+            {%- assign logo_alt = section.settings.header_logo.alt | default: shop.name | escape -%}
+            {%- assign logo_height = section.settings.logo_width | divided_by: section.settings.header_logo.aspect_ratio -%}
+            {% capture sizes %}(max-width: {{ section.settings.logo_width | times: 2 }}px) 50vw, {{ section.settings.logo_width }}px{% endcapture %}
+            {% capture widths %}{{ section.settings.logo_width }}, {{ section.settings.logo_width | times: 1.5 | round }}, {{ section.settings.logo_width | times: 2 }}{% endcapture %}
+            {{ section.settings.header_logo
+              | image_url: width: 600
+              | image_tag:
+                class: 'header__heading-logo motion-reduce',
+                widths: widths,
+                height: logo_height,
+                width: section.settings.logo_width,
+                alt: logo_alt,
+                sizes: sizes,
+                preload: true
+            }}
+          </div>
+        </a>
+      </div>
+
+      {%- comment -%} Desktop nav links {%- endcomment -%}
+      <nav class="camp-header__inline-menu">
+        <ul class="camp-list-menu">
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'link' -%}
+            <li>
+              <a href="{{ block.settings.url }}" class="camp-list-menu__item--link" {{ block.shopify_attributes }}>
+                {{ block.settings.title }}
+              </a>
+            </li>
+            {%- endif -%}
+          {%- endfor -%}
+        </ul>
+      </nav>
+
+      {%- comment -%} CTA Button {%- endcomment -%}
+      <div class="camp-header__icons">
+        {%- if section.settings.cta_text != blank -%}
+          <a class="camp-header__cta" href="{{ section.settings.cta_url }}">
+            {{ section.settings.cta_text }}
+          </a>
+        {%- endif -%}
+      </div>
+    </header>
+
+    {%- comment -%} Mobile dropdown menu {%- endcomment -%}
+    <div class="camp-mobile-menu" id="campMobileMenu">
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'link' -%}
+        <a href="{{ block.settings.url }}" class="camp-mobile-menu__link" onclick="document.getElementById('campMobileMenu').classList.remove('is-open')">
+          {{ block.settings.title }}
+        </a>
+        {%- endif -%}
+      {%- endfor -%}
+      {%- if section.settings.cta_text != blank -%}
+      <div class="camp-mobile-cta-wrapper">
+        <a href="{{ section.settings.cta_url }}" class="camp-mobile-cta-btn" onclick="document.getElementById('campMobileMenu').classList.remove('is-open')">
+          {{ section.settings.cta_text }}
+          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 10h10M12 6l4 4-4 4"/></svg>
+        </a>
+      </div>
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.camp-list-menu__item--link, .camp-mobile-menu__link, .camp-header__cta, .camp-mobile-cta-btn').forEach(function(link) {
+      link.addEventListener('click', function(e) {
+        var href = this.getAttribute('href');
+        if (href && href.startsWith('#')) {
+          e.preventDefault();
+          var target = document.querySelector(href);
+          if (target) {
+            var headerHeight = document.querySelector('.camp-header-wrapper') ? document.querySelector('.camp-header-wrapper').offsetHeight : 0;
+            var top = target.getBoundingClientRect().top + window.pageYOffset - headerHeight;
+            window.scrollTo({ top: top, behavior: 'smooth' });
+          }
+          // Close mobile menu if open
+          var mobileMenu = document.getElementById('campMobileMenu');
+          if (mobileMenu) mobileMenu.classList.remove('is-open');
+        }
+      });
+    });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Camp: Navbar",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "header_logo",
+      "label": "Header logo"
+    },
+    {
+      "type": "range",
+      "id": "logo_width",
+      "min": 50,
+      "max": 300,
+      "step": 10,
+      "default": 100,
+      "unit": "px",
+      "label": "Logo genişliği"
+    },
+    {
+      "type": "header",
+      "content": "── CTA Butonu ──"
+    },
+    {
+      "type": "text",
+      "id": "cta_text",
+      "label": "CTA buton yazısı",
+      "default": "Hemen Başvur"
+    },
+    {
+      "type": "text",
+      "id": "cta_url",
+      "label": "CTA buton linki",
+      "default": "#basvuru-formu"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "link",
+      "name": "Menü Linki",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Başlık" },
+        { "type": "text", "id": "url", "label": "Link (ör: #avantajlar)" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Camp: Navbar",
+      "blocks": [
+        { "type": "link", "settings": {"title": "Ana Sayfa", "url": "#ana-sayfa"} },
+        { "type": "link", "settings": {"title": "Program", "url": "#program"} },
+        { "type": "link", "settings": {"title": "Avantajlar", "url": "#avantajlar"} },
+        { "type": "link", "settings": {"title": "Başvur", "url": "#basvuru-formu"} }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,128 @@
+<style>
+  .ing-sec {
+    padding: 100px 24px;
+    font-family: 'Raleway', 'Segoe UI', system-ui, sans-serif;
+    color: #121212;
+    line-height: 1.7;
+    background: {{ section.settings.bg_color }};
+  }
+  .ing-wrap-sm {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  .ing-deficiency-box {
+    background: rgba(255, 60, 60, 0.04);
+    border: 1px solid rgba(255, 60, 60, 0.1);
+    border-radius: 32px;
+    padding: 60px;
+    text-align: center;
+  }
+  .ing-sec-tag {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: #d32f2f;
+    margin-bottom: 16px;
+    background: rgba(211, 47, 47, 0.08);
+    padding: 6px 16px;
+    border-radius: 999px;
+  }
+  .ing-deficiency-box h2 {
+    font-size: clamp(2rem, 4.5vw, 2.7rem);
+    font-weight: 800;
+    line-height: 1.1;
+    margin-top: 0;
+    margin-bottom: 40px;
+    color: #121212;
+    letter-spacing: -0.01em;
+  }
+  .ing-def-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 24px;
+  }
+  .ing-def-item {
+    background: #fff;
+    border-radius: 20px;
+    padding: 32px 24px;
+    Box-shadow: 0 10px 24px rgba(211, 47, 47, 0.06);
+    transition: transform .3s ease;
+  }
+  .ing-def-item:hover {
+    transform: translateY(-5px);
+  }
+  .ing-def-item .ico {
+    font-size: 2.5rem;
+    margin-bottom: 16px;
+    display: inline-block;
+  }
+  .ing-def-item p {
+    font-size: 15px;
+    font-weight: 700;
+    color: #121212;
+    margin: 0;
+    line-height: 1.5;
+  }
+  @media(max-width: 720px) {
+    .ing-sec { padding: 60px 20px; }
+    .ing-deficiency-box { padding: 40px 24px; }
+    .ing-def-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
+  }
+  @media(max-width: 480px) {
+    .ing-def-grid { grid-template-columns: 1fr; }
+  }
+</style>
+
+<section class="ing-sec">
+  <div class="ing-wrap-sm">
+    <div class="ing-deficiency-box">
+      {%- if section.settings.tag != blank -%}
+        <div class="ing-sec-tag">{{ section.settings.tag }}</div>
+      {%- endif -%}
+      
+      <h2>{{ section.settings.title }}</h2>
+      
+      {%- if section.blocks.size > 0 -%}
+      <div class="ing-def-grid">
+        {%- for block in section.blocks -%}
+          <div class="ing-def-item" {{ block.shopify_attributes }}>
+            <div class="ico">{{ block.settings.icon }}</div>
+            <div class="ing-def-text">{{ block.settings.text }}</div>
+          </div>
+        {%- endfor -%}
+      </div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Ing: Premium Deficiency",
+  "settings": [
+    { "type": "color", "id": "bg_color", "label": "Arka Plan Rengi", "default": "#ffffff" },
+    { "type": "text", "id": "tag", "label": "Etiket", "default": "Dikkat Çeken Belirtiler" },
+    { "type": "text", "id": "title", "label": "Eksiklik Başlığı", "default": "Magnezyum Eksikliğinin Yansımaları" }
+  ],
+  "blocks": [
+    {
+      "type": "deficiency",
+      "name": "Eksiklik Kartı",
+      "settings": [
+        { "type": "text", "id": "icon", "label": "İkon (emoji)", "default": "😤" },
+        { "type": "richtext", "id": "text", "label": "Açıklama" }
+      ]
+    }
+  ],
+  "presets": [
+    { 
+      "name": "Ing: Premium Deficiency",
+      "blocks": [
+        { "type": "deficiency" }, { "type": "deficiency" }, { "type": "deficiency" }
+      ]
+    }
+  ]
+}
+{% endschema %}

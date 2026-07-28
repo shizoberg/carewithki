@@ -1,0 +1,184 @@
+<style>
+  .ing-sec {
+    padding: 100px 24px;
+    font-family: 'Raleway', 'Segoe UI', system-ui, sans-serif;
+    color: #121212;
+    line-height: 1.7;
+    background: {{ section.settings.bg_color }};
+  }
+  .ing-wrap {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .ing-split {
+    display: flex;
+    gap: 100px;
+    align-items: flex-start;
+  }
+  .ing-intro {
+    flex: 1;
+    position: sticky;
+    top: 120px;
+  }
+  .ing-sec-tag {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: #493D9A;
+    margin-bottom: 16px;
+    background: rgba(73, 61, 154, 0.06);
+    padding: 6px 16px;
+    border-radius: 999px;
+  }
+  .ing-sec h2 {
+    font-size: clamp(2.2rem, 4.5vw, 3.2rem);
+    font-weight: 300;
+    line-height: 1.1;
+    margin-top: 0;
+    margin-bottom: 24px;
+    color: #121212;
+    letter-spacing: -0.01em;
+  }
+  .ing-sec h2 strong {
+    font-weight: 800;
+  }
+  .ing-text-content {
+    font-size: 17px;
+    color: #555;
+    line-height: 1.7;
+  }
+  .ing-text-content p {
+    margin-top: 0;
+    margin-bottom: 16px;
+  }
+  .ing-stepper {
+    flex: 1.2;
+    position: relative;
+    padding-left: 40px;
+  }
+  .ing-stepper::before {
+    content: '';
+    position: absolute;
+    top: 20px; left: 16px;
+    width: 2px; height: calc(100% - 40px);
+    background: rgba(73, 61, 154, 0.15);
+  }
+  .ing-step-item {
+    position: relative;
+    padding-bottom: 60px;
+  }
+  .ing-step-item:last-child {
+    padding-bottom: 0;
+  }
+  .ing-step-marker {
+    position: absolute;
+    left: -40px; top: 0;
+    width: 34px; height: 34px;
+    background: #fff;
+    border: 2px solid #493D9A;
+    border-radius: 50%;
+    color: #493D9A;
+    font-weight: 800;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+    box-shadow: 0 4px 12px rgba(73, 61, 154, 0.2);
+  }
+  .ing-step-content h4 {
+    font-size: 20px;
+    font-weight: 800;
+    color: #121212;
+    margin-top: 0;
+    margin-bottom: 8px;
+    line-height: 1.3;
+  }
+  .ing-step-text {
+    font-size: 15px;
+    color: #555;
+    margin: 0;
+    line-height: 1.7;
+  }
+  .ing-step-text p {
+    margin: 0;
+  }
+  
+  @media(max-width: 900px) {
+    .ing-sec { padding: 60px 20px; }
+    .ing-split { flex-direction: column; gap: 60px; }
+    .ing-intro { position: static; text-align: center; }
+    .ing-stepper { padding-left: 32px; width: 100%; }
+    .ing-stepper::before { left: 8px; }
+    .ing-step-marker { left: -32px; width: 28px; height: 28px; font-size: 12px; }
+  }
+</style>
+
+<section class="ing-sec">
+  <div class="ing-wrap">
+    <div class="ing-split">
+      
+      <div class="ing-intro">
+        {%- if section.settings.tag != blank -%}
+          <div class="ing-sec-tag">{{ section.settings.tag }}</div>
+        {%- endif -%}
+        
+        <h2>{{ section.settings.title_light }}<br><strong>{{ section.settings.title_bold }}</strong></h2>
+        
+        {%- if section.settings.text != blank -%}
+          <div class="ing-text-content">{{ section.settings.text }}</div>
+        {%- endif -%}
+      </div>
+      
+      {%- if section.blocks.size > 0 -%}
+      <div class="ing-stepper">
+        {%- assign step_num = 0 -%}
+        {%- for block in section.blocks -%}
+          {%- assign step_num = step_num | plus: 1 -%}
+          <div class="ing-step-item" {{ block.shopify_attributes }}>
+            <div class="ing-step-marker">{{ step_num }}</div>
+            <div class="ing-step-content">
+              <h4>{{ block.settings.title }}</h4>
+              <div class="ing-step-text">{{ block.settings.text }}</div>
+            </div>
+          </div>
+        {%- endfor -%}
+      </div>
+      {%- endif -%}
+
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Ing: Premium Steps",
+  "settings": [
+    { "type": "color", "id": "bg_color", "label": "Arka Plan Rengi", "default": "#ffffff" },
+    { "type": "text", "id": "tag", "label": "Bölüm Etiketi", "default": "Etki Mekanizması" },
+    { "type": "text", "id": "title_light", "label": "Başlık (İnce)", "default": "Vücutta" },
+    { "type": "text", "id": "title_bold", "label": "Nasıl Çalışır?" },
+    { "type": "richtext", "id": "text", "label": "Sol Taraf Açıklaması", "default": "<p>Gelişmiş formül formunun vücut tarafından emilimi ve etki aşamaları.</p>" }
+  ],
+  "blocks": [
+    {
+      "type": "step",
+      "name": "Aşama (Adım)",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Adım Başlığı", "default": "1. Aşama" },
+        { "type": "richtext", "id": "text", "label": "Açıklama", "default": "<p>Detaylı adım açıklaması arayüzde görünecek.</p>" }
+      ]
+    }
+  ],
+  "presets": [
+    { 
+      "name": "Ing: Premium Steps",
+      "blocks": [
+        { "type": "step" }, { "type": "step" }, { "type": "step" }
+      ]
+    }
+  ]
+}
+{% endschema %}

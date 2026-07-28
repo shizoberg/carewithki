@@ -1,0 +1,376 @@
+{% comment %}.ki Koleksiyon Sayfası v2 — koleksiyon tipine göre farklı tema{% endcomment %}
+
+<link href="https://fonts.googleapis.com/css2?family=Raleway:wght@700;800&display=swap" rel="stylesheet">
+
+{%- assign banner_bg = section.settings.banner_gradient | default: 'linear-gradient(135deg, #493d9a 0%, #6b5dd3 100%)' -%}
+{%- assign eyebrow = section.settings.eyebrow_text | default: '.ki koleksiyonu' -%}
+{%- assign badge_clr = section.settings.badge_color | default: '#493d9a' -%}
+
+<style>
+.kicol-{{ section.id }} {
+  --p: #493d9a;
+  --lil: #dad2ff;
+  --pur: #b2a5ff;
+  --bg: #f8f8f6;
+  --txt: #1a1340;
+  --mut: #6b6b8a;
+  --badge: {{ badge_clr }};
+  background: var(--bg);
+  min-height: 60vh;
+}
+
+/* ── BANNER ── */
+.kicol-{{ section.id }} .kicol-banner {
+  background: {{ banner_bg }};
+  padding: 52px 24px 46px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.kicol-{{ section.id }} .kicol-banner::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 70% 50%, rgba(255,255,255,.08) 0%, transparent 60%);
+  pointer-events: none;
+}
+.kicol-{{ section.id }} .kicol-banner__eyebrow {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 10px; font-weight: 700; letter-spacing: .14em;
+  text-transform: uppercase; color: var(--lil);
+  margin: 0 0 12px;
+}
+.kicol-{{ section.id }} .kicol-banner__eyebrow::before,
+.kicol-{{ section.id }} .kicol-banner__eyebrow::after {
+  content: ''; display: inline-block;
+  width: 20px; height: 1px;
+  background: var(--lil); opacity: .6;
+}
+.kicol-{{ section.id }} .kicol-banner__title {
+  font-family: 'Raleway', system-ui, sans-serif;
+  font-size: clamp(24px, 4vw, 44px);
+  font-weight: 800; color: #fff;
+  margin: 0 0 10px; line-height: 1.1; letter-spacing: -.02em;
+}
+.kicol-{{ section.id }} .kicol-banner__desc {
+  font-size: 14px; color: rgba(255,255,255,.68);
+  max-width: 520px; margin: 0 auto;
+  line-height: 1.65;
+}
+.kicol-{{ section.id }} .kicol-banner__count {
+  display: inline-block; margin-top: 16px;
+  background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.2);
+  padding: 4px 14px; border-radius: 50px;
+  font-size: 11px; font-weight: 600; color: rgba(255,255,255,.75);
+  letter-spacing: .04em;
+}
+
+/* ── TOOLBAR ── */
+.kicol-{{ section.id }} .kicol-toolbar {
+  border-bottom: 1px solid rgba(73,61,154,.1);
+  background: #fff;
+}
+.kicol-{{ section.id }} .kicol-toolbar__inner {
+  max-width: 1320px; margin: 0 auto;
+  padding: 0 32px;
+  display: flex; align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap; gap: 8px;
+  min-height: 52px;
+}
+.kicol-{{ section.id }} .kicol-tags {
+  display: flex; gap: 4px; flex-wrap: wrap;
+  list-style: none; margin: 0; padding: 8px 0;
+}
+.kicol-{{ section.id }} .kicol-tag {
+  display: inline-flex; align-items: center;
+  padding: 5px 14px; border-radius: 50px;
+  font-size: 11px; font-weight: 600;
+  text-decoration: none;
+  border: 1.5px solid rgba(73,61,154,.18);
+  color: var(--mut); background: transparent;
+  transition: all .15s; white-space: nowrap;
+}
+.kicol-{{ section.id }} .kicol-tag:hover,
+.kicol-{{ section.id }} .kicol-tag.is-active {
+  background: var(--p); color: #fff; border-color: var(--p);
+}
+.kicol-{{ section.id }} .kicol-sort {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 12px; color: var(--mut); flex-shrink: 0;
+}
+.kicol-{{ section.id }} .kicol-sort select {
+  font-size: 12px; color: var(--txt);
+  border: 1px solid rgba(73,61,154,.18);
+  border-radius: 8px; padding: 5px 10px;
+  background: transparent; cursor: pointer; outline: none;
+}
+
+/* ── GRID ── */
+.kicol-{{ section.id }} .kicol-main {
+  max-width: 1320px; margin: 0 auto;
+  padding: 32px 32px 72px;
+}
+.kicol-{{ section.id }} .kicol-grid {
+  display: grid;
+  grid-template-columns: repeat({{ section.settings.columns_desktop | default: 3 }}, 1fr);
+  gap: 20px;
+  list-style: none; margin: 0; padding: 0;
+}
+
+/* ── KART ── */
+.kicol-{{ section.id }} .kicol-card {
+  background: #fff;
+  border-radius: 16px; overflow: hidden;
+  border: 1px solid rgba(73,61,154,.08);
+  box-shadow: 0 2px 12px rgba(73,61,154,.05);
+  transition: transform .25s, box-shadow .25s;
+  display: flex; flex-direction: column;
+}
+.kicol-{{ section.id }} .kicol-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 36px rgba(73,61,154,.13);
+}
+.kicol-{{ section.id }} .kicol-card__img-wrap {
+  position: relative; aspect-ratio: 1/1;
+  overflow: hidden; background: #f5f3ff;
+  display: block; text-decoration: none;
+}
+.kicol-{{ section.id }} .kicol-card__img {
+  width: 100%; height: 100%;
+  object-fit: cover; display: block;
+  transition: transform .5s;
+}
+.kicol-{{ section.id }} .kicol-card:hover .kicol-card__img { transform: scale(1.04); }
+.kicol-{{ section.id }} .kicol-card__badge {
+  position: absolute; top: 10px; left: 10px;
+  background: var(--badge); color: #fff;
+  font-size: 9px; font-weight: 700;
+  letter-spacing: .06em; text-transform: uppercase;
+  padding: 4px 10px; border-radius: 50px;
+}
+.kicol-{{ section.id }} .kicol-card__body {
+  padding: 16px 18px 18px;
+  flex: 1; display: flex; flex-direction: column; gap: 5px;
+}
+.kicol-{{ section.id }} .kicol-card__vendor {
+  font-size: 10px; font-weight: 700; letter-spacing: .08em;
+  text-transform: uppercase; color: var(--pur);
+}
+.kicol-{{ section.id }} .kicol-card__title {
+  font-size: 14px; font-weight: 700; color: var(--txt);
+  text-decoration: none; line-height: 1.3;
+  display: -webkit-box; -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical; overflow: hidden;
+}
+.kicol-{{ section.id }} .kicol-card__title:hover { color: var(--p); }
+.kicol-{{ section.id }} .kicol-card__desc {
+  font-size: 11px; color: var(--mut); line-height: 1.55;
+  display: -webkit-box; -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical; overflow: hidden;
+}
+.kicol-{{ section.id }} .kicol-card__footer {
+  display: flex; align-items: center;
+  justify-content: space-between;
+  margin-top: auto; padding-top: 12px;
+  border-top: 1px solid rgba(73,61,154,.06);
+}
+.kicol-{{ section.id }} .kicol-card__prices {
+  display: flex; align-items: baseline; gap: 5px;
+}
+.kicol-{{ section.id }} .kicol-card__price {
+  font-size: 16px; font-weight: 800; color: var(--p);
+}
+.kicol-{{ section.id }} .kicol-card__price-compare {
+  font-size: 11px; color: #c0c0c0; text-decoration: line-through;
+}
+.kicol-{{ section.id }} .kicol-card__btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 34px; height: 34px; border-radius: 50%;
+  background: var(--p); color: #fff;
+  text-decoration: none; flex-shrink: 0;
+  transition: background .15s, transform .15s;
+}
+.kicol-{{ section.id }} .kicol-card__btn:hover { background: #3b3280; transform: scale(1.08); }
+.kicol-{{ section.id }} .kicol-card__btn svg { width: 15px; height: 15px; }
+
+/* Bundle için büyük kart — 2 sütunluk */
+.kicol-{{ section.id }} .kicol-grid--bundle .kicol-card__img-wrap {
+  aspect-ratio: 16 / 9;
+}
+.kicol-{{ section.id }} .kicol-grid--bundle .kicol-card__price { font-size: 20px; }
+
+/* ── EMPTY ── */
+.kicol-{{ section.id }} .kicol-empty {
+  text-align: center; padding: 80px 24px;
+  grid-column: 1 / -1;
+  color: var(--mut); font-size: 14px;
+}
+
+/* ── PAGINATION ── */
+.kicol-{{ section.id }} .kicol-pagination {
+  display: flex; justify-content: center;
+  gap: 6px; padding: 40px 0 0; flex-wrap: wrap;
+}
+.kicol-{{ section.id }} .kicol-pagination a,
+.kicol-{{ section.id }} .kicol-pagination span {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 38px; height: 38px; border-radius: 10px;
+  font-size: 13px; font-weight: 600;
+  border: 1px solid rgba(73,61,154,.18);
+  color: var(--txt); text-decoration: none;
+  transition: all .15s;
+}
+.kicol-{{ section.id }} .kicol-pagination a:hover { background: var(--lil); border-color: var(--p); color: var(--p); }
+.kicol-{{ section.id }} .kicol-pagination span.current { background: var(--p); color: #fff; border-color: var(--p); }
+
+/* ── MOBILE ── */
+@media (max-width: 749px) {
+  .kicol-{{ section.id }} .kicol-banner { padding: 36px 16px 30px; }
+  .kicol-{{ section.id }} .kicol-toolbar__inner { padding: 8px 14px; }
+  .kicol-{{ section.id }} .kicol-main { padding: 18px 14px 48px; }
+  .kicol-{{ section.id }} .kicol-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 10px; }
+  .kicol-{{ section.id }} .kicol-card__body { padding: 11px 12px 13px; }
+  .kicol-{{ section.id }} .kicol-card__title { font-size: 12px; }
+  .kicol-{{ section.id }} .kicol-card__price { font-size: 13px; }
+  .kicol-{{ section.id }} .kicol-card__btn { width: 28px; height: 28px; }
+  .kicol-{{ section.id }} .kicol-card__btn svg { width: 12px; height: 12px; }
+  .kicol-{{ section.id }} .kicol-grid--bundle { grid-template-columns: 1fr !important; }
+  .kicol-{{ section.id }} .kicol-grid--bundle .kicol-card__img-wrap { aspect-ratio: 3/2; }
+}
+@media (min-width: 750px) and (max-width: 989px) {
+  .kicol-{{ section.id }} .kicol-grid { grid-template-columns: repeat(2, 1fr) !important; }
+  .kicol-{{ section.id }} .kicol-main { padding: 24px 20px 56px; }
+  .kicol-{{ section.id }} .kicol-toolbar__inner { padding: 0 20px; }
+}
+</style>
+
+{%- assign products_per_page = section.settings.products_per_page | default: 12 -%}
+{%- assign is_bundle = false -%}
+{%- if section.settings.columns_desktop == 2 -%}{%- assign is_bundle = true -%}{%- endif -%}
+
+<div class="kicol-{{ section.id }}">
+
+  <!-- BANNER -->
+  <div class="kicol-banner">
+    <p class="kicol-banner__eyebrow">{{ eyebrow | escape }}</p>
+    <h1 class="kicol-banner__title">{{ collection.title | escape }}</h1>
+    {%- if collection.description != blank -%}
+      <p class="kicol-banner__desc">{{ collection.description }}</p>
+    {%- endif -%}
+    <span class="kicol-banner__count">{{ collection.products_count }} ürün</span>
+  </div>
+
+  <!-- TOOLBAR -->
+  {%- if section.settings.show_filters or section.settings.show_sort -%}
+  <div class="kicol-toolbar">
+    <div class="kicol-toolbar__inner">
+      {%- if section.settings.show_filters and collection.all_tags.size > 0 -%}
+        <ul class="kicol-tags">
+          <li><a href="{{ collection.url }}" class="kicol-tag{% unless collection.current_tags.size > 0 %} is-active{% endunless %}">Hepsi</a></li>
+          {%- for tag in collection.all_tags -%}
+            <li><a href="{{ collection.url }}/{{ tag | handle }}" class="kicol-tag{% if collection.current_tags contains tag %} is-active{% endif %}">{{ tag | escape }}</a></li>
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
+      {%- if section.settings.show_sort -%}
+        <div class="kicol-sort">
+          <span>Sırala:</span>
+          <select onchange="window.location.href=this.value">
+            {%- for option in collection.sort_options -%}
+              <option value="{{ collection.url }}?sort_by={{ option.value }}" {% if collection.sort_by == option.value %}selected{% endif %}>
+                {{ option.name }}
+              </option>
+            {%- endfor -%}
+          </select>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+  {%- endif -%}
+
+  <!-- ÜRÜN GRİD -->
+  <div class="kicol-main">
+    {%- paginate collection.products by products_per_page -%}
+      {%- if collection.products.size > 0 -%}
+        <ul class="kicol-grid{% if is_bundle %} kicol-grid--bundle{% endif %}">
+          {%- for product in collection.products -%}
+            {%- assign cv = product.selected_or_first_available_variant -%}
+            <li class="kicol-card">
+              <a href="{{ product.url }}" class="kicol-card__img-wrap">
+                {%- if product.featured_image -%}
+                  {{ product.featured_image | image_url: width: 600 | image_tag: class: 'kicol-card__img', loading: 'lazy', alt: product.title }}
+                {%- else -%}
+                  {{ 'product-1' | placeholder_svg_tag: 'kicol-card__img' }}
+                {%- endif -%}
+                {%- if cv.compare_at_price > cv.price -%}
+                  {%- assign save_pct = cv.compare_at_price | minus: cv.price | times: 100 | divided_by: cv.compare_at_price -%}
+                  <span class="kicol-card__badge">%{{ save_pct }} İndirim</span>
+                {%- endif -%}
+              </a>
+              <div class="kicol-card__body">
+                {%- if product.vendor != blank -%}
+                  <span class="kicol-card__vendor">{{ product.vendor }}</span>
+                {%- endif -%}
+                <a href="{{ product.url }}" class="kicol-card__title">{{ product.title | escape }}</a>
+                {%- if section.settings.show_description and product.description != blank -%}
+                  <p class="kicol-card__desc">{{ product.description | strip_html }}</p>
+                {%- endif -%}
+                <div class="kicol-card__footer">
+                  <div class="kicol-card__prices">
+                    <span class="kicol-card__price">{{ cv.price | money }}</span>
+                    {%- if cv.compare_at_price > cv.price -%}
+                      <span class="kicol-card__price-compare">{{ cv.compare_at_price | money }}</span>
+                    {%- endif -%}
+                  </div>
+                  <a href="{{ product.url }}" class="kicol-card__btn" aria-label="İncele">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                  </a>
+                </div>
+              </div>
+            </li>
+          {%- endfor -%}
+        </ul>
+
+        {%- if paginate.pages > 1 -%}
+          <div class="kicol-pagination">
+            {%- if paginate.previous -%}<a href="{{ paginate.previous.url }}">&#8592;</a>{%- endif -%}
+            {%- for part in paginate.parts -%}
+              {%- if part.is_link -%}<a href="{{ part.url }}">{{ part.title }}</a>
+              {%- else -%}<span class="current">{{ part.title }}</span>
+              {%- endif -%}
+            {%- endfor -%}
+            {%- if paginate.next -%}<a href="{{ paginate.next.url }}">&#8594;</a>{%- endif -%}
+          </div>
+        {%- endif -%}
+
+      {%- else -%}
+        <div class="kicol-empty">
+          <p>Bu koleksiyonda henüz ürün bulunmuyor.</p>
+        </div>
+      {%- endif -%}
+    {%- endpaginate -%}
+  </div>
+
+</div>
+
+{% schema %}
+{
+  "name": "Koleksiyon Sayfası (.ki)",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {"type":"header","content":"Izgara"},
+    {"type":"range","id":"columns_desktop","label":"Sütun sayısı (desktop)","min":2,"max":4,"step":1,"default":3},
+    {"type":"range","id":"products_per_page","label":"Sayfa başına ürün","min":4,"max":48,"step":4,"default":12},
+    {"type":"header","content":"Banner"},
+    {"type":"text","id":"eyebrow_text","label":"Eyebrow metni","default":".ki koleksiyonu"},
+    {"type":"text","id":"banner_gradient","label":"Banner gradient (CSS)","default":"linear-gradient(135deg, #493d9a 0%, #6b5dd3 100%)","info":"Örnek: linear-gradient(135deg, #493d9a 0%, #6b5dd3 100%)"},
+    {"type":"color","id":"badge_color","label":"Rozet rengi","default":"#493d9a"},
+    {"type":"header","content":"Görünüm"},
+    {"type":"checkbox","id":"show_description","label":"Ürün açıklaması","default":false},
+    {"type":"checkbox","id":"show_filters","label":"Etiket filtreleri","default":true},
+    {"type":"checkbox","id":"show_sort","label":"Sıralama","default":true}
+  ],
+  "presets":[{"name":"Koleksiyon Sayfası (.ki)"}]
+}
+{% endschema %}

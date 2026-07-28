@@ -1,0 +1,214 @@
+<style>
+  .camp-footer {
+    background-color: {{ section.settings.bg_color }};
+    color: {{ section.settings.text_color }};
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  }
+  .camp-container {
+    width: 100%;
+    margin-right: auto;
+    margin-left: auto;
+    padding-right: 1.5rem;
+    padding-left: 1.5rem;
+    max-width: 1200px;
+  }
+  .camp-footer-top {
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+  @media(min-width: 768px) {
+    .camp-footer-top {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  .camp-footer-brand {
+    font-size: 1.875rem;
+    font-weight: 800;
+    margin: 0 0 0.5rem 0;
+  }
+  .camp-footer-slogan {
+    font-size: 1.125rem;
+    font-style: italic;
+    opacity: 0.7;
+    margin: 0;
+  }
+  .camp-footer-title {
+    font-weight: 700;
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    opacity: 0.6;
+    margin-bottom: 1rem;
+    margin-top: 0;
+  }
+  .camp-footer-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .camp-footer-link {
+    color: inherit;
+    opacity: 0.7;
+    text-decoration: none;
+    transition: opacity 0.2s;
+  }
+  .camp-footer-link:hover {
+    opacity: 1;
+  }
+  .camp-footer-socials {
+    display: flex;
+    gap: 1rem;
+  }
+  .camp-footer-social {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 9999px;
+    background-color: rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: inherit;
+    text-decoration: none;
+    transition: background-color 0.2s, transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .camp-footer-social:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    transform: scale(1.1);
+  }
+  .camp-footer-social svg {
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
+  }
+  .camp-footer-bottom {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  .camp-footer-bottom-inner {
+    padding-top: 1.25rem;
+    padding-bottom: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    font-size: 0.875rem;
+    opacity: 0.5;
+  }
+  @media(min-width: 640px) {
+    .camp-footer-bottom-inner {
+      flex-direction: row;
+    }
+  }
+  .camp-footer-legal {
+    display: flex;
+    gap: 1rem;
+  }
+  .camp-footer-legal a {
+    color: inherit;
+    text-decoration: none;
+    transition: opacity 0.2s;
+  }
+  .camp-footer-legal a:hover {
+    opacity: 1;
+  }
+</style>
+
+<footer class="camp-footer" id="{{ section.id }}">
+  <div class="camp-container">
+    <div class="camp-footer-top">
+      <div>
+        <p class="camp-footer-brand">{{ section.settings.logo_text }}</p>
+        <p class="camp-footer-slogan">{{ section.settings.slogan_text }}</p>
+      </div>
+
+      <div>
+        <h4 class="camp-footer-title">Bağlantılar</h4>
+        <ul class="camp-footer-links">
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'link' -%}
+            <li>
+              <a href="{{ block.settings.url }}" class="camp-footer-link">{{ block.settings.title }}</a>
+            </li>
+            {%- endif -%}
+          {%- endfor -%}
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="camp-footer-title">Sosyal Medya</h4>
+        <div class="camp-footer-socials">
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'social' -%}
+            <a href="{{ block.settings.url }}" aria-label="Social Link" target="_blank" class="camp-footer-social">
+              {{ block.settings.icon_svg }}
+            </a>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="camp-footer-bottom">
+    <div class="camp-container">
+      <div class="camp-footer-bottom-inner">
+        <p style="margin:0;">{{ section.settings.copyright_text }}</p>
+        <div class="camp-footer-legal">
+          <a href="{{ section.settings.kvkk_url }}">KVKK</a>
+          <a href="{{ section.settings.privacy_url }}">Gizlilik Politikası</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "Camp: Footer",
+  "settings": [
+    { "type": "color", "id": "bg_color", "label": "Arka Plan Rengi", "default": "#3d3099" },
+    { "type": "color", "id": "text_color", "label": "Yazı Rengi", "default": "#ffffff" },
+    { "type": "text", "id": "logo_text", "label": "Logo Yazısı", "default": ".ki" },
+    { "type": "text", "id": "slogan_text", "label": "Slogan", "default": "kendine iyi bak" },
+    { "type": "text", "id": "copyright_text", "label": "Copyright Yazısı", "default": "© 2026 .ki - Tüm hakları saklıdır." },
+    { "type": "url", "id": "kvkk_url", "label": "KVKK Sayfası Linki" },
+    { "type": "url", "id": "privacy_url", "label": "Gizlilik Politikası Linki" }
+  ],
+  "blocks": [
+    {
+      "type": "link",
+      "name": "Hızlı Bağlantı",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Link Adı", "default": "Mağaza" },
+        { "type": "url", "id": "url", "label": "Link Yolu" }
+      ]
+    },
+    {
+      "type": "social",
+      "name": "Sosyal Medya İkonu",
+      "settings": [
+        { "type": "html", "id": "icon_svg", "label": "SVG İkon Kodu", "default": "<svg width='20' height='20' viewBox='0 0 24 24'><path d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z'/></svg>" },
+        { "type": "url", "id": "url", "label": "Profil Linki" }
+      ]
+    }
+  ],
+  "presets": [
+    { 
+      "name": "Camp: Footer",
+      "blocks": [
+        { "type": "link", "settings": {"title": "Mağaza"} },
+        { "type": "link", "settings": {"title": "Hakkımızda"} },
+        { "type": "link", "settings": {"title": "drawpms.com"} },
+        { "type": "social" },
+        { "type": "social" }
+      ]
+    }
+  ]
+}
+{% endschema %}

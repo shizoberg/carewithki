@@ -1,0 +1,271 @@
+{% comment %}
+  Trust Bar — .ki
+  Sola kayan sonsuz marquee: ikon + başlık + alt metin
+  Block tabanlı, admin'den tüm içerik düzenlenebilir
+{% endcomment %}
+
+<style>
+.tb-{{ section.id }} {
+  --p:   #493d9a;
+  --lil: #dad2ff;
+  --bg:  {{ section.settings.bg | default: '#f8f8f6' }};
+  --spd: {{ section.settings.speed | default: 32 }}s;
+  background: var(--bg);
+  border-top:    1px solid rgba(73,61,154,.10);
+  border-bottom: 1px solid rgba(73,61,154,.10);
+  overflow: hidden;
+  padding: 0;
+  position: relative;
+}
+
+/* Fade edges */
+.tb-{{ section.id }}::before,
+.tb-{{ section.id }}::after {
+  content: '';
+  position: absolute;
+  top: 0; bottom: 0;
+  width: 80px;
+  z-index: 2;
+  pointer-events: none;
+}
+.tb-{{ section.id }}::before {
+  left: 0;
+  background: linear-gradient(to right, var(--bg) 0%, transparent 100%);
+}
+.tb-{{ section.id }}::after {
+  right: 0;
+  background: linear-gradient(to left, var(--bg) 0%, transparent 100%);
+}
+
+/* Track */
+.tb-{{ section.id }} .tb-track {
+  display: flex;
+  align-items: stretch;
+  width: max-content;
+  animation: tb-scroll-{{ section.id }} var(--spd) linear infinite;
+  will-change: transform;
+}
+.tb-{{ section.id }}:hover .tb-track {
+  animation-play-state: paused;
+}
+
+@keyframes tb-scroll-{{ section.id }} {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* Item */
+.tb-{{ section.id }} .tb-item {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding: 18px 40px 18px 0;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* Divider between items */
+.tb-{{ section.id }} .tb-item + .tb-item {
+  border-left: 1px solid rgba(73,61,154,.10);
+  padding-left: 40px;
+}
+
+/* Icon circle */
+.tb-{{ section.id }} .tb-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(73,61,154,.08);
+  border: 1px solid rgba(73,61,154,.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: var(--p);
+}
+.tb-{{ section.id }} .tb-icon svg {
+  width: 18px; height: 18px;
+}
+
+/* Text */
+.tb-{{ section.id }} .tb-text {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+.tb-{{ section.id }} .tb-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--p);
+  line-height: 1.2;
+}
+.tb-{{ section.id }} .tb-sub {
+  font-size: 12px;
+  color: #888;
+  line-height: 1.3;
+}
+
+/* Mobile: slightly smaller, same behaviour */
+@media (max-width: 749px) {
+  .tb-{{ section.id }}::before,
+  .tb-{{ section.id }}::after { width: 40px; }
+  .tb-{{ section.id }} .tb-item { padding: 14px 28px 14px 0; gap: 10px; }
+  .tb-{{ section.id }} .tb-item + .tb-item { padding-left: 28px; }
+  .tb-{{ section.id }} .tb-icon { width: 34px; height: 34px; }
+  .tb-{{ section.id }} .tb-icon svg { width: 15px; height: 15px; }
+  .tb-{{ section.id }} .tb-title { font-size: 12px; }
+  .tb-{{ section.id }} .tb-sub   { font-size: 11px; }
+}
+</style>
+
+{%- assign icons = section.blocks -%}
+
+<div class="tb-{{ section.id }}" id="TrustBar-{{ section.id }}" aria-label="Güven bilgileri">
+  <div class="tb-track" id="TbTrack-{{ section.id }}">
+
+    {%- comment %} İlk kopya — gerçek bloklar {%- endcomment -%}
+    {%- for block in section.blocks -%}
+      <div class="tb-item" {{ block.shopify_attributes }}>
+        <div class="tb-icon">
+          {%- case block.settings.icon -%}
+            {%- when 'leaf' -%}
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg>
+            {%- when 'shield' -%}
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
+            {%- when 'truck' -%}
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+            {%- when 'star' -%}
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            {%- when 'flask' -%}
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6M9 3v7l-4.5 9A1 1 0 0 0 5.4 21h13.2a1 1 0 0 0 .9-1.45L14 10V3"/><line x1="6.5" y1="14" x2="17.5" y2="14"/></svg>
+            {%- when 'heart' -%}
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            {%- when 'award' -%}
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>
+            {%- when 'sparkle' -%}
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c.132 4.426 4.428 8.07 9 8-4.572-.07-8.868 3.574-9 8-.132-4.426-4.428-8.07-9-8 4.572.07 8.868-3.574 9-8z"/></svg>
+            {%- else -%}
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
+          {%- endcase -%}
+        </div>
+        <div class="tb-text">
+          <span class="tb-title">{{ block.settings.title | escape }}</span>
+          {%- if block.settings.subtitle != blank -%}
+            <span class="tb-sub">{{ block.settings.subtitle | escape }}</span>
+          {%- endif -%}
+        </div>
+      </div>
+    {%- endfor -%}
+
+    {%- comment %} İkinci kopya — sonsuz döngü için {%- endcomment -%}
+    {%- for block in section.blocks -%}
+      <div class="tb-item" aria-hidden="true">
+        <div class="tb-icon">
+          {%- case block.settings.icon -%}
+            {%- when 'leaf' -%}
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg>
+            {%- when 'shield' -%}
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
+            {%- when 'truck' -%}
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+            {%- when 'star' -%}
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            {%- when 'flask' -%}
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6M9 3v7l-4.5 9A1 1 0 0 0 5.4 21h13.2a1 1 0 0 0 .9-1.45L14 10V3"/><line x1="6.5" y1="14" x2="17.5" y2="14"/></svg>
+            {%- when 'heart' -%}
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            {%- when 'award' -%}
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>
+            {%- when 'sparkle' -%}
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c.132 4.426 4.428 8.07 9 8-4.572-.07-8.868 3.574-9 8-.132-4.426-4.428-8.07-9-8 4.572.07 8.868-3.574 9-8z"/></svg>
+            {%- else -%}
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
+          {%- endcase -%}
+        </div>
+        <div class="tb-text">
+          <span class="tb-title">{{ block.settings.title | escape }}</span>
+          {%- if block.settings.subtitle != blank -%}
+            <span class="tb-sub">{{ block.settings.subtitle | escape }}</span>
+          {%- endif -%}
+        </div>
+      </div>
+    {%- endfor -%}
+
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Trust Bar (.ki)",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "color",
+      "id": "bg",
+      "label": "Arka plan rengi",
+      "default": "#f8f8f6"
+    },
+    {
+      "type": "range",
+      "id": "speed",
+      "min": 15,
+      "max": 60,
+      "step": 5,
+      "unit": "s",
+      "label": "Kaydırma hızı",
+      "default": 30,
+      "info": "Düşük = hızlı, yüksek = yavaş"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Güven Öğesi",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "İkon",
+          "options": [
+            { "value": "shield",  "label": "Kalkan (Onaylı)" },
+            { "value": "leaf",    "label": "Yaprak (Vegan)" },
+            { "value": "truck",   "label": "Kargo" },
+            { "value": "flask",   "label": "Laboratu\u0131ar / FDA" },
+            { "value": "star",    "label": "Yıldız" },
+            { "value": "heart",   "label": "Kalp" },
+            { "value": "award",   "label": "Rozet / Ödül" },
+            { "value": "sparkle", "label": "Doğal / Saf" }
+          ],
+          "default": "shield"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Başlık",
+          "default": "GMP Sertifikalı"
+        },
+        {
+          "type": "text",
+          "id": "subtitle",
+          "label": "Alt metin",
+          "default": "Bağımsız lab testi"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Trust Bar (.ki)",
+      "blocks": [
+        { "type": "item", "settings": { "icon": "leaf",   "title": "Vegan & temiz",       "subtitle": "Yapay tatlandırıcı içermez" } },
+        { "type": "item", "settings": { "icon": "shield", "title": "GMP sertifikalı",     "subtitle": "Bağımsız laboratuvarda test" } },
+        { "type": "item", "settings": { "icon": "truck",  "title": "Ücretsiz kargo",      "subtitle": "Tüm Türkiye’ye, 1-2 iş günü" } },
+        { "type": "item", "settings": { "icon": "sparkle","title": "Doğal içerikler",     "subtitle": "Bitkisel & mineral kaynaklı" } },
+        { "type": "item", "settings": { "icon": "flask",  "title": "FDA onaylı tesis",   "subtitle": "Uluslararası standartlarda üretim" } },
+        { "type": "item", "settings": { "icon": "award",  "title": "Uzman eczacı formulü","subtitle": "Arin Alan tarafından geliştirildi" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,125 @@
+<style>
+  .ing-sec {
+    padding: 100px 24px;
+    font-family: 'Raleway', 'Segoe UI', system-ui, sans-serif;
+    background: {{ section.settings.bg_color }};
+  }
+  .ing-wrap {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  .ing-quote-wrap {
+    position: relative;
+    background: #fff;
+    border-radius: 32px;
+    padding: 60px 80px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.05);
+    display: flex;
+    gap: 48px;
+    align-items: center;
+    border: 1px solid rgba(73, 61, 154, 0.05);
+  }
+  .ing-quote-wrap::before {
+    content: '"';
+    position: absolute;
+    top: 20px;
+    left: 40px;
+    font-size: 160px;
+    font-family: Georgia, serif;
+    color: rgba(73, 61, 154, 0.06);
+    line-height: 1;
+    z-index: 0;
+  }
+  .ing-avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #493D9A 0%, #292257 100%);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    font-weight: 800;
+    flex-shrink: 0;
+    box-shadow: 0 10px 24px rgba(73, 61, 154, 0.3);
+    border: 4px solid #fff;
+    position: relative;
+    z-index: 2;
+  }
+  .ing-quote-content {
+    position: relative;
+    z-index: 2;
+  }
+  .ing-quote-tag {
+    display: inline-block;
+    color: #493D9A;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .ing-quote-text {
+    font-size: 1.4rem;
+    font-weight: 300;
+    line-height: 1.6;
+    margin-top: 0;
+    margin-bottom: 16px;
+    color: #121212;
+  }
+  .ing-quote-text p {
+    margin-top: 0;
+    margin-bottom: 16px;
+  }
+  .ing-quote-wrap cite {
+    font-size: 14px;
+    font-weight: 800;
+    color: #493D9A;
+    font-style: normal;
+    letter-spacing: .02em;
+  }
+  @media(max-width: 720px) {
+    .ing-sec { padding: 60px 20px; }
+    .ing-quote-wrap { flex-direction: column; padding: 40px 30px; gap: 24px; text-align: center; }
+    .ing-quote-wrap::before { left: 50%; transform: translateX(-50%); top: -10px; }
+    .ing-avatar { margin: 0 auto; width: 80px; height: 80px; font-size: 2rem; }
+    .ing-quote-wrap blockquote { font-size: 1.15rem; }
+  }
+</style>
+
+<section class="ing-sec">
+  <div class="ing-wrap">
+    <div class="ing-quote-wrap">
+      {%- if section.settings.image != blank -%}
+        {{ section.settings.image | image_url: width: 200 | image_tag: class: 'ing-avatar', style: 'object-fit:cover', alt: section.settings.author }}
+      {%- else -%}
+        <div class="ing-avatar">{{ section.settings.avatar }}</div>
+      {%- endif -%}
+      <div class="ing-quote-content">
+        {%- if section.settings.tag != blank -%}
+          <div class="ing-quote-tag">{{ section.settings.tag }}</div>
+        {%- endif -%}
+        <div class="ing-quote-text">{{ section.settings.text }}</div>
+        <cite>{{ section.settings.author }}</cite>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Ing: Premium Quote",
+  "settings": [
+    { "type": "color", "id": "bg_color", "label": "Arka Plan Rengi", "default": "#F8F7FC" },
+    { "type": "image_picker", "id": "image", "label": "Kişi Fotoğrafı (Opsiyonel)" },
+    { "type": "text", "id": "avatar", "label": "Fotoğraf Yoksa Baş Harf", "default": "A" },
+    { "type": "text", "id": "tag", "label": "Etiket", "default": "Eczacı Notu" },
+    { "type": "richtext", "id": "text", "label": "Alıntı Metni", "default": "<p>Düzenli kullanımda %90'a varan şikayet azalması gözlemledik.</p>" },
+    { "type": "text", "id": "author", "label": "Yazar", "default": "ARIN ALAN - Eczacı, .ki Bitki Bilimi Sorumlusu" }
+  ],
+  "presets": [
+    { "name": "Ing: Premium Quote" }
+  ]
+}
+{% endschema %}

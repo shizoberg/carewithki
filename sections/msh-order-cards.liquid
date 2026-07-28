@@ -1,0 +1,284 @@
+{% comment %}
+  .ki Order Cards (scoped) — Brand Kit
+  Block-driven order cards. Header (id, date, status), items list, aside summary
+  (estimate / payment / address / subtotal / shipping / total) + actions.
+
+  Brand kit:
+    #493d9a / #f8f8f6 / #b2a5ff / #dad2ff
+{% endcomment %}
+
+<section id="mshord-{{ section.id }}" class="section">
+  <style>
+    #mshord-{{ section.id }}{
+      --ki-purple-dark: #493d9a;
+      --ki-offwhite: #f8f8f6;
+      --ki-purple: #b2a5ff;
+      --ki-lilac: #dad2ff;
+
+      --bg: {{ section.settings.bg | default: '#ffffff' }};
+      --text: {{ section.settings.text | default: '#1a1a1a' }};
+      --muted: {{ section.settings.muted | default: 'rgba(26,26,26,.64)' }};
+      --line: rgba(73,61,154,.14);
+
+      --maxw: {{ section.settings.max_width | default: 1400 }}px;
+      --py: {{ section.settings.pad_y | default: 40 }}px;
+      --px: {{ section.settings.pad_x | default: 32 }}px;
+
+      background: var(--bg); color: var(--text);
+    }
+    #mshord-{{ section.id }} .mshord__wrap{ max-width: var(--maxw); margin: 0 auto; padding: var(--py) var(--px); }
+    #mshord-{{ section.id }} .mshord__grid{ display: grid; gap: 20px; }
+
+    #mshord-{{ section.id }} .mshord__card{
+      overflow: hidden; border-radius: 18px; border: 1px solid var(--line); background: #fff;
+      box-shadow: 0 18px 40px rgba(73,61,154,.14); transition: transform .2s, box-shadow .2s;
+    }
+    #mshord-{{ section.id }} .mshord__card:hover{
+      transform: translateY(-4px); box-shadow: 0 22px 50px rgba(73,61,154,.18);
+    }
+
+    #mshord-{{ section.id }} .mshord__head{
+      display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px;
+      padding: 16px 24px; border-bottom: 1px solid var(--line);
+      background: linear-gradient(90deg, rgba(218,210,255,.40), rgba(218,210,255,0));
+    }
+    #mshord-{{ section.id }} .mshord__hl{ display: flex; align-items: center; gap: 12px; }
+    #mshord-{{ section.id }} .mshord__ico{
+      width: 40px; height: 40px; border-radius: 999px;
+      background: linear-gradient(135deg, var(--ki-purple-dark), var(--ki-purple));
+      color: #fff; display: grid; place-items: center; flex-shrink: 0;
+    }
+    #mshord-{{ section.id }} .mshord__name{ margin: 0; font-size: 16px; font-weight: 650; line-height: 1.2; }
+    #mshord-{{ section.id }} .mshord__meta{ margin: 2px 0 0; font-size: 12px; color: var(--muted); }
+
+    #mshord-{{ section.id }} .mshord__status{
+      display: inline-flex; align-items: center; padding: 4px 12px; border-radius: 999px;
+      font-size: 12px; font-weight: 500; border: 1px solid transparent;
+    }
+    #mshord-{{ section.id }} .mshord__status--processing{ background: rgba(234,168,26,.12); color: #8a6100; border-color: rgba(234,168,26,.24); }
+    #mshord-{{ section.id }} .mshord__status--shipped{ background: rgba(178,165,255,.18); color: var(--ki-purple-dark); border-color: rgba(73,61,154,.22); }
+    #mshord-{{ section.id }} .mshord__status--delivered{ background: rgba(54,179,126,.10); color: #1f8457; border-color: rgba(54,179,126,.2); }
+    #mshord-{{ section.id }} .mshord__status--canceled{ background: #f4f3ef; color: var(--muted); border-color: var(--line); }
+
+    #mshord-{{ section.id }} .mshord__body{ display: grid; gap: 24px; padding: 24px; grid-template-columns: 1fr; }
+    @media (min-width: 900px){
+      #mshord-{{ section.id }} .mshord__body{ grid-template-columns: 1fr 300px; }
+    }
+
+    #mshord-{{ section.id }} .mshord__items{ display: flex; flex-direction: column; gap: 12px; }
+    #mshord-{{ section.id }} .mshord__item{ display: flex; align-items: center; gap: 12px; }
+    #mshord-{{ section.id }} .mshord__img{
+      width: 56px; height: 56px; border-radius: 12px; object-fit: cover;
+      box-shadow: inset 0 0 0 1px var(--line);
+    }
+    #mshord-{{ section.id }} .mshord__itemMain{ min-width: 0; flex: 1; }
+    #mshord-{{ section.id }} .mshord__itemName{ margin: 0; font-size: 14px; font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    #mshord-{{ section.id }} .mshord__itemVar{ margin: 2px 0 0; font-size: 12px; color: var(--muted); }
+    #mshord-{{ section.id }} .mshord__itemPrice{ font-size: 14px; font-weight: 500; font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+    #mshord-{{ section.id }} .mshord__aside{
+      border-radius: 14px; padding: 20px; background: var(--ki-offwhite); border: 1px solid var(--line);
+    }
+    #mshord-{{ section.id }} .mshord__dl{ display: flex; flex-direction: column; gap: 12px; margin: 0; font-size: 14px; }
+    #mshord-{{ section.id }} .mshord__row{ display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+    #mshord-{{ section.id }} .mshord__row--start{ align-items: flex-start; }
+    #mshord-{{ section.id }} .mshord__dt{ display: inline-flex; align-items: center; gap: 8px; color: var(--muted); flex-shrink: 0; }
+    #mshord-{{ section.id }} .mshord__dd{ font-weight: 500; font-variant-numeric: tabular-nums; }
+    #mshord-{{ section.id }} .mshord__addr{ font-size: 12px; text-align: right; line-height: 1.55; color: rgba(26,26,26,.8); font-weight: 400; }
+    #mshord-{{ section.id }} .mshord__sep{ border-top: 1px solid var(--line); padding-top: 12px; margin-top: 4px; }
+    #mshord-{{ section.id }} .mshord__total .mshord__dd{ font-weight: 650; }
+
+    #mshord-{{ section.id }} .mshord__actions{ margin-top: 20px; display: flex; flex-direction: column; gap: 8px; }
+    #mshord-{{ section.id }} .mshord__btn{
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      padding: 0 16px; height: 40px; border-radius: 999px; font-size: 13px; font-weight: 650;
+      cursor: pointer; text-decoration: none; border: 1px solid transparent;
+      transition: transform .2s, box-shadow .2s, background .2s;
+    }
+    #mshord-{{ section.id }} .mshord__btn--primary{ background: var(--ki-purple-dark); color: #fff; }
+    #mshord-{{ section.id }} .mshord__btn--primary:hover{ transform: translateY(-2px); box-shadow: 0 14px 28px rgba(73,61,154,.24); }
+    #mshord-{{ section.id }} .mshord__btn--outline{ background: #fff; color: var(--text); border-color: var(--line); }
+    #mshord-{{ section.id }} .mshord__btn--outline:hover{ background: var(--ki-lilac); border-color: rgba(73,61,154,.28); }
+    #mshord-{{ section.id }} .mshord__btn:focus-visible{ outline: 2px solid var(--ki-purple-dark); outline-offset: 2px; }
+
+    @media (max-width: 750px){
+      #mshord-{{ section.id }} .mshord__wrap{ padding: 24px 16px; }
+      #mshord-{{ section.id }} .mshord__body{ padding: 20px; gap: 16px; }
+      #mshord-{{ section.id }} .mshord__head{ padding: 14px 20px; }
+    }
+  </style>
+
+  <div class="mshord__wrap">
+    <div class="mshord__grid">
+      {% for block in section.blocks %}
+        {% if block.type == 'order' %}
+          {% assign status = block.settings.status | default: 'shipped' %}
+          <article class="mshord__card" {{ block.shopify_attributes }}>
+            <div class="mshord__head">
+              <div class="mshord__hl">
+                <div class="mshord__ico" aria-hidden="true">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+                </div>
+                <div>
+                  <h3 class="mshord__name">Sipariş #{{ block.settings.order_id }}</h3>
+                  <p class="mshord__meta">{{ block.settings.date }} · {{ block.settings.item_count }} ürün</p>
+                </div>
+              </div>
+              <span class="mshord__status mshord__status--{{ status }}">{{ block.settings.status_label }}</span>
+            </div>
+
+            <div class="mshord__body">
+              <div class="mshord__items">
+                {% if block.settings.item1_name != blank %}
+                  <div class="mshord__item">
+                    <img class="mshord__img" src="{{ block.settings.item1_image }}" alt="{{ block.settings.item1_name | escape }}" width="{{ block.settings.item1_image.width | default: 80 }}" height="{{ block.settings.item1_image.height | default: 80 }}" loading="lazy" decoding="async">
+                    <div class="mshord__itemMain">
+                      <p class="mshord__itemName">{{ block.settings.item1_name }}</p>
+                      <p class="mshord__itemVar">{{ block.settings.item1_variant }}</p>
+                    </div>
+                    <span class="mshord__itemPrice">{{ block.settings.item1_price }}</span>
+                  </div>
+                {% endif %}
+                {% if block.settings.item2_name != blank %}
+                  <div class="mshord__item">
+                    <img class="mshord__img" src="{{ block.settings.item2_image }}" alt="{{ block.settings.item2_name | escape }}" width="{{ block.settings.item2_image.width | default: 80 }}" height="{{ block.settings.item2_image.height | default: 80 }}" loading="lazy" decoding="async">
+                    <div class="mshord__itemMain">
+                      <p class="mshord__itemName">{{ block.settings.item2_name }}</p>
+                      <p class="mshord__itemVar">{{ block.settings.item2_variant }}</p>
+                    </div>
+                    <span class="mshord__itemPrice">{{ block.settings.item2_price }}</span>
+                  </div>
+                {% endif %}
+                {% if block.settings.item3_name != blank %}
+                  <div class="mshord__item">
+                    <img class="mshord__img" src="{{ block.settings.item3_image }}" alt="{{ block.settings.item3_name | escape }}" width="{{ block.settings.item3_image.width | default: 80 }}" height="{{ block.settings.item3_image.height | default: 80 }}" loading="lazy" decoding="async">
+                    <div class="mshord__itemMain">
+                      <p class="mshord__itemName">{{ block.settings.item3_name }}</p>
+                      <p class="mshord__itemVar">{{ block.settings.item3_variant }}</p>
+                    </div>
+                    <span class="mshord__itemPrice">{{ block.settings.item3_price }}</span>
+                  </div>
+                {% endif %}
+              </div>
+
+              <aside class="mshord__aside">
+                <dl class="mshord__dl">
+                  <div class="mshord__row">
+                    <dt class="mshord__dt">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                      Tahmini teslimat
+                    </dt>
+                    <dd class="mshord__dd">{{ block.settings.delivery_estimate }}</dd>
+                  </div>
+                  <div class="mshord__row">
+                    <dt class="mshord__dt">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+                      Ödeme
+                    </dt>
+                    <dd class="mshord__dd">{{ block.settings.payment }}</dd>
+                  </div>
+                  <div class="mshord__row mshord__row--start">
+                    <dt class="mshord__dt">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                      Adres
+                    </dt>
+                    <dd class="mshord__addr">{{ block.settings.address }}</dd>
+                  </div>
+                  <div class="mshord__row mshord__sep">
+                    <dt class="mshord__dt">Ara toplam</dt>
+                    <dd class="mshord__dd">{{ block.settings.subtotal }}</dd>
+                  </div>
+                  <div class="mshord__row">
+                    <dt class="mshord__dt">Kargo</dt>
+                    <dd class="mshord__dd">{{ block.settings.shipping | default: 'Ücretsiz' }}</dd>
+                  </div>
+                  <div class="mshord__row mshord__sep mshord__total">
+                    <dt class="mshord__dt">Toplam</dt>
+                    <dd class="mshord__dd">{{ block.settings.total }}</dd>
+                  </div>
+                </dl>
+
+                <div class="mshord__actions">
+                  <a href="{{ block.settings.track_href | default: '#' }}" class="mshord__btn mshord__btn--primary">
+                    Kargoyu takip et
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+                  </a>
+                  <a href="{{ block.settings.invoice_href | default: '#' }}" class="mshord__btn mshord__btn--outline">Faturayı indir</a>
+                </div>
+              </aside>
+            </div>
+          </article>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "MSH · Order cards",
+  "settings": [
+    { "type": "header", "content": "Style" },
+    { "type": "color", "id": "bg", "label": "Background", "default": "#ffffff" },
+    { "type": "color", "id": "text", "label": "Text", "default": "#1a1a1a" },
+    { "type": "color", "id": "muted", "label": "Muted", "default": "#493d9a" },
+    { "type": "range", "id": "max_width", "label": "Max width (px)", "min": 1000, "max": 1600, "step": 10, "default": 1400 },
+    { "type": "range", "id": "pad_y", "label": "Vertical padding (px)", "min": 16, "max": 120, "step": 4, "default": 40 },
+    { "type": "range", "id": "pad_x", "label": "Horizontal padding (px)", "min": 12, "max": 80, "step": 2, "default": 32 }
+  ],
+  "blocks": [
+    {
+      "type": "order",
+      "name": "Sipariş",
+      "settings": [
+        { "type": "text", "id": "order_id", "label": "Sipariş numarası", "default": "KI-20260418-1042" },
+        { "type": "text", "id": "date", "label": "Tarih", "default": "18 Nisan 2026" },
+        { "type": "text", "id": "item_count", "label": "Ürün adedi", "default": "2" },
+        {
+          "type": "select", "id": "status", "label": "Durum",
+          "options": [
+            { "value": "processing", "label": "Hazırlanıyor" },
+            { "value": "shipped", "label": "Kargoda" },
+            { "value": "delivered", "label": "Teslim edildi" },
+            { "value": "canceled", "label": "İptal edildi" }
+          ],
+          "default": "shipped"
+        },
+        { "type": "text", "id": "status_label", "label": "Durum etiketi", "default": "Kargoda" },
+        { "type": "text", "id": "delivery_estimate", "label": "Tahmini teslimat", "default": "24 Nisan 2026" },
+        { "type": "text", "id": "payment", "label": "Ödeme yöntemi", "default": "Visa •••• 4421" },
+        { "type": "textarea", "id": "address", "label": "Adres", "default": "Cihangir Mah. Sıraselviler Cad. No:24/3, Beyoğlu / İstanbul" },
+        { "type": "text", "id": "subtotal", "label": "Ara toplam", "default": "837 ₺" },
+        { "type": "text", "id": "shipping", "label": "Kargo", "default": "Ücretsiz" },
+        { "type": "text", "id": "total", "label": "Toplam", "default": "837 ₺" },
+        { "type": "url", "id": "track_href", "label": "Takip linki" },
+        { "type": "url", "id": "invoice_href", "label": "Fatura linki" },
+
+        { "type": "header", "content": "Ürün 1" },
+        { "type": "text", "id": "item1_name", "label": "Ad", "default": "Kolajen Kompleksi" },
+        { "type": "text", "id": "item1_variant", "label": "Varyant", "default": "30 saşe · Yaban mersini · Adet 1" },
+        { "type": "text", "id": "item1_price", "label": "Fiyat", "default": "459 ₺" },
+        { "type": "image_picker", "id": "item1_image", "label": "Görsel" },
+
+        { "type": "header", "content": "Ürün 2" },
+        { "type": "text", "id": "item2_name", "label": "Ad", "default": "Çinko Pikolinat" },
+        { "type": "text", "id": "item2_variant", "label": "Varyant", "default": "60 kapsül · Adet 2" },
+        { "type": "text", "id": "item2_price", "label": "Fiyat", "default": "378 ₺" },
+        { "type": "image_picker", "id": "item2_image", "label": "Görsel" },
+
+        { "type": "header", "content": "Ürün 3" },
+        { "type": "text", "id": "item3_name", "label": "Ad" },
+        { "type": "text", "id": "item3_variant", "label": "Varyant" },
+        { "type": "text", "id": "item3_price", "label": "Fiyat" },
+        { "type": "image_picker", "id": "item3_image", "label": "Görsel" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "MSH · Order cards",
+      "blocks": [ { "type": "order" } ]
+    }
+  ]
+}
+{% endschema %}

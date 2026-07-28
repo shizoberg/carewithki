@@ -1,0 +1,73 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "page-serbetci",
+      "blocks": {
+        "pill_1": { "type": "pill", "settings": { "pill_text": "🌸 Fitoöstrojen (8-PN)" } },
+        "pill_2": { "type": "pill", "settings": { "pill_text": "😴 Uyku Kalitesi" } },
+        "pill_3": { "type": "pill", "settings": { "pill_text": "🧘 Anksiyete Azalması" } },
+        "pill_4": { "type": "pill", "settings": { "pill_text": "🌡️ Sıcak Basması Desteği" } },
+        "step_1": { "type": "step", "settings": { "step_title": "Fitoöstrojen Salınımı", "step_text": "8-PN bileşiği sindirim sistemi tarafından absorbe edilir ve dolaşıma geçer." } },
+        "step_2": { "type": "step", "settings": { "step_title": "Östrojen Reseptörlerine Bağlanır", "step_text": "Östrojen reseptörlerine (ERα/ERβ) zayıf biçimde bağlanır; azalan östrojenin etkisini hafifçe destekler." } },
+        "step_3": { "type": "step", "settings": { "step_title": "Merkezi Sinir Sistemi Sakinleşir", "step_text": "GABA-A reseptörleri üzerindeki etkisiyle anksiyete azalır, uyku başlangıcı kolaylaşır." } },
+        "step_4": { "type": "step", "settings": { "step_title": "Semptom Yükü Hafifler", "step_text": "Gece terlemesi, uyku kesintileri ve gündüz sinirlilik belirgin şekilde azalır." } },
+        "benefit_1": { "type": "benefit", "settings": { "benefit_icon": "😴", "benefit_title": "Uyku Kalitesi", "benefit_text": "GABA-A aktivasyonu sayesinde uyku başlangıcı kolaylaşır, gece uyanmaları azalır, daha derin bir uyku sağlanır." } },
+        "benefit_2": { "type": "benefit", "settings": { "benefit_icon": "🌡️", "benefit_title": "Sıcak Basmasına Destek", "benefit_text": "Fitoöstrojen etkisiyle ısı düzenleme mekanizması stabilize edilir; sıcak basması sıklığı azalır." } },
+        "benefit_3": { "type": "benefit", "settings": { "benefit_icon": "🧘", "benefit_title": "Sinirlilik & Anksiyete", "benefit_text": "GABA sistemi üzerindeki sakinleştirici etki, menopoza eşlik eden sinirlilik ve anksiyeteyi hafifletir." } },
+        "benefit_4": { "type": "benefit", "settings": { "benefit_icon": "✨", "benefit_title": "Genel Konfor", "benefit_text": "Uyku, ısı ve ruh hali semptomlarına aynı anda etki ederek menopoz döneminde genel yaşam kalitesini artırır." } },
+        "faq_1": { "type": "faq", "settings": { "faq_question": "Fitoöstrojen güvenli mi?", "faq_answer": "Fitoöstrojenler, vücudun kendi östrojeninden çok daha zayıf etki gösterir. Genel popülasyon için güvenli kabul edilmektedir. Ancak hormon duyarlı kanser öyküsü olanlar mutlaka onkologlarına danışmalıdır." } },
+        "faq_2": { "type": "faq", "settings": { "faq_question": "Uyku üzerindeki etkisi ne zaman hissedilir?", "faq_answer": "İlk 2–4 haftalık düzenli kullanımda uyku başlangıcının kolaylaştığını hisseden kullanıcılar olmakla birlikte tam etki için 6–12 hafta önerilmektedir." } },
+        "faq_3": { "type": "faq", "settings": { "faq_question": "Birayla ilişkisi var mı?", "faq_answer": "Şerbetçi Otu bitkisi bira üretiminde kullanılır ancak Change is Good'da kullanılan form standardize edilmiş bitki özüdür. Alkol içermez." } },
+        "faq_4": { "type": "faq", "settings": { "faq_question": "Change is Good'da başka ne var?", "faq_answer": "Change is Good; Şerbetçi Otu'nun yanı sıra Karayılan Otu ve Çin Melek Otu içerir. Üç bitki birbirini tamamlayacak şekilde formüle edilmiştir." } }
+      },
+      "block_order": ["pill_1","pill_2","pill_3","pill_4","step_1","step_2","step_3","step_4","benefit_1","benefit_2","benefit_3","benefit_4","faq_1","faq_2","faq_3","faq_4"],
+      "settings": {
+        "hero_tag": "🌿 Hammadde Serisi",
+        "hero_title_light": "Şerbetçi Otu:",
+        "hero_title_bold": "Menopozda Huzuru Bul",
+        "hero_text": "Biranın yapısında tanınan bu bitki, menopoz döneminde uyku kalitesi ve sinirlilik üzerinde güçlü bir etki gösteriyor.",
+        "hero_btn_text": "Change is Good ile Tanış",
+        "science_tag": "Bilim Ne Diyor?",
+        "science_title_light": "Beklenmedik Bir",
+        "science_title_bold": "Kadın Müttefiki",
+        "science_text_1": "Şerbetçi Otu (Humulus Lupulus), bira yapımında kullanılan bitkinin çiçekli konilerinden elde edilir. Menopoz araştırmalarındaki en ilginç bileşiklerinden biri olan 8-Prenilnaringenin (8-PN), bilinen en güçlü fitoöstrojenlerden biridir.",
+        "science_text_2": "Fitoöstrojenler, vücudun östrojen reseptörlerine zayıf biçimde bağlanarak menopoz döneminde azalan östrojenin bazı etkilerini hafifçe taklit eder. Bu sayede sıcak basması, uyku bozukluğu ve sinirlilik gibi semptomlar üzerinde olumlu etkiler gözlemlenir.",
+        "science_emoji": "🍺",
+        "stat_1_number": "8-PN",
+        "stat_1_label": "Bilinen en güçlü bitkisel fitoöstrojen",
+        "stat_2_number": "%36",
+        "stat_2_label": "Uyku kalitesinde iyileşme (çalışma)",
+        "stat_3_number": "6-12.",
+        "stat_3_label": "Haftada belirgin etki başlangıcı",
+        "steps_tag": "Etki Mekanizması",
+        "steps_title_light": "Adım Adım",
+        "steps_title_bold": "Nasıl Etki Eder?",
+        "steps_text": "Şerbetçi Otu'nun menopoz semptomları üzerindeki etkisi.",
+        "benefits_tag": "Ne Sağlar?",
+        "benefits_title_light": "Şerbetçi Otu'nun",
+        "benefits_title_bold": "4 Temel Faydası",
+        "quote_avatar": "A",
+        "quote_tag": "Eczacı Notu",
+        "quote_text": "Şerbetçi Otu, Change is Good formülünde özellikle uyku ve anksiyete semptomlarına odaklanan bileşendir. 8-PN'in fitoöstrojenik etkisi bilimsel literatürde iyi belgelenmiş. Karayılan Otu ile kombinasyonu güçlü bir sinerji yaratıyor: Karayılan sıcak basmasını merkezi sinir sistemi üzerinden yönetirken, Şerbetçi Otu uyku kalitesini ve duygusal dengeyi destekliyor.",
+        "quote_author": "ARİN ALAN — Eczacı, .ki Bitki Bilimi Sorumlusu",
+        "cta_tag": "Change is Good",
+        "cta_title": "Şerbetçi Otu, Change is Good'un Uyku & Huzur Bileşenidir",
+        "cta_text": "Karayılan Otu ve Çin Melek Otu ile birlikte formüle edilen Change is Good — menopozun farklı semptomlarına farklı mekanizmalarla etki eden bütünsel bir destek.",
+        "cta_btn_text": "Ürünü İncele",
+        "faq_tag": "Sıkça Sorulan Sorular",
+        "faq_title_light": "Merak",
+        "faq_title_bold": "Ettiklerin"
+      }
+    }
+  },
+  "order": ["main"]
+}

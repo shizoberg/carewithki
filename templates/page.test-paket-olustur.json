@@ -1,0 +1,289 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "settings": {
+        "padding_top": 28,
+        "padding_bottom": 28
+      }
+    },
+    "01_po_hero_KMagFT": {
+      "type": "01-po-hero",
+      "blocks": {
+        "trust_cFC8UD": {
+          "type": "trust",
+          "settings": {
+            "icon": "check",
+            "label": "İptal yok, esnek abonelik"
+          }
+        },
+        "trust_HtQG9m": {
+          "type": "trust",
+          "settings": {
+            "icon": "truck",
+            "label": "750₺ üzeri ücretsiz kargo"
+          }
+        },
+        "trust_8e9ad3": {
+          "type": "trust",
+          "settings": {
+            "icon": "shield",
+            "label": "Dermatolojik test edilmiş"
+          }
+        }
+      },
+      "block_order": [
+        "trust_cFC8UD",
+        "trust_HtQG9m",
+        "trust_8e9ad3"
+      ],
+      "name": "Paket Hero",
+      "settings": {
+        "heading": "Paketini Oluştur",
+        "description": "<p>İhtiyacına göre Balance, Change, Ped ve ritüel ürünlerini birleştir. 2 ayda bir kapına gelsin — istediğin zaman değiştir veya durdur.</p>",
+        "bg": "#ffffff",
+        "primary_color": "#493d9e",
+        "sage_color": "#7b9d6f"
+      }
+    },
+    "02_po_builder_3kcHTr": {
+      "type": "02-po-builder",
+      "blocks": {
+        "category_heytht": {
+          "type": "category",
+          "settings": {
+            "key": "ped",
+            "label": "Pedler",
+            "description": "Soft Cotton & Bamboo Fiber üst yüzey · Pelin Otu infüzeli",
+            "hint": "Çoğu kullanıcı 1 paket Günlük (30), 1 Gündüz (12), 1 Gece (8) tercih ediyor."
+          }
+        },
+        "product_naH8KL": {
+          "type": "product",
+          "settings": {
+            "category": "ped",
+            "name": ".ki Günlük Ped",
+            "short": "155 mm · 30 adet · ultra ince",
+            "badge": "",
+            "price": 149,
+            "step": 30,
+            "unit": "adet"
+          }
+        },
+        "product_mmEQjY": {
+          "type": "product",
+          "settings": {
+            "category": "ped",
+            "name": ".ki Gündüz Pedi",
+            "short": "245 mm · 12 adet · orta yoğun",
+            "badge": "",
+            "price": 169,
+            "step": 12,
+            "unit": "adet"
+          }
+        },
+        "product_jzbkc9": {
+          "type": "product",
+          "settings": {
+            "category": "ped",
+            "name": ".ki Gece Pedi",
+            "short": "335 mm · 8 adet · yoğun akış",
+            "badge": "",
+            "price": 189,
+            "step": 8,
+            "unit": "adet"
+          }
+        },
+        "category_RMRiKp": {
+          "type": "category",
+          "settings": {
+            "key": "supplement",
+            "label": "Takviyeler",
+            "description": ".ki Balance ve .ki Change",
+            "hint": "Çoğunluk 1 kutu Balance ile başlıyor."
+          }
+        },
+        "product_pN44QD": {
+          "type": "product",
+          "settings": {
+            "category": "supplement",
+            "name": ".ki Balance · Saşe",
+            "short": "Regl döngüsü desteği · 30 saşe",
+            "badge": "EN POPÜLER",
+            "price": 395,
+            "step": 1,
+            "unit": "kutu"
+          }
+        },
+        "product_8GFwzc": {
+          "type": "product",
+          "settings": {
+            "category": "supplement",
+            "name": ".ki Change · Kapsül",
+            "short": "Peri-menopoz & menopoz · 60 kapsül",
+            "badge": "",
+            "price": 449,
+            "step": 1,
+            "unit": "kutu"
+          }
+        },
+        "category_WU3WBK": {
+          "type": "category",
+          "settings": {
+            "key": "gel",
+            "label": "Bakım Jelleri",
+            "description": "Daily · Sens · Flow · 50+",
+            "hint": "Günlük için Daily, regl için Flow öneriyoruz."
+          }
+        },
+        "product_ed7dim": {
+          "type": "product",
+          "settings": {
+            "category": "gel",
+            "name": "Bakım Jeli · Daily",
+            "short": "Günlük pH dengeli · 200 ml",
+            "badge": "",
+            "price": 145,
+            "step": 1,
+            "unit": "şişe"
+          }
+        },
+        "product_iahgWB": {
+          "type": "product",
+          "settings": {
+            "category": "gel",
+            "name": "Bakım Jeli · Flow",
+            "short": "Regl döneminde rahatlatıcı · 200 ml",
+            "badge": "",
+            "price": 165,
+            "step": 1,
+            "unit": "şişe"
+          }
+        },
+        "category_wTPGKw": {
+          "type": "category",
+          "settings": {
+            "key": "ritual",
+            "label": "Yağ & Sprey",
+            "description": "Cycle Care Yağı ve İntim Sprey",
+            "hint": "Karın bölgene 2-3 damla yağ ile masaj yapabilirsin."
+          }
+        },
+        "product_xBznRr": {
+          "type": "product",
+          "settings": {
+            "category": "ritual",
+            "name": "Cycle Care Yağı",
+            "short": "Karın masaj yağı · 10 ml",
+            "badge": "",
+            "price": 189,
+            "step": 1,
+            "unit": "şişe"
+          }
+        },
+        "product_EEJD8E": {
+          "type": "product",
+          "settings": {
+            "category": "ritual",
+            "name": "İntim Bakım Spreyi",
+            "short": "Anlık ferahlama · 100 ml",
+            "badge": "",
+            "price": 139,
+            "step": 1,
+            "unit": "şişe"
+          }
+        },
+        "guarantee_w8EEYb": {
+          "type": "guarantee",
+          "settings": {
+            "label": "İstediğin an iptal et / atla"
+          }
+        },
+        "guarantee_xWCB3M": {
+          "type": "guarantee",
+          "settings": {
+            "label": "Ücretsiz iade ve değişim"
+          }
+        },
+        "guarantee_7MMTBz": {
+          "type": "guarantee",
+          "settings": {
+            "label": "2 iş günü içinde kargoda"
+          }
+        },
+        "step_agWHHn": {
+          "type": "step",
+          "settings": {
+            "text": "İhtiyacın olan ürünleri ve adetleri seç."
+          }
+        },
+        "step_kRxwkj": {
+          "type": "step",
+          "settings": {
+            "text": "2 ayda bir, ücretsiz olarak kapına gelsin."
+          }
+        },
+        "step_zCGgpB": {
+          "type": "step",
+          "settings": {
+            "text": "İçeriğini istediğin zaman güncelle, atla veya durdur."
+          }
+        }
+      },
+      "block_order": [
+        "category_heytht",
+        "product_naH8KL",
+        "product_mmEQjY",
+        "product_jzbkc9",
+        "category_RMRiKp",
+        "product_pN44QD",
+        "product_8GFwzc",
+        "category_WU3WBK",
+        "product_ed7dim",
+        "product_iahgWB",
+        "category_wTPGKw",
+        "product_xBznRr",
+        "product_EEJD8E",
+        "guarantee_w8EEYb",
+        "guarantee_xWCB3M",
+        "guarantee_7MMTBz",
+        "step_agWHHn",
+        "step_kRxwkj",
+        "step_zCGgpB"
+      ],
+      "name": "Paket Builder",
+      "settings": {
+        "summary_title": "Paketin",
+        "frequency_label": "2 ayda bir kapında",
+        "empty_message": "Sol taraftan ürün ekleyerek paketini oluştur.",
+        "cta_idle": "Önce ürün ekle",
+        "howit_title": "Nasıl çalışır?",
+        "shipping_threshold": 750,
+        "bg": "#ffffff",
+        "card_bg": "#fafafa",
+        "secondary_color": "#f2f2f2",
+        "cream_color": "#ffffff",
+        "primary_color": "#493d9e",
+        "rose_color": "#d96d8a",
+        "rose_light": "#f6dce4",
+        "sage_color": "#7b9d6f",
+        "sage_light": "#dde8d4"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "01_po_hero_KMagFT",
+    "02_po_builder_3kcHTr"
+  ]
+}

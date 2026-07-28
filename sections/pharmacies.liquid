@@ -1,0 +1,539 @@
+{% comment %}Anlaşmalı Eczaneler — Harita + Liste v2{% endcomment %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js" defer></script>
+
+<style>
+:root{
+  --ki-p:#493d9a;--ki-lil:#dad2ff;--ki-pur:#b2a5ff;--ki-bg:#f8f8f6;
+}
+.phsec{
+  background:{{ section.settings.bg | default: '#f8f8f6' }};
+  font-family:system-ui,sans-serif;
+}
+
+/* HEADER */
+.phsec__head{
+  text-align:center;
+  padding:52px 20px 32px;
+  max-width:700px;margin:0 auto;
+}
+.phsec__title{
+  font-size:clamp(26px,4vw,42px);font-weight:800;
+  color:var(--ki-p);letter-spacing:-.02em;margin:0 0 10px;
+}
+.phsec__sub{font-size:15px;color:#6b6b8a;margin:0;line-height:1.6;}
+
+/* HARİTA */
+.phsec__map-wrap{
+  width:100%;height:420px;
+  position:relative;
+  border-bottom:3px solid var(--ki-lil);
+}
+@media(max-width:600px){.phsec__map-wrap{height:280px;}}
+#ki-pharmacy-map{
+  width:100%;height:100%;
+}
+/* Leaflet popup .ki stili */
+.ki-popup .leaflet-popup-content-wrapper{
+  border-radius:12px;
+  box-shadow:0 8px 24px rgba(73,61,154,.18);
+  border:1px solid var(--ki-lil);
+  padding:0;
+}
+.ki-popup .leaflet-popup-content{margin:0;}
+.ki-popup-inner{
+  padding:14px 16px 12px;
+  min-width:180px;
+}
+.ki-popup-name{
+  font-size:13px;font-weight:800;color:var(--ki-p);
+  margin:0 0 5px;line-height:1.3;
+}
+.ki-popup-addr{
+  font-size:11px;color:#6b6b8a;margin:0 0 8px;line-height:1.4;
+}
+.ki-popup-btn{
+  display:inline-flex;align-items:center;gap:4px;
+  background:var(--ki-p);color:#fff;
+  font-size:10px;font-weight:700;
+  padding:5px 11px;border-radius:50px;
+  text-decoration:none;
+  transition:background .15s;
+}
+.ki-popup-btn:hover{background:#3b3280;}
+.ki-popup-btn svg{width:10px;height:10px;}
+.ki-popup .leaflet-popup-tip{background:var(--ki-lil);}
+/* Pin sayısı badge */
+.phsec__map-badge{
+  position:absolute;top:12px;left:12px;z-index:1000;
+  background:var(--ki-p);color:#fff;
+  font-size:11px;font-weight:700;
+  padding:5px 12px;border-radius:50px;
+  box-shadow:0 3px 10px rgba(73,61,154,.3);
+  pointer-events:none;
+}
+
+/* TOOLBAR */
+.phsec__toolbar{
+  max-width:1200px;margin:0 auto;
+  padding:24px 20px 12px;
+  display:flex;gap:10px;flex-wrap:wrap;
+}
+.phsec__search{
+  flex:1;min-width:180px;
+  padding:11px 14px 11px 40px;
+  border:1.5px solid rgba(73,61,154,.2);
+  border-radius:10px;font-size:14px;
+  color:#333;background:#fff;outline:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23aaa' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:13px center;
+  transition:border-color .2s;
+}
+.phsec__search:focus{border-color:var(--ki-p);}
+.phsec__search::placeholder{color:#bbb;}
+.phsec__select{
+  min-width:150px;
+  padding:11px 34px 11px 14px;
+  border:1.5px solid rgba(73,61,154,.2);
+  border-radius:10px;font-size:14px;
+  color:#333;background:#fff;outline:none;
+  -webkit-appearance:none;appearance:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='13' height='13' viewBox='0 0 24 24' fill='none' stroke='%23aaa' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:calc(100% - 12px) center;
+  cursor:pointer;
+  transition:border-color .2s;
+}
+.phsec__select:focus{border-color:var(--ki-p);}
+
+/* COUNT */
+.phsec__count{
+  max-width:1200px;margin:0 auto;
+  padding:0 20px 12px;
+  font-size:12px;color:#9b9bb5;
+  display:flex;align-items:center;gap:8px;
+}
+.phsec__count strong{color:var(--ki-p);}
+.phsec__pill{
+  display:inline-flex;align-items:center;gap:5px;
+  background:var(--ki-lil);color:var(--ki-p);
+  font-size:11px;font-weight:600;
+  padding:2px 9px;border-radius:20px;
+}
+.phsec__pill button{
+  background:none;border:none;cursor:pointer;
+  color:var(--ki-p);font-size:13px;line-height:1;padding:0;
+}
+
+/* GRID */
+.phsec__grid-wrap{max-width:1200px;margin:0 auto;padding:0 20px 64px;}
+.phsec__grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:14px;
+}
+@media(max-width:900px){.phsec__grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:560px){.phsec__grid{grid-template-columns:1fr;}}
+
+/* KART */
+.phsec__card{
+  background:#fff;border-radius:13px;
+  border:1px solid rgba(73,61,154,.09);
+  box-shadow:0 2px 10px rgba(73,61,154,.05);
+  padding:17px 16px;
+  cursor:pointer;
+  transition:transform .2s,box-shadow .2s,border-color .2s;
+  position:relative;
+}
+.phsec__card:hover{
+  transform:translateY(-3px);
+  box-shadow:0 10px 28px rgba(73,61,154,.12);
+  border-color:rgba(73,61,154,.2);
+}
+.phsec__card.is-active{
+  border-color:var(--ki-p);
+  box-shadow:0 0 0 2px rgba(73,61,154,.15);
+}
+.phsec__card-hint{
+  position:absolute;top:12px;right:12px;
+  opacity:0;transition:opacity .2s;
+  background:var(--ki-lil);border-radius:7px;
+  padding:3px 7px;
+  display:flex;align-items:center;gap:3px;
+  font-size:10px;font-weight:700;color:var(--ki-p);
+}
+.phsec__card:hover .phsec__card-hint{opacity:1;}
+.phsec__card-hint svg{width:10px;height:10px;}
+.phsec__card-badge{
+  display:inline-block;
+  font-size:10px;font-weight:700;
+  color:var(--ki-p);background:var(--ki-lil);
+  padding:2px 8px;border-radius:5px;
+  margin-bottom:8px;
+}
+.phsec__card-name{
+  font-size:14px;font-weight:700;color:var(--ki-p);
+  margin:0 0 8px;line-height:1.3;padding-right:16px;
+}
+.phsec__card-row{
+  display:flex;align-items:flex-start;gap:7px;
+  font-size:12px;color:#6b6b8a;margin-bottom:5px;line-height:1.5;
+}
+.phsec__card-row:last-child{margin-bottom:0;}
+.phsec__card-row svg{width:14px;height:14px;color:var(--ki-pur);flex-shrink:0;margin-top:1px;}
+
+/* EMPTY / LOADING */
+.phsec__empty,.phsec__loading{
+  text-align:center;padding:48px 20px;
+  color:#aaa;font-size:14px;
+  grid-column:1/-1;
+}
+.phsec__empty svg{width:44px;height:44px;color:#ddd;display:block;margin:0 auto 10px;}
+.phsec__spinner{
+  width:28px;height:28px;
+  border:3px solid var(--ki-lil);
+  border-top-color:var(--ki-p);
+  border-radius:50%;
+  animation:phSpin .7s linear infinite;
+  margin:0 auto 10px;
+}
+@keyframes phSpin{to{transform:rotate(360deg);}}
+.phsec__error{
+  grid-column:1/-1;text-align:center;
+  padding:24px;background:#fff5f5;
+  border:1px solid #fecaca;border-radius:10px;
+  color:#c53030;font-size:13px;
+}
+</style>
+
+<section class="phsec">
+
+  <!-- Başlık -->
+  <div class="phsec__head">
+    <h1 class="phsec__title">{{ section.settings.title | escape }}</h1>
+    {%- if section.settings.subtitle != blank -%}
+      <p class="phsec__sub">{{ section.settings.subtitle | escape }}</p>
+    {%- endif -%}
+  </div>
+
+  <!-- Harita -->
+  <div class="phsec__map-wrap">
+    <div id="ki-pharmacy-map"></div>
+    <div class="phsec__map-badge" id="ki-map-badge" style="display:none"></div>
+  </div>
+
+  <!-- Toolbar -->
+  <div class="phsec__toolbar">
+    <input type="text" class="phsec__search" id="phSearch"
+      placeholder="Eczane adı veya adres ara..." autocomplete="off">
+    <select class="phsec__select" id="phCity">
+      <option value="">Tüm İller</option>
+    </select>
+  </div>
+
+  <!-- Sayı -->
+  <div class="phsec__count" id="phCount"></div>
+
+  <!-- Grid -->
+  <div class="phsec__grid-wrap">
+    <div class="phsec__grid" id="phGrid">
+      <div class="phsec__loading">
+        <div class="phsec__spinner"></div>
+        Eczane listesi yükleniyor...
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<script>
+(function(){
+  var SHEET_URL = {{ section.settings.sheet_url | json }};
+  var map, markers = [], allData = [], markersLayer;
+
+  /* ─ CSV parse ─ */
+  function parseCSV(text){
+    var lines = text.split('\n'), headers = parseLine(lines[0]), out = [];
+    for(var i=1;i<lines.length;i++){
+      var l=lines[i].trim(); if(!l) continue;
+      var vals=parseLine(l), row={};
+      for(var j=0;j<headers.length;j++) row[nk(headers[j])]=(vals[j]||'').trim();
+      out.push(row);
+    }
+    return out;
+  }
+  function parseLine(l){
+    var res=[],cur='',inQ=false;
+    for(var i=0;i<l.length;i++){
+      var c=l[i];
+      if(inQ){if(c==='"'){if(l[i+1]==='"'){cur+='"';i++;}else inQ=false;}else cur+=c;}
+      else{if(c==='"')inQ=true;else if(c===','){res.push(cur);cur='';}else cur+=c;}
+    }
+    res.push(cur); return res;
+  }
+  function nk(s){
+    return s.trim()
+      .replace(/İ/g,'i').replace(/I/g,'i').replace(/Ş/g,'s').replace(/Ç/g,'c')
+      .replace(/Ö/g,'o').replace(/Ü/g,'u').replace(/Ğ/g,'g')
+      .toLowerCase()
+      .replace(/ı/g,'i').replace(/ş/g,'s').replace(/ç/g,'c')
+      .replace(/ö/g,'o').replace(/ü/g,'u').replace(/ğ/g,'g');
+  }
+  function gv(row,keys){
+    for(var k=0;k<keys.length;k++){
+      var v=row[keys[k]]; if(v!==undefined&&v!=='') return v;
+    }
+    for(var k=0;k<keys.length;k++){
+      for(var p in row){
+        if(p.indexOf(keys[k])===0&&row[p]!=='') return row[p];
+      }
+    }
+    return '';
+  }
+  function trl(s){
+    if(!s) return '';
+    return s.replace(/İ/g,'i').replace(/I/g,'i').replace(/Ş/g,'ş').replace(/Ç/g,'ç')
+            .replace(/Ö/g,'ö').replace(/Ü/g,'ü').replace(/Ğ/g,'ğ').toLowerCase()
+            .replace(/ı/g,'i');
+  }
+  function esc(s){var d=document.createElement('div');d.textContent=s;return d.innerHTML;}
+
+  function mapsUrl(row){
+    var lnk=gv(row,['maps','harita','link','url','konum']);
+    if(lnk&&(lnk.indexOf('maps.google')!==-1||lnk.indexOf('goo.gl')!==-1||lnk.indexOf('maps.app')!==-1)) return lnk;
+    var lat=gv(row,['lat','enlem']),lng=gv(row,['lng','lon','boylem']);
+    if(lat&&lng) return 'https://www.google.com/maps?q='+encodeURIComponent(lat)+','+encodeURIComponent(lng);
+    var q=[gv(row,['eczane','ad','name','isim']),gv(row,['adres','address']),gv(row,['il','sehir','city'])].filter(Boolean).join(', ');
+    return 'https://www.google.com/maps/search/'+encodeURIComponent(q);
+  }
+
+  /* ─ Harita başlat ─ */
+  function initMap(){
+    if(typeof L==='undefined'||map) return;
+    map = L.map('ki-pharmacy-map',{zoomControl:true,scrollWheelZoom:false});
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',{
+      attribution:'&copy; <a href="https://carto.com">CARTO</a>',
+      maxZoom:19
+    }).addTo(map);
+    markersLayer = L.layerGroup().addTo(map);
+    if(allData.length>0) addMarkersToMap(allData);
+  }
+
+  /* Mor pin SVG — Leaflet DivIcon */
+  function makePinIcon(active){
+    var color = active ? '#ff6666' : '#493d9a';
+    var size  = active ? 38 : 30;
+    var svg = '<svg width="'+size+'" height="'+Math.round(size*1.35)+'" viewBox="0 0 30 40" xmlns="http://www.w3.org/2000/svg">';
+    svg += '<path d="M15 0C6.7 0 0 6.7 0 15c0 10.4 15 25 15 25s15-14.6 15-25C30 6.7 23.3 0 15 0z" fill="'+color+'" stroke="#fff" stroke-width="2"/>';
+    svg += '<circle cx="15" cy="15" r="6" fill="#fff"/>';
+    svg += '</svg>';
+    return L.divIcon({
+      html:svg,
+      className:'',
+      iconSize:[size,Math.round(size*1.35)],
+      iconAnchor:[size/2,Math.round(size*1.35)],
+      popupAnchor:[0,-Math.round(size*1.1)]
+    });
+  }
+
+  /* ─ Geocode ile haritaya ekle ─ */
+  function addMarkersToMap(data){
+    if(!map||!markersLayer) return;
+    markersLayer.clearLayers();
+    markers = [];
+    var bounds = [];
+    var added = 0;
+
+    data.forEach(function(row,idx){
+      var lat=parseFloat(gv(row,['lat','enlem']));
+      var lng=parseFloat(gv(row,['lng','lon','boylem']));
+      var name=gv(row,['eczane','ad','name','isim']);
+      var addr=gv(row,['adres','address']);
+      var city=gv(row,['il','sehir','city']);
+      var url=mapsUrl(row);
+
+      /* Eğer lat/lng yoksa Nominatim geocoding */
+      if(isNaN(lat)||isNaN(lng)){
+        var q=encodeURIComponent([name,addr,city,'Türkiye'].filter(Boolean).join(', '));
+        (function(r,i,n,a,u){
+          setTimeout(function(){
+            fetch('https://nominatim.openstreetmap.org/search?format=json&limit=1&q='+q+'&countrycodes=tr',{
+              headers:{'Accept-Language':'tr'}
+            })
+            .then(function(res){return res.json();})
+            .then(function(results){
+              if(results&&results[0]){
+                var lt=parseFloat(results[0].lat),ln=parseFloat(results[0].lon);
+                addPin(lt,ln,r,u);
+              }
+            }).catch(function(){});
+          },i*350);
+        })(row,idx,name,addr,url);
+        added++;
+      } else {
+        addPin(lat,lng,row,url);
+        bounds.push([lat,lng]);
+        added++;
+      }
+    });
+
+    if(bounds.length>1) map.fitBounds(bounds,{padding:[40,40]});
+    else if(bounds.length===1) map.setView(bounds[0],14);
+    else map.setView([39.0,35.0],6);
+
+    var badge=document.getElementById('ki-map-badge');
+    if(badge){badge.textContent=added+' eczane';badge.style.display='';}
+  }
+
+  function addPin(lat,lng,row,url){
+    var name=gv(row,['eczane','ad','name','isim']);
+    var addr=gv(row,['adres','address']);
+    var city=gv(row,['il','sehir','city']);
+    var marker=L.marker([lat,lng],{icon:makePinIcon(false)});
+    var popupHtml='<div class="ki-popup-inner">'+
+      '<p class="ki-popup-name">'+esc(name||'Eczane')+'</p>'+
+      (addr?'<p class="ki-popup-addr">'+esc(addr)+(city?' — '+esc(city):'')+'</p>':'')+
+      '<a href="'+esc(url)+'" target="_blank" rel="noopener" class="ki-popup-btn">'+
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>'+
+      'Haritada Aç</a></div>';
+    marker.bindPopup(popupHtml,{className:'ki-popup',maxWidth:220});
+    marker.addTo(markersLayer);
+    markers.push({marker:marker,row:row});
+  }
+
+  /* ─ Kart render ─ */
+  function render(data){
+    var grid=document.getElementById('phGrid');
+    var count=document.getElementById('phCount');
+    grid.innerHTML='';
+
+    if(data.length===0){
+      grid.innerHTML='<div class="phsec__empty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><div>Sonuç bulunamadı</div></div>';
+      count.innerHTML='';
+      return;
+    }
+
+    var cityFil=document.getElementById('phCity').value;
+    count.innerHTML='<strong>'+data.length+'</strong> eczane listeleniyor'+(cityFil?' &nbsp;<span class="phsec__pill">'+esc(cityFil)+'<button onclick="kiClearCity()">×</button></span>':'');
+
+    data.forEach(function(row){
+      var name=gv(row,['eczane','ad','name','isim']);
+      var city=gv(row,['il','sehir','city']);
+      var dist=gv(row,['ilce','district']);
+      var addr=gv(row,['adres','address']);
+      var phone=gv(row,['telefon','tel','phone']);
+      var url=mapsUrl(row);
+
+      var card=document.createElement('div');
+      card.className='phsec__card';
+      card.setAttribute('data-url',url);
+
+      var h='';
+      h+='<span class="phsec__card-hint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>Haritada Gör</span>';
+      if(city) h+='<span class="phsec__card-badge">'+esc(city)+(dist?' / '+esc(dist):'')+'</span>';
+      h+='<h3 class="phsec__card-name">'+esc(name||'Eczane')+'</h3>';
+      if(addr) h+='<div class="phsec__card-row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg><span>'+esc(addr)+'</span></div>';
+      if(phone) h+='<div class="phsec__card-row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.19 14.82a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.12 4h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.09 11.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 21 20.92z"/></svg><a href="tel:'+esc(phone)+'" onclick="event.stopPropagation()" style="color:var(--ki-p);text-decoration:none;font-weight:600;">'+esc(phone)+'</a></div>';
+
+      card.innerHTML=h;
+      card.addEventListener('click',function(){
+        var u=this.getAttribute('data-url');
+        /* Haritada scroll + popup aç */
+        var mapWrap=document.querySelector('.phsec__map-wrap');
+        if(mapWrap) mapWrap.scrollIntoView({behavior:'smooth',block:'center'});
+        /* Pin bul ve popup aç */
+        var cardName=this.querySelector('.phsec__card-name');
+        if(cardName){
+          var n=cardName.textContent;
+          for(var mi=0;mi<markers.length;mi++){
+            var mn=gv(markers[mi].row,['eczane','ad','name','isim']);
+            if(mn===n){ markers[mi].marker.openPopup(); break; }
+          }
+        }
+        if(u) window.open(u,'_blank','noopener');
+      });
+      grid.appendChild(card);
+    });
+  }
+
+  /* ─ Filtre ─ */
+  function applyFilters(){
+    var q=trl(document.getElementById('phSearch').value.trim());
+    var c=document.getElementById('phCity').value;
+    var filtered=allData.filter(function(row){
+      var name=trl(gv(row,['eczane','ad','name','isim']));
+      var city=trl(gv(row,['il','sehir','city']));
+      var dist=trl(gv(row,['ilce','district']));
+      var addr=trl(gv(row,['adres','address']));
+      if(c&&trl(gv(row,['il','sehir','city']))!==trl(c)) return false;
+      if(q&&(name+' '+city+' '+dist+' '+addr).indexOf(q)===-1) return false;
+      return true;
+    });
+    render(filtered);
+    if(map) addMarkersToMap(filtered);
+  }
+
+  function populateCities(){
+    var sel=document.getElementById('phCity');
+    var existing={};
+    for(var o=0;o<sel.options.length;o++) existing[trl(sel.options[o].value)]=true;
+    var cities={};
+    allData.forEach(function(r){
+      var c=gv(r,['il','sehir','city']);
+      if(c&&!cities[c]&&!existing[trl(c)]) cities[c]=true;
+    });
+    Object.keys(cities).sort(function(a,b){return trl(a)<trl(b)?-1:1;}).forEach(function(c){
+      var opt=document.createElement('option');opt.value=c;opt.textContent=c;sel.appendChild(opt);
+    });
+  }
+
+  window.kiClearCity=function(){
+    document.getElementById('phCity').value='';
+    applyFilters();
+  };
+
+  /* ─ Event listeners ─ */
+  var dbt;
+  document.getElementById('phSearch').addEventListener('input',function(){
+    clearTimeout(dbt);dbt=setTimeout(applyFilters,260);
+  });
+  document.getElementById('phCity').addEventListener('change',applyFilters);
+
+  /* ─ Leaflet hazır olunca haritayı başlat ─ */
+  function waitForLeaflet(cb,tries){
+    if(typeof L!=='undefined') cb();
+    else if((tries||0)<30) setTimeout(function(){waitForLeaflet(cb,(tries||0)+1);},200);
+  }
+
+  /* ─ CSV çek ─ */
+  if(!SHEET_URL){
+    document.getElementById('phGrid').innerHTML='<div class="phsec__empty"><div>Google Sheets URL si ayarlanmamış.</div></div>';
+    return;
+  }
+
+  fetch(SHEET_URL)
+    .then(function(r){if(!r.ok)throw new Error(r.status);return r.text();})
+    .then(function(csv){
+      allData=parseCSV(csv);
+      populateCities();
+      render(allData);
+      waitForLeaflet(function(){ initMap(); addMarkersToMap(allData); });
+    })
+    .catch(function(e){
+      document.getElementById('phGrid').innerHTML='<div class="phsec__error">Eczane listesi yüklenemedi: '+e.message+'</div>';
+    });
+
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Anlaşmalı Eczaneler",
+  "settings": [
+    {"type":"text","id":"title","label":"Başlık","default":"Anlaşmalı Eczanelerimiz"},
+    {"type":"textarea","id":"subtitle","label":"Alt açıklama","default":"Türkiye genelinde .ki ürünlerini bulabileceğiniz eczaneler."},
+    {"type":"text","id":"sheet_url","label":"Google Sheets CSV URL","info":"Google Sheets → Dosya → Web'de yayınla → CSV formatını seçin."},
+    {"type":"color","id":"bg","label":"Arka plan","default":"#f8f8f6"}
+  ],
+  "presets":[{"name":"Anlaşmalı Eczaneler"}]
+}
+{% endschema %}

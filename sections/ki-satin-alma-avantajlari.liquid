@@ -1,0 +1,167 @@
+{% comment %}
+  ki-satin-alma-avantajlari — Urun sayfasina eklenebilen "Tekli Alim vs Abonelik" karsilastirma bolumu.
+  Editorden her urun sablonuna eklenebilir. Site tasarimi: Raleway + #493d9a + beyaz.
+{% endcomment %}
+
+{%- assign kv = product.selected_or_first_available_variant -%}
+
+<section id="ki-avantaj-{{ section.id }}" class="ki-avantaj">
+  <style>
+    #ki-avantaj-{{ section.id }}{
+      --a-primary: var(--ki-primary, #493d9a);
+      --a-primary-med: var(--ki-primary-medium, #5946b3);
+      --a-border: #e6e3ee;
+      --a-muted: #6b6360;
+      --a-sage: #2e6e51;
+      font-family: var(--ki-font-body, 'Raleway', system-ui, sans-serif);
+      background: {{ section.settings.bg | default: '#ffffff' }};
+      padding: {{ section.settings.padding_top | default: 40 }}px 0 {{ section.settings.padding_bottom | default: 40 }}px;
+    }
+    #ki-avantaj-{{ section.id }} .a-wrap{ max-width: 1080px; margin:0 auto; padding:0 20px; }
+    #ki-avantaj-{{ section.id }} .a-head{ text-align:center; margin-bottom:26px; }
+    #ki-avantaj-{{ section.id }} .a-eyebrow{
+      display:inline-block; font-size:11px; font-weight:800; letter-spacing:.12em; text-transform:uppercase;
+      color:var(--a-primary); background:rgba(73,61,154,.08); padding:6px 12px; border-radius:999px; margin-bottom:12px;
+    }
+    #ki-avantaj-{{ section.id }} .a-title{
+      font-family: var(--ki-font-primary, 'Raleway', sans-serif);
+      font-size:26px; font-weight:800; letter-spacing:-.01em; color:var(--a-primary); margin:0; line-height:1.15;
+    }
+    #ki-avantaj-{{ section.id }} .a-sub{ font-size:14px; color:var(--a-muted); margin:10px 0 0; line-height:1.5; }
+    #ki-avantaj-{{ section.id }} .a-grid{ display:grid; grid-template-columns:1fr; gap:16px; }
+    #ki-avantaj-{{ section.id }} .a-card{
+      position:relative; border:1px solid var(--a-border); border-radius:18px; padding:24px 22px; background:#fff;
+      display:flex; flex-direction:column;
+    }
+    #ki-avantaj-{{ section.id }} .a-card--sub{ border:2px solid var(--a-primary); box-shadow:0 12px 30px -16px rgba(73,61,154,.4); }
+    #ki-avantaj-{{ section.id }} .a-tag{
+      position:absolute; top:-12px; left:22px;
+      background:var(--a-primary); color:#fff; font-size:11px; font-weight:800; letter-spacing:.04em;
+      padding:5px 12px; border-radius:999px;
+    }
+    #ki-avantaj-{{ section.id }} .a-card-name{ font-size:13px; font-weight:800; letter-spacing:.06em; text-transform:uppercase; color:var(--a-muted); margin:0 0 6px; }
+    #ki-avantaj-{{ section.id }} .a-card--sub .a-card-name{ color:var(--a-primary); }
+    #ki-avantaj-{{ section.id }} .a-price{ display:flex; align-items:baseline; gap:8px; margin:0 0 4px; flex-wrap:wrap; }
+    #ki-avantaj-{{ section.id }} .a-price b{ font-family:var(--ki-font-primary,'Raleway',sans-serif); font-size:28px; font-weight:800; color:var(--a-primary); }
+    #ki-avantaj-{{ section.id }} .a-price s{ font-size:15px; color:var(--a-muted); }
+    #ki-avantaj-{{ section.id }} .a-price-note{ font-size:12px; color:var(--a-muted); margin:0 0 16px; }
+    #ki-avantaj-{{ section.id }} .a-list{ list-style:none; padding:0; margin:0 0 20px; display:flex; flex-direction:column; gap:10px; flex:1; }
+    #ki-avantaj-{{ section.id }} .a-list li{ display:flex; gap:9px; align-items:flex-start; font-size:13.5px; line-height:1.45; color:#2b2530; }
+    #ki-avantaj-{{ section.id }} .a-list svg{ width:17px; height:17px; flex-shrink:0; margin-top:1px; }
+    #ki-avantaj-{{ section.id }} .a-list .a-yes{ color:var(--a-sage); }
+    #ki-avantaj-{{ section.id }} .a-list .a-no{ color:#b9b3c6; }
+    #ki-avantaj-{{ section.id }} .a-list .a-muted-txt{ color:#9a94a6; }
+    #ki-avantaj-{{ section.id }} .a-btn{
+      display:flex; align-items:center; justify-content:center; gap:8px;
+      width:100%; padding:13px 20px; border-radius:12px; font-size:14px; font-weight:700; cursor:pointer;
+      text-decoration:none; border:2px solid var(--a-primary); transition:background .2s,color .2s,transform .15s;
+      font-family:inherit;
+    }
+    #ki-avantaj-{{ section.id }} .a-btn--ghost{ background:#fff; color:var(--a-primary); }
+    #ki-avantaj-{{ section.id }} .a-btn--ghost:hover{ background:rgba(73,61,154,.06); }
+    #ki-avantaj-{{ section.id }} .a-btn--solid{ background:var(--a-primary); color:#fff; }
+    #ki-avantaj-{{ section.id }} .a-btn--solid:hover{ background:var(--a-primary-med); transform:translateY(-1px); }
+    #ki-avantaj-{{ section.id }} .a-btn svg{ width:16px; height:16px; }
+    @media (min-width:768px){
+      #ki-avantaj-{{ section.id }} .a-grid{ grid-template-columns:1fr 1fr; gap:20px; align-items:stretch; }
+      #ki-avantaj-{{ section.id }} .a-title{ font-size:32px; }
+    }
+  </style>
+
+  <div class="a-wrap">
+    <div class="a-head">
+      {%- if section.settings.eyebrow != blank -%}<span class="a-eyebrow">{{ section.settings.eyebrow }}</span>{%- endif -%}
+      <h2 class="a-title">{{ section.settings.heading | default: 'Nasıl almak istersin?' }}</h2>
+      {%- if section.settings.subheading != blank -%}<p class="a-sub">{{ section.settings.subheading }}</p>{%- endif -%}
+    </div>
+
+    <div class="a-grid">
+      {%- comment -%} ===== TEKLI ALIM ===== {%- endcomment -%}
+      <div class="a-card a-card--once">
+        <p class="a-card-name">{{ section.settings.once_title | default: 'Tekli Alım' }}</p>
+        <div class="a-price"><b>{{ kv.price | money }}</b></div>
+        <p class="a-price-note">{{ section.settings.once_note | default: 'Tek seferlik satın alma' }}</p>
+        <ul class="a-list">
+          <li><svg class="a-yes" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg><span>{{ section.settings.once_b1 | default: 'Tek sefer öde, hemen kargo' }}</span></li>
+          <li><svg class="a-yes" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg><span>{{ section.settings.once_b2 | default: 'Taahhüt yok' }}</span></li>
+          <li><svg class="a-no" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6L6 18M6 6l12 12" stroke-linecap="round"/></svg><span class="a-muted-txt">{{ section.settings.once_b3 | default: 'Abonelik indirimi yok' }}</span></li>
+          <li><svg class="a-no" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6L6 18M6 6l12 12" stroke-linecap="round"/></svg><span class="a-muted-txt">{{ section.settings.once_b4 | default: 'Her seferinde elle sipariş' }}</span></li>
+        </ul>
+        <a href="#" class="a-btn a-btn--ghost" data-ki-av-atc>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+          {{ section.settings.once_cta | default: 'Sepete Ekle' }}
+        </a>
+      </div>
+
+      {%- comment -%} ===== ABONELIK ===== {%- endcomment -%}
+      <div class="a-card a-card--sub">
+        <span class="a-tag">{{ section.settings.sub_badge | default: 'EN AVANTAJLI' }}</span>
+        <p class="a-card-name">{{ section.settings.sub_title | default: 'Abonelik' }}</p>
+        <div class="a-price"><b>{{ kv.price | money }}</b><span style="font-size:13px;color:var(--a-muted);">/ gönderim</span></div>
+        <p class="a-price-note">{{ section.settings.sub_note | default: 'Ayda bir otomatik gönderim · istediğin an iptal' }}</p>
+        <ul class="a-list">
+          <li><svg class="a-yes" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg><span>{{ section.settings.sub_b1 | default: 'Hiç unutmadan, kapına gelsin' }}</span></li>
+          <li><svg class="a-yes" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg><span>{{ section.settings.sub_b2 | default: '750₺ üzeri ücretsiz kargo' }}</span></li>
+          <li><svg class="a-yes" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg><span>{{ section.settings.sub_b3 | default: 'İstediğin an atla, duraklat veya iptal et' }}</span></li>
+          <li><svg class="a-yes" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg><span>{{ section.settings.sub_b4 | default: 'Paketine başka ürünler de ekleyebilirsin' }}</span></li>
+        </ul>
+        <a href="/pages/paket-olustur?abone={{ kv.id }}" class="a-btn a-btn--solid">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 2l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="M7 22l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
+          {{ section.settings.sub_cta | default: 'Abone Ol' }}
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+  (function(){
+    var sec = document.getElementById('ki-avantaj-{{ section.id }}');
+    if(!sec) return;
+    var atc = sec.querySelector('[data-ki-av-atc]');
+    if(atc){
+      atc.addEventListener('click', function(e){
+        e.preventDefault();
+        /* Sayfadaki gercek Sepete Ekle butonunu tetikle */
+        var real = document.querySelector('.kipdp-atc') || document.querySelector('[id^="KiAtc-"]') || document.querySelector('.product-form__submit');
+        if(real){ real.click(); real.scrollIntoView({behavior:'smooth', block:'center'}); }
+        else { window.location.href = '#'; }
+      });
+    }
+  })();
+  </script>
+</section>
+
+{% schema %}
+{
+  "name": "Alım Avantajları",
+  "tag": "section",
+  "class": "ki-avantaj-section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Üst etiket", "default": "Sana en uygunu" },
+    { "type": "text", "id": "heading", "label": "Başlık", "default": "Nasıl almak istersin?" },
+    { "type": "text", "id": "subheading", "label": "Alt başlık", "default": "Tek seferlik dene ya da abonelikle hiç düşünme." },
+    { "type": "header", "content": "Tekli Alım" },
+    { "type": "text", "id": "once_title", "label": "Başlık", "default": "Tekli Alım" },
+    { "type": "text", "id": "once_note", "label": "Fiyat notu", "default": "Tek seferlik satın alma" },
+    { "type": "text", "id": "once_b1", "label": "Madde 1 (artı)", "default": "Tek sefer öde, hemen kargo" },
+    { "type": "text", "id": "once_b2", "label": "Madde 2 (artı)", "default": "Taahhüt yok" },
+    { "type": "text", "id": "once_b3", "label": "Madde 3 (eksi)", "default": "Abonelik indirimi yok" },
+    { "type": "text", "id": "once_b4", "label": "Madde 4 (eksi)", "default": "Her seferinde elle sipariş" },
+    { "type": "text", "id": "once_cta", "label": "Buton yazısı", "default": "Sepete Ekle" },
+    { "type": "header", "content": "Abonelik" },
+    { "type": "text", "id": "sub_badge", "label": "Rozet", "default": "EN AVANTAJLI" },
+    { "type": "text", "id": "sub_title", "label": "Başlık", "default": "Abonelik" },
+    { "type": "text", "id": "sub_note", "label": "Fiyat notu", "default": "Ayda bir otomatik gönderim · istediğin an iptal" },
+    { "type": "text", "id": "sub_b1", "label": "Madde 1", "default": "Hiç unutmadan, kapına gelsin" },
+    { "type": "text", "id": "sub_b2", "label": "Madde 2", "default": "750₺ üzeri ücretsiz kargo" },
+    { "type": "text", "id": "sub_b3", "label": "Madde 3", "default": "İstediğin an atla, duraklat veya iptal et" },
+    { "type": "text", "id": "sub_b4", "label": "Madde 4", "default": "Paketine başka ürünler de ekleyebilirsin" },
+    { "type": "text", "id": "sub_cta", "label": "Buton yazısı", "default": "Abone Ol" },
+    { "type": "header", "content": "Görünüm" },
+    { "type": "color", "id": "bg", "label": "Arka plan", "default": "#ffffff" },
+    { "type": "range", "id": "padding_top", "min":0, "max":100, "step":4, "unit":"px", "label": "Üst boşluk", "default":40 },
+    { "type": "range", "id": "padding_bottom", "min":0, "max":100, "step":4, "unit":"px", "label": "Alt boşluk", "default":40 }
+  ],
+  "presets": [ { "name": "Alım Avantajları" } ]
+}
+{% endschema %}

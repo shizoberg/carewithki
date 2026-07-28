@@ -1,0 +1,758 @@
+<style>
+  #shopify-section-{{ section.id }} {
+    --ki-purple-dark: #493d9a;
+    --ki-purple: #b2a5ff;
+    --card-bg: #ffffff;
+    --text-main: #1a1a1a;
+    --text-muted: rgba(26,26,26,0.6);
+    --border-light: rgba(73,61,154,0.12);
+    --ki-offwhite: #f8f8f6;
+  }
+
+  .balance-pdp {
+    padding: 56px 20px;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  }
+
+  .balance-pdp__container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .balance-pdp__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 32px;
+    align-items: flex-start;
+  }
+  @media(min-width: 768px) {
+    .balance-pdp__grid {
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+    }
+  }
+
+  /* LEFT: Media Gallery */
+  .balance-pdp__media-wrap {
+    position: relative;
+    border-radius: 20px;
+    overflow: hidden;
+    background: var(--card-bg);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+  }
+
+  .balance-pdp__gallery {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .balance-pdp__gallery::-webkit-scrollbar {
+    display: none;
+  }
+
+  .balance-pdp__media-item {
+    flex: 0 0 100%;
+    snap-align: start;
+    aspect-ratio: 1/1;
+    background: rgba(178,165,255,0.15); /* secondary/30 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .balance-pdp__media-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .balance-pdp__dots {
+    position: absolute;
+    bottom: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 6px;
+  }
+  .balance-pdp__dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--ki-purple-dark);
+    opacity: 0.25;
+    transition: opacity 0.2s;
+  }
+  .balance-pdp__dot.is-active {
+    opacity: 1;
+  }
+
+  /* RIGHT: Info */
+  .balance-pdp__info {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .balance-pdp__top-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(178,165,255,0.25);
+    color: var(--ki-purple-dark);
+    font-size: 12px;
+    font-weight: 700;
+    padding: 6px 14px;
+    border-radius: 999px;
+    margin-bottom: 16px;
+    align-self: flex-start;
+  }
+  .balance-pdp__top-badge svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  .balance-pdp__title {
+    font-size: clamp(24px, 3vw, 28px);
+    font-weight: 800;
+    color: var(--text-main);
+    margin: 0 0 8px 0;
+    line-height: 1.2;
+  }
+
+  .balance-pdp__desc {
+    font-size: 14px;
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin: 0 0 20px 0;
+  }
+
+  .balance-pdp__rating {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+  .balance-pdp__stars {
+    color: #f5a623;
+    font-size: 16px;
+    letter-spacing: 2px;
+  }
+  .balance-pdp__rating-text {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-muted);
+  }
+
+  .balance-pdp__stock {
+    font-size: 13px;
+    font-weight: 600;
+    color: #b45309; /* amber */
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 16px;
+  }
+  .balance-pdp__stock svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  /* Plans */
+  .balance-pdp__plans {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+
+  .balance-plan-card {
+    position: relative;
+    border: 2px solid var(--border-light);
+    border-radius: 16px;
+    padding: 14px 16px;
+    background: var(--card-bg);
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.2s ease;
+  }
+  .balance-plan-card:hover {
+    border-color: rgba(73,61,154,0.4);
+  }
+  .balance-plan-card.is-active {
+    border-color: var(--ki-purple-dark);
+    background: rgba(178,165,255,0.1);
+    box-shadow: 0 4px 16px rgba(45,27,105,0.08);
+  }
+
+  .balance-plan-card__badge {
+    position: absolute;
+    top: -10px;
+    right: 12px;
+    background: var(--ki-purple-dark);
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 999px;
+    letter-spacing: 0.05em;
+  }
+
+  .balance-plan-card__inner {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .balance-plan-card__radio {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2px solid var(--border-light);
+    background: var(--card-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+  }
+  .balance-plan-card.is-active .balance-plan-card__radio {
+    border-color: var(--ki-purple-dark);
+    background: var(--ki-purple-dark);
+  }
+  .balance-plan-card__radio::after {
+    content: "";
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #fff;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .balance-plan-card.is-active .balance-plan-card__radio::after {
+    opacity: 1;
+  }
+
+  .balance-plan-card__content {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .balance-plan-card__row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 8px;
+  }
+  .balance-plan-card__title {
+    font-size: 13.5px;
+    font-weight: 700;
+    color: var(--text-main);
+  }
+  .balance-plan-card__price {
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--ki-purple-dark);
+    white-space: nowrap;
+  }
+  .balance-plan-card__price-old {
+    font-size: 13px;
+    text-decoration: line-through;
+    color: var(--text-muted);
+    margin-right: 4px;
+    font-weight: 500;
+  }
+
+  .balance-plan-card__sub {
+    font-size: 11.5px;
+    color: var(--text-muted);
+    margin-top: 2px;
+  }
+
+  /* CTA */
+  .balance-pdp__cta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    background: var(--ki-purple-dark);
+    color: #fff;
+    font-size: 16px;
+    font-weight: 800;
+    padding: 16px 32px;
+    border-radius: 999px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-bottom: 20px;
+  }
+  .balance-pdp__cta:hover {
+    background: #3f347f;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(45,27,105,0.25);
+  }
+  .balance-pdp__cta svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .balance-pdp__features {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  .balance-pdp__feature {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-muted);
+  }
+  .balance-pdp__feature svg {
+    width: 16px;
+    height: 16px;
+    color: hsl(155, 42%, 30%); /* sage */
+  }
+
+  /* Certs */
+  .balance-certs {
+    margin-top: 48px;
+    padding-top: 40px;
+    border-top: 1px solid rgba(0,0,0,0.06);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .balance-certs__list {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 28px;
+    margin-bottom: 24px;
+  }
+  .balance-certs__image {
+    margin-bottom: 20px;
+    line-height: 0;
+  }
+  .balance-certs__image img {
+    max-width: 320px;
+    max-height: 80px;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    display: inline-block;
+  }
+  .balance-cert-item {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    border: 2px solid rgba(73,61,154,0.7);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: var(--ki-purple-dark);
+    padding: 4px;
+  }
+  .balance-cert-item__main {
+    font-size: 15px;
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.5px;
+  }
+  .balance-cert-item__sub {
+    font-size: 7.5px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: 4px;
+    line-height: 1.1;
+  }
+  .balance-certs__title {
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--text-main);
+    margin: 0 0 4px 0;
+  }
+  .balance-certs__info {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-muted);
+    margin: 0;
+  }
+
+  /* Reveal */
+  .bp-reveal {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  .bp-reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+</style>
+
+{%- assign current_product = section.settings.product | default: product -%}
+{%- assign triple_product = section.settings.triple_product -%}
+{%- assign triple_variant_id = triple_product.selected_or_first_available_variant.id | default: current_product.selected_or_first_available_variant.id -%}
+{%- assign single_variant_id = current_product.selected_or_first_available_variant.id -%}
+
+<div class="balance-pdp">
+  <div class="balance-pdp__container">
+    <div class="balance-pdp__grid">
+      <!-- Media Gallery -->
+      <div class="balance-pdp__media-wrap bp-reveal">
+        <div class="balance-pdp__gallery" id="bp-gallery-{{ section.id }}">
+          {% if current_product != blank and current_product.images.size > 0 %}
+            {% for image in current_product.images limit: 4 %}
+              <div class="balance-pdp__media-item">
+                <img src="{{ image | img_url: '600x' }}" alt="{{ image.alt | escape }}">
+              </div>
+            {% endfor %}
+          {% else %}
+            <!-- Fallbacks -->
+            <div class="balance-pdp__media-item"><span style="font-size:64px;opacity:0.3">📖</span></div>
+            <div class="balance-pdp__media-item"><span style="font-size:64px;opacity:0.3">🌱</span></div>
+            <div class="balance-pdp__media-item"><span style="font-size:64px;opacity:0.3">✅</span></div>
+          {% endif %}
+        </div>
+        <div class="balance-pdp__dots" id="bp-dots-{{ section.id }}">
+          {% assign ds = current_product.images.size | default: 3 %}
+          {% if ds > 4 %}{% assign ds = 4 %}{% endif %}
+          {% for i in (1..ds) %}
+            <div class="balance-pdp__dot {% if forloop.first %}is-active{% endif %}"></div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- Info -->
+      <div class="balance-pdp__info bp-reveal" style="transition-delay: 0.1s;">
+        {% if section.settings.top_badge != blank %}
+          <div class="balance-pdp__top-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+              <circle cx="9" cy="7" r="4" />
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+              <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+            </svg>
+            {{ section.settings.top_badge }}
+          </div>
+        {% endif %}
+
+        <h1 class="balance-pdp__title">{{ section.settings.title | default: current_product.title | default: ".ki Balance — PMS Destek" }}</h1>
+        <p class="balance-pdp__desc">{{ section.settings.description | default: "Döngüsel dengeniz için bilimsel formülasyon. Vitex, Magnezyum, B6 ve Çinko ile her ayı rahat geçirin." }}</p>
+
+        <div class="balance-pdp__rating">
+          <span class="balance-pdp__stars">★★★★★</span>
+          <span class="balance-pdp__rating-text">{{ section.settings.rating_text | default: "5.0 (90+ yorum)" }}</span>
+        </div>
+
+        {% if section.settings.stock_text != blank %}
+          <div class="balance-pdp__stock">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10" />
+              <polyline points="12 6 12 12 16 14" />
+            </svg>
+            {{ section.settings.stock_text }}
+          </div>
+        {% endif %}
+
+        <!-- Payment variants form -->
+        {% form 'product', current_product, id: 'balance-product-form' %}
+          <input type="hidden" name="id" id="balance-variant-id" value="{{ single_variant_id | default: 1 }}">
+
+          <div class="balance-pdp__plans">
+            <!-- Single -->
+            <label class="balance-plan-card is-active" id="plan-single">
+              <input type="radio" name="plan_type" value="single" checked style="display:none;">
+              <div class="balance-plan-card__inner">
+                <div class="balance-plan-card__radio"></div>
+                <div class="balance-plan-card__content">
+                  <div class="balance-plan-card__row">
+                    <span class="balance-plan-card__title">{{ section.settings.single_label | default: "Tek seferlik satın al" }}</span>
+                    <span class="balance-plan-card__price">
+                      {% if current_product %}
+                        {{ current_product.price | money }}
+                      {% else %}
+                        ₺450,00
+                      {% endif %}
+                    </span>
+                  </div>
+                  <div class="balance-plan-card__sub">{{ section.settings.single_sub | default: "30 günlük kullanım" }}</div>
+                </div>
+              </div>
+            </label>
+
+            <!-- Triple Pack -->
+            <label class="balance-plan-card" id="plan-triple">
+              {% if section.settings.triple_badge != blank %}
+                <div class="balance-plan-card__badge">{{ section.settings.triple_badge }}</div>
+              {% endif %}
+              <input type="radio" name="plan_type" value="triple" style="display:none;">
+              <div class="balance-plan-card__inner">
+                <div class="balance-plan-card__radio"></div>
+                <div class="balance-plan-card__content">
+                  <div class="balance-plan-card__row">
+                    <span class="balance-plan-card__title">{{ section.settings.triple_label | default: "3'lü paket satın al & %15 tasarruf" }}</span>
+                    <span class="balance-plan-card__price">
+                      {% if triple_product != blank %}
+                        {% if triple_product.compare_at_price > triple_product.price %}
+                          <span class="balance-plan-card__price-old">{{ triple_product.compare_at_price | money }}</span>
+                        {% endif %}
+                        {{ triple_product.price | money }}
+                      {% elsif current_product %}
+                        <span class="balance-plan-card__price-old">{{ current_product.price | times: 3 | money }}</span>
+                        {{ current_product.price | times: 3 | times: 0.85 | money }}
+                      {% else %}
+                        ₺1.147,50
+                      {% endif %}
+                    </span>
+                  </div>
+                  <div class="balance-plan-card__sub">{{ section.settings.triple_sub | default: "3 aylık kullanım + Eczacı ile 15 dk özel takviye rutini hazırlama hizmeti" }}</div>
+                </div>
+              </div>
+            </label>
+          </div>
+
+          <button type="submit" class="balance-pdp__cta">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="9" cy="21" r="1" />
+              <circle cx="20" cy="21" r="1" />
+              <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
+            </svg>
+            <span id="btn-text">Sepete ekle —
+              {% if current_product %}{{ current_product.price | money }}{% else %}₺450,00{% endif %}
+            </span>
+          </button>
+        {% endform %}
+
+        <div class="balance-pdp__features">
+          <div class="balance-pdp__feature">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            Güvenli ödeme
+          </div>
+          <div class="balance-pdp__feature">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 3h15v13H1zM16 8h4l3 3v5h-7V8zM5.5 18.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5zM18.5 18.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z"/></svg>
+            Ücretsiz kargo
+          </div>
+          <div class="balance-pdp__feature">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12V8H6a2 2 0 0 1 0-4h12v4M4 6v12a2 2 0 0 0 2 2h14v-4M18 12a2 2 0 0 0 0 4h4v-4z"/></svg>
+            Abone özel avantajlar
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Certs -->
+    <div class="balance-certs bp-reveal" style="transition-delay: 0.2s;">
+      {% if section.settings.approval_image != blank %}
+        <div class="balance-certs__image">
+          {{ section.settings.approval_image | image_url: width: 600 | image_tag: loading: 'lazy', alt: 'Sertifikalar' }}
+        </div>
+      {% else %}
+        <div class="balance-certs__list">
+          <div class="balance-cert-item"><span class="balance-cert-item__main">FDA</span><span class="balance-cert-item__sub">Registered<br>Facility</span></div>
+          <div class="balance-cert-item"><span class="balance-cert-item__main">Vegan</span><span class="balance-cert-item__sub">Certified</span></div>
+          <div class="balance-cert-item"><span class="balance-cert-item__main">GMP</span><span class="balance-cert-item__sub">Good<br>Manufacturing</span></div>
+        </div>
+      {% endif %}
+      <p class="balance-certs__title">{{ section.settings.approval_title | default: ".Ki Magnezyum ve Hayıt İçeren Takviye Edici Gıda" }}</p>
+      <p class="balance-certs__info">{{ section.settings.approval_info | default: "Takviye Edici Gıda Onay Numarası: 024990-06.11.2025" }}</p>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function() {
+    function initProduct() {
+      var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+          }
+        });
+      }, { threshold: 0.1 });
+      
+      document.querySelectorAll('#shopify-section-{{ section.id }} .bp-reveal').forEach(function(el) {
+        observer.observe(el);
+      });
+
+      // Gallery scrool tracking
+      var gallery = document.getElementById('bp-gallery-{{ section.id }}');
+      var dots = document.querySelectorAll('#bp-dots-{{ section.id }} .balance-pdp__dot');
+      
+      if (gallery && dots.length > 0) {
+        gallery.addEventListener('scroll', function() {
+          var idx = Math.round(gallery.scrollLeft / gallery.offsetWidth);
+          dots.forEach(function(dot, i) {
+            if (i === idx) dot.classList.add('is-active');
+            else dot.classList.remove('is-active');
+          });
+        });
+      }
+
+      // Plans UI
+      var singleCard = document.getElementById('plan-single');
+      var tripleCard = document.getElementById('plan-triple');
+      var btnText = document.getElementById('btn-text');
+      var variantInput = document.getElementById('balance-variant-id');
+      var radios = document.querySelectorAll('input[name="plan_type"]');
+
+      var singlePrice = "{{ current_product.price | money | default: '₺450,00' }}";
+      var singleVariantId = "{{ single_variant_id }}";
+      {% if triple_product != blank %}
+        var triplePrice = "{{ triple_product.price | money }}";
+      {% elsif current_product %}
+        var triplePrice = "{{ current_product.price | times: 3 | times: 0.85 | money }}";
+      {% else %}
+        var triplePrice = "₺1.147,50";
+      {% endif %}
+      var tripleVariantId = "{{ triple_variant_id }}";
+
+      function selectPlan(plan) {
+        if (plan === 'triple') {
+          tripleCard.classList.add('is-active');
+          singleCard.classList.remove('is-active');
+          if (variantInput) variantInput.value = tripleVariantId;
+          btnText.textContent = "Sepete ekle — " + triplePrice;
+        } else {
+          singleCard.classList.add('is-active');
+          tripleCard.classList.remove('is-active');
+          if (variantInput) variantInput.value = singleVariantId;
+          btnText.textContent = "Sepete ekle — " + singlePrice;
+        }
+      }
+
+      if (radios && singleCard && tripleCard && btnText) {
+        radios.forEach(function(r) {
+          r.addEventListener('change', function(e) {
+            selectPlan(e.target.value);
+          });
+        });
+      }
+    }
+
+    initProduct();
+
+    document.addEventListener('shopify:section:load', function(event) {
+      if (event.detail.sectionId === '{{ section.id }}') {
+        initProduct();
+      }
+    });
+
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Balance: Product",
+  "settings": [
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Product"
+    },
+    {
+      "type": "text",
+      "id": "top_badge",
+      "label": "Top Badge Text",
+      "default": "90+ kişi bu ürünü satın aldı"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Override Title"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Override Description"
+    },
+    {
+      "type": "text",
+      "id": "rating_text",
+      "label": "Rating Text",
+      "default": "5.0 (90+ yorum)"
+    },
+    {
+      "type": "text",
+      "id": "stock_text",
+      "label": "Stock Warning Text",
+      "default": "Stokta sadece 12 adet kaldı"
+    },
+    {
+      "type": "text",
+      "id": "single_label",
+      "label": "Single Plan Label",
+      "default": "Tek seferlik satın al"
+    },
+    {
+      "type": "text",
+      "id": "single_sub",
+      "label": "Single Plan Subtext",
+      "default": "30 günlük kullanım"
+    },
+    {
+      "type": "header",
+      "content": "── 3'lü Paket Seçeneği ──"
+    },
+    {
+      "type": "product",
+      "id": "triple_product",
+      "label": "3'lü Paket Ürünü",
+      "info": "Bu seçenek seçildiğinde sepete eklenecek ürün (örn. 3'lü paket varyantı)"
+    },
+    {
+      "type": "text",
+      "id": "triple_label",
+      "label": "3'lü Paket Başlığı",
+      "default": "3'lü paket satın al & %15 tasarruf"
+    },
+    {
+      "type": "text",
+      "id": "triple_sub",
+      "label": "3'lü Paket Alt Yazısı",
+      "default": "3 aylık kullanım + Eczacı ile 15 dk özel takviye rutini hazırlama hizmeti"
+    },
+    {
+      "type": "text",
+      "id": "triple_badge",
+      "label": "3'lü Paket Rozeti",
+      "default": "EN POPÜLER"
+    },
+    {
+      "type": "header",
+      "content": "── Onay / Sertifika Alanı ──"
+    },
+    {
+      "type": "image_picker",
+      "id": "approval_image",
+      "label": "Sertifika / Onay Görseli",
+      "info": "FDA, Vegan, GMP vb. logoları içeren görseli buraya yükleyin. Boş bırakılırsa varsayılan rozetler gösterilir."
+    },
+    {
+      "type": "text",
+      "id": "approval_title",
+      "label": "Onay Başlığı",
+      "default": ".Ki Magnezyum ve Hayıt İçeren Takviye Edici Gıda"
+    },
+    {
+      "type": "text",
+      "id": "approval_info",
+      "label": "Onay Numarası",
+      "default": "Takviye Edici Gıda Onay Numarası: 024990-06.11.2025"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Balance: Product"
+    }
+  ]
+}
+{% endschema %}

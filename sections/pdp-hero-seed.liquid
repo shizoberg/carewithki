@@ -1,0 +1,1240 @@
+{% comment %}
+  Seed-style PDP Hero Section
+  Features a grid media gallery on the left and sticky product info on the right with accordions.
+{% endcomment %}
+
+{%- assign target_product = section.settings.product | default: product -%}
+{%- assign media_items = target_product.media -%}
+{%- assign current_variant = target_product.selected_or_first_available_variant -%}
+
+<style>
+  #shopify-section-{{ section.id }} {
+    --seed-bg: {{ section.settings.bg_color }};
+    --seed-text: {{ section.settings.text_color }};
+    --seed-border: {{ section.settings.border_color }};
+    --seed-btn-bg: {{ section.settings.btn_color }};
+    --seed-btn-text: {{ section.settings.btn_text_color }};
+    --seed-badge-bg: {{ section.settings.badge_bg }};
+    --seed-badge-text: {{ section.settings.badge_text_color }};
+    
+    background-color: var(--seed-bg);
+    color: var(--seed-text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px;
+  }
+
+  .seed-container {
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 48px;
+  }
+
+  /* ====== SOL BÖLÜM (MEDYA GALERİSİ) ====== */
+  .seed-media {
+    flex: 1 1 55%;
+    min-width: 0; /* flexbox clipping fix */
+  }
+
+  /* Masaüstü Grid / Masonry Yapısı:
+     1. öge: En üstte dev blok
+     2. ve 3. ögeler: Yan yana iki kare vs. */
+  .seed-media-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+  .seed-media-item {
+    border-radius: 12px;
+    overflow: hidden;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    /* optional: default border if needed */
+  }
+  .seed-media-item:first-child {
+    grid-column: 1 / -1; /* İki sütunu da kaplar */
+  }
+  .seed-media-item img, 
+  .seed-media-item video, 
+  .seed-media-item iframe {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    border-radius: 12px;
+  }
+
+  /* ====== SAĞ BÖLÜM (ÜRÜN BİLGİSİ) ====== */
+  .seed-info {
+    flex: 1 1 35%;
+    min-width: 320px;
+    position: sticky;
+    top: 40px; /* Sticky menü offseti */
+  }
+
+  .seed-header {
+    margin-bottom: 24px;
+  }
+  .seed-title {
+    font-size: 2.2rem;
+    font-weight: 700;
+    line-height: 1.1;
+    margin: 0 0 12px;
+    letter-spacing: -0.03em;
+  }
+  .seed-reviews {
+    display: flex;
+    align-items: center;
+    font-size: 0.85rem;
+    font-weight: 700;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+  .seed-stars {
+    color: var(--seed-text);
+  }
+  .seed-reviews-link {
+    text-decoration: underline;
+    color: var(--seed-text);
+    cursor: pointer;
+  }
+  
+  .seed-description {
+    font-size: 1rem;
+    line-height: 1.5;
+    margin-bottom: 16px;
+    font-weight: 500;
+  }
+  
+  .seed-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    background-color: var(--seed-badge-bg);
+    color: var(--seed-badge-text);
+    margin-bottom: 16px;
+  }
+
+  .seed-price-wrap {
+    margin-bottom: 12px;
+  }
+  .seed-price {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0;
+  }
+  
+  .seed-subtext {
+    font-size: 0.85rem;
+    line-height: 1.5;
+    color: var(--seed-text);
+    opacity: 0.85;
+    margin-bottom: 24px;
+    font-weight: 500;
+  }
+
+  .seed-cta {
+    display: block;
+    width: 100%;
+    padding: 18px 24px;
+    background-color: var(--seed-btn-bg);
+    color: var(--seed-btn-text);
+    border: none;
+    border-radius: 99px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.2s, opacity 0.2s;
+    margin-bottom: 12px;
+  }
+  .seed-cta:hover {
+    transform: scale(1.02);
+  }
+  .seed-cta:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  .seed-guarantee {
+    font-size: 0.8rem;
+    text-align: center;
+    color: var(--seed-text);
+    opacity: 0.7;
+    margin-bottom: 32px;
+    font-weight: 500;
+  }
+
+  /* ====== REVIEW STARS FROM KI ====== */
+  .reviewRow {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+  }
+  .reviewStars {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+  }
+  .reviewStars svg { width: 18px; height: 18px; }
+  .reviewText {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--seed-text);
+    line-height: 1.3;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .reviewScore {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--seed-text);
+  }
+
+  /* ====== PROMO, SHIPPING, TRUST FROM KI ====== */
+  .promo-box {
+    margin-top: 12px;
+    padding: 12px 16px;
+    background: #f4f0ff; /* Light purple bg */
+    border-radius: 8px;
+    color: var(--seed-text);
+    font-size: 14px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    line-height: 1.4;
+    text-align: center;
+  }
+  .ship {
+    margin-top: 16px;
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    align-items: center;
+    color: var(--seed-text);
+    opacity: 0.8;
+    font-size: 13px;
+  }
+  .ship svg { width: 16px; height: 16px; color: var(--seed-text); }
+  .trust {
+    margin-top: 24px;
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .trustItem {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--seed-text);
+    opacity: 0.85;
+    font-weight: 500;
+  }
+  .trustItem svg { width: 18px; height: 18px; color: var(--seed-text); }
+  .trustLogos {
+    margin-top: 16px;
+    text-align: center;
+  }
+  .trustLogos img {
+    max-width: 260px;
+    max-height: 40px;
+    object-fit: contain;
+  }
+  .disc {
+    margin-top: 16px;
+    font-size: 11px;
+    line-height: 1.6;
+    color: var(--seed-text);
+    opacity: 0.6;
+    text-align: center;
+  }
+
+  /* ====== OPTIONS CARDS ====== */
+  .seed-card {
+    border: 1px solid var(--seed-border);
+    border-radius: 12px;
+    background: #fff;
+    overflow: hidden;
+    transition: border-color .2s ease, box-shadow .2s ease;
+    cursor: pointer;
+    margin-bottom: 12px;
+  }
+  .seed-card:hover {
+    border-color: var(--seed-text);
+    opacity: 0.9;
+  }
+  .seed-card.is-active {
+    border-color: var(--seed-text);
+    border-width: 2px;
+  }
+
+  .seed-card-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 16px;
+    gap: 12px;
+  }
+
+  .seed-card-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .seed-card-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--seed-text);
+    margin: 0;
+  }
+
+  .seed-card-badge {
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    padding: 4px 8px;
+    border-radius: 4px;
+    background: var(--seed-badge-bg);
+    color: var(--seed-badge-text);
+    line-height: 1;
+  }
+
+  .seed-card-right {
+    text-align: right;
+    flex-shrink: 0;
+  }
+
+  .seed-price-row {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    justify-content: flex-end;
+  }
+
+  .seed-price-old {
+    font-size: 0.8rem;
+    color: var(--seed-text);
+    opacity: 0.6;
+    text-decoration: line-through;
+  }
+
+  .seed-price-now {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: var(--seed-text);
+  }
+
+  .seed-price-per {
+    font-size: 0.7rem;
+    color: var(--seed-text);
+    opacity: 0.7;
+  }
+
+  .seed-card-benefits {
+    display: none;
+    background: var(--seed-bg);
+    border-top: 1px solid var(--seed-border);
+    padding: 12px 16px;
+    font-size: 0.85rem;
+    color: var(--seed-text);
+  }
+  .seed-card.is-active .seed-card-benefits {
+    display: block;
+  }
+  .seed-card-benefits ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .seed-card-benefits li {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 3px 0;
+    font-size: 0.8rem;
+  }
+  .seed-card-benefits li::before {
+    content: "✓";
+    font-weight: 700;
+    color: var(--seed-text);
+    font-size: 0.75rem;
+  }
+
+  .seed-or {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 12px;
+    color: var(--seed-text);
+    opacity: 0.6;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    margin-bottom: 12px;
+  }
+  .seed-or:before,
+  .seed-or:after {
+    content: "";
+    height: 1px;
+    background: var(--seed-border);
+    display: block;
+  }
+
+  /* ====== AKORDİYON (BENEFITS & INGREDIENTS) ====== */
+  .seed-accordions {
+    border-top: 1px solid var(--seed-border);
+    margin-bottom: 32px;
+  }
+  .seed-accordion {
+    border-bottom: 1px solid var(--seed-border);
+  }
+  .seed-accordion-trigger {
+    width: 100%;
+    background: none;
+    border: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 0;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--seed-text);
+    cursor: pointer;
+  }
+  .seed-accordion-icon {
+    font-size: 1.5rem;
+    font-weight: 300;
+    line-height: 1;
+    transition: transform 0.3s;
+  }
+  .seed-accordion-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease, padding 0.4s ease;
+    font-size: 0.9rem;
+    line-height: 1.6;
+  }
+  .seed-accordion.is-open .seed-accordion-content {
+    max-height: 1000px; /* arbitrary large value */
+    padding-bottom: 20px;
+  }
+  .seed-accordion.is-open .seed-accordion-icon {
+    transform: rotate(45deg); /* + turns into x */
+  }
+
+  .seed-accordion-content ul {
+    margin: 0 0 16px 20px;
+    padding: 0;
+  }
+  .seed-accordion-content li {
+    margin-bottom: 8px;
+    font-weight: 600;
+  }
+  .seed-accordion-link {
+    font-weight: 700;
+    text-decoration: underline;
+    cursor: pointer;
+    display: inline-block;
+    margin-top: 8px;
+  }
+
+  /* ====== BUNDLE BOX ====== */
+  .seed-bundle {
+    background: var(--seed-bg); /* Match background */
+    border: 1px solid var(--seed-border);
+    border-radius: 12px;
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .seed-bundle-img {
+    width: 72px;
+    height: 72px;
+    border-radius: 8px;
+    object-fit: contain;
+    background: transparent;
+    flex-shrink: 0;
+  }
+  .seed-bundle-info {
+    flex-grow: 1;
+  }
+  .seed-bundle-title {
+    font-size: 0.9rem;
+    font-weight: 700;
+    margin: 0 0 4px;
+  }
+  .seed-bundle-desc {
+    font-size: 0.8rem;
+    margin: 0 0 12px;
+    line-height: 1.3;
+    font-weight: 500;
+  }
+  .seed-bundle-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .seed-bundle-price {
+    font-weight: 700;
+    font-size: 0.9rem;
+  }
+  .seed-bundle-old {
+    text-decoration: line-through;
+    color: var(--seed-text);
+    opacity: 0.5;
+    font-size: 0.8rem;
+    margin-left: 4px;
+    font-weight: 600;
+  }
+  .seed-bundle-add {
+    background: none;
+    border: 1.5px solid var(--seed-text);
+    border-radius: 20px;
+    padding: 4px 16px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+  }
+  .seed-bundle-add:hover {
+    background: var(--seed-text);
+    color: var(--seed-bg);
+  }
+
+  @media (max-width: 990px) {
+    .seed-container {
+      flex-direction: column;
+      gap: 32px;
+      padding: 0 16px;
+    }
+    .seed-media, .seed-info {
+      width: 100%;
+      flex: none;
+    }
+    .seed-info {
+      position: static;
+    }
+    .seed-title {
+      font-size: 2rem;
+    }
+    
+    .seed-media-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .seed-media-item {
+      width: 100%;
+    }
+  }
+</style>
+
+<div class="seed-container">
+  
+  <!-- SOL: MEDYA GRID -->
+  <div class="seed-media">
+    <div class="seed-media-grid">
+      {% if media_items and media_items.size > 0 %}
+        {% for m in media_items limit: 5 %}
+          <div class="seed-media-item">
+            {% case m.media_type %}
+              {% when 'image' %}
+                {{ m | image_url: width: 1200 | image_tag: loading: 'lazy', alt: m.alt }}
+              {% when 'video' %}
+                {{ m | video_tag: controls: true, autoplay: true, loop: true, muted: true, playsinline: true }}
+              {% when 'external_video' %}
+                {{ m | external_video_tag }}
+              {% else %}
+                {{ 'image' | placeholder_svg_tag }}
+            {% endcase %}
+          </div>
+        {% endfor %}
+      {% else %}
+        <!-- Varsayılan Placeholerlar -->
+        <div class="seed-media-item">{{ 'product-1' | placeholder_svg_tag }}</div>
+        <div class="seed-media-item">{{ 'product-2' | placeholder_svg_tag }}</div>
+        <div class="seed-media-item">{{ 'product-3' | placeholder_svg_tag }}</div>
+        <div class="seed-media-item">{{ 'product-4' | placeholder_svg_tag }}</div>
+        <div class="seed-media-item">{{ 'product-5' | placeholder_svg_tag }}</div>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- SAĞ: BİLGİ PANELİ -->
+  <div class="seed-info">
+    <div class="seed-header">
+      <h1 class="seed-title">{{ section.settings.title | default: target_product.title | default: "DS-01® Daily Synbiotic" }}</h1>
+      
+      <!-- Review Stars from KI -->
+      {% if section.settings.review_text != blank %}
+        {%- assign star_color = section.settings.star_color | default: '#f5a623' -%}
+        {%- assign rating_val = section.settings.review_rating | default: '5' | times: 1.0 -%}
+        <div class="reviewRow">
+          <div class="reviewStars">
+            {% for i in (1..5) %}
+              {%- assign fill_pct = 100 -%}
+              {%- if i > rating_val -%}
+                {%- assign diff = i | minus: rating_val -%}
+                {%- if diff >= 1 -%}
+                  {%- assign fill_pct = 0 -%}
+                {%- else -%}
+                  {%- assign fill_pct = 1.0 | minus: diff | times: 100 | round -%}
+                {%- endif -%}
+              {%- endif -%}
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <linearGradient id="starGrad-{{ section.id }}-{{ i }}">
+                    <stop offset="{{ fill_pct }}%" stop-color="{{ star_color }}"/>
+                    <stop offset="{{ fill_pct }}%" stop-color="#ddd"/>
+                  </linearGradient>
+                </defs>
+                <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" fill="url(#starGrad-{{ section.id }}-{{ i }})"/>
+              </svg>
+            {% endfor %}
+            <span class="reviewScore" style="margin-left: 4px;">{{ rating_val }}</span>
+          </div>
+          <div class="reviewText">
+            <span>{{ section.settings.review_text }}</span>
+          </div>
+        </div>
+      {% endif %}
+      
+      <div class="seed-description">
+        {{ section.settings.description }}
+      </div>
+      
+      {% if section.settings.badge_text != blank %}
+        <div class="seed-badge">{{ section.settings.badge_text }}</div>
+      {% endif %}
+    </div>
+
+    <div class="seed-options">
+      <!-- One-time Card (Default Selected) -->
+      <div class="seed-card is-active" 
+        data-card="once" 
+        data-select="once" 
+        data-variant-id="{{ current_variant.id }}"
+        tabindex="0">
+        <div class="seed-card-head">
+          <div class="seed-card-left">
+            <span class="seed-card-title">{{ section.settings.once_title }}</span>
+            {% if section.settings.once_badge != blank %}
+              <span class="seed-card-badge">{{ section.settings.once_badge }}</span>
+            {% endif %}
+          </div>
+          <div class="seed-card-right">
+            <div class="seed-price-row">
+              {% if section.settings.once_compare != blank %}
+                <span class="seed-price-old">{{ section.settings.once_compare }}</span>
+              {% endif %}
+              <span class="seed-price-now">{{ section.settings.once_price }}</span>
+            </div>
+            <div class="seed-price-per">{{ section.settings.once_per }}</div>
+          </div>
+        </div>
+        <div class="seed-card-benefits">
+          {{ section.settings.once_note }}
+        </div>
+      </div>
+
+      <div class="seed-or">veya</div>
+
+      <!-- Subscription Card -->
+      {%- assign sub_product_obj = section.settings.sub_product -%}
+      {%- assign sub_variant_id = sub_product_obj.selected_or_first_available_variant.id | default: current_variant.id -%}
+      <div class="seed-card" 
+        data-card="sub" 
+        data-select="sub" 
+        data-variant-id="{{ sub_variant_id }}"
+        tabindex="0">
+        <div class="seed-card-head">
+          <div class="seed-card-left">
+            <span class="seed-card-title">{{ section.settings.sub_title }}</span>
+            {% if section.settings.sub_badge != blank %}
+              <span class="seed-card-badge">{{ section.settings.sub_badge }}</span>
+            {% endif %}
+          </div>
+          <div class="seed-card-right">
+            <div class="seed-price-row">
+              {% if section.settings.sub_compare != blank %}
+                <span class="seed-price-old">{{ section.settings.sub_compare }}</span>
+              {% endif %}
+              <span class="seed-price-now">{{ section.settings.sub_price }}</span>
+            </div>
+            <div class="seed-price-per">{{ section.settings.sub_per }}</div>
+          </div>
+        </div>
+        <div class="seed-card-benefits">
+          {{ section.settings.sub_benefits }}
+        </div>
+      </div>
+    </div>
+
+    <!-- ATC BUTON -->
+    <button class="seed-cta" id="SeedAddBtn-{{ section.id }}" data-variant-id="{{ current_variant.id | default: '' }}">
+      {{ section.settings.cta_text }}
+    </button>
+
+    <!-- Promo Box, Shipping, Trust Badges, Logos -->
+    {% if section.settings.offer_headline != blank %}
+      <div class="promo-box">
+        <div>{{ section.settings.offer_headline }}</div>
+      </div>
+    {% endif %}
+
+    <div class="ship">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M20 8h-3V4H3v13h2.2a3 3 0 0 0 5.6 0h6.4a3 3 0 0 0 5.6 0H24v-5l-4-4Zm-5 0H5V6h10v2Zm-7 11a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3Zm12 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3Zm2-4h-1.2a3 3 0 0 0-5.6 0H10.8a3 3 0 0 0-5.6 0H5V10h11v3h4.6l1.4 2Z" fill="currentColor"/>
+      </svg>
+      <span>{{ section.settings.shipping_text }}</span>
+    </div>
+
+    <div class="trust">
+      <div class="trustItem">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z" fill="currentColor"/>
+        </svg>
+        <span>Güvenli Ödeme</span>
+      </div>
+      <div class="trustItem">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" fill="currentColor"/>
+        </svg>
+        <span>30 Gün İade</span>
+      </div>
+      <div class="trustItem">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" fill="currentColor"/>
+        </svg>
+        <span>%100 Doğal</span>
+      </div>
+    </div>
+
+    {% if section.settings.trust_logos_image != blank %}
+      <div class="trustLogos">
+        {{ section.settings.trust_logos_image | image_url: width: 600 | image_tag: loading: 'lazy', alt: 'Sertifikalar' }}
+      </div>
+    {% endif %}
+
+    {% if section.settings.disclaimer != blank %}
+      <div class="disc rte">{{ section.settings.disclaimer }}</div>
+    {% endif %}
+
+    <!-- AKORDİYONLAR (BLOCKS) -->
+    <div class="seed-accordions">
+      {% for block in section.blocks %}
+        {% if block.type == 'accordion' %}
+          <div class="seed-accordion {% if block.settings.open_by_default %}is-open{% endif %}" {{ block.shopify_attributes }}>
+            <button class="seed-accordion-trigger" type="button" aria-expanded="{% if block.settings.open_by_default %}true{% else %}false{% endif %}">
+              <span>{{ block.settings.title }}</span>
+              <span class="seed-accordion-icon">+</span>
+            </button>
+            <div class="seed-accordion-content">
+              <div class="rte">
+                {{ block.settings.content }}
+              </div>
+              {% if block.settings.link_text != blank %}
+                <a href="{{ block.settings.link_url }}" class="seed-accordion-link">{{ block.settings.link_text }} ➔</a>
+              {% endif %}
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+
+    <!-- BUNDLE / CROSS-SELL -->
+    {% if section.settings.bundle_product != blank %}
+      {% assign b_prod = section.settings.bundle_product %}
+      {% assign b_variant = b_prod.selected_or_first_available_variant %}
+      <div class="seed-bundle">
+        {{ b_prod.featured_image | image_url: width: 200 | image_tag: class: 'seed-bundle-img', alt: b_prod.title, loading: 'lazy' }}
+        <div class="seed-bundle-info">
+          <h4 class="seed-bundle-title">{{ section.settings.bundle_heading | default: 'Bundle + Save' }}</h4>
+          <p class="seed-bundle-desc">{{ section.settings.bundle_desc }}</p>
+          <div class="seed-bundle-footer">
+            <div>
+              <span class="seed-bundle-price">{{ b_variant.price | money }}</span>
+              {% if b_variant.compare_at_price > b_variant.price %}
+                <span class="seed-bundle-old">{{ b_variant.compare_at_price | money }}</span>
+              {% endif %}
+            </div>
+            <button class="seed-bundle-add" data-bundle-id="{{ b_variant.id }}">
+              {{ section.settings.bundle_btn }}
+            </button>
+          </div>
+        </div>
+      </div>
+    {% endif %}
+
+  </div>
+</div>
+
+<script>
+  (function(){
+    var sectionId = '{{ section.id }}';
+    var root = document.getElementById('shopify-section-' + sectionId);
+    if(!root) return;
+
+    // Option Cards Logic
+    var activeOption = 'once';
+    var cards = root.querySelectorAll('.seed-card');
+    function activate(which){
+      activeOption = which;
+      cards.forEach(function(c){
+        c.classList.toggle('is-active', c.getAttribute('data-card') === which);
+      });
+    }
+    root.querySelectorAll('[data-select]').forEach(function(el){
+      el.addEventListener('click', function(){ activate(el.getAttribute('data-select')); });
+      el.addEventListener('keydown', function(e){
+        if(e.key === 'Enter' || e.key === ' ') { 
+          e.preventDefault(); 
+          activate(el.getAttribute('data-select')); 
+        }
+      });
+    });
+    var sectionId = '{{ section.id }}';
+    
+    // Accordion Logic
+    var accordions = document.querySelectorAll('#shopify-section-' + sectionId + ' .seed-accordion-trigger');
+    accordions.forEach(function(acc) {
+      acc.addEventListener('click', function() {
+        var parent = this.closest('.seed-accordion');
+        parent.classList.toggle('is-open');
+        var isOpen = parent.classList.contains('is-open');
+        this.setAttribute('aria-expanded', isOpen);
+        
+        var icon = this.querySelector('.seed-accordion-icon');
+        if(isOpen) {
+          icon.style.transform = 'rotate(45deg)';
+        } else {
+          icon.style.transform = 'rotate(0deg)';
+        }
+      });
+    });
+
+    // Add To Cart Logic
+    var atcBtn = document.getElementById('SeedAddBtn-' + sectionId);
+    if(atcBtn) {
+      atcBtn.addEventListener('click', function() {
+        var activeCard = root.querySelector('.seed-card.is-active');
+        if(!activeCard) {
+          alert("Lütfen bir seçenek seçin.");
+          return;
+        }
+
+        var vId = activeCard.getAttribute('data-variant-id');
+        if(!vId) {
+          alert("Ürün varyantı bulunamadı. Lütfen panelden ürün seçin.");
+          return;
+        }
+        
+        this.disabled = true;
+        this.innerText = "Ekleniyor...";
+
+        var formData = {
+          items: [{
+            id: parseInt(vId, 10),
+            quantity: 1
+          }]
+        };
+
+        fetch(window.Shopify.routes.root + 'cart/add.js', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(formData)
+        })
+        .then(function(res) { return res.json(); })
+        .then(function(data) {
+          atcBtn.innerText = "✓ Eklendi";
+          setTimeout(function(){
+            window.location.href = '/cart';
+          }, 600);
+        })
+        .catch(function(err) {
+          console.error(err);
+          alert("Bir hata oluştu.");
+          atcBtn.disabled = false;
+          atcBtn.innerText = "{{ section.settings.cta_text }}";
+        });
+      });
+    }
+
+    // Bundle Add to Cart Logic
+    var bundleBtn = document.querySelector('#shopify-section-' + sectionId + ' .seed-bundle-add');
+    if(bundleBtn) {
+      bundleBtn.addEventListener('click', function() {
+        var vId = this.getAttribute('data-bundle-id');
+        if(!vId) return;
+
+        this.disabled = true;
+        this.innerText = "Ekleniyor...";
+
+        fetch(window.Shopify.routes.root + 'cart/add.js', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ items: [{ id: parseInt(vId, 10), quantity: 1 }] })
+        })
+        .then(function(res) { return res.json(); })
+        .then(function() {
+          bundleBtn.innerText = "✓ Eklendi";
+          setTimeout(function(){ window.location.href = '/cart'; }, 600);
+        })
+        .catch(function(err) {
+          console.error(err);
+          this.disabled = false;
+          this.innerText = "{{ section.settings.bundle_btn }}";
+        });
+      });
+    }
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "PDP Hero Seed (Izgara)",
+  "settings": [
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Ana Ürün (Medya ve ATC için)"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Arkaplan Rengi",
+      "default": "#f8f8f6"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Metin Rengi",
+      "default": "#493d9a"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Çizgi/Sınır Rengi",
+      "default": "#dad2ff"
+    },
+    {
+      "type": "color",
+      "id": "btn_color",
+      "label": "Sepete Ekle Buton Rengi",
+      "default": "#493d9a"
+    },
+    {
+      "type": "color",
+      "id": "btn_text_color",
+      "label": "Sepete Ekle Buton Yazı Rengi",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "label": "Üst Boşluk",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "label": "Alt Boşluk",
+      "default": 60
+    },
+    {
+      "type": "header",
+      "content": "Ürün Bilgileri"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Özel Başlık (Boşsa ürün adını alır)"
+    },
+    {
+      "type": "header",
+      "content": "── Değerlendirme Yıldızları ──"
+    },
+    {
+      "type": "range",
+      "id": "review_rating",
+      "label": "Yıldız puanı",
+      "min": 0,
+      "max": 5,
+      "step": 0.1,
+      "default": 4.8,
+      "info": "0-5 arası (0.1 hassasiyetle)"
+    },
+    {
+      "type": "text",
+      "id": "review_text",
+      "label": "Değerlendirme yazısı",
+      "default": "90+ doğrulanmış 5 yıldızlı değerlendirme"
+    },
+    {
+      "type": "color",
+      "id": "star_color",
+      "label": "Yıldız rengi",
+      "default": "#f5a623"
+    },
+    {
+      "type": "header",
+      "content": "Açıklama"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Açıklama",
+      "default": "Eczacı ve doktorlar tarafından geliştirilmiş döngü takviyen."
+    },
+    {
+      "type": "text",
+      "id": "badge_text",
+      "label": "Rozet Yazısı",
+      "default": "Bestseller"
+    },
+    {
+      "type": "color",
+      "id": "badge_bg",
+      "label": "Rozet Arkaplanı",
+      "default": "#dad2ff"
+    },
+    {
+      "type": "color",
+      "id": "badge_text_color",
+      "label": "Rozet Rengi (Text)",
+      "default": "#493d9a"
+    },
+    {
+      "type": "header",
+      "content": "── Abonelik Seçeneği ──"
+    },
+    {
+      "type": "product",
+      "id": "sub_product",
+      "label": "2. Seçenek Ürünü (Örn: Üçlü Paket)",
+      "info": "Bu kart seçildiğinde sepete eklenecek farklı ürünü buradan seçin."
+    },
+    {
+      "type": "text",
+      "id": "sub_title",
+      "label": "Başlık",
+      "default": "Aylık Abonelik"
+    },
+    {
+      "type": "text",
+      "id": "sub_badge",
+      "label": "Rozet",
+      "default": "EN POPÜLER"
+    },
+    {
+      "type": "text",
+      "id": "sub_compare",
+      "label": "Karşılaştırma fiyatı",
+      "default": "199₺"
+    },
+    {
+      "type": "text",
+      "id": "sub_price",
+      "label": "Fiyat",
+      "default": "159₺"
+    },
+    {
+      "type": "text",
+      "id": "sub_per",
+      "label": "Birim fiyat",
+      "default": "5,30₺/gün"
+    },
+    {
+      "type": "richtext",
+      "id": "sub_benefits",
+      "label": "Avantajlar",
+      "default": "<ul><li>Her ay kapınıza gelsin</li><li>İstediğiniz zaman iptal edin</li><li>30 gün para iade garantisi</li></ul>"
+    },
+    {
+      "type": "header",
+      "content": "── Tek Seferlik Seçenek ──"
+    },
+    {
+      "type": "text",
+      "id": "once_title",
+      "label": "Başlık",
+      "default": "Tek Seferlik"
+    },
+    {
+      "type": "text",
+      "id": "once_badge",
+      "label": "Rozet"
+    },
+    {
+      "type": "text",
+      "id": "once_compare",
+      "label": "Karşılaştırma fiyatı"
+    },
+    {
+      "type": "text",
+      "id": "once_price",
+      "label": "Fiyat",
+      "default": "199₺"
+    },
+    {
+      "type": "text",
+      "id": "once_per",
+      "label": "Birim fiyat",
+      "default": "6,63₺/gün"
+    },
+    {
+      "type": "richtext",
+      "id": "once_note",
+      "label": "Not (isteğe bağlı)",
+      "default": "<p>Standart teslimat</p>"
+    },
+    {
+      "type": "header",
+      "content": "CTA + Alt Bilgi"
+    },
+    {
+      "type": "text",
+      "id": "cta_text",
+      "label": "Sepete Ekle Buton Yazısı",
+      "default": "Sepete Ekle"
+    },
+    {
+      "type": "text",
+      "id": "offer_headline",
+      "label": "Teklif başlığı (Uzman Kutusu)",
+      "default": "Uzman Doktor & Eczacılar Tarafından Geliştirildi."
+    },
+    {
+      "type": "text",
+      "id": "shipping_text",
+      "label": "Kargo bilgisi",
+      "default": "Ücretsiz Kargo & Hızlı Teslimat"
+    },
+    {
+      "type": "image_picker",
+      "id": "trust_logos_image",
+      "label": "Sertifika logoları görseli",
+      "info": "FDA, Vegan, GMP vb. logoları içeren yatay bir görsel yükleyin."
+    },
+    {
+      "type": "richtext",
+      "id": "disclaimer",
+      "label": "Açıklama notu",
+      "default": "<p>.Ki Magnezyum ve Hayıt İçeren Takviye Edici Gıda</p>"
+    },
+    {
+      "type": "header",
+      "content": "Bundle (Cross-sell)"
+    },
+    {
+      "type": "product",
+      "id": "bundle_product",
+      "label": "Tavsiye Edilen Ürün"
+    },
+    {
+      "type": "text",
+      "id": "bundle_heading",
+      "label": "Bundle Başlığı",
+      "default": "Bundle + Save 25%"
+    },
+    {
+      "type": "text",
+      "id": "bundle_desc",
+      "label": "Bundle Açıklaması",
+      "default": "Add DM-02™ Daily Multivitamin to your routine and save on your first order."
+    },
+    {
+      "type": "text",
+      "id": "bundle_btn",
+      "label": "Bundle Buton Yazısı",
+      "default": "Add"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "accordion",
+      "name": "Akordiyon (Fayda/İçerik)",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Başlık",
+          "default": "Benefits*"
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "İçerik",
+          "default": "<ul><li>Reduces bloating and gas</li><li>Improves regularity and digestive discomfort</li><li>Supports whole body health</li></ul>"
+        },
+        {
+          "type": "text",
+          "id": "link_text",
+          "label": "Link Yazısı (Opsiyonel)",
+          "default": "View Clinical Trials"
+        },
+        {
+          "type": "url",
+          "id": "link_url",
+          "label": "Link Hedefi"
+        },
+        {
+          "type": "checkbox",
+          "id": "open_by_default",
+          "label": "Varsayılan olarak açık gelsin",
+          "default": false
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "PDP Hero Seed (Izgara)",
+      "blocks": [
+        {
+          "type": "accordion",
+          "settings": {
+            "title": "Benefits*",
+            "open_by_default": true,
+            "content": "<ul><li>Reduces bloating and gas</li><li>Improves regularity and digestive discomfort</li><li>Supports whole body health.</li><li>Tested in multiple full formulation randomized, placebo-controlled clinical trials</li></ul>"
+          }
+        },
+        {
+          "type": "accordion",
+          "settings": {
+            "title": "Ingredients",
+            "content": "<p>Probiotic Blend, Prebiotic Blend.</p>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

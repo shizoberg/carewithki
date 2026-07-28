@@ -1,0 +1,297 @@
+/* ============ Reset ============ */
+*, *::before, *::after { box-sizing: border-box; }
+html, body {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+  overscroll-behavior-x: none;
+}
+html {
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+  scroll-behavior: smooth;
+  scroll-padding-top: 72px;
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}
+body { margin: 0; line-height: 1.5; -webkit-font-smoothing: antialiased; position: relative; }
+img, picture, video, canvas, svg { display: block; max-width: 100%; height: auto; }
+
+/* ============ Mobile viewport guard ============ */
+/* Mobilde HİÇBİR section/element viewport'tan taşmaz; içerik ekrana simetrik oturur. */
+@media (max-width: 989px) {
+  :root { --ki-container-px: 16px; --ki-container-max: 100%; }
+
+  /* Root layout: hiçbir kök öğe 100vw'den geniş olamaz */
+  html, body, main, #main, header, footer {
+    width: 100% !important;
+    max-width: 100vw !important;
+    overflow-x: clip !important;
+    margin-inline: 0 !important;
+  }
+
+  /* Shopify her section'ı .shopify-section + id="shopify-section-..." ile sarar */
+  .shopify-section,
+  [id^="shopify-section-"] {
+    width: 100% !important;
+    max-width: 100vw !important;
+    margin-inline: 0 !important;
+    overflow-x: clip;
+  }
+
+  /* Section element'inin kendisi — class ne olursa olsun */
+  .shopify-section > section,
+  .shopify-section > div,
+  main > section,
+  main > div,
+  body > section,
+  section[id],
+  .ki-section {
+    width: 100% !important;
+    max-width: 100vw !important;
+    margin-inline: 0 !important;
+    overflow-x: clip;
+  }
+
+  /* Section'ın içindeki tüm wrapper / grid sınıfları — pattern bazlı yakalama */
+  [class*="__wrap"],
+  [class*="__inner"],
+  [class*="__container"],
+  [class*="__grid"],
+  [class*="__row"],
+  [class*="__list"],
+  [class*="-wrap"],
+  [class*="-inner"],
+  [class*="-container"],
+  .ki-container {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-inline: auto !important;
+  }
+  /* Wrapper'lara mobil yan padding (içerik kenarlara değil 16px boşlukla) */
+  [class*="__wrap"],
+  [class*="__inner"],
+  [class*="__container"],
+  [class*="-wrap"],
+  [class*="-inner"],
+  [class*="-container"],
+  .ki-container {
+    padding-inline: 16px !important;
+  }
+
+  /* Çok kolonlu grid'ler tek kolona düşsün */
+  [class*="__grid"],
+  [class*="-grid"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Görsel / video / iframe — asla viewport'tan taşma */
+  img, picture, video, canvas, svg, iframe, embed, object {
+    max-width: 100% !important;
+    height: auto;
+  }
+  iframe { width: 100% !important; }
+
+  /* Sabit genişlikli elementler */
+  [style*="width:"][style*="px"] { max-width: 100% !important; }
+
+  /* Yatay taşma riski olan blok'lar içeride scroll edilsin */
+  table { display: block; max-width: 100%; overflow-x: auto; }
+  pre, code { max-width: 100%; overflow-x: auto; word-break: break-word; }
+
+  /* Negatif margin / full-bleed hileleri sıfırla */
+  [class*="--bleed"], [class*="__bleed"], .ki-bleed {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    width: 100% !important;
+  }
+
+  /* Edge-to-edge isteyen section'lar için yan padding'i sıfırlama escape'i */
+  .ki-section--edge,
+  [class*="--edge"],
+  [data-edge="true"] { padding-inline: 0 !important; }
+
+  /* Yatay scroll yapmak ZORUNDA olan element'ler (slider/carousel) için escape */
+  [data-scroll-x="true"], .ki-scroll-x {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* ============ Section header rows: title + CTA ============
+     Sektör standardı: mobile'da heading üstte, CTA altta dikey stack.
+     Pattern: ".cs-header", ".xx__header", ".xx-head", ".xx__top" gibi flex satırları. */
+  .shopify-section [class*="-header"]:not(header):not(.shopify-section header):not(body),
+  .shopify-section [class*="__header"],
+  .shopify-section [class*="-head"]:not(head),
+  .shopify-section [class*="__head"],
+  .shopify-section [class*="__top"],
+  .shopify-section [class*="-title-row"],
+  .shopify-section [class*="__title-row"] {
+    flex-wrap: wrap !important;
+  }
+  /* Sadece flex container'larda direction-column zorla — non-flex'leri bozma */
+  .shopify-section [class*="__header"][style*="flex"],
+  .shopify-section [class*="-header"][style*="flex"]:not(header) {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+  }
+
+  /* Section içindeki buton/link text'leri sığmazsa kırılabilsin (overflow yerine) */
+  .shopify-section a,
+  .shopify-section button {
+    max-width: 100%;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+  /* Stepper, pill, tab gibi nowrap olması ŞART olanlar opt-out edebilir */
+  .shopify-section [data-keep-nowrap="true"],
+  .shopify-section [class*="__tab"],
+  .shopify-section [class*="__pill"],
+  .shopify-section [class*="__chip"],
+  .shopify-section [class*="__stepper"] a,
+  .shopify-section [class*="__stepper"] button {
+    white-space: nowrap !important;
+  }
+
+  /* Negatif margin "full-bleed" pattern'i (.xxx { margin: 0 -20px }) — eşleşen yan padding */
+  /* Çoğu section padding'i 16-20px arası; --ki-pad-x değişkeni ile koordine et */
+  :root { --ki-pad-x: 16px; }
+
+  /* Yatay snap scroll listeleri viewport'tan asla taşmasın */
+  [class*="__mobile"],
+  [class*="-mobile"] {
+    max-width: 100vw !important;
+  }
+}
+button, input, select, textarea { font: inherit; color: inherit; }
+button { border: 0; background: none; cursor: pointer; padding: 0; }
+a { color: inherit; text-decoration: none; }
+ul, ol { padding: 0; margin: 0; list-style: none; }
+h1, h2, h3, h4, h5, h6, p { margin: 0; }
+
+/* ============ Skip link ============ */
+.ki-skip-link {
+  position: absolute; top: -100px; left: 0;
+  background: var(--ki-primary); color: var(--ki-primary-fg);
+  padding: 12px 16px; border-radius: 0 0 8px 0;
+  font-weight: 700; z-index: 10000;
+  transition: top .15s ease;
+}
+.ki-skip-link:focus { top: 0; }
+
+/* ============ Container ============ */
+.ki-container {
+  max-width: var(--ki-container-max, 1240px);
+  margin: 0 auto;
+  padding-inline: var(--ki-container-px);
+}
+
+/* ============ Typography helpers ============ */
+.ki-h-display {
+  font-family: var(--ki-font-primary);
+  font-weight: 500;
+  letter-spacing: -.02em;
+  line-height: 1.05;
+  color: var(--ki-primary);
+}
+.ki-h-display em { font-style: italic; font-weight: 300; }
+
+.ki-eyebrow {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: rgba(58,45,110,.7);
+}
+
+/* ============ Buttons ============ */
+.ki-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  gap: 8px;
+  white-space: nowrap;
+  font-weight: 700;
+  border-radius: var(--ki-radius-pill);
+  transition: background .2s ease, color .2s ease, transform .2s ease, opacity .2s ease;
+  text-decoration: none;
+  cursor: pointer;
+}
+.ki-btn:disabled { opacity: .5; cursor: not-allowed; }
+.ki-btn--primary { background: var(--ki-primary); color: var(--ki-primary-fg); }
+.ki-btn--primary:hover:not(:disabled) { transform: translateY(-1px); }
+.ki-btn--ghost {
+  background: transparent;
+  border: 1.5px solid var(--ki-primary);
+  color: var(--ki-primary);
+}
+.ki-btn--ghost:hover { background: var(--ki-primary); color: var(--ki-primary-fg); }
+.ki-btn--sm { font-size: 12.5px; padding: 8px 16px; }
+.ki-btn--md { font-size: 13.5px; padding: 11px 20px; }
+.ki-btn--lg { font-size: 15px; padding: 14px 24px; }
+
+/* ============ Section base ============ */
+.ki-section { position: relative; }
+
+/* ============ Stars ============ */
+.ki-stars { color: var(--ki-star); letter-spacing: 2px; font-size: 13px; }
+
+/* ============ Reveal animation ============ */
+.ki-reveal { opacity: 0; transform: translateY(16px); transition: opacity .6s ease, transform .6s ease; }
+.ki-reveal.is-visible { opacity: 1; transform: translateY(0); }
+.ki-reveal-d1 { transition-delay: .08s; }
+.ki-reveal-d2 { transition-delay: .16s; }
+.ki-reveal-d3 { transition-delay: .24s; }
+.ki-reveal-d4 { transition-delay: .32s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .ki-reveal, .ki-reveal-d1, .ki-reveal-d2, .ki-reveal-d3, .ki-reveal-d4 {
+    opacity: 1; transform: none; transition: none;
+  }
+}
+
+/* ============ Marquee ============ */
+@keyframes ki-marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* ============ Visually hidden ============ */
+.ki-sr {
+  position: absolute !important;
+  width: 1px !important; height: 1px !important;
+  padding: 0 !important; margin: -1px !important;
+  overflow: hidden !important; clip: rect(0,0,0,0) !important;
+  white-space: nowrap !important; border: 0 !important;
+}
+
+/* ============ Scrollbar hidden helper ============ */
+.ki-noscrollbar { scrollbar-width: none; -ms-overflow-style: none; }
+.ki-noscrollbar::-webkit-scrollbar { display: none; }
+
+/* ============ Aspect ratios ============ */
+.ki-ratio-1 { aspect-ratio: 1/1; }
+.ki-ratio-4-5 { aspect-ratio: 4/5; }
+.ki-ratio-9-16 { aspect-ratio: 9/16; }
+
+/* ============ Cards ============ */
+.ki-card {
+  background: var(--ki-card);
+  border: 1px solid var(--ki-border);
+  border-radius: var(--ki-radius);
+}
+
+/* ============ Cart drawer ↔ /cart page tutarlılığı ============
+   /cart full-page'inde header'daki drawer açıcı butonunu gizle (kullanıcı
+   zaten sepet sayfasında, drawer redundancy yaratırdı). */
+body.template-cart [data-ki-cart-open] { display: none !important; }
+
+/* ============ Faz 15: Asset/perf defaults ============
+   İlk hero (LCP) sectionı dışındaki section'lar off-screen iken render
+   maliyeti çıkmasın diye content-visibility:auto. İlk section LCP'yi
+   geciktirmesin diye :not(:first-of-type). CLS guard için contain-intrinsic-size. */
+main > .shopify-section:not(:first-of-type) {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 600px;
+}

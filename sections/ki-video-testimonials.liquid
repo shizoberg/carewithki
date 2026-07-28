@@ -1,0 +1,133 @@
+{% comment %}
+  .ki Video Testimonials (scoped) — Brand Kit
+  9:16 video card grid with name + quote.
+
+  Brand kit:
+    #493d9a (main)
+    #f8f8f6 (offwhite)
+    #b2a5ff (primary)
+    #dad2ff (lilac)
+{% endcomment %}
+
+<section id="kvt-{{ section.id }}" class="section">
+  <style>
+    #kvt-{{ section.id }}{
+      --ki-purple-dark: #493d9a;
+      --ki-offwhite: #f8f8f6;
+      --ki-purple: #b2a5ff;
+      --ki-lilac: #dad2ff;
+
+      --bg: {{ section.settings.bg | default: '#ffffff' }};
+      --text: {{ section.settings.text | default: '#1a1a1a' }};
+      --muted: {{ section.settings.muted | default: 'rgba(26,26,26,.72)' }};
+
+      --maxw: {{ section.settings.max_width | default: 1200 }}px;
+      --py: {{ section.settings.pad_y | default: 88 }}px;
+      --px: {{ section.settings.pad_x | default: 40 }}px;
+
+      background: var(--bg);
+      color: var(--text);
+    }
+    #kvt-{{ section.id }} .kvt__wrap{ max-width: var(--maxw); margin: 0 auto; padding: var(--py) var(--px); }
+    #kvt-{{ section.id }} .kvt__head{ text-align: center; margin-bottom: clamp(32px,4vw,56px); }
+    #kvt-{{ section.id }} .kvt__eyebrow{
+      font-size: 12px; font-weight: 700; letter-spacing: 1.6px; text-transform: uppercase;
+      color: var(--ki-purple-dark); margin: 0 0 10px;
+    }
+    #kvt-{{ section.id }} .kvt__title{
+      font-size: clamp(36px,5vw,56px); font-weight: 650; letter-spacing: -0.02em;
+      line-height: 1.05; color: var(--ki-purple-dark);
+      text-shadow: 0 10px 26px rgba(73,61,154,.10); margin: 0;
+    }
+    #kvt-{{ section.id }} .kvt__grid{
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px;
+    }
+    #kvt-{{ section.id }} .kvt__card{
+      background: #fff; border: 1px solid rgba(73,61,154,.14);
+      border-radius: 18px; overflow: hidden;
+      box-shadow: 0 18px 40px rgba(73,61,154,.14);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+    #kvt-{{ section.id }} .kvt__card:hover{
+      transform: translateY(-4px);
+      box-shadow: 0 22px 50px rgba(73,61,154,.22);
+    }
+    #kvt-{{ section.id }} .kvt__card video,
+    #kvt-{{ section.id }} .kvt__card img,
+    #kvt-{{ section.id }} .kvt__placeholder{
+      width: 100%; aspect-ratio: 9/16; object-fit: cover; display: block;
+    }
+    #kvt-{{ section.id }} .kvt__placeholder{
+      background: var(--ki-purple-dark); color: #fff;
+      display: flex; align-items: center; justify-content: center; font-size: 32px;
+    }
+    #kvt-{{ section.id }} .kvt__meta{ padding: 14px 16px 18px; }
+    #kvt-{{ section.id }} .kvt__name{ font-size: 14px; font-weight: 700; color: var(--ki-purple-dark); letter-spacing: -0.01em; }
+    #kvt-{{ section.id }} .kvt__quote{ font-size: 13px; color: var(--muted); margin-top: 4px; line-height: 1.5; }
+    @media (max-width: 990px){
+      #kvt-{{ section.id }} .kvt__wrap{ padding: 64px 20px; }
+      #kvt-{{ section.id }} .kvt__grid{ grid-template-columns: repeat(2, 1fr); gap: 14px; }
+    }
+    @media (max-width: 750px){
+      #kvt-{{ section.id }} .kvt__wrap{ padding: 48px 16px; }
+      #kvt-{{ section.id }} .kvt__grid{ gap: 12px; }
+    }
+  </style>
+
+  <div class="kvt__wrap">
+    <div class="kvt__head">
+      {% if section.settings.eyebrow != blank %}<p class="kvt__eyebrow">{{ section.settings.eyebrow }}</p>{% endif %}
+      {% if section.settings.title != blank %}<h2 class="kvt__title">{{ section.settings.title }}</h2>{% endif %}
+    </div>
+    <div class="kvt__grid">
+      {% for block in section.blocks %}
+        <div class="kvt__card" {{ block.shopify_attributes }}>
+          {% if block.settings.video_url != blank %}
+            <video src="{{ block.settings.video_url }}" {% if block.settings.poster != blank %}poster="{{ block.settings.poster | image_url: width: 720 }}"{% endif %} controls playsinline preload="metadata"></video>
+          {% elsif block.settings.poster != blank %}
+            <img src="{{ block.settings.poster | image_url: width: 720 }}" alt="{{ block.settings.name | escape }}" width="{{ block.settings.poster.width }}" height="{{ block.settings.poster.height }}" loading="lazy" decoding="async">
+          {% else %}
+            <div class="kvt__placeholder" aria-hidden="true">▶</div>
+          {% endif %}
+          <div class="kvt__meta">
+            <div class="kvt__name">{{ block.settings.name }}</div>
+            <div class="kvt__quote">"{{ block.settings.quote }}"</div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": ".ki Video Testimonials",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Üst etiket", "default": "GERÇEK HİKAYELER" },
+    { "type": "text", "id": "title",   "label": "Başlık",     "default": "Müşterilerimiz anlatıyor" },
+
+    { "type": "header", "content": "Style" },
+    { "type": "color", "id": "bg",    "label": "Background", "default": "#ffffff" },
+    { "type": "color", "id": "text",  "label": "Text",       "default": "#1a1a1a" },
+    { "type": "color", "id": "muted", "label": "Muted text", "default": "#493d9a" },
+    { "type": "range", "id": "max_width", "label": "Max width (px)", "min": 1000, "max": 1600, "step": 10, "default": 1200 },
+    { "type": "range", "id": "pad_y",     "label": "Vertical padding (px)", "min": 24, "max": 160, "step": 4, "default": 88 },
+    { "type": "range", "id": "pad_x",     "label": "Horizontal padding (px)", "min": 16, "max": 90, "step": 2, "default": 40 }
+  ],
+  "blocks": [
+    {
+      "type": "video",
+      "name": "Video",
+      "settings": [
+        { "type": "url",          "id": "video_url", "label": "Video URL (mp4)" },
+        { "type": "image_picker", "id": "poster",    "label": "Poster görseli" },
+        { "type": "text",         "id": "name",      "label": "İsim",  "default": "Ayşe K." },
+        { "type": "text",         "id": "quote",     "label": "Alıntı","default": "Hayatım değişti." }
+      ]
+    }
+  ],
+  "max_blocks": 8,
+  "presets": [{ "name": ".ki Video Testimonials" }]
+}
+{% endschema %}

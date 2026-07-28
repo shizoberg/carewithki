@@ -1,0 +1,648 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "custom_hero_video_3_jENbDg": {
+      "type": "custom-hero-video-3",
+      "blocks": {
+        "slide_L7wDtK": {
+          "type": "slide",
+          "settings": {
+            "video": "shopify://files/videos/spreyvideolow.mp4",
+            "badge": "YENİ · İNTİM BAKIM SPREYİ",
+            "title": "<p>Her an <em>temiz</em> ve <em>ferah</em> hisset.</p>",
+            "description": "Doğal koku önleyici formülüyle gün boyu koruma. Her an temiz hissettiren bakım spreyi.",
+            "button_text": "Ürünü İncele",
+            "button_link": "shopify://products/ki-intimate-intim-bakim-spreyi",
+            "show_proof": false,
+            "proof_rating": "5.0",
+            "proof_reviews": "90+",
+            "proof_social": "2.400+ kadın tercih ediyor"
+          }
+        },
+        "slide_TejdEx": {
+          "type": "slide",
+          "settings": {
+            "video": "shopify://files/videos/jeller_Veo 3.1 Image to Video_2026-05-31_12-51-51_26568c86-7097-4f09-b834-ff0b8ff01f94.mp4",
+            "image": "shopify://shop_images/Basliksiz-1_c06dc38a-f3d7-4e03-bd99-a0895cc89804.jpg",
+            "badge": "MENOPOZ OZEL · İNTİM BAKIM YIKAMA JELİ",
+            "title": "<p>Vajinal Bölgeni Daha <em><strong>Nemli Hisset</strong></em></p>",
+            "description": "",
+            "button_text": "Ürünü İncele",
+            "button_link": "shopify://products/ki-sens-care-intim-bakim-jeli",
+            "show_proof": false,
+            "proof_rating": "5.0",
+            "proof_reviews": "90+",
+            "proof_social": "2.400+ kadın tercih ediyor"
+          }
+        },
+        "slide_mw6iJe": {
+          "type": "slide",
+          "settings": {
+            "video": "shopify://files/videos/pro1.mp4",
+            "badge": "balance · takviye edici gıda",
+            "title": "<p><em>Döngü </em>dönemini rahat geçir</p>",
+            "description": "Döngü döneminde yaşadığın semptomları .ki Balance ile dengele.",
+            "button_text": "Ürünü İncele",
+            "button_link": "shopify://products/balance-your-cycle",
+            "show_proof": false,
+            "proof_rating": "",
+            "proof_reviews": "",
+            "proof_social": ""
+          }
+        },
+        "slide_rR37pd": {
+          "type": "slide",
+          "settings": {
+            "video": "shopify://files/videos/jeller_Veo 3.1 Image to Video_2026-05-31_11-51-44.mp4",
+            "image": "shopify://shop_images/Basliksiz-1_c06dc38a-f3d7-4e03-bd99-a0895cc89804.jpg",
+            "badge": "YENİ · İNTİM BAKIM YIKAMA JELİ",
+            "title": "<p><em>Duşta Vajinal Bakım</em> rutinin var mı?</p>",
+            "description": "",
+            "button_text": "Ürünü İncele",
+            "button_link": "shopify://products/ki-sens-care-intim-bakim-jeli",
+            "show_proof": false,
+            "proof_rating": "5.0",
+            "proof_reviews": "90+",
+            "proof_social": "2.400+ kadın tercih ediyor"
+          }
+        }
+      },
+      "block_order": [
+        "slide_L7wDtK",
+        "slide_TejdEx",
+        "slide_mw6iJe",
+        "slide_rR37pd"
+      ],
+      "name": "Hero Slider v3 (.ki)",
+      "settings": {
+        "panel_bg": "#f0eef8",
+        "panel_text": "#1a1340",
+        "panel_bg_rgb": "240,238,248",
+        "auto_rotate": true,
+        "change_slides_speed": 6
+      }
+    },
+    "ki_trust_bar_main": {
+      "type": "ki-trust-bar",
+      "blocks": {
+        "tb_1": {
+          "type": "item",
+          "settings": {
+            "icon": "leaf",
+            "title": "Vegan & temiz",
+            "subtitle": "Yapay tatlandırıcı içermez"
+          }
+        },
+        "tb_2": {
+          "type": "item",
+          "settings": {
+            "icon": "shield",
+            "title": "GMP sertifikalı",
+            "subtitle": "Bağımsız laboratuvarda test"
+          }
+        },
+        "tb_3": {
+          "type": "item",
+          "settings": {
+            "icon": "truck",
+            "title": "Ücretsiz kargo",
+            "subtitle": "Tüm Türkiye'ye, 1-2 iş günü"
+          }
+        },
+        "tb_4": {
+          "type": "item",
+          "settings": {
+            "icon": "sparkle",
+            "title": "Doğal içerikler",
+            "subtitle": "Bitkisel & mineral kaynaklı"
+          }
+        },
+        "tb_5": {
+          "type": "item",
+          "settings": {
+            "icon": "flask",
+            "title": "FDA onaylı tesis",
+            "subtitle": "Uluslararası standartlarda üretim"
+          }
+        },
+        "tb_6": {
+          "type": "item",
+          "settings": {
+            "icon": "award",
+            "title": "Uzman eczacı formülü",
+            "subtitle": "Uzman eczacılar tarafından Geliştirildi"
+          }
+        }
+      },
+      "block_order": [
+        "tb_1",
+        "tb_2",
+        "tb_3",
+        "tb_4",
+        "tb_5",
+        "tb_6"
+      ],
+      "name": "Trust Bar",
+      "settings": {
+        "bg": "#f8f8f6",
+        "speed": 30
+      }
+    },
+    "custom_routine_cards_3gzAbh": {
+      "type": "custom-routine-cards",
+      "blocks": {
+        "card_npdrfa": {
+          "type": "card",
+          "settings": {
+            "image": "shopify://shop_images/jeller_Gemini_3_Nano_Banana_Pro__2026-05-31_10-33-53.png",
+            "title": ".ki 50+.care",
+            "description": "İleri Yaş Dönemi İntim Jeli",
+            "card_product": "ki-50-care-intim-bakim-jeli",
+            "card_link": "",
+            "cta_label": "İncele"
+          }
+        },
+        "card_dyTb8g": {
+          "type": "card",
+          "settings": {
+            "image": "shopify://shop_images/1_3af9dda8-7ead-4da3-85b9-3e4d02f11093.jpg",
+            "title": ".ki Intimate",
+            "description": "Vajen Bakım Spreyi",
+            "card_product": "ki-intimate-intim-bakim-spreyi",
+            "card_link": "",
+            "cta_label": "İncele"
+          }
+        },
+        "card_VVHjcN": {
+          "type": "card",
+          "settings": {
+            "image": "shopify://shop_images/2_045bfe31-af15-4fb1-8c7d-8764a255192a.jpg",
+            "title": ".ki Balance",
+            "description": "Döngü Dönemi Taviyesi",
+            "card_product": "balance-your-cycle",
+            "card_link": "",
+            "cta_label": "İncele"
+          }
+        },
+        "card_UrHEh3": {
+          "type": "card",
+          "settings": {
+            "image": "shopify://shop_images/3_dbbbaa0e-f10a-4e0a-8fab-8f83a2bfa444.jpg",
+            "title": ".ki Change",
+            "description": "İleri Yaş Dönemi Takviyesi",
+            "card_product": "change-is-good",
+            "card_link": "",
+            "cta_label": "İncele"
+          }
+        },
+        "card_aFG3g6": {
+          "type": "card",
+          "settings": {
+            "image": "shopify://shop_images/jeller_Gemini_3_Nano_Banana_Pro__2026-05-30_00-15-05.png",
+            "title": ".ki sens.care",
+            "description": "İntim Bakım Jeli",
+            "card_product": "ki-intimate-intim-bakim-spreyi",
+            "card_link": "",
+            "cta_label": "İncele"
+          }
+        }
+      },
+      "block_order": [
+        "card_npdrfa",
+        "card_dyTb8g",
+        "card_VVHjcN",
+        "card_UrHEh3",
+        "card_aFG3g6"
+      ],
+      "name": "Routine Cards",
+      "settings": {
+        "bg": "#f8f8f6",
+        "eyebrow": "",
+        "title": "Kadın Sağlığına Modern Çözümler",
+        "description": "Sizlerin değişen ihtiyaçları için zamansız ürünler tasarladık.",
+        "button_text": "Hepsini keşfet",
+        "button_link": "shopify://collections/ki-urunler"
+      }
+    },
+    "ki_ugc_carousel_9nVar7": {
+      "type": "ki-ugc-carousel",
+      "blocks": {
+        "video_card_t3rRxn": {
+          "type": "video_card",
+          "settings": {
+            "youtube_url": "",
+            "video": "shopify://files/videos/StorySaver.net-carewithki-Video-1778847865719_1.mp4",
+            "label": "mutfakta",
+            "badge": "Balance"
+          }
+        },
+        "video_card_CUFKpU": {
+          "type": "video_card",
+          "settings": {
+            "youtube_url": "",
+            "video": "shopify://files/videos/intimate.sprey_Veo 3.1 Image to Video_2026-05-27_22-06-54_1.mp4",
+            "label": "Spor Öncesi-Sonrası",
+            "badge": "balance"
+          }
+        },
+        "video_card_BYJczR": {
+          "type": "video_card",
+          "settings": {
+            "youtube_url": "",
+            "video": "shopify://files/videos/StorySaver.net-carewithki-Video-1778847865719_afbaa95f-1383-4ef1-a0b9-520e88c7612c.mp4",
+            "label": "PMS günleri",
+            "badge": "balance"
+          }
+        },
+        "video_card_eegcxJ": {
+          "type": "video_card",
+          "settings": {
+            "youtube_url": "",
+            "video": "shopify://files/videos/StorySaver.net-carewithki-Video-1778847865719_2.mp4",
+            "label": "sabah rutini",
+            "badge": "balance"
+          }
+        }
+      },
+      "block_order": [
+        "video_card_t3rRxn",
+        "video_card_CUFKpU",
+        "video_card_BYJczR",
+        "video_card_eegcxJ"
+      ],
+      "name": "UGC Video Carousel (.ki)",
+      "settings": {
+        "bg": "#f8f8f6",
+        "eyebrow": "",
+        "title": "<p>Bizi bir de <em>onlardan</em> dinle.</p>",
+        "subtitle": "",
+        "speed": 30,
+        "padding_top": 56,
+        "padding_bottom": 64
+      }
+    },
+    "ki_category_grid_BMqKzc": {
+      "type": "ki-category-grid",
+      "blocks": {
+        "big_card_4wp4Ug": {
+          "type": "big_card",
+          "settings": {
+            "image": "shopify://shop_images/jeller_Gemini_3_Nano_Banana_Pro__2026-05-30_00-19-53.png",
+            "title": "Bundle",
+            "subtitle": "Sana tasarlanmış paketler!",
+            "price_text": "",
+            "link": "shopify://collections/ki-urunler"
+          }
+        },
+        "small_card_tj8tfC": {
+          "type": "small_card",
+          "settings": {
+            "image": "shopify://shop_images/pms_-_product_page_b88e49fd-d469-4585-9fe4-c63379926631.jpg",
+            "title": ".ki Balance",
+            "subtitle": "Regl döngüsü · saşe",
+            "price_text": "",
+            "link": "shopify://products/balance-your-cycle"
+          }
+        },
+        "small_card_BwjnyD": {
+          "type": "small_card",
+          "settings": {
+            "image": "shopify://shop_images/jeller_Gemini_3_Nano_Banana_Pro__2026-05-30_00-11-06.png",
+            "title": "İntim Jel Ailesi",
+            "subtitle": "Daily · Sens · Flow · 50+",
+            "price_text": "",
+            "link": "shopify://collections/jel-ailesi"
+          }
+        },
+        "small_card_M9ybgP": {
+          "type": "small_card",
+          "settings": {
+            "image": "shopify://shop_images/2_415b72f6-8f1a-43d7-8b67-91a89efefa09.jpg",
+            "title": ".ki Change",
+            "subtitle": "Menopoz · kapsül",
+            "price_text": "",
+            "link": "shopify://products/change-is-good"
+          }
+        },
+        "small_card_wRQbej": {
+          "type": "small_card",
+          "settings": {
+            "image": "shopify://shop_images/intimate.sprey_1080_x_1350_piksel_-2.jpg",
+            "title": ".ki Intimate",
+            "subtitle": "İntim bakım · sprey",
+            "price_text": "",
+            "link": "shopify://products/ki-intimate-intim-bakim-spreyi"
+          }
+        }
+      },
+      "block_order": [
+        "big_card_4wp4Ug",
+        "small_card_tj8tfC",
+        "small_card_BwjnyD",
+        "small_card_M9ybgP",
+        "small_card_wRQbej"
+      ],
+      "name": "Kategori Grid (.ki)",
+      "settings": {
+        "bg": "#f8f8f6",
+        "eyebrow": "",
+        "heading": "<p>Kendine iyi bakman için:</p>",
+        "padding_top": 56,
+        "padding_bottom": 64
+      }
+    },
+    "product_showcase_LpnJfN": {
+      "type": "product-showcase",
+      "blocks": {
+        "bundle_mqRUna": {
+          "type": "bundle",
+          "settings": {
+            "bundle_hero_image": "shopify://shop_images/jeller_Gemini_3_Nano_Banana_Pro__2026-05-30_10-48-32.png",
+            "bundle_label": "tam bakım",
+            "bundle_title": "<p>Ferah Yaz Paketi</p>",
+            "bundle_subtitle": "Balance + Intimate",
+            "original_price": "2350₺",
+            "bundle_price": "2100₺",
+            "save_text": "%15 Tasarruf",
+            "bundle_product": "balance-ve-intimate-bundle",
+            "bundle_link": "",
+            "bundle_cta": "Seti İncele",
+            "bundle_note": "Kargo dahil"
+          }
+        }
+      },
+      "block_order": [
+        "bundle_mqRUna"
+      ],
+      "name": "Product Showcase",
+      "settings": {
+        "bg": "#f8f8f6",
+        "heading": "Senin için özel tasarlandı",
+        "padding_top": 16,
+        "padding_bottom": 60
+      }
+    },
+    "quality_accordion_media_dzxyjG": {
+      "type": "quality-accordion-media",
+      "blocks": {
+        "item_DEJgGJ": {
+          "type": "item",
+          "settings": {
+            "title": "FDA ve GMP  Onaylı",
+            "content": "<p>Büтün ürünlerimiz FDA onaylı tesiste geliştirilmiş ve üretilmiştir.</p>"
+          }
+        },
+        "item_gPa9Vg": {
+          "type": "item",
+          "settings": {
+            "title": "%100 Vegan Formülasyon",
+            "content": "<p>Bitkisel ekstraklardan oluşan içerikler.</p>"
+          }
+        },
+        "item_Ln9yba": {
+          "type": "item",
+          "settings": {
+            "title": "Doktorlar Tarafından Onaylı",
+            "content": "<p>Uzman doktorlar tarafından onaylanmış takviye edici gıdalar.</p>"
+          }
+        },
+        "item_An97Na": {
+          "type": "item",
+          "settings": {
+            "title": "Bedenini İhtiyaç Duyduğu Etken Maddeler",
+            "content": "<p>Bedeniniz için en uygun etken maddeler ile geliştirilmiş formülasyonlar.</p>"
+          }
+        },
+        "item_AYbkaj": {
+          "type": "item",
+          "settings": {
+            "title": "Yüksek Kaliteli Ham Maddeler",
+            "content": "<p>Özel olarak seçilmiş ham maddeler ile ürün içeriklerimizi zenginleştirdik.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "item_DEJgGJ",
+        "item_gPa9Vg",
+        "item_Ln9yba",
+        "item_An97Na",
+        "item_AYbkaj"
+      ],
+      "name": "Quality accordion + media (scoped)",
+      "settings": {
+        "heading": "Uzman Eczacılar Tarafından Geliştirildi",
+        "body": "<p>Uzman eczacılar tarafından geliştirilen formüllerimiz, kadınların değişen ihtiyaçlarını anlayan bilim temelli bir yaklaşımla hazırlanır. Araştırmadan Íretime uzanan tüm süreçlerimizde kalite, güvenlik ve şeffaflık önceliğimizdir.</p>",
+        "aria_label": "Quality details",
+        "open_first": true,
+        "media_bg_image": "shopify://shop_images/sase3.jpg",
+        "bg": "#f3f3f3",
+        "media_bg": "#f3f3f3",
+        "text_color": "#111111",
+        "muted_color": "#444444",
+        "max_width": 1200,
+        "pad_y": 72,
+        "pad_x": 40
+      }
+    },
+    "media_cards_slider_pbhNKa": {
+      "type": "media-cards-slider",
+      "blocks": {
+        "slide_ALmhye": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/Calisma_yuzeyi_17.jpg",
+            "title": "Ulyana",
+            "role": "Yazılımcı, 21",
+            "quote": "<p>Yoğun toplantılar, uzun günler…</p><p><strong>Döngü öncesi gerginlik</strong> ve <strong>şişkinlik</strong> hissetdiğimde ritmimi korumama yardımcı oluyor.</p>",
+            "video_url": "https://www.youtube.com/watch?v=Ii2BabO1cDI"
+          }
+        },
+        "slide_cPMxGM": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/Calisma_yuzeyi_19.jpg",
+            "title": "Simge",
+            "role": "Influencer, 25",
+            "quote": "<p>Döngü öncesi <strong>ruh hali dalgalanmalarında</strong> daha dengeli kalmamı destekliyor.</p>",
+            "video_url": "https://youtu.be/xhFInMpypas"
+          }
+        },
+        "slide_8bbNBM": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/ADC_4049_copy.jpg",
+            "title": "Ecem",
+            "role": "Sporcu, 23",
+            "quote": "<p><strong>Enerji düşklüğü</strong> ile mücadele ediyordum, artık etmiyorum.</p>",
+            "video_url": "https://youtu.be/eTUQ2z6MwOs"
+          }
+        },
+        "slide_ircibp": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/Calisma_yuzeyi_16.jpg",
+            "title": "Şerife",
+            "role": "Yoga Eğitmeni, 63",
+            "quote": "<p><strong>Isı dalgaları</strong> döneminde kendimi daha dengeli hissediyorum.</p>",
+            "video_url": ""
+          }
+        }
+      },
+      "block_order": [
+        "slide_ALmhye",
+        "slide_cPMxGM",
+        "slide_8bbNBM",
+        "slide_ircibp"
+      ],
+      "disabled": true,
+      "name": "Media cards slider",
+      "settings": {
+        "bg": "#f8f8f6",
+        "eyebrow": "",
+        "heading": "<p>Kendine İyi Bakanlar</p>",
+        "description": "Farklı rutinler. Bir ortak nokta; kendisi için bir şey yapanlar.",
+        "padding_top": 64,
+        "padding_bottom": 72
+      }
+    },
+    "steps_image_accordion_xF7qQm": {
+      "type": "steps-image-accordion",
+      "blocks": {
+        "step_PaKGNG": {
+          "type": "step",
+          "name": "Faz 1",
+          "settings": {
+            "step_label": "Döngü Öncesi",
+            "heading": "Dinle ve Yavaşla",
+            "icon": "shopify://shop_images/dongu_Calisma_Yuzeyi_1.png",
+            "body": "<p><strong>Bu aşamada ne olur?</strong><br/>Döngünün ikinci yarısına yaklaşırken enerji düşüşü hissedilebilir.</p>",
+            "button_label": "Döngünü Dengele",
+            "button_link": "shopify://products/balance-your-cycle"
+          }
+        },
+        "step_NKyCDG": {
+          "type": "step",
+          "settings": {
+            "step_label": "Döngü Sırasında",
+            "heading": "Destekle ve Dengede Kal",
+            "icon": "shopify://shop_images/dongu_Calisma_Yuzeyi_1.png",
+            "body": "<p>Dönemsel gerginlik ve şişkinlik hissi daha belirgin hissedilebilir.</p>",
+            "button_label": "Döngünü Dengele",
+            "button_link": "shopify://products/balance-your-cycle"
+          }
+        },
+        "step_DRFQPr": {
+          "type": "step",
+          "settings": {
+            "step_label": "Döngü Sonrası",
+            "heading": "Konforu Önceliklendir",
+            "icon": "shopify://shop_images/dongu_Calisma_Yuzeyi_1.png",
+            "body": "<p>Bedensel hassasiyet ve duygusal dalgalanmalar artabilir.</p>",
+            "button_label": "Döngünü Dengele",
+            "button_link": "shopify://products/balance-your-cycle"
+          }
+        }
+      },
+      "block_order": [
+        "step_PaKGNG",
+        "step_NKyCDG",
+        "step_DRFQPr"
+      ],
+      "disabled": true,
+      "name": "Steps image list",
+      "settings": {
+        "eyebrow": "",
+        "title": "<p>Döngünde Nasıl Kendine İyi Bakarsın</p>",
+        "open_first": true,
+        "image": "shopify://shop_images/ADC_5363-copy_1fba66e8-2f10-4995-aa5b-676236d62e3f.jpg",
+        "image_alt": "Routine image",
+        "bg": "#ffffff",
+        "text": "#111111",
+        "muted": "#6b6b6b",
+        "max_width": 1200,
+        "pad_y": 64,
+        "pad_x": 40,
+        "radius": 18
+      }
+    },
+    "faq_split_9ifbm9": {
+      "type": "faq-split",
+      "blocks": {
+        "faq_NNgzde": {
+          "type": "faq",
+          "settings": {
+            "question": ".ki Balance Your Cycle Modern Takviye Gıdası Nedir?",
+            "answer": "<p><strong>.ki Balance Your Cycle</strong>, kadın döngüsünü desteklemek üzere formüle edilmiş bir takviye edici gıdadır.</p>"
+          }
+        },
+        "faq_FMeHJM": {
+          "type": "faq",
+          "settings": {
+            "question": ".ki Change is Good Modern Takviye Gıdası Nedir?",
+            "answer": "<p>Kadınların ilerleyen yaş dönemindeki ihtiyaçlarını desteklemek üzere formüle edilmiş bir takviye edici gıdadır.</p>"
+          }
+        },
+        "faq_HUaRG7": {
+          "type": "faq",
+          "settings": {
+            "question": ".ki Balance Your Cycle Modern Takviye Gıdası Kimler İçin Uygun?",
+            "answer": "<p>Döngüsünü desteklemek isteyen 18 yaş üstü kadınların kullanımına uygundur.</p>"
+          }
+        },
+        "faq_RcKGqh": {
+          "type": "faq",
+          "settings": {
+            "question": ".ki Change is Good Modern Takviye Gıdası Kimler için Uygun?",
+            "answer": "<p>İleriki yaş dönemindeki yetişkin kadınlar için uygundur.</p>"
+          }
+        },
+        "faq_qNNwR8": {
+          "type": "faq",
+          "settings": {
+            "question": "Modern Takviye Edici Gıdalarımız Ne Değildir?",
+            "answer": "<p>İlaç değildir. Hormon içermez. Tedavi edici amaç taşımaz.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "faq_NNgzde",
+        "faq_FMeHJM",
+        "faq_HUaRG7",
+        "faq_RcKGqh",
+        "faq_qNNwR8"
+      ],
+      "name": "FAQ split",
+      "settings": {
+        "eyebrow": "",
+        "heading": "<p>Sıkça Sorulan Sorular</p>",
+        "open_first": true,
+        "bg": "#f8f8f6",
+        "text": "#111111",
+        "muted": "#555555",
+        "max_width": 1400,
+        "pad_y": 88,
+        "pad_x": 40
+      }
+    }
+  },
+  "order": [
+    "custom_hero_video_3_jENbDg",
+    "ki_trust_bar_main",
+    "custom_routine_cards_3gzAbh",
+    "ki_ugc_carousel_9nVar7",
+    "ki_category_grid_BMqKzc",
+    "product_showcase_LpnJfN",
+    "quality_accordion_media_dzxyjG",
+    "media_cards_slider_pbhNKa",
+    "steps_image_accordion_xF7qQm",
+    "faq_split_9ifbm9"
+  ]
+}

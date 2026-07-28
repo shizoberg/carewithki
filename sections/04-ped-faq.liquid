@@ -1,0 +1,136 @@
+{% comment %}
+  Pad FAQ — Pedler sayfasının altındaki sıkça sorulanlar
+  Pozisyon: Pedler #4 (en alt)
+  Tek-açılır accordion, sade kart stili.
+{% endcomment %}
+
+<section id="pad-faq-{{ section.id }}" class="section pad-faq">
+  <style>
+    #pad-faq-{{ section.id }} {
+      --pq-bg: {{ section.settings.bg | default: '#f4ede1' }};
+      --pq-card: {{ section.settings.card_bg | default: '#ffffff' }};
+      --pq-primary: {{ section.settings.primary_color | default: '#3a2d6e' }};
+      --pq-text: #1a1a1a;
+      --pq-muted: rgba(26,26,26,.7);
+      --pq-border: rgba(0,0,0,.12);
+      background: var(--pq-bg);
+      border-top: 1px solid var(--pq-border);
+      padding: 56px 0;
+      font-family: system-ui, -apple-system, sans-serif;
+    }
+    #pad-faq-{{ section.id }} .pq-wrap {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    #pad-faq-{{ section.id }} .pq-head {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    #pad-faq-{{ section.id }} .pq-title {
+      font-size: 28px; line-height: 1.1;
+      letter-spacing: -.02em;
+      font-weight: 500;
+      color: var(--pq-primary);
+      margin: 0;
+    }
+
+    #pad-faq-{{ section.id }} .pq-list {
+      display: flex; flex-direction: column;
+      gap: 12px;
+    }
+
+    #pad-faq-{{ section.id }} details.pq-item {
+      background: var(--pq-card);
+      border: 1px solid var(--pq-border);
+      border-radius: 16px;
+      overflow: hidden;
+      transition: background .2s ease;
+    }
+    #pad-faq-{{ section.id }} details.pq-item summary {
+      list-style: none;
+      cursor: pointer;
+      padding: 20px;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 16px;
+      font-size: 15px; font-weight: 600;
+      color: var(--pq-primary);
+    }
+    #pad-faq-{{ section.id }} details.pq-item summary::-webkit-details-marker { display: none; }
+    #pad-faq-{{ section.id }} details.pq-item summary:hover { background: rgba(244,237,225,.4); }
+    #pad-faq-{{ section.id }} .pq-icon {
+      width: 20px; height: 20px;
+      flex-shrink: 0;
+      transition: transform .3s ease;
+      color: var(--pq-primary);
+    }
+    #pad-faq-{{ section.id }} details[open] .pq-icon { transform: rotate(180deg); }
+
+    #pad-faq-{{ section.id }} .pq-body {
+      padding: 0 20px 20px;
+      font-size: 14px; line-height: 1.7;
+      color: var(--pq-muted);
+      white-space: pre-line;
+    }
+
+    @media (min-width: 640px) {
+      #pad-faq-{{ section.id }} { padding: 80px 0; }
+      #pad-faq-{{ section.id }} .pq-wrap { padding: 0 32px; }
+      #pad-faq-{{ section.id }} .pq-title { font-size: 36px; }
+    }
+  </style>
+
+  <div class="pq-wrap">
+    <div class="pq-head">
+      <h2 class="pq-title">{{ section.settings.heading | default: 'Sıkça sorulan sorular' }}</h2>
+    </div>
+
+    <div class="pq-list">
+      {%- for block in section.blocks -%}
+        <details class="pq-item" {% if forloop.first %}open{% endif %} {{ block.shopify_attributes }}>
+          <summary>
+            <span>{{ block.settings.question }}</span>
+            <svg class="pq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </summary>
+          <div class="pq-body">{{ block.settings.answer }}</div>
+        </details>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Pad FAQ",
+  "tag": "section",
+  "class": "pad-faq",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Başlık", "default": "Sıkça sorulan sorular" },
+    { "type": "color", "id": "bg", "label": "Arka plan", "default": "#f4ede1" },
+    { "type": "color", "id": "card_bg", "label": "Kart arka planı", "default": "#ffffff" },
+    { "type": "color", "id": "primary_color", "label": "Primary", "default": "#3a2d6e" }
+  ],
+  "blocks": [
+    {
+      "type": "qa",
+      "name": "Soru / Cevap",
+      "settings": [
+        { "type": "text", "id": "question", "label": "Soru" },
+        { "type": "textarea", "id": "answer", "label": "Cevap" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Pad FAQ",
+      "blocks": [
+        { "type": "qa", "settings": { "question": ".ki Ped içeriği nedir?", "answer": "Üst yüzey Soft Cotton & Bamboo Fiber, arka yüzey ise nefes alabilen breathable yapıdadır. Tüm seri Mugwort (Pelin Otu) infüzyonludur ve SLS/SLES içermez." } },
+        { "type": "qa", "settings": { "question": "Hangi pedi seçmeliyim?", "answer": "Hafif akıntı için Günlük Ped (155 mm · 30 adet); orta yoğun için Gündüz Pedi (245 mm · 12 adet); yoğun gece akışı için Gece Pedi (335 mm · 8 adet)." } },
+        { "type": "qa", "settings": { "question": "Pelin Otu (Mugwort) ne işe yarar?", "answer": "Doğal antibakteriyel bariyeri sayesinde koku ve enfeksiyon riskine karşı koruma sağlar; pH dengesini destekler." } },
+        { "type": "qa", "settings": { "question": "Aboneliği nasıl yönetirim?", "answer": "Hesabından gönderim sıklığını değiştirebilir veya tek tıkla iptal edebilirsin." } },
+        { "type": "qa", "settings": { "question": "Kargo ne kadar sürer?", "answer": "Hafta içi 16:00'a kadar verilen siparişler aynı gün kargolanır. 1–3 iş günü içinde kapına teslim." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

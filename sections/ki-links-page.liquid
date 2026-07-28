@@ -1,0 +1,172 @@
+{% comment %}.ki Links Page v13 — 4 urun, guncel fotolar{% endcomment %}
+<link href="https://fonts.googleapis.com/css2?family=Raleway:wght@700;800&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+.kl{--p:#493d9a;--lil:#dad2ff;--pur:#b2a5ff;min-height:100vh;background:#f4f2fb;display:flex;flex-direction:column;align-items:center;padding:32px 16px 64px;font-family:system-ui,sans-serif;}
+.kl__cal-card{width:100%;max-width:480px;background:linear-gradient(135deg,#493d9a,#7b6dd3);border-radius:16px;padding:16px 18px;text-decoration:none;display:flex;align-items:center;gap:12px;box-shadow:0 6px 24px rgba(73,61,154,.28);margin-bottom:8px;transition:transform .2s,box-shadow .2s;}
+.kl__cal-card:hover{transform:translateY(-3px);box-shadow:0 12px 36px rgba(73,61,154,.36);}
+.kl__cal-icon{width:40px;height:40px;border-radius:11px;background:rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.kl__cal-icon svg{width:20px;height:20px;color:#fff;}
+.kl__cal-text{flex:1;}
+.kl__cal-label{font-size:14px;font-weight:800;color:#fff;display:block;}
+.kl__cal-sub{font-size:11px;color:rgba(255,255,255,.65);display:block;margin-top:1px;}
+.kl__cal-arr{color:rgba(255,255,255,.45);}
+.kl__cal-arr svg{width:15px;height:15px;}
+.kl__list{width:100%;max-width:480px;display:flex;flex-direction:column;gap:8px;list-style:none;margin-bottom:8px;}
+.kl__item a{display:flex;align-items:center;gap:12px;background:#fff;border-radius:14px;padding:12px 16px;text-decoration:none;border:1px solid rgba(73,61,154,.09);box-shadow:0 2px 10px rgba(73,61,154,.05);transition:transform .2s,box-shadow .2s;color:#1a1340;}
+.kl__item a:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(73,61,154,.13);}
+.kl__icon{width:40px;height:40px;border-radius:11px;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:rgba(73,61,154,.08);color:var(--p);}
+.kl__icon svg{width:19px;height:19px;}
+.kl__icon--instagram{background:linear-gradient(135deg,rgba(240,148,51,.13),rgba(204,39,132,.13));color:#c0397e;}
+.kl__icon--tiktok{background:rgba(0,0,0,.07);color:#000;}
+.kl__icon--youtube{background:rgba(255,0,0,.08);color:#cc0000;}
+.kl__icon--trendyol{background:rgba(255,110,0,.09);color:#d94f00;}
+.kl__icon--whatsapp{background:rgba(37,211,102,.1);color:#128c3f;}
+.kl__icon--drawpms{background:rgba(236,72,153,.1);color:#db2777;}
+.kl__icon--staj{background:rgba(73,61,154,.1);color:var(--p);}
+.kl__icon--ambassador{background:rgba(73,61,154,.1);color:var(--p);}
+.kl__icon--rehber{background:rgba(73,61,154,.1);color:var(--p);}
+.kl__text{flex:1;min-width:0;}
+.kl__label{font-size:14px;font-weight:700;color:#1a1340;display:block;line-height:1.2;}
+.kl__sub{font-size:11px;color:rgba(73,61,154,.48);display:block;margin-top:2px;}
+.kl__arrow{color:rgba(73,61,154,.22);flex-shrink:0;}
+.kl__arrow svg{width:14px;height:14px;}
+.kl__products-wrap{width:100%;max-width:480px;margin-top:0;}
+.kl__products-toggle{width:100%;display:flex;align-items:center;justify-content:space-between;background:#fff;border-radius:14px;padding:13px 16px;border:1px solid rgba(73,61,154,.09);box-shadow:0 2px 10px rgba(73,61,154,.05);cursor:pointer;font-size:14px;font-weight:700;color:#1a1340;transition:box-shadow .2s;outline:none;-webkit-appearance:none;appearance:none;}
+.kl__products-toggle:hover{box-shadow:0 6px 20px rgba(73,61,154,.11);}
+.kl__products-toggle-left{display:flex;align-items:center;gap:12px;}
+.kl__products-toggle-icon{width:40px;height:40px;border-radius:11px;background:rgba(73,61,154,.08);display:flex;align-items:center;justify-content:center;color:var(--p);flex-shrink:0;}
+.kl__products-toggle-icon svg{width:19px;height:19px;}
+.kl__products-toggle-right{display:flex;align-items:center;gap:6px;color:rgba(73,61,154,.4);}
+.kl__products-toggle-right svg{width:16px;height:16px;transition:transform .25s;}
+.kl__products-toggle[aria-expanded="true"] .kl__products-toggle-right svg{transform:rotate(180deg);}
+.kl__products-toggle[aria-expanded="true"]{border-radius:14px 14px 0 0;border-bottom-color:transparent;}
+.kl__products-panel{display:none;background:#fff;border:1px solid rgba(73,61,154,.09);border-top:none;border-radius:0 0 14px 14px;padding:12px;box-shadow:0 6px 16px rgba(73,61,154,.08);}
+.kl__products-panel.is-open{display:block;}
+.kl__products{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;}
+.kl__product{display:flex;flex-direction:column;align-items:center;text-decoration:none;gap:5px;padding:10px 6px;background:#f8f6ff;border-radius:10px;border:1px solid rgba(73,61,154,.07);transition:transform .2s,box-shadow .2s;}
+.kl__product:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(73,61,154,.1);}
+.kl__product-img{width:72px;height:72px;border-radius:9px;object-fit:cover;background:#ede8ff;display:block;}
+.kl__product-name{font-size:10px;font-weight:700;color:var(--p);text-align:center;line-height:1.3;}
+.kl__product-price{font-size:10px;color:rgba(73,61,154,.45);font-weight:600;}
+.kl__eczane-wrap{width:100%;max-width:480px;margin-top:8px;}
+.kl__eczane-card{background:#fff;border:1px solid rgba(73,61,154,.09);border-radius:14px;padding:16px;box-shadow:0 2px 10px rgba(73,61,154,.05);}
+.kl__eczane-header{display:flex;align-items:center;gap:12px;margin-bottom:14px;}
+.kl__eczane-ico{width:40px;height:40px;border-radius:11px;background:rgba(73,61,154,.08);display:flex;align-items:center;justify-content:center;color:var(--p);flex-shrink:0;}
+.kl__eczane-ico svg{width:19px;height:19px;}
+.kl__eczane-title{font-size:14px;font-weight:700;color:#1a1340;}
+.kl__eczane-sub{font-size:11px;color:rgba(73,61,154,.48);margin-top:1px;}
+.kl__eczane-list{display:flex;flex-direction:column;gap:6px;}
+.kl__eczane-item{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:#f8f6ff;border-radius:10px;border:1px solid rgba(73,61,154,.07);text-decoration:none;color:#1a1340;transition:background .15s;}
+.kl__eczane-item:hover{background:#f0eeff;}
+.kl__eczane-item-left{display:flex;flex-direction:column;gap:2px;}
+.kl__eczane-name{font-size:13px;font-weight:700;color:#1a1340;}
+.kl__eczane-loc{font-size:11px;color:rgba(73,61,154,.48);}
+.kl__eczane-item svg{width:13px;height:13px;color:rgba(73,61,154,.3);flex-shrink:0;}
+.kl__eczane-more{display:block;text-align:center;font-size:12px;font-weight:700;color:var(--p);text-decoration:none;margin-top:10px;padding:8px;border-radius:8px;background:rgba(73,61,154,.05);transition:background .15s;}
+.kl__eczane-more:hover{background:rgba(73,61,154,.1);}
+.kl__footer{margin-top:28px;display:flex;gap:10px;}
+.kl__footer a{width:36px;height:36px;border-radius:50%;background:rgba(73,61,154,.08);border:1px solid rgba(73,61,154,.1);display:flex;align-items:center;justify-content:center;color:var(--p);text-decoration:none;transition:background .15s,transform .15s;}
+.kl__footer a:hover{background:rgba(73,61,154,.14);transform:translateY(-2px);}
+.kl__footer svg{width:16px;height:16px;}
+.kl__copyright{margin-top:18px;font-size:10px;color:rgba(73,61,154,.28);text-align:center;}
+</style>
+
+<div class="kl">
+  <a href="{{ section.settings.cal_link | default: 'https://cal.com' }}" target="_blank" rel="noopener" class="kl__cal-card">
+    <div class="kl__cal-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01"/></svg></div>
+    <div class="kl__cal-text"><span class="kl__cal-label">15 Dakika Ücretsiz Randevu</span><span class="kl__cal-sub">Eczacımızla birebir görüşme ayarla</span></div>
+    <span class="kl__cal-arr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></span>
+  </a>
+
+  <ul class="kl__list">
+    <li class="kl__item"><a href="https://www.trendyol.com/magaza/ki-shop-m-1205638" target="_blank" rel="noopener"><span class="kl__icon kl__icon--trendyol"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg></span><span class="kl__text"><span class="kl__label">Trendyol Mağazamız</span><span class="kl__sub">Trendyol'dan sipariş ver</span></span><span class="kl__arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></span></a></li>
+    <li class="kl__item"><a href="/pages/ki-rehberi"><span class="kl__icon kl__icon--rehber"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><line x1="12" y1="7" x2="16" y2="7"/><line x1="10" y1="11" x2="16" y2="11"/><line x1="10" y1="15" x2="14" y2="15"/></svg></span><span class="kl__text"><span class="kl__label">.ki Sağlık Rehberi</span><span class="kl__sub">Regl, intim bakım ve menopoz — uzman eczacı</span></span><span class="kl__arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></span></a></li>
+    <li class="kl__item"><a href="https://drawpms.com" target="_blank" rel="noopener"><span class="kl__icon kl__icon--drawpms"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="M2 2l7.586 7.586"/><circle cx="11" cy="11" r="2"/></svg></span><span class="kl__text"><span class="kl__label">Draw PMS</span><span class="kl__sub">PMS deneyimini çiz, paylaş, normalleştir</span></span><span class="kl__arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></span></a></li>
+    <li class="kl__item"><a href="/pages/staj"><span class="kl__icon kl__icon--staj"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg></span><span class="kl__text"><span class="kl__label">Staj Programı 2026</span><span class="kl__sub">Gerçek projeler, birebir mentörlük</span></span><span class="kl__arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></span></a></li>
+    <li class="kl__item"><a href="/pages/kampus"><span class="kl__icon kl__icon--ambassador"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></span><span class="kl__text"><span class="kl__label">.ki Elçisi Ol</span><span class="kl__sub">Kampüsünde .ki'yi temsil et, kazan</span></span><span class="kl__arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></span></a></li>
+    <li class="kl__item"><a href="https://www.instagram.com/carewithki" target="_blank" rel="noopener"><span class="kl__icon kl__icon--instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></span><span class="kl__text"><span class="kl__label">Instagram</span><span class="kl__sub">@carewithki</span></span><span class="kl__arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></span></a></li>
+    <li class="kl__item"><a href="https://www.tiktok.com/@carewithki" target="_blank" rel="noopener"><span class="kl__icon kl__icon--tiktok"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.77 1.52V6.76a4.85 4.85 0 0 1-1-.07z"/></svg></span><span class="kl__text"><span class="kl__label">TikTok</span><span class="kl__sub">@carewithki</span></span><span class="kl__arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></span></a></li>
+    <li class="kl__item"><a href="https://youtube.com/@carewithki" target="_blank" rel="noopener"><span class="kl__icon kl__icon--youtube"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M23 7s-.3-2-1.2-2.7c-1.1-1.2-2.4-1.2-3-1.3C16.6 3 12 3 12 3s-4.6 0-6.8.1c-.6.1-1.9.1-3 1.3C1.3 5 1 7 1 7S.7 9.1.7 11.3v2c0 2.2.3 4.3.3 4.3s.3 2 1.2 2.7c1.1 1.2 2.6 1.1 3.3 1.2C7.3 21.7 12 21.7 12 21.7s4.6 0 6.8-.2c.6-.1 1.9-.1 3-1.3.9-.7 1.2-2.7 1.2-2.7s.3-2.1.3-4.3v-2C23.3 9.1 23 7 23 7zm-13.5 8.8V8.2l8 3.8-8 3.8z"/></svg></span><span class="kl__text"><span class="kl__label">YouTube</span><span class="kl__sub">@carewithki</span></span><span class="kl__arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></span></a></li>
+    <li class="kl__item"><a href="https://wa.me/905335745535" target="_blank" rel="noopener"><span class="kl__icon kl__icon--whatsapp"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg></span><span class="kl__text"><span class="kl__label">WhatsApp Danışma</span><span class="kl__sub">+90 533 574 55 35</span></span><span class="kl__arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></span></a></li>
+  </ul>
+
+  <div class="kl__products-wrap">
+    <button class="kl__products-toggle" id="kl-products-btn" aria-expanded="false" aria-controls="kl-products-panel">
+      <span class="kl__products-toggle-left">
+        <span class="kl__products-toggle-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg></span>
+        Ürünlerimiz
+      </span>
+      <span class="kl__products-toggle-right">
+        <span style="font-size:11px;font-weight:600;color:rgba(73,61,154,.4);">4 ürün</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </span>
+    </button>
+    <div class="kl__products-panel" id="kl-products-panel">
+      <div class="kl__products">
+        <a href="/products/balance-your-cycle" class="kl__product">
+          <img src="https://cdn.shopify.com/s/files/1/0759/3659/6219/files/1_7c12a08d-d662-45a4-811c-6904eda99e3a_400x.jpg?v=1780933843" alt=".ki Balance" class="kl__product-img" loading="lazy">
+          <span class="kl__product-name">.ki Balance</span><span class="kl__product-price">1.400 ₺</span>
+        </a>
+        <a href="/products/change-is-good" class="kl__product">
+          <img src="https://cdn.shopify.com/s/files/1/0759/3659/6219/files/1_626fdd59-7e6e-4111-a66c-48c6fa9a26b0_400x.jpg?v=1780934189" alt=".ki Change" class="kl__product-img" loading="lazy">
+          <span class="kl__product-name">.ki Change</span><span class="kl__product-price">1.500 ₺</span>
+        </a>
+        <a href="/products/ki-50-care-intim-bakim-jeli" class="kl__product">
+          <img src="https://cdn.shopify.com/s/files/1/0759/3659/6219/files/1_c1ebe493-7a3b-4b13-bd65-55da896bf9a8_400x.jpg?v=1780934474" alt=".ki 50+.care" class="kl__product-img" loading="lazy">
+          <span class="kl__product-name">.ki 50+.care</span><span class="kl__product-price">1.500 ₺</span>
+        </a>
+        <a href="/products/ki-intimate-intim-bakim-spreyi" class="kl__product">
+          <img src="https://cdn.shopify.com/s/files/1/0759/3659/6219/files/1_1d08c762-1374-4436-8995-d17845e869d2_400x.jpg?v=1780934362" alt=".ki intimate" class="kl__product-img" loading="lazy">
+          <span class="kl__product-name">.ki intimate</span><span class="kl__product-price">950 ₺</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="kl__eczane-wrap">
+    <div class="kl__eczane-card">
+      <div class="kl__eczane-header">
+        <span class="kl__eczane-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span>
+        <div><div class="kl__eczane-title">Anlaşmalı Eczanelerimiz</div><div class="kl__eczane-sub">.ki ürünlerini yanı başında bul</div></div>
+      </div>
+      <div class="kl__eczane-list">
+        <a href="/pages/anlasmali-ezcaneler" class="kl__eczane-item"><span class="kl__eczane-item-left"><span class="kl__eczane-name">İzmir Eczaneleri</span><span class="kl__eczane-loc">İzmir &amp; çevresi</span></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></a>
+        <a href="/pages/anlasmali-ezcaneler" class="kl__eczane-item"><span class="kl__eczane-item-left"><span class="kl__eczane-name">Manisa Eczaneleri</span><span class="kl__eczane-loc">Manisa &amp; çevresi</span></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></a>
+        <a href="/pages/anlasmali-ezcaneler" class="kl__eczane-item"><span class="kl__eczane-item-left"><span class="kl__eczane-name">İstanbul Eczaneleri</span><span class="kl__eczane-loc">İstanbul</span></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></a>
+      </div>
+      <a href="/pages/anlasmali-ezcaneler" class="kl__eczane-more">Tüm eczaneleri gör →</a>
+    </div>
+  </div>
+
+  <div class="kl__footer">
+    <a href="https://www.instagram.com/carewithki" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
+    <a href="https://www.tiktok.com/@carewithki" target="_blank" rel="noopener" aria-label="TikTok"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.77 1.52V6.76a4.85 4.85 0 0 1-1-.07z"/></svg></a>
+    <a href="https://youtube.com/@carewithki" target="_blank" rel="noopener" aria-label="YouTube"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M23 7s-.3-2-1.2-2.7c-1.1-1.2-2.4-1.2-3-1.3C16.6 3 12 3 12 3s-4.6 0-6.8.1c-.6.1-1.9.1-3 1.3C1.3 5 1 7 1 7S.7 9.1.7 11.3v2c0 2.2.3 4.3.3 4.3s.3 2 1.2 2.7c1.1 1.2 2.6 1.1 3.3 1.2C7.3 21.7 12 21.7 12 21.7s4.6 0 6.8-.2c.6-.1 1.9-.1 3-1.3.9-.7 1.2-2.7 1.2-2.7s.3-2.1.3-4.3v-2C23.3 9.1 23 7 23 7zm-13.5 8.8V8.2l8 3.8-8 3.8z"/></svg></a>
+  </div>
+  <p class="kl__copyright">carewithki.com &copy; {{ 'now' | date: '%Y' }}</p>
+</div>
+
+<script>
+(function(){
+  var btn=document.getElementById('kl-products-btn');
+  var panel=document.getElementById('kl-products-panel');
+  if(!btn||!panel) return;
+  btn.addEventListener('click',function(){
+    var open=panel.classList.toggle('is-open');
+    btn.setAttribute('aria-expanded',open);
+  });
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Links Sayfas\u0131 (.ki)",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {"type":"url","id":"cal_link","label":"Cal.com randevu linki"}
+  ],
+  "presets":[{"name":"Links Sayfas\u0131 (.ki)"}]
+}
+{% endschema %}

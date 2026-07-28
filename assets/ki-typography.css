@@ -1,0 +1,49 @@
+/*
+  ki-typography.css
+  Kapsam: Sadece .ki ozel section class'lari
+  Hero (kh3-title) kendi CSS'inde 800 weight kullaniyor - dokunulmaz.
+*/
+
+/* =============================================
+   TUM SECTION BASLIKLAR
+   Raleway, mor (#493d9a), font-weight 600
+   Boyut: clamp(26px, 3.4vw, 42px) - hepsi esit
+   ============================================= */
+
+.rcs-title,
+.ugc-title,
+.kpak-title,
+.kcat-heading,
+.mcs2-title,
+.psc-heading,
+.psc-bh-title,
+.faq__title,
+.qam__heading,
+.sia__title,
+.kinc-heading,
+.kn-heading {
+  font-family: 'Raleway', system-ui, sans-serif !important;
+  font-size: clamp(26px, 3.4vw, 42px) !important;
+  font-weight: 600 !important;
+  color: #493d9a !important;
+  letter-spacing: -0.02em !important;
+  line-height: 1.1 !important;
+  background: none !important;
+  -webkit-background-clip: unset !important;
+  -webkit-text-fill-color: #493d9a !important;
+  background-clip: unset !important;
+}
+
+/* Eyebrow'lar: 500 */
+.rcs-eyebrow,
+.ugc-eyebrow,
+.kpak-eyebrow,
+.kcat-eyebrow,
+.mcs2-eyebrow,
+.faq__eyebrow,
+.sia__eyebrow {
+  font-weight: 500 !important;
+}
+
+/* Bundle fiyat */
+.psc-bh-final { font-weight: 700 !important; }

@@ -1,0 +1,344 @@
+{% comment %}.ki PDP Hero v21 — AJAX cart add, cross-product variant destegi{% endcomment %}
+
+{{ 'ki-pdp.css' | asset_url | stylesheet_tag }}
+<link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+*,*::before,*::after{box-sizing:border-box;}
+.kipdp-{{ section.id }}{--p:#493d9a;--pd:#3b3280;--lil:#dad2ff;--plite:rgba(73,61,154,0.05);--pbdr:rgba(73,61,154,0.15);--bg:{{ section.settings.bg | default: '#ffffff' }};--txt:{{ section.settings.text_color | default: '#111111' }};--mut:{{ section.settings.muted_color | default: '#666666' }};background:var(--bg);font-family:system-ui,sans-serif;overflow-x:hidden;}
+.kipdp-{{ section.id }} .kipdp-inner{max-width:1200px;margin:0 auto;padding:{{ section.settings.pad_y | default: 32 }}px {{ section.settings.pad_x | default: 32 }}px;display:flex;flex-direction:row;gap:56px;align-items:start;}
+.kipdp-{{ section.id }} .kipdp-gallery{flex:0 0 52%;max-width:52%;position:relative;min-width:0;}
+.kipdp-{{ section.id }} .kipdp-info{flex:1;min-width:0;color:var(--txt);}
+.kipdp-{{ section.id }} .kipdp-main-img{position:relative;border-radius:16px;overflow:hidden;background:#f5f5f7;aspect-ratio:1/1;margin-bottom:10px;touch-action:pan-y pinch-zoom;cursor:grab;}
+.kipdp-{{ section.id }} .kipdp-main-img:active{cursor:grabbing;}
+.kipdp-{{ section.id }} .kipdp-swipe-track{display:flex;height:100%;transition:transform .35s cubic-bezier(.4,0,.2,1);will-change:transform;}
+.kipdp-{{ section.id }} .kipdp-swipe-slide{flex:0 0 100%;height:100%;position:relative;}
+.kipdp-{{ section.id }} .kipdp-swipe-slide img{width:100%;height:100%;object-fit:contain;display:block;pointer-events:none;user-select:none;-webkit-user-drag:none;}
+.kipdp-{{ section.id }} .ki-dots{position:absolute;bottom:14px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:5px;z-index:10;pointer-events:none;}
+.kipdp-{{ section.id }} .ki-dot{height:6px;border-radius:50px;background:rgba(255,255,255,.5);transition:width .3s cubic-bezier(.34,1.56,.64,1),background .3s;width:6px;}
+.kipdp-{{ section.id }} .ki-dot.is-active{width:22px;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.2);}
+.kipdp-{{ section.id }} .kipdp-thumbs{display:flex;gap:8px;overflow-x:auto;padding:4px 0;scrollbar-width:none;-webkit-overflow-scrolling:touch;}
+.kipdp-{{ section.id }} .kipdp-thumbs::-webkit-scrollbar{display:none;}
+.kipdp-{{ section.id }} .kipdp-thumb{flex-shrink:0;width:72px;height:72px;border-radius:10px;overflow:hidden;border:2px solid transparent;cursor:pointer;opacity:.55;transform:scale(.95);transition:all .18s;background:#f5f5f7;-webkit-tap-highlight-color:transparent;touch-action:manipulation;}
+.kipdp-{{ section.id }} .kipdp-thumb img{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none;}
+.kipdp-{{ section.id }} .kipdp-thumb:hover{opacity:.8;transform:scale(.97);border-color:rgba(73,61,154,.35);}
+.kipdp-{{ section.id }} .kipdp-thumb.is-active{opacity:1;transform:scale(1);border-color:#493d9a;box-shadow:0 0 0 1px rgba(73,61,154,.2);}
+.kipdp-{{ section.id }} .kipdp-eyebrow{font-size:10px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--p);margin:0 0 10px;display:block;}
+.kipdp-{{ section.id }} .kipdp-title{font-family:'Raleway',system-ui,sans-serif;font-size:clamp(22px,2.6vw,34px);font-weight:700;color:var(--txt);margin:0 0 10px;line-height:1.15;letter-spacing:-.02em;}
+.kipdp-{{ section.id }} .kipdp-bundle-tags{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 14px;}
+.kipdp-{{ section.id }} .kipdp-bundle-tag{display:inline-flex;align-items:center;gap:6px;padding:5px 11px 5px 8px;background:rgba(73,61,154,.07);border:1px solid rgba(73,61,154,.15);border-radius:50px;font-size:12px;font-weight:600;color:#493d9a;white-space:nowrap;}
+.kipdp-{{ section.id }} .kipdp-bundle-tag__icon{width:22px;height:22px;border-radius:50%;background:rgba(73,61,154,.12);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.kipdp-{{ section.id }} .kipdp-bundle-tag__icon svg{width:12px;height:12px;color:#493d9a;}
+.kipdp-{{ section.id }} .kipdp-bundle-tag__icon img{width:14px;height:14px;object-fit:contain;border-radius:50%;}
+.kipdp-{{ section.id }} .kipdp-stars-row{display:flex;align-items:center;gap:6px;margin-bottom:14px;flex-wrap:wrap;}
+.kipdp-{{ section.id }} .kipdp-stars{display:flex;gap:2px;}
+.kipdp-{{ section.id }} .kipdp-stars svg{width:14px;height:14px;fill:#f5a623;stroke:none;}
+.kipdp-{{ section.id }} .kipdp-rnum{font-size:13px;font-weight:700;color:var(--txt);}
+.kipdp-{{ section.id }} .kipdp-rmax{font-size:13px;color:#ccc;}
+.kipdp-{{ section.id }} .kipdp-rcnt{font-size:12px;color:var(--mut);}
+.kipdp-{{ section.id }} .kipdp-desc{font-size:14px;line-height:1.7;color:var(--mut);margin:0 0 20px;}
+.kipdp-{{ section.id }} .kipdp-opt-heading{font-size:12px;font-weight:600;color:var(--p);margin:0 0 10px;}
+.kipdp-{{ section.id }} .kipdp-opts{display:flex;flex-direction:column;gap:10px;margin-bottom:16px;}
+.kipdp-{{ section.id }} .kipdp-opt{position:relative;border:1.5px solid var(--pbdr);border-radius:14px;padding:14px 16px;display:flex;align-items:center;gap:12px;cursor:pointer;background:#fff;transition:border-color .25s,background .2s,box-shadow .25s,transform .2s;-webkit-tap-highlight-color:transparent;user-select:none;touch-action:manipulation;}
+.kipdp-{{ section.id }} .kipdp-opt:hover{border-color:rgba(73,61,154,.32);box-shadow:0 3px 16px rgba(73,61,154,.08);transform:translateY(-1px);}
+.kipdp-{{ section.id }} .kipdp-opt.is-sel{border-color:var(--p);background:var(--plite);box-shadow:0 4px 20px rgba(73,61,154,.14);transform:translateY(0);}
+.kipdp-{{ section.id }} .kipdp-badge{position:absolute;top:-11px;right:14px;background:#b03a2e;color:#fff;font-size:10px;font-weight:700;padding:3px 10px;border-radius:50px;pointer-events:none;}
+.kipdp-{{ section.id }} .kipdp-check{flex-shrink:0;width:22px;height:22px;border-radius:50%;border:1.5px solid var(--pbdr);display:flex;align-items:center;justify-content:center;background:#fff;pointer-events:none;transition:border-color .25s,background .25s,transform .25s;}
+.kipdp-{{ section.id }} .kipdp-opt.is-sel .kipdp-check{border-color:var(--p);background:var(--p);transform:scale(1.08);}
+.kipdp-{{ section.id }} .kipdp-check svg{width:11px;height:11px;stroke:#fff;stroke-width:2.5px;transform:scale(.6);opacity:0;transition:opacity .2s,transform .3s;pointer-events:none;}
+.kipdp-{{ section.id }} .kipdp-opt.is-sel .kipdp-check svg{opacity:1;transform:scale(1);}
+.kipdp-{{ section.id }} .kipdp-opt-body{flex:1;min-width:0;pointer-events:none;}
+.kipdp-{{ section.id }} .kipdp-opt-name{font-size:14px;font-weight:700;color:var(--txt);margin:0 0 2px;display:flex;align-items:baseline;gap:5px;flex-wrap:wrap;}
+.kipdp-{{ section.id }} .kipdp-opt-qty{font-size:12px;font-weight:400;color:var(--mut);}
+.kipdp-{{ section.id }} .kipdp-opt-sub{font-size:12px;color:var(--mut);margin:0;}
+.kipdp-{{ section.id }} .kipdp-opt-price{text-align:right;flex-shrink:0;display:flex;flex-direction:column;align-items:flex-end;gap:1px;pointer-events:none;}
+.kipdp-{{ section.id }} .kipdp-cmp{font-size:11px;color:#c0c0c0;text-decoration:line-through;}
+.kipdp-{{ section.id }} .kipdp-main{font-size:19px;font-weight:800;color:var(--p);line-height:1;}
+.kipdp-{{ section.id }} .kipdp-per{font-size:11px;color:var(--mut);}
+/* ATC butonu — tek ortak buton */
+.kipdp-{{ section.id }} .kipdp-atc{display:flex;align-items:center;justify-content:center;gap:9px;width:100%;padding:15px 24px;background:linear-gradient(135deg,#5a4daa 0%,#493d9a 50%,#3d3388 100%);color:#fff;font-family:'Raleway',system-ui,sans-serif;font-size:15px;font-weight:700;letter-spacing:.02em;border:none;border-radius:12px;cursor:pointer;box-shadow:0 4px 20px rgba(73,61,154,.28),inset 0 1px 0 rgba(255,255,255,.12);transition:box-shadow .25s,transform .2s,background .2s;position:relative;overflow:hidden;-webkit-tap-highlight-color:transparent;touch-action:manipulation;text-decoration:none;}
+.kipdp-{{ section.id }} .kipdp-atc::before{content:'';position:absolute;top:0;left:-100%;width:60%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.18),transparent);transition:left .5s;pointer-events:none;}
+.kipdp-{{ section.id }} .kipdp-atc:hover::before{left:160%;}
+.kipdp-{{ section.id }} .kipdp-atc:hover{box-shadow:0 8px 28px rgba(73,61,154,.38);transform:translateY(-2px);color:#fff;}
+.kipdp-{{ section.id }} .kipdp-atc:active{transform:translateY(0) scale(.98);}
+.kipdp-{{ section.id }} .kipdp-atc.is-loading{pointer-events:none;opacity:.8;}
+.kipdp-{{ section.id }} .kipdp-atc.is-done{background:linear-gradient(135deg,#2d9e5f,#248a50);}
+.kipdp-{{ section.id }} .kipdp-atc svg{width:17px;height:17px;flex-shrink:0;pointer-events:none;}
+.kipdp-{{ section.id }} .kipdp-trust{text-align:center;font-size:12px;color:var(--mut);margin:10px 0 0;}
+.kipdp-{{ section.id }} .kipdp-divider{height:1px;background:rgba(73,61,154,.08);margin:14px 0;}
+.kipdp-{{ section.id }} .kipdp-badges{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:16px 0 0;}
+.kipdp-{{ section.id }} .kipdp-badge-item{display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:6px;background:rgba(73,61,154,.04);border:1px solid rgba(73,61,154,.09);border-radius:12px;padding:14px 8px 12px;text-align:center;}
+.kipdp-{{ section.id }} .ki-badge-ico{width:36px;height:36px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.kipdp-{{ section.id }} .ki-badge-ico svg{width:30px;height:30px;stroke:#493d9a;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;fill:none;display:block;}
+.kipdp-{{ section.id }} .ki-badge-ico img{width:36px;height:36px;object-fit:contain;display:block;filter:brightness(0) saturate(100%) invert(27%) sepia(52%) saturate(800%) hue-rotate(218deg) brightness(85%);}
+.kipdp-{{ section.id }} .kipdp-badge-item > span.ki-badge-label{font-size:10px;font-weight:700;color:var(--p);line-height:1.2;display:block;}
+.kipdp-{{ section.id }} .kipdp-feats{display:grid;grid-template-columns:1fr 1fr;gap:8px 12px;}
+.kipdp-{{ section.id }} .kipdp-feat{display:flex;align-items:center;gap:7px;font-size:12px;font-weight:500;color:var(--p);}
+.kipdp-{{ section.id }} .kipdp-feat img{width:16px;height:16px;object-fit:contain;flex-shrink:0;}
+.kipdp-{{ section.id }} .kipdp-feat-dot{flex-shrink:0;width:14px;height:14px;border-radius:50%;border:1.5px solid rgba(73,61,154,.3);display:flex;align-items:center;justify-content:center;}
+.kipdp-{{ section.id }} .kipdp-feat-dot::after{content:'';width:4px;height:4px;border-radius:50%;background:var(--p);opacity:.7;}
+@media screen and (max-width:860px){
+  .kipdp-{{ section.id }} .kipdp-inner{flex-direction:column;gap:0;padding:0;width:100%;}
+  .kipdp-{{ section.id }} .kipdp-gallery{flex:none;max-width:100%;width:100%;}
+  .kipdp-{{ section.id }} .kipdp-main-img{border-radius:0;aspect-ratio:1/1;margin-bottom:0;}
+  .kipdp-{{ section.id }} .kipdp-thumbs{padding:10px 16px;}
+  .kipdp-{{ section.id }} .kipdp-thumb{width:62px;height:62px;}
+  .kipdp-{{ section.id }} .kipdp-info{padding:20px 16px 40px;width:100%;}
+  .kipdp-{{ section.id }} .kipdp-title{font-size:clamp(20px,5.5vw,28px);word-break:break-word;}
+  .kipdp-{{ section.id }} .kipdp-main{font-size:17px;}
+  .kipdp-{{ section.id }} .kipdp-badges{grid-template-columns:repeat(4,1fr);gap:6px;}
+  .kipdp-{{ section.id }} .kipdp-badge-item{padding:10px 4px;border-radius:10px;}
+  .kipdp-{{ section.id }} .ki-badge-ico{width:28px;height:28px;}
+  .kipdp-{{ section.id }} .ki-badge-ico svg{width:24px;height:24px;}
+  .kipdp-{{ section.id }} .ki-badge-ico img{width:28px;height:28px;}
+  .kipdp-{{ section.id }} .kipdp-badge-item > span.ki-badge-label{font-size:9px;}
+  .kipdp-{{ section.id }} .kipdp-opt{padding:12px;}
+  .kipdp-{{ section.id }} .kipdp-opt-name{font-size:13px;}
+}
+@media screen and (max-width:400px){.kipdp-{{ section.id }} .kipdp-badges{grid-template-columns:repeat(2,1fr);}}
+</style>
+
+{%- assign cv         = product.selected_or_first_available_variant -%}
+{%- assign form_id    = 'kipdp-' | append: section.id -%}
+{%- assign opt_blocks   = section.blocks | where: 'type', 'option_card' -%}
+{%- assign feat_blocks  = section.blocks | where: 'type', 'feature_item' -%}
+{%- assign btag_blocks  = section.blocks | where: 'type', 'bundle_tag' -%}
+{%- assign badge_blocks = section.blocks | where: 'type', 'badge_item' -%}
+{%- assign images       = product.images -%}
+
+<svg style="display:none" xmlns="http://www.w3.org/2000/svg">
+  <symbol id="ki-ico-fda" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6l1 6H8L9 3z"/><path d="M8 9c0 4 2 7 4 9 2-2 4-5 4-9"/><path d="M6 21h12"/><path d="M10 14h4"/></symbol>
+  <symbol id="ki-ico-gmp" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l7 3v6c0 4.5-3 8.5-7 10C8 19.5 5 15.5 5 11V5z"/><polyline points="9 12 11 14 15 10"/></symbol>
+  <symbol id="ki-ico-vegan" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></symbol>
+  <symbol id="ki-ico-shipping" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></symbol>
+  <symbol id="ki-ico-quality" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></symbol>
+  <symbol id="ki-ico-natural" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22V12"/><path d="M5 12c0-4 3-7 7-7s7 3 7 7"/><path d="M5 17c0-3 3-5 7-5s7 2 7 5"/></symbol>
+  <symbol id="ki-ico-clinical" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 18L4.5 5.5 2 2h20l-2.5 3.5L18 18"/><path d="M5 14h14"/><path d="M9 22h6"/><path d="M12 18v4"/></symbol>
+  <symbol id="ki-ico-pharma" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="4"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></symbol>
+  <symbol id="ki-ico-verified" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="9 12 11 14 15 10"/></symbol>
+  <symbol id="ki-ico-eco" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4v5h5"/><path d="M20 20v-5h-5"/><path d="M4 9a9 9 0 0 1 14.83-5.46"/><path d="M20 15a9 9 0 0 1-14.83 5.46"/></symbol>
+</svg>
+
+<section class="kipdp-{{ section.id }}" id="KiPDP-{{ section.id }}">
+  <div class="kipdp-inner">
+    <div class="kipdp-gallery">
+      <div class="kipdp-main-img" id="KiMainImg-{{ section.id }}">
+        <div class="kipdp-swipe-track" id="KiTrack-{{ section.id }}">
+          {%- if images.size > 0 -%}{%- for img in images -%}<div class="kipdp-swipe-slide"><img src="{{ img | image_url: width: 1000 }}" alt="{{ img.alt | escape }}" loading="{% if forloop.first %}eager{% else %}lazy{% endif %}" width="1000" height="1000"></div>{%- endfor -%}{%- else -%}<div class="kipdp-swipe-slide">{{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}</div>{%- endif -%}
+        </div>
+        {%- if images.size > 1 -%}<div class="ki-dots" id="KiDots-{{ section.id }}">{%- for img in images -%}<span class="ki-dot{% if forloop.first %} is-active{% endif %}"></span>{%- endfor -%}</div>{%- endif -%}
+      </div>
+      {%- if images.size > 1 -%}
+      <div class="kipdp-thumbs" id="KiThumbs-{{ section.id }}">{%- for img in images -%}<div class="kipdp-thumb{% if forloop.first %} is-active{% endif %}" data-idx="{{ forloop.index0 }}"><img src="{{ img | image_url: width: 160 }}" alt="{{ img.alt | escape }}" loading="lazy"></div>{%- endfor -%}</div>
+      {%- endif -%}
+    </div>
+
+    <div class="kipdp-info">
+      {%- if section.settings.collection_label != blank -%}<span class="kipdp-eyebrow">{{ section.settings.collection_label | escape }}</span>{%- elsif product.collections.first != blank -%}<span class="kipdp-eyebrow">{{ product.collections.first.title | escape }}</span>{%- endif -%}
+      <h1 class="kipdp-title">{{ product.title | escape }}</h1>
+
+      {%- if btag_blocks.size > 0 -%}
+      <div class="kipdp-bundle-tags">
+        {%- for block in btag_blocks -%}{%- if block.settings.label != blank -%}<span class="kipdp-bundle-tag" {{ block.shopify_attributes }}><span class="kipdp-bundle-tag__icon">{%- if block.settings.image != blank -%}{{ block.settings.image | image_url: width: 40 | image_tag: loading: 'lazy', alt: block.settings.label }}{%- else -%}{%- case block.settings.icon -%}{%- when 'capsule' -%}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="8" y="3" width="8" height="10" rx="4"/><rect x="8" y="11" width="8" height="10" rx="4"/><line x1="8" y1="12" x2="16" y2="12"/></svg>{%- when 'circle' -%}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="2" fill="currentColor" stroke="none"/></svg>{%- when 'spray' -%}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="8" y="6" width="8" height="14" rx="3"/><path d="M12 6V3"/><path d="M10 3h4"/></svg>{%- when 'drop' -%}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3C12 3 6 9.5 6 14a6 6 0 0 0 12 0c0-4.5-6-11-6-11z"/></svg>{%- when 'sun' -%}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/><line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/></svg>{%- when 'shield' -%}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2l7 3v6c0 4.5-3 8.5-7 10C8 19.5 5 15.5 5 11V5z"/></svg>{%- when 'sparkle' -%}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2l1.5 4.5L18 8l-4.5 1.5L12 14l-1.5-4.5L6 8l4.5-1.5z"/></svg>{%- else -%}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="5"/></svg>{%- endcase -%}{%- endif -%}</span>{{ block.settings.label | escape }}</span>{%- endif -%}{%- endfor -%}
+      </div>
+      {%- endif -%}
+
+      <div class="kipdp-stars-row">
+        <div class="kipdp-stars">{%- for i in (1..5) -%}<svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>{%- endfor -%}</div>
+        <span class="kipdp-rnum">{{ section.settings.review_rating | default: '4.9' }}</span>
+        <span class="kipdp-rmax">/ 5</span>
+        <span class="kipdp-rcnt">({{ section.settings.review_count | default: '1.240+' }} de&#287;erlendirme)</span>
+      </div>
+
+      {%- if product.description != blank -%}<div class="kipdp-desc">{{ product.description }}</div>{%- endif -%}
+      <p class="kipdp-opt-heading">{{ section.settings.purchase_heading | default: 'Sat\u0131n alma se\u00e7ene\u011fi' | escape }}</p>
+
+      {%- if opt_blocks.size > 0 -%}
+      <div class="kipdp-opts" id="KiOpts-{{ section.id }}">
+        {%- for block in opt_blocks -%}
+        <div class="kipdp-opt{% if forloop.first %} is-sel{% endif %}"
+          data-vid="{{ block.settings.variant_id }}"
+          data-label="{{ block.settings.cta_override | default: section.settings.cta_label | default: 'Sepete Ekle' | escape }}"
+          {{ block.shopify_attributes }}>
+          {%- if block.settings.badge != blank -%}<span class="kipdp-badge">{{ block.settings.badge | escape }}</span>{%- endif -%}
+          <div class="kipdp-check"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <div class="kipdp-opt-body"><p class="kipdp-opt-name">{{ block.settings.title | escape }}{%- if block.settings.qty != blank -%}<span class="kipdp-opt-qty">&middot; {{ block.settings.qty | escape }}</span>{%- endif -%}</p>{%- if block.settings.subtitle != blank -%}<p class="kipdp-opt-sub">{{ block.settings.subtitle | escape }}</p>{%- endif -%}</div>
+          <div class="kipdp-opt-price">{%- if block.settings.compare_price != blank -%}<span class="kipdp-cmp">{{ block.settings.compare_price | escape }}</span>{%- endif -%}<span class="kipdp-main">{{ block.settings.price | escape }}</span>{%- if block.settings.per_unit != blank -%}<span class="kipdp-per">{{ block.settings.per_unit | escape }}</span>{%- endif -%}</div>
+        </div>
+        {%- endfor -%}
+      </div>
+      {%- endif -%}
+
+      {%- comment %}Tek buton — AJAX ile sepete ekler, variant_id yoksa product default variant kullanir{% endcomment -%}
+      <button type="button" class="kipdp-atc" id="KiAtc-{{ section.id }}">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+        <span id="KiAtcTxt-{{ section.id }}">{{ section.settings.cta_label | default: 'Sepete Ekle' | escape }}</span>
+      </button>
+
+      {%- if section.settings.trust_note != blank -%}<p class="kipdp-trust">{{ section.settings.trust_note | escape }}</p>{%- endif -%}
+
+      {%- if badge_blocks.size > 0 -%}
+      <div class="kipdp-badges">
+        {%- for block in badge_blocks -%}
+        <div class="kipdp-badge-item" {{ block.shopify_attributes }}>
+          <span class="ki-badge-ico">
+            {%- if block.settings.badge_image != blank -%}<img src="{{ block.settings.badge_image | image_url: width: 80 }}" alt="{{ block.settings.badge_label | escape }}" loading="lazy">
+            {%- else -%}{%- case block.settings.badge_icon -%}{%- when 'fda' -%}<svg viewBox="0 0 24 24"><use href="#ki-ico-fda"/></svg>{%- when 'gmp' -%}<svg viewBox="0 0 24 24"><use href="#ki-ico-gmp"/></svg>{%- when 'vegan' -%}<svg viewBox="0 0 24 24"><use href="#ki-ico-vegan"/></svg>{%- when 'shipping' -%}<svg viewBox="0 0 24 24"><use href="#ki-ico-shipping"/></svg>{%- when 'quality' -%}<svg viewBox="0 0 24 24"><use href="#ki-ico-quality"/></svg>{%- when 'natural' -%}<svg viewBox="0 0 24 24"><use href="#ki-ico-natural"/></svg>{%- when 'clinical' -%}<svg viewBox="0 0 24 24"><use href="#ki-ico-clinical"/></svg>{%- when 'pharma' -%}<svg viewBox="0 0 24 24"><use href="#ki-ico-pharma"/></svg>{%- when 'verified' -%}<svg viewBox="0 0 24 24"><use href="#ki-ico-verified"/></svg>{%- when 'eco' -%}<svg viewBox="0 0 24 24"><use href="#ki-ico-eco"/></svg>{%- else -%}<svg viewBox="0 0 24 24"><use href="#ki-ico-gmp"/></svg>{%- endcase -%}{%- endif -%}
+          </span>
+          {%- if block.settings.badge_label != blank -%}<span class="ki-badge-label">{{ block.settings.badge_label | escape }}</span>{%- endif -%}
+        </div>
+        {%- endfor -%}
+      </div>
+      {%- endif -%}
+
+      {%- if feat_blocks.size > 0 -%}
+      <div class="kipdp-divider"></div>
+      <div class="kipdp-feats">{%- for block in feat_blocks -%}{%- if block.settings.label != blank -%}<div class="kipdp-feat" {{ block.shopify_attributes }}>{%- if block.settings.icon != blank -%}<img src="{{ block.settings.icon | image_url: width: 40 }}" alt="" width="16" height="16">{%- else -%}<span class="kipdp-feat-dot"></span>{%- endif -%}{{ block.settings.label | escape }}</div>{%- endif -%}{%- endfor -%}</div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+<script>
+(function(){
+  var sid='{{ section.id }}';
+  var defaultVid='{{ cv.id }}';
+  var totalSlides={{ images.size | default: 1 }};
+  var currentIdx=0;
+  var activeVid=defaultVid;
+  var activeLabel='{{ section.settings.cta_label | default: "Sepete Ekle" | escape }}';
+
+  function selectOpt(opt){
+    var optsEl=document.getElementById('KiOpts-'+sid);
+    if(!optsEl||!opt) return;
+    optsEl.querySelectorAll('.kipdp-opt').forEach(function(o){o.classList.remove('is-sel');});
+    opt.classList.add('is-sel');
+    var vid=(opt.getAttribute('data-vid')||'').trim();
+    var label=(opt.getAttribute('data-label')||activeLabel).trim();
+    /* variant_id bossa default product variant kullan */
+    activeVid = (vid && vid!=='nil' && vid!=='') ? vid : defaultVid;
+    activeLabel = label;
+    var txt=document.getElementById('KiAtcTxt-'+sid);
+    if(txt) txt.textContent=label;
+    /* Butonu sifirla */
+    var btn=document.getElementById('KiAtc-'+sid);
+    if(btn){ btn.classList.remove('is-done','is-loading'); }
+  }
+
+  function addToCart(){
+    var btn=document.getElementById('KiAtc-'+sid);
+    var txt=document.getElementById('KiAtcTxt-'+sid);
+    if(!btn||btn.classList.contains('is-loading')) return;
+    btn.classList.add('is-loading');
+    fetch('/cart/add.js',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','X-Requested-With':'XMLHttpRequest'},
+      body:JSON.stringify({id:activeVid,quantity:1})
+    })
+    .then(function(r){return r.json();})
+    .then(function(data){
+      btn.classList.remove('is-loading');
+      if(data.status&&data.status!==200&&data.status!==422){
+        /* Hata — fallback: cart sayfasina yonlendir */
+        window.location.href='/cart';
+        return;
+      }
+      btn.classList.add('is-done');
+      if(txt) txt.textContent='\u2713 Sepete Eklendi';
+      /* Tema cart drawer/popup tetikle */
+      document.dispatchEvent(new CustomEvent('cart:refresh',{bubbles:true}));
+      var cartCount=document.querySelectorAll('[data-cart-count],[data-cart-item-count],[js-cart-count]');
+      /* 1.5sn sonra normal hale don */
+      setTimeout(function(){
+        btn.classList.remove('is-done');
+        if(txt) txt.textContent=activeLabel;
+      },2500);
+    })
+    .catch(function(){
+      btn.classList.remove('is-loading');
+      window.location.href='/cart';
+    });
+  }
+
+  function init(){
+    var sec=document.getElementById('KiPDP-'+sid); if(!sec) return;
+    var track=document.getElementById('KiTrack-'+sid);
+    var dotsEl=document.getElementById('KiDots-'+sid);
+    var thumbsEl=document.getElementById('KiThumbs-'+sid);
+    function goTo(idx){
+      if(idx<0) idx=totalSlides-1; if(idx>=totalSlides) idx=0; currentIdx=idx;
+      if(track) track.style.transform='translateX(-'+(idx*100)+'%)';
+      if(dotsEl) dotsEl.querySelectorAll('.ki-dot').forEach(function(d,i){d.classList.toggle('is-active',i===idx);});
+      if(thumbsEl){thumbsEl.querySelectorAll('.kipdp-thumb').forEach(function(t,i){t.classList.toggle('is-active',i===idx);});var active=thumbsEl.querySelector('.kipdp-thumb.is-active');if(active)active.scrollIntoView({behavior:'smooth',inline:'center',block:'nearest'});}
+    }
+    if(thumbsEl) thumbsEl.addEventListener('click',function(e){var t=e.target.closest('.kipdp-thumb');if(t)goTo(parseInt(t.dataset.idx,10));});
+    var mainImg=document.getElementById('KiMainImg-'+sid);
+    if(mainImg&&totalSlides>1){
+      var startX=0,isDragging=false;
+      mainImg.addEventListener('touchstart',function(e){startX=e.touches[0].clientX;isDragging=true;},{passive:true});
+      mainImg.addEventListener('touchend',function(e){if(!isDragging)return;isDragging=false;var dx=e.changedTouches[0].clientX-startX;if(Math.abs(dx)>40)goTo(dx<0?currentIdx+1:currentIdx-1);},{passive:true});
+      mainImg.addEventListener('mousedown',function(e){startX=e.clientX;isDragging=true;e.preventDefault();});
+      window.addEventListener('mouseup',function(e){if(!isDragging)return;isDragging=false;var dx=e.clientX-startX;if(Math.abs(dx)>40)goTo(dx<0?currentIdx+1:currentIdx-1);});
+    }
+    var optsEl=document.getElementById('KiOpts-'+sid);
+    if(optsEl){
+      optsEl.addEventListener('click',function(e){var opt=e.target.closest('.kipdp-opt');if(opt)selectOpt(opt);});
+      var firstOpt=optsEl.querySelector('.kipdp-opt');
+      if(firstOpt) selectOpt(firstOpt);
+    }
+    var atcBtn=document.getElementById('KiAtc-'+sid);
+    if(atcBtn) atcBtn.addEventListener('click',addToCart);
+  }
+
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',init);
+  else init();
+  document.addEventListener('shopify:section:load',function(e){if(e.detail&&e.detail.sectionId===sid){currentIdx=0;activeVid=defaultVid;init();}});
+})();
+</script>
+
+{% schema %}
+{
+  "name": "PDP Hero (.ki)",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {"type":"header","content":"Layout"},
+    {"type":"range","id":"pad_y","min":0,"max":80,"step":4,"unit":"px","label":"Dikey dolgu","default":32},
+    {"type":"range","id":"pad_x","min":12,"max":60,"step":4,"unit":"px","label":"Yatay dolgu","default":32},
+    {"type":"color","id":"bg","label":"Arka plan","default":"#ffffff"},
+    {"type":"color","id":"text_color","label":"Metin","default":"#111111"},
+    {"type":"color","id":"muted_color","label":"\u0130kincil metin","default":"#666666"},
+    {"type":"header","content":"\u00dcr\u00fcn"},
+    {"type":"text","id":"collection_label","label":"Koleksiyon etiketi"},
+    {"type":"text","id":"review_rating","label":"Puan","default":"4.9"},
+    {"type":"text","id":"review_count","label":"De\u011ferlendirme","default":"1.240+"},
+    {"type":"header","content":"Sat\u0131n Alma"},
+    {"type":"text","id":"purchase_heading","label":"Se\u00e7enek ba\u015fl\u0131\u011f\u0131","default":"Sat\u0131n alma se\u00e7ene\u011fi"},
+    {"type":"text","id":"cta_label","label":"Buton","default":"Sepete Ekle"},
+    {"type":"text","id":"trust_note","label":"Kargo notu","default":"500\u20ba \u00fczeri \u00fccretsiz kargo \u00b7 30 g\u00fcn iade"}
+  ],
+  "blocks":[
+    {"type":"bundle_tag","name":"Bundle Etiketi","settings":[{"type":"text","id":"label","label":"\u00dcr\u00fcn ad\u0131","default":".ki Balance"},{"type":"select","id":"icon","label":"\u0130kon","default":"circle","options":[{"value":"circle","label":"Dairesel"},{"value":"capsule","label":"Kaps\u00fcl"},{"value":"spray","label":"Sprey"},{"value":"drop","label":"Damla"},{"value":"sun","label":"G\u00fcne\u015f"},{"value":"shield","label":"Kalkan"},{"value":"sparkle","label":"Par\u0131lt\u0131"},{"value":"default","label":"Varsay\u0131lan"}]},{"type":"image_picker","id":"image","label":"\u00d6zel g\u00f6rsel"}]},
+    {"type":"badge_item","name":"G\u00fcven Rozeti","settings":[{"type":"image_picker","id":"badge_image","label":"\ud83d\uddbc Gorsel Y\u00fckle","info":"Y\u00fcklerseniz ikon yerine bu g\u00f6r\u00fcn\u00fcr. Siyah/koyu PNG \u00f6nerilir."},{"type":"select","id":"badge_icon","label":"\ud83d\udccc Ikon (gorsel yoksa)","default":"gmp","options":[{"value":"fda","label":"\ud83e\uddea FDA Onayl\u0131"},{"value":"gmp","label":"\ud83d\udee1\ufe0f GMP Sertifikal\u0131"},{"value":"vegan","label":"\ud83c\udf3f Vegan"},{"value":"shipping","label":"\ud83d\udce6 \u00dccretsiz Kargo"},{"value":"quality","label":"\ud83c\udfc5 Kalite"},{"value":"natural","label":"\ud83c\udf31 Do\u011fal"},{"value":"clinical","label":"\ud83d\udd2c Klinik Test"},{"value":"pharma","label":"\u2795 Eczac\u0131 Onay\u0131"},{"value":"verified","label":"\u2705 Do\u011frulanm\u0131\u015f"},{"value":"eco","label":"\u267b\ufe0f \u00c7evre Dostu"}]},{"type":"text","id":"badge_label","label":"Etiket","default":"FDA Onayl\u0131"}]},
+    {"type":"option_card","name":"Sat\u0131n Alma Se\u00e7ene\u011fi","settings":[
+      {"type":"text","id":"title","label":"Ba\u015fl\u0131k","default":"Tekli Al\u0131m"},
+      {"type":"text","id":"qty","label":"Miktar","default":"1 Paket"},
+      {"type":"text","id":"subtitle","label":"Alt metin","default":"Tek seferlik"},
+      {"type":"text","id":"badge","label":"Rozet"},
+      {"type":"text","id":"price","label":"Fiyat","default":"1.400\u20ba"},
+      {"type":"text","id":"compare_price","label":"Eski fiyat"},
+      {"type":"text","id":"per_unit","label":"Birim fiyat"},
+      {"type":"text","id":"variant_id","label":"Varyant ID","info":"Bu secenegi sepete ekleyecek varyant ID. Bos birak = urun default varianti."},
+      {"type":"text","id":"cta_override","label":"Buton yazisi"}
+    ]},
+    {"type":"feature_item","name":"\u00d6zellik","settings":[{"type":"image_picker","id":"icon","label":"\u0130kon"},{"type":"text","id":"label","label":"Metin","default":"\u00d6zellik"}]}
+  ],
+  "presets":[{"name":"PDP Hero (.ki)","blocks":[
+    {"type":"option_card","settings":{"title":"Tekli Al\u0131m","qty":"1 Paket","subtitle":"Tek seferlik deneme al\u0131m\u0131","price":"1.400\u20ba","per_unit":"1.400\u20ba / paket"}},
+    {"type":"badge_item","settings":{"badge_icon":"fda","badge_label":"FDA Onayl\u0131"}},
+    {"type":"badge_item","settings":{"badge_icon":"gmp","badge_label":"GMP Sertifikal\u0131"}},
+    {"type":"badge_item","settings":{"badge_icon":"vegan","badge_label":"Vegan"}},
+    {"type":"badge_item","settings":{"badge_icon":"shipping","badge_label":"\u00dccretsiz Kargo"}}
+  ]}]
+}
+{% endschema %}

@@ -1,0 +1,515 @@
+{% comment %}
+  Product Showcase Grid — Ki Brand Kit
+  2 ürünlük tanıtım sayfası - Panel'den tamamen düzenlenebilir
+  
+  Brand kit:
+    #493d9a (main/purple-dark)
+    #f8f8f6 (offwhite)
+    #b2a5ff (primary/purple)
+    #dad2ff (lilac)
+{% endcomment %}
+
+{%- style -%}
+  /* Ki Brand Kit Variables */
+  .ki-product-showcase {
+    --ki-purple-dark: #493d9a;
+    --ki-offwhite: #f8f8f6;
+    --ki-purple: #b2a5ff;
+    --ki-lilac: #dad2ff;
+  }
+
+  /* Showcase Container */
+  .ki-product-showcase {
+    position: relative;
+    background: var(--ki-offwhite);
+    padding: 100px 0 120px 0;
+    min-height: 85vh;
+    overflow: hidden;
+  }
+
+  /* Background Image */
+  .ki-product-showcase__bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+
+  .ki-product-showcase__bg img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .ki-product-showcase__bg-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(248, 248, 246, 0.92);
+  }
+
+  .ki-product-showcase__inner {
+    position: relative;
+    z-index: 1;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  /* Section Title */
+  .ki-product-showcase__header {
+    text-align: center;
+    margin-bottom: 60px;
+  }
+
+  .ki-product-showcase__section-title {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-size: clamp(28px, 4vw, 42px);
+    font-weight: 700;
+    color: var(--ki-purple-dark);
+    letter-spacing: -0.025em;
+    line-height: 1.2;
+    margin: 0 0 16px 0;
+  }
+
+  .ki-product-showcase__section-subtitle {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-size: 17px;
+    line-height: 1.6;
+    color: #555;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  /* Two Column Grid */
+  .ki-product-showcase__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  /* Each Product Cell */
+  .ki-product-showcase__item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    text-align: center;
+    padding: 40px;
+    position: relative;
+  }
+
+  /* Divider between products */
+  .ki-product-showcase__item:first-child::after {
+    content: '';
+    position: absolute;
+    right: -40px;
+    top: 10%;
+    height: 80%;
+    width: 1px;
+    background: linear-gradient(to bottom, transparent, rgba(73, 61, 154, 0.15), transparent);
+  }
+
+  /* Product Card */
+  .ki-product-showcase__card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    max-width: 450px;
+    width: 100%;
+    transition: transform 0.4s ease;
+  }
+
+  .ki-product-showcase__card:hover {
+    transform: translateY(-12px);
+  }
+
+  /* Product Image */
+  .ki-product-showcase__image-wrapper {
+    width: 100%;
+    aspect-ratio: 3 / 4; /* kare yerine dikdörtgen (daha uzun) */
+    border-radius: 28px;
+    overflow: hidden;
+    background: #fff;
+    box-shadow: 0 24px 80px rgba(73, 61, 154, 0.15);
+    margin-bottom: 36px;
+    position: relative;
+  }
+
+  .ki-product-showcase__image-wrapper::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 28px;
+    border: 1px solid rgba(73, 61, 154, 0.06);
+    pointer-events: none;
+  }
+
+  .ki-product-showcase__image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* görseli kutunun içine taşmadan sığdır */
+    transition: transform 0.6s ease;
+  }
+
+  .ki-product-showcase__card:hover .ki-product-showcase__image {
+    transform: scale(1.06);
+  }
+
+  /* Product Title */
+  .ki-product-showcase__title {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-size: clamp(24px, 3vw, 32px);
+    font-weight: 700;
+    color: var(--ki-purple-dark);
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    margin: 0 0 16px 0;
+    text-align: center;
+  }
+
+  /* Product Description */
+  .ki-product-showcase__description {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: #555;
+    margin: 0 0 28px 0;
+    text-align: center;
+    max-width: 380px;
+  }
+
+  /* CTA Button */
+  .ki-product-showcase__btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 16px 32px;
+    background: var(--ki-purple-dark);
+    color: #fff;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: 14px;
+    transition: background 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+    box-shadow: 0 6px 24px rgba(73, 61, 154, 0.3);
+  }
+
+  .ki-product-showcase__btn:hover {
+    background: var(--ki-purple);
+    color: var(--ki-purple-dark);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 32px rgba(73, 61, 154, 0.35);
+  }
+
+  .ki-product-showcase__btn svg {
+    width: 18px;
+    height: 18px;
+    transition: transform 0.25s ease;
+  }
+
+  .ki-product-showcase__btn:hover svg {
+    transform: translateX(5px);
+  }
+
+  /* Empty State */
+  .ki-product-showcase__empty {
+    text-align: center;
+    padding: 80px 24px;
+    grid-column: 1 / -1;
+  }
+
+  .ki-product-showcase__empty-text {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-size: 18px;
+    color: #666;
+  }
+
+  /* Responsive - Tablet */
+  @media screen and (max-width: 989px) {
+    .ki-product-showcase {
+      padding: 80px 0 100px 0;
+      min-height: auto;
+    }
+
+    .ki-product-showcase__header {
+      margin-bottom: 48px;
+    }
+
+    .ki-product-showcase__grid {
+      gap: 60px;
+    }
+
+    .ki-product-showcase__item {
+      padding: 24px;
+    }
+
+    .ki-product-showcase__item:first-child::after {
+      right: -30px;
+    }
+
+    .ki-product-showcase__image-wrapper {
+      margin-bottom: 28px;
+      border-radius: 24px;
+    }
+  }
+
+  /* Responsive - Mobile */
+  @media screen and (max-width: 749px) {
+    .ki-product-showcase {
+      padding: 60px 0 80px 0;
+    }
+
+    .ki-product-showcase__inner {
+      padding: 0 16px;
+    }
+
+    .ki-product-showcase__header {
+      margin-bottom: 40px;
+    }
+
+    .ki-product-showcase__section-subtitle {
+      font-size: 15px;
+    }
+
+    .ki-product-showcase__grid {
+      grid-template-columns: 1fr;
+      gap: 56px;
+    }
+
+    .ki-product-showcase__item {
+      padding: 0;
+    }
+
+    .ki-product-showcase__item:first-child::after {
+      display: none;
+    }
+
+    .ki-product-showcase__item:first-child {
+      border-bottom: 1px solid rgba(73, 61, 154, 0.1);
+      padding-bottom: 56px;
+    }
+
+    .ki-product-showcase__card {
+      max-width: 360px;
+    }
+
+    .ki-product-showcase__image-wrapper {
+      border-radius: 20px;
+      margin-bottom: 24px;
+    }
+
+    .ki-product-showcase__title {
+      font-size: 24px;
+    }
+
+    .ki-product-showcase__description {
+      font-size: 15px;
+    }
+
+    .ki-product-showcase__btn {
+      padding: 14px 28px;
+      font-size: 14px;
+    }
+  }
+
+  /* Section padding overrides */
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+<section class="ki-product-showcase section-{{ section.id }}-padding">
+  {%- comment %} Background Image {% endcomment -%}
+  {%- if section.settings.background_image != blank -%}
+    <div class="ki-product-showcase__bg">
+      {%- assign bg_img = section.settings.background_image -%}
+      {{ bg_img | image_url: width: 2000 | image_tag: loading: 'lazy', decoding: 'async', alt: '', widths: '600, 900, 1200, 1600, 2000', sizes: '100vw' }}
+      <div class="ki-product-showcase__bg-overlay"></div>
+    </div>
+  {%- endif -%}
+
+  <div class="ki-product-showcase__inner">
+    {%- comment %} Section Header {% endcomment -%}
+    {%- if section.settings.section_title != blank or section.settings.section_subtitle != blank -%}
+      <div class="ki-product-showcase__header">
+        {%- if section.settings.section_title != blank -%}
+          <h2 class="ki-product-showcase__section-title">{{ section.settings.section_title | escape }}</h2>
+        {%- endif -%}
+        {%- if section.settings.section_subtitle != blank -%}
+          <p class="ki-product-showcase__section-subtitle">{{ section.settings.section_subtitle | escape }}</p>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    {%- if section.blocks.size > 0 -%}
+      <ul class="ki-product-showcase__grid">
+        {%- for block in section.blocks -%}
+          <li class="ki-product-showcase__item" {{ block.shopify_attributes }}>
+            <a href="{{ block.settings.product_link | default: '#' }}" class="ki-product-showcase__card">
+              <div class="ki-product-showcase__image-wrapper">
+                {%- if block.settings.product_image != blank -%}
+                  {%- assign product_img_alt = block.settings.product_title | default: 'Ürün görseli' | escape -%}
+                  {{ block.settings.product_image | image_url: width: 900 | image_tag: loading: 'lazy', decoding: 'async', class: 'ki-product-showcase__image', alt: product_img_alt, widths: '300, 450, 600, 900', sizes: '(max-width: 749px) 100vw, 450px' }}
+                {%- else -%}
+                  {{ 'product-1' | placeholder_svg_tag: 'ki-product-showcase__image' }}
+                {%- endif -%}
+              </div>
+
+              <h3 class="ki-product-showcase__title">{{ block.settings.product_title | default: 'Ürün Adı' | escape }}</h3>
+              
+              {%- if block.settings.product_description != blank -%}
+                <p class="ki-product-showcase__description">{{ block.settings.product_description | escape }}</p>
+              {%- endif -%}
+
+              <span class="ki-product-showcase__btn">
+                {{ block.settings.button_text | default: 'Keşfet' | escape }}
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+              </span>
+            </a>
+          </li>
+        {%- endfor -%}
+      </ul>
+    {%- else -%}
+      <div class="ki-product-showcase__empty">
+        <p class="ki-product-showcase__empty-text">Ürün eklemek için "Ürün Kartı" bloğu ekleyin.</p>
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Product Showcase (Ki)",
+  "class": "section",
+  "max_blocks": 2,
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "2 ürünlük tanıtım/showcase düzeni. Her ürün için ayrı blok ekleyin."
+    },
+    {
+      "type": "header",
+      "content": "── Bölüm Başlığı ──"
+    },
+    {
+      "type": "text",
+      "id": "section_title",
+      "label": "Başlık",
+      "default": "Ürünlerimiz"
+    },
+    {
+      "type": "text",
+      "id": "section_subtitle",
+      "label": "Alt başlık",
+      "default": "Cildiniz için özenle hazırlanmış ürünlerimizi keşfedin"
+    },
+    {
+      "type": "header",
+      "content": "── Arka Plan ──"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Arka plan görseli"
+    },
+    {
+      "type": "header",
+      "content": "── Boşluklar ──"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "label": "Üst padding",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "label": "Alt padding",
+      "default": 80
+    }
+  ],
+  "blocks": [
+    {
+      "type": "product_card",
+      "name": "Ürün Kartı",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "product_image",
+          "label": "Ürün görseli"
+        },
+        {
+          "type": "text",
+          "id": "product_title",
+          "label": "Ürün adı",
+          "default": "Ürün Adı"
+        },
+        {
+          "type": "textarea",
+          "id": "product_description",
+          "label": "Ürün açıklaması",
+          "default": "Ürününüzün kısa ve etkileyici açıklaması burada yer alacak."
+        },
+        {
+          "type": "url",
+          "id": "product_link",
+          "label": "Ürün linki"
+        },
+        {
+          "type": "text",
+          "id": "button_text",
+          "label": "Buton yazısı",
+          "default": "Keşfet"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product Showcase (Ki)",
+      "blocks": [
+        {
+          "type": "product_card",
+          "settings": {
+            "product_title": "Ürün 1",
+            "product_description": "Birinci ürününüzün açıklaması",
+            "button_text": "Keşfet"
+          }
+        },
+        {
+          "type": "product_card",
+          "settings": {
+            "product_title": "Ürün 2",
+            "product_description": "İkinci ürününüzün açıklaması",
+            "button_text": "Keşfet"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

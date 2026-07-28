@@ -1,0 +1,90 @@
+{% comment %}
+  .ki Global Section Header Snippet
+  Kullanim: {% render 'ki-section-header', title: section.settings.title, desc: section.settings.description, align: 'left' %}
+  align: 'left' | 'center'
+  eyebrow: kucuk ust etiket (opsiyonel)
+  title: ana baslik (richtext veya text)
+  desc: aciklama (opsiyonel)
+{% endcomment %}
+
+<style>
+  .ki-sh {
+    font-family: 'Raleway', system-ui, sans-serif;
+  }
+  .ki-sh--left  { text-align: left; }
+  .ki-sh--center { text-align: center; }
+
+  .ki-sh__eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #493d9a;
+    opacity: 0.72;
+    margin-bottom: 10px;
+  }
+  .ki-sh__eyebrow::before {
+    content: '';
+    display: inline-block;
+    width: 18px;
+    height: 1.5px;
+    background: #493d9a;
+    opacity: 0.5;
+  }
+
+  .ki-sh__title {
+    font-size: clamp(26px, 3.4vw, 46px);
+    font-weight: 800;
+    line-height: 1.08;
+    letter-spacing: -0.025em;
+    color: #1a1340;
+    margin: 0 0 12px;
+  }
+  .ki-sh__title em {
+    font-style: italic;
+    color: #493d9a;
+  }
+
+  /* Renk varyantlari */
+  .ki-sh--purple .ki-sh__title { color: #493d9a; }
+  .ki-sh--dark   .ki-sh__title { color: #1a1340; }
+  .ki-sh--white  .ki-sh__title { color: #ffffff; }
+  .ki-sh--white  .ki-sh__title em { color: #dad2ff; }
+  .ki-sh--white  .ki-sh__eyebrow { color: rgba(255,255,255,0.7); }
+  .ki-sh--white  .ki-sh__eyebrow::before { background: rgba(255,255,255,0.5); }
+
+  .ki-sh__desc {
+    font-size: 15px;
+    line-height: 1.65;
+    color: #888;
+    margin: 0;
+    max-width: 560px;
+  }
+  .ki-sh--center .ki-sh__desc {
+    margin: 0 auto;
+  }
+  .ki-sh--white .ki-sh__desc { color: rgba(255,255,255,0.72); }
+
+  @media (max-width: 749px) {
+    .ki-sh__title { font-size: clamp(22px, 6.5vw, 32px); }
+    .ki-sh__desc  { font-size: 14px; }
+  }
+</style>
+
+{%- assign _align = align | default: 'left' -%}
+{%- assign _color = color | default: 'dark' -%}
+
+<div class="ki-sh ki-sh--{{ _align }} ki-sh--{{ _color }}">
+  {%- if eyebrow != blank -%}
+    <p class="ki-sh__eyebrow">{{ eyebrow | escape }}</p>
+  {%- endif -%}
+  {%- if title != blank -%}
+    <h2 class="ki-sh__title">{{ title }}</h2>
+  {%- endif -%}
+  {%- if desc != blank -%}
+    <p class="ki-sh__desc">{{ desc | escape }}</p>
+  {%- endif -%}
+</div>

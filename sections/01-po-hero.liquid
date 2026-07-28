@@ -1,0 +1,148 @@
+{% comment %}
+  Paket Hero — "Paketini Oluştur" başlık + 2 ayda bir abonelik vurgusu
+  Pozisyon: Paket Oluştur #1 (en üst)
+  Sol: H1 + açıklama; Sağ: 3 trust maddesi
+{% endcomment %}
+
+<section id="paket-hero-{{ section.id }}" class="section paket-hero">
+  <style>
+    #paket-hero-{{ section.id }} {
+      --ph-bg: {{ section.settings.bg | default: '#fffaf3' }};
+      --ph-primary: {{ section.settings.primary_color | default: '#3a2d6e' }};
+      --ph-text: #1a1a1a;
+      --ph-muted: rgba(26,26,26,.65);
+      --ph-sage: {{ section.settings.sage_color | default: '#7b9d6f' }};
+      --ph-border: rgba(0,0,0,.12);
+      background: var(--ph-bg);
+      border-bottom: 1px solid var(--ph-border);
+      font-family: system-ui, -apple-system, sans-serif;
+    }
+    #paket-hero-{{ section.id }} .ph-wrap {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+    #paket-hero-{{ section.id }} .ph-row {
+      display: flex; flex-direction: column;
+      gap: 20px;
+    }
+    #paket-hero-{{ section.id }} .ph-title {
+      font-size: 34px; line-height: 1.05;
+      letter-spacing: -.02em;
+      font-weight: 500;
+      color: var(--ph-primary);
+      margin: 0;
+      max-width: 640px;
+    }
+    #paket-hero-{{ section.id }} .ph-text {
+      font-size: 15px; line-height: 1.6;
+      color: var(--ph-muted);
+      margin: 16px 0 0;
+      max-width: 640px;
+    }
+    #paket-hero-{{ section.id }} .ph-trust {
+      display: flex; flex-wrap: wrap;
+      gap: 8px 24px;
+      list-style: none;
+      padding: 0; margin: 0;
+    }
+    #paket-hero-{{ section.id }} .ph-trust li {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 12.5px; font-weight: 500;
+      color: rgba(58,45,110,.8);
+    }
+    #paket-hero-{{ section.id }} .ph-trust svg {
+      width: 14px; height: 14px;
+      color: var(--ph-sage);
+      flex-shrink: 0;
+    }
+
+    @media (min-width: 640px) {
+      #paket-hero-{{ section.id }} .ph-wrap { padding: 56px 32px; }
+      #paket-hero-{{ section.id }} .ph-title { font-size: 44px; }
+    }
+    @media (min-width: 1024px) {
+      #paket-hero-{{ section.id }} .ph-wrap { padding: 64px 32px; }
+      #paket-hero-{{ section.id }} .ph-title { font-size: 56px; }
+      #paket-hero-{{ section.id }} .ph-row {
+        flex-direction: row;
+        align-items: flex-start; justify-content: space-between;
+        gap: 24px;
+      }
+      #paket-hero-{{ section.id }} .ph-trust {
+        justify-content: flex-end;
+        padding-top: 12px;
+      }
+    }
+  </style>
+
+  <div class="ph-wrap">
+    <div class="ph-row">
+      <div>
+        <h1 class="ph-title">{{ section.settings.heading | default: 'Paketini Oluştur' }}</h1>
+        <p class="ph-text">{{ section.settings.description | default: 'İhtiyacına göre Balance, Change, Ped ve ritüel ürünlerini birleştir. 2 ayda bir kapına gelsin — istediğin zaman değiştir veya durdur.' }}</p>
+      </div>
+
+      <ul class="ph-trust">
+        {%- for block in section.blocks -%}
+          <li {{ block.shopify_attributes }}>
+            {%- case block.settings.icon -%}
+              {%- when 'check' -%}
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              {%- when 'truck' -%}
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 3h15v13H1z"/><path d="M16 8h4l3 3v5h-7"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+              {%- when 'shield' -%}
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              {%- else -%}
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            {%- endcase -%}
+            {{ block.settings.label }}
+          </li>
+        {%- endfor -%}
+      </ul>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Paket Hero",
+  "tag": "section",
+  "class": "paket-hero",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Başlık", "default": "Paketini Oluştur" },
+    { "type": "richtext", "id": "description", "label": "Açıklama", "default": "<p>İhtiyacına göre Balance, Change, Ped ve ritüel ürünlerini birleştir. 2 ayda bir kapına gelsin — istediğin zaman değiştir veya durdur.</p>" },
+    { "type": "color", "id": "bg", "label": "Arka plan", "default": "#fffaf3" },
+    { "type": "color", "id": "primary_color", "label": "Primary", "default": "#3a2d6e" },
+    { "type": "color", "id": "sage_color", "label": "Sage (ikon)", "default": "#7b9d6f" }
+  ],
+  "blocks": [
+    {
+      "type": "trust",
+      "name": "Trust maddesi",
+      "limit": 6,
+      "settings": [
+        { "type": "select", "id": "icon", "label": "İkon",
+          "options": [
+            { "value": "check", "label": "Check" },
+            { "value": "truck", "label": "Truck" },
+            { "value": "shield", "label": "Shield" }
+          ],
+          "default": "check"
+        },
+        { "type": "text", "id": "label", "label": "Metin", "default": "İptal yok, esnek abonelik" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Paket Hero",
+      "blocks": [
+        { "type": "trust", "settings": { "icon": "check", "label": "İptal yok, esnek abonelik" } },
+        { "type": "trust", "settings": { "icon": "truck", "label": "750₺ üzeri ücretsiz kargo" } },
+        { "type": "trust", "settings": { "icon": "shield", "label": "Dermatolojik test edilmiş" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

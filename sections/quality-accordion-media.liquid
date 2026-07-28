@@ -1,0 +1,174 @@
+{% comment %}
+  Scoped section: Quality Accordion + Media (Brand Kit)
+  Mobile font fix applied
+{% endcomment %}
+
+{% style %}
+  .qam-{{ section.id }}{
+    --ki-purple-dark: #493d9a;
+    --ki-offwhite: #f8f8f6;
+    --ki-purple: #b2a5ff;
+    --ki-lilac: #dad2ff;
+    --bg: {{ section.settings.bg | default: '#f8f8f6' }};
+    --media_bg: {{ section.settings.media_bg | default: '#dad2ff' }};
+    --text: {{ section.settings.text_color | default: '#1a1a1a' }};
+    --muted: {{ section.settings.muted_color | default: 'rgba(73,61,154,0.72)' }};
+    --border: rgba(73,61,154,.18);
+    --maxw: {{ section.settings.max_width | default: 1200 }}px;
+    --pad_y: {{ section.settings.pad_y | default: 72 }}px;
+    --pad_x: {{ section.settings.pad_x | default: 40 }}px;
+    background: var(--bg);
+    color: var(--text);
+  }
+  .qam-{{ section.id }} .qam__wrap{ max-width: var(--maxw); margin: 0 auto; padding: var(--pad_y) var(--pad_x); }
+  .qam-{{ section.id }} .qam__grid{ display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 0; align-items: stretch; }
+  .qam-{{ section.id }} .qam__left{ padding-right: clamp(24px, 4vw, 56px); }
+  .qam-{{ section.id }} .qam__heading{ font-size: clamp(28px, 4.2vw, 52px); line-height: 1.05; letter-spacing: -0.02em; margin: 0 0 14px; color: var(--ki-purple-dark); text-shadow: 0 10px 26px rgba(73,61,154,0.10); }
+  .qam-{{ section.id }} .qam__body{ color: var(--muted); font-size: 15px; line-height: 1.65; max-width: 54ch; margin-bottom: 28px; }
+  .qam-{{ section.id }} .qam__accordion{ border-top: 1px solid var(--border); }
+  .qam-{{ section.id }} .qam__item{ border-bottom: 1px solid var(--border); }
+  .qam-{{ section.id }} .qam__summary{ list-style: none; display: grid; grid-template-columns: 20px 1fr 18px; align-items: center; gap: 12px; padding: 16px 0; cursor: pointer; user-select: none; }
+  .qam-{{ section.id }} .qam__summary::-webkit-details-marker{ display: none; }
+  .qam-{{ section.id }} .qam__tick{ width: 18px; height: 18px; display: inline-flex; align-items: center; justify-content: center; opacity: .95; color: var(--ki-purple-dark); }
+  .qam-{{ section.id }} .qam__tick svg{ width: 18px; height: 18px; }
+  .qam-{{ section.id }} .qam__title{ font-weight: 750; font-size: 15px; color: #1a1a1a; letter-spacing: -0.01em; }
+  .qam-{{ section.id }} .qam__chev{ width: 18px; height: 18px; display: inline-flex; align-items: center; justify-content: center; transition: transform .25s ease-out; opacity: .70; color: var(--ki-purple-dark); }
+  .qam-{{ section.id }} .qam__chev svg{ width: 18px; height: 18px; }
+  .qam-{{ section.id }} details[open] .qam__chev{ transform: rotate(180deg); }
+  .qam-{{ section.id }} .qam__content{ padding: 0 0 14px 32px; color: rgba(26,26,26,0.78); max-width: 62ch; font-size: 14px; line-height: 1.65; }
+  .qam-{{ section.id }} details:hover .qam__title{ color: var(--ki-purple-dark); }
+  .qam-{{ section.id }} details[open]{ background: linear-gradient(90deg, rgba(218,210,255,0.25) 0%, rgba(218,210,255,0) 100%); border-left: 3px solid var(--ki-purple-dark); padding-left: 16px; margin-left: -16px; }
+  .qam-{{ section.id }} details[open] .qam__title{ color: var(--ki-purple-dark); }
+  .qam-{{ section.id }} .qam__summary:focus-visible{ outline: 2px solid var(--ki-purple-dark); outline-offset: 2px; border-radius: 4px; }
+  .qam-{{ section.id }} .qam__right{ background: var(--media_bg); overflow: hidden; border-radius: 18px; border: 1px solid rgba(73,61,154,0.18); box-shadow: 0 22px 52px rgba(73,61,154,0.18); }
+  .qam-{{ section.id }} .qam__media{ position: relative; min-height: 560px; height: 100%; background-color: var(--media_bg); background-repeat: no-repeat; background-position: center center; background-size: cover; }
+  .qam-{{ section.id }} .qam__media::after{ content:""; position:absolute; inset:0; pointer-events:none; background: radial-gradient(900px 480px at 25% 25%, rgba(178,165,255,0.22) 0%, rgba(178,165,255,0.0) 55%), linear-gradient(135deg, rgba(73,61,154,0.14) 0%, rgba(0,0,0,0.04) 55%, rgba(73,61,154,0.12) 100%); z-index:1; }
+  .qam-{{ section.id }} .qam__media-placeholder{ position:absolute; inset:0; display:grid; place-items:center; opacity:.26; pointer-events:none; z-index:0; }
+  .qam-{{ section.id }} .qam__badges{ position:absolute; left:5%; top:50%; transform:translateY(-50%); display:grid; gap:14px; width:min(160px,34%); z-index:2; }
+  .qam-{{ section.id }} .qam__badge{ max-width:160px; border-radius:16px; background:rgba(248,248,246,0.28); border:1px solid rgba(218,210,255,0.45); box-shadow:0 16px 34px rgba(73,61,154,0.18); padding:12px; backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px); transition:transform .25s ease,box-shadow .25s ease; }
+  .qam-{{ section.id }} .qam__badge:hover{ transform:translateY(-2px) scale(1.02); box-shadow:0 20px 42px rgba(73,61,154,0.24); }
+  .qam-{{ section.id }} .qam__badge img, .qam-{{ section.id }} .qam__badge svg{ width:100%; height:auto; display:block; }
+  .qam-{{ section.id }} .qam__ph{ background:rgba(248,248,246,.20); border-radius:14px; }
+
+  @media (max-width: 990px){
+    .qam-{{ section.id }} .qam__wrap{ padding: 48px 20px; }
+    .qam-{{ section.id }} .qam__grid{ grid-template-columns: 1fr; gap: 28px; }
+    .qam-{{ section.id }} .qam__left{ padding-right: 0; }
+    .qam-{{ section.id }} .qam__heading{ font-size: clamp(22px, 5vw, 36px); }
+    .qam-{{ section.id }} .qam__right{ border-radius: 16px; }
+    .qam-{{ section.id }} .qam__media{ min-height: min(360px, 55vw); border-radius: 16px; }
+    .qam-{{ section.id }} .qam__badges{ left: 16px; width: 140px; gap: 12px; grid-template-columns: 1fr 1fr; }
+    .qam-{{ section.id }} .qam__badge{ max-width: 140px; padding: 10px; }
+    .qam-{{ section.id }} details[open]{ margin-left: -12px; padding-left: 12px; }
+  }
+
+  @media (max-width: 750px){
+    .qam-{{ section.id }} .qam__wrap{ padding: 36px 16px; }
+    .qam-{{ section.id }} .qam__heading{ font-size: 20px; }
+    .qam-{{ section.id }} .qam__body{ font-size: 13px; margin-bottom: 20px; }
+    .qam-{{ section.id }} .qam__title{ font-size: 13px; }
+    .qam-{{ section.id }} .qam__content{ font-size: 12px; padding-left: 24px; padding-bottom: 10px; }
+    .qam-{{ section.id }} .qam__summary{ padding: 12px 0; gap: 8px; }
+    .qam-{{ section.id }} .qam__media{ min-height: unset; }
+    .qam-{{ section.id }} .qam__media::before{ content: ""; display: block; padding-top: 70%; }
+    .qam-{{ section.id }} .qam__badges, .qam-{{ section.id }} .qam__media::after{ display: none !important; }
+  }
+{% endstyle %}
+
+<section class="qam-{{ section.id }}">
+  <div class="qam__wrap">
+    <div class="qam__grid">
+      <div class="qam__left">
+        {% if section.settings.heading != blank %}
+          <h2 class="qam__heading">{{ section.settings.heading | escape }}</h2>
+        {% endif %}
+        {% if section.settings.body != blank %}
+          <div class="qam__body rte">{{ section.settings.body }}</div>
+        {% endif %}
+        <div class="qam__accordion" role="region" aria-label="{{ section.settings.aria_label | escape }}">
+          {% for block in section.blocks %}
+            {% if block.type == 'item' %}
+              {% assign is_open = false %}
+              {% if forloop.first and section.settings.open_first %}{% assign is_open = true %}{% endif %}
+              <details class="qam__item" {% if is_open %}open{% endif %} {{ block.shopify_attributes }}>
+                <summary class="qam__summary">
+                  <span class="qam__tick" aria-hidden="true">
+                    <svg viewBox="0 0 20 20" fill="none"><path d="M7.8 13.6 4.7 10.5l-1.1 1.1 4.2 4.2L16.6 7l-1.1-1.1-7.7 7.7Z" fill="currentColor"/></svg>
+                  </span>
+                  <span class="qam__title">{{ block.settings.title | escape }}</span>
+                  <span class="qam__chev" aria-hidden="true">
+                    <svg viewBox="0 0 20 20" fill="none"><path d="M5.7 7.8 10 12.1l4.3-4.3 1.1 1.1-5.4 5.4L4.6 8.9l1.1-1.1Z" fill="currentColor"/></svg>
+                  </span>
+                </summary>
+                {% if block.settings.content != blank %}
+                  <div class="qam__content rte">{{ block.settings.content }}</div>
+                {% endif %}
+              </details>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+      <div class="qam__right">
+        {% assign bg_img = section.settings.media_bg_image %}
+        <div class="qam__media" {% if bg_img != blank %}style="background-image:url('{{ bg_img | image_url: width: 2000 }}');"{% endif %}>
+          {% if bg_img == blank %}
+            <div class="qam__media-placeholder">{{ 'product-1' | placeholder_svg_tag: 'placeholder-svg qam__ph' }}</div>
+          {% endif %}
+          {% assign badge_count = 0 %}
+          {% for block in section.blocks %}{% if block.type == 'badge' %}{% assign badge_count = badge_count | plus: 1 %}{% endif %}{% endfor %}
+          {% if badge_count > 0 %}
+          <div class="qam__badges">
+            {% for block in section.blocks %}
+              {% if block.type == 'badge' %}
+                <div class="qam__badge" {{ block.shopify_attributes }}>
+                  {% if block.settings.image != blank %}{{ block.settings.image | image_url: width: 260 | image_tag: loading: 'lazy', decoding: 'async', alt: block.settings.alt }}
+                  {% else %}{{ 'image' | placeholder_svg_tag: 'placeholder-svg qam__ph' }}{% endif %}
+                </div>
+              {% endif %}
+            {% endfor %}
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Quality accordion media",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {"type":"text","id":"heading","label":"Heading","default":"Tested for those who test themselves."},
+    {"type":"richtext","id":"body","label":"Body","default":"<p>We set the bar for quality.</p>"},
+    {"type":"text","id":"aria_label","label":"Accordion ARIA label","default":"Quality details."},
+    {"type":"checkbox","id":"open_first","label":"Open first accordion item by default","default":true},
+    {"type":"header","content":"Right media"},
+    {"type":"image_picker","id":"media_bg_image","label":"Right panel background image"},
+    {"type":"header","content":"Layout & style"},
+    {"type":"color","id":"bg","label":"Section background","default":"#f8f8f6"},
+    {"type":"color","id":"media_bg","label":"Right panel base background","default":"#dad2ff"},
+    {"type":"color","id":"text_color","label":"Text color","default":"#1a1a1a"},
+    {"type":"color","id":"muted_color","label":"Muted text color","default":"#493d9a"},
+    {"type":"range","id":"max_width","label":"Max width (px)","min":900,"max":1400,"step":10,"default":1200},
+    {"type":"range","id":"pad_y","label":"Vertical padding (px)","min":24,"max":120,"step":4,"default":72},
+    {"type":"range","id":"pad_x","label":"Horizontal padding (px)","min":16,"max":80,"step":4,"default":40}
+  ],
+  "blocks": [
+    {"type":"item","name":"Accordion item","settings":[
+      {"type":"text","id":"title","label":"Title","default":"Driven by science."},
+      {"type":"richtext","id":"content","label":"Content","default":"<p>Add supporting copy here.</p>"}
+    ]},
+    {"type":"badge","name":"Badge","settings":[
+      {"type":"image_picker","id":"image","label":"Badge image"},
+      {"type":"text","id":"alt","label":"Alt text","default":"Badge."}
+    ]}
+  ],
+  "presets":[{"name":"Quality accordion + media (brand kit)","blocks":[
+    {"type":"item","settings":{"title":"Driven by science."}},
+    {"type":"item","settings":{"title":"Certified safe."}},
+    {"type":"badge"},{"type":"badge"}
+  ]}]
+}
+{% endschema %}

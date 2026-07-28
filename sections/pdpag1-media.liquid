@@ -1,0 +1,18 @@
+{% comment %}
+  Minimal media renderer (Liquid side).
+  JS will re-render on thumb click anyway; this is for initial paint.
+{% endcomment %}
+
+{% case media.media_type %}
+  {% when 'image' %}
+    {{ media | image_url: width: 1400 | image_tag: loading: 'lazy', alt: media.alt | escape }}
+
+  {% when 'video' %}
+    {{ media | video_tag: controls: true, autoplay: false, loop: false, muted: false, playsinline: true }}
+
+  {% when 'external_video' %}
+    {{ media | external_video_tag }}
+
+  {% else %}
+    {{ 'image' | placeholder_svg_tag }}
+{% endcase %}

@@ -1,0 +1,256 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "settings": {
+        "padding_top": 28,
+        "padding_bottom": 28
+      }
+    },
+    "01_ped_pdp_hero_zWPw8C": {
+      "type": "01-ped-pdp-hero",
+      "blocks": {
+        "variant_dcRFcH": {
+          "type": "variant",
+          "settings": {
+            "name": "Günlük Ped",
+            "short": "Hafif akıntı · günlük tazelik",
+            "drops": 1,
+            "size": "155 mm",
+            "per_box": 30,
+            "badge": ""
+          }
+        },
+        "variant_yeJDhF": {
+          "type": "variant",
+          "settings": {
+            "name": "Gündüz Pedi",
+            "short": "Orta yoğun akış · gündüz koruması",
+            "drops": 3,
+            "size": "245 mm",
+            "per_box": 12,
+            "badge": "EN POPÜLER"
+          }
+        },
+        "variant_zAckYA": {
+          "type": "variant",
+          "settings": {
+            "name": "Gece Pedi",
+            "short": "Yoğun gece akışı · uzun koruma",
+            "drops": 4,
+            "size": "335 mm",
+            "per_box": 8,
+            "badge": ""
+          }
+        }
+      },
+      "block_order": [
+        "variant_dcRFcH",
+        "variant_yeJDhF",
+        "variant_zAckYA"
+      ],
+      "name": "PDP Hero Pad",
+      "settings": {
+        "title": ".ki Ped",
+        "rating": "4.9",
+        "review_count": "1.240+",
+        "description": "Soft Cotton & Bamboo Fiber üst yüzey ve nefes alan arka yüzeyle hassas ciltler için tasarlandı. Mugwort (Pelin Otu) infüzyonlu doğal bakım formülü; SLS / SLES içermez.",
+        "builder_title": "Paketimi Oluştur",
+        "helper_label": "Hangi Ped Bana Uygun?",
+        "cta_idle": "Pedlerini Seç",
+        "sub_title": "Abonelik ile %10 İndirim",
+        "sub_desc": "Her ay otomatik gönderim, istediğin zaman iptal",
+        "ship_threshold": 30,
+        "trust_1": "Mugwort infüzyonlu",
+        "trust_2": "SLS / SLES içermez",
+        "trust_3": "Nefes alan yapı",
+        "bg": "#ffffff",
+        "primary_color": "#493d9a",
+        "secondary_color": "#fafafa",
+        "rose_color": "#6d64ab",
+        "rose_light": "#493d9a",
+        "sage_color": "#7b9d6f"
+      }
+    },
+    "02_ped_which_LyNtAg": {
+      "type": "02-ped-which",
+      "blocks": {
+        "pad_JLkcqE": {
+          "type": "pad",
+          "settings": {
+            "name": "Günlük Ped",
+            "drops": 1,
+            "description": "",
+            "size": "155 mm",
+            "per_box": 30,
+            "cta_label": "Ekle",
+            "cta_link": ""
+          }
+        },
+        "pad_3MCN4j": {
+          "type": "pad",
+          "settings": {
+            "name": "Gündüz Pedi",
+            "drops": 3,
+            "description": "",
+            "size": "245 mm",
+            "per_box": 12,
+            "cta_label": "Ekle",
+            "cta_link": ""
+          }
+        },
+        "pad_TAAzH6": {
+          "type": "pad",
+          "settings": {
+            "name": "Gece Pedi",
+            "drops": 4,
+            "description": "",
+            "size": "335 mm",
+            "per_box": 8,
+            "cta_label": "Ekle",
+            "cta_link": ""
+          }
+        }
+      },
+      "block_order": [
+        "pad_JLkcqE",
+        "pad_3MCN4j",
+        "pad_TAAzH6"
+      ],
+      "name": "Which Pad",
+      "settings": {
+        "eyebrow": "Sana Özel",
+        "heading": "Senin için en uygun .ki Ped hangisi?",
+        "description": "Akış seviyene göre 3 farklı emicilik. Tek bir pakette istediğin gibi karıştır.",
+        "bg": "#ffffff",
+        "primary_color": "#3a2d6e",
+        "rose_color": "#6d64ab",
+        "rose_light": "#f6dce4"
+      }
+    },
+    "03_ped_why_7g7BWX": {
+      "type": "03-ped-why",
+      "blocks": {
+        "benefit_3zKAT8": {
+          "type": "benefit",
+          "settings": {
+            "title": "Mugwort (Pelin Otu) infüzyonu",
+            "description": "Geleneksel tıbbın bilgeliğini modern konforla buluşturan doğal antibakteriyel bariyer."
+          }
+        },
+        "benefit_gykHVW": {
+          "type": "benefit",
+          "settings": {
+            "title": "Soft Cotton & Bamboo Fiber üst yüzey",
+            "description": "Yumuşak pamuk ve bambu lifi karışımı, hassas cilde nazikçe uyum sağlar."
+          }
+        },
+        "benefit_WqHFPa": {
+          "type": "benefit",
+          "settings": {
+            "title": "SLS / SLES içermez",
+            "description": "Sert sülfat bazlı kimyasallar yok — pH dengesi korunur."
+          }
+        },
+        "benefit_yVjkNp": {
+          "type": "benefit",
+          "settings": {
+            "title": "Nefes alan üst & arka yüzey",
+            "description": "Breathable yapı sayesinde gün boyu serin ve kuru kullanım hissi."
+          }
+        }
+      },
+      "block_order": [
+        "benefit_3zKAT8",
+        "benefit_gykHVW",
+        "benefit_WqHFPa",
+        "benefit_yVjkNp"
+      ],
+      "name": "Why .ki Pad",
+      "settings": {
+        "eyebrow": "Doğal · Şeffaf · Güvenli",
+        "heading": "Cildine layık olan ped",
+        "description": ".ki Ped, Soft Cotton & Bamboo Fiber üst yüzey ve nefes alan arka yüzeyle hassas bölgene nazikçe uyum sağlar. Tüm seri Mugwort (Pelin Otu) infüzyonludur ve SLS / SLES içermez.",
+        "cta_label": "Paketini oluştur",
+        "cta_link": "",
+        "bg": "#ffffff",
+        "primary_color": "#493d9a",
+        "rose_color": "#493d9a",
+        "rose_light": "#f6dce4",
+        "sage_color": "#7b9d6f",
+        "sage_light": "#dde8d4"
+      }
+    },
+    "04_ped_faq_hTKggn": {
+      "type": "04-ped-faq",
+      "blocks": {
+        "qa_WAMipz": {
+          "type": "qa",
+          "settings": {
+            "question": ".ki Ped içeriği nedir?",
+            "answer": "Üst yüzey Soft Cotton & Bamboo Fiber, arka yüzey ise nefes alabilen breathable yapıdadır. Tüm seri Mugwort (Pelin Otu) infüzyonludur ve SLS/SLES içermez."
+          }
+        },
+        "qa_3XpExU": {
+          "type": "qa",
+          "settings": {
+            "question": "Hangi pedi seçmeliyim?",
+            "answer": "Hafif akıntı için Günlük Ped (155 mm · 30 adet); orta yoğun için Gündüz Pedi (245 mm · 12 adet); yoğun gece akışı için Gece Pedi (335 mm · 8 adet)."
+          }
+        },
+        "qa_HmHeXP": {
+          "type": "qa",
+          "settings": {
+            "question": "Pelin Otu (Mugwort) ne işe yarar?",
+            "answer": "Doğal antibakteriyel bariyeri sayesinde koku ve enfeksiyon riskine karşı koruma sağlar; pH dengesini destekler."
+          }
+        },
+        "qa_KTwFDC": {
+          "type": "qa",
+          "settings": {
+            "question": "Aboneliği nasıl yönetirim?",
+            "answer": "Hesabından gönderim sıklığını değiştirebilir veya tek tıkla iptal edebilirsin."
+          }
+        },
+        "qa_86dxGP": {
+          "type": "qa",
+          "settings": {
+            "question": "Kargo ne kadar sürer?",
+            "answer": "Hafta içi 16:00'a kadar verilen siparişler aynı gün kargolanır. 1–3 iş günü içinde kapına teslim."
+          }
+        }
+      },
+      "block_order": [
+        "qa_WAMipz",
+        "qa_3XpExU",
+        "qa_HmHeXP",
+        "qa_KTwFDC",
+        "qa_86dxGP"
+      ],
+      "name": "Pad FAQ",
+      "settings": {
+        "heading": "Sıkça sorulan sorular",
+        "bg": "#ffffff",
+        "card_bg": "#ffffff",
+        "primary_color": "#493d9a"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "01_ped_pdp_hero_zWPw8C",
+    "02_ped_which_LyNtAg",
+    "03_ped_why_7g7BWX",
+    "04_ped_faq_hTKggn"
+  ]
+}

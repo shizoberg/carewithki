@@ -1,0 +1,207 @@
+{% comment %}
+  .ki Product Hero (scoped) — Brand Kit
+  Product hero: gallery left, info + optional price blocks + CTA right.
+
+  Brand kit:
+    #493d9a (main)
+    #f8f8f6 (offwhite)
+    #b2a5ff (primary)
+    #dad2ff (lilac)
+{% endcomment %}
+
+{%- assign product = all_products[section.settings.product] -%}
+
+<section id="khero-{{ section.id }}" class="section">
+  <style>
+    #khero-{{ section.id }}{
+      --ki-purple-dark: #493d9a;
+      --ki-offwhite: #f8f8f6;
+      --ki-purple: #b2a5ff;
+      --ki-lilac: #dad2ff;
+
+      --bg: {{ section.settings.bg | default: '#ffffff' }};
+      --text: {{ section.settings.text | default: '#1a1a1a' }};
+      --muted: {{ section.settings.muted | default: 'rgba(26,26,26,.72)' }};
+
+      --maxw: {{ section.settings.max_width | default: 1200 }}px;
+      --py: {{ section.settings.pad_y | default: 72 }}px;
+      --px: {{ section.settings.pad_x | default: 40 }}px;
+
+      background: var(--bg);
+      color: var(--text);
+    }
+    #khero-{{ section.id }} .khero__wrap{ max-width: var(--maxw); margin: 0 auto; padding: var(--py) var(--px); }
+    #khero-{{ section.id }} .khero__grid{ display: grid; grid-template-columns: 5fr 6fr; gap: clamp(24px,4vw,56px); align-items: start; }
+    #khero-{{ section.id }} .khero__gallery{ position: sticky; top: 24px; }
+    #khero-{{ section.id }} .khero__img,
+    #khero-{{ section.id }} .khero__placeholder{
+      width: 100%; max-width: 520px; border-radius: 18px; display: block;
+      aspect-ratio: 4/5; object-fit: cover;
+      box-shadow: 0 18px 40px rgba(73,61,154,.14);
+    }
+    #khero-{{ section.id }} .khero__badge{
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--ki-lilac); color: var(--ki-purple-dark);
+      font-size: 12px; font-weight: 700; letter-spacing: 0.4px;
+      padding: 8px 14px; border-radius: 999px; margin-bottom: 16px;
+    }
+    #khero-{{ section.id }} .khero__title{
+      font-size: clamp(28px,4vw,44px); font-weight: 650; letter-spacing: -0.02em;
+      line-height: 1.1; color: var(--ki-purple-dark);
+      text-shadow: 0 10px 26px rgba(73,61,154,.10); margin: 0;
+    }
+    #khero-{{ section.id }} .khero__sub{
+      font-size: 16px; color: var(--muted); margin: 10px 0 0; line-height: 1.65;
+    }
+    #khero-{{ section.id }} .khero__rating{
+      display: flex; align-items: center; gap: 10px; margin-top: 16px;
+      font-size: 14px; font-weight: 600;
+    }
+    #khero-{{ section.id }} .khero__stars{ color: #f5a524; letter-spacing: 0.1em; }
+    #khero-{{ section.id }} .khero__rlink{ color: var(--muted); text-decoration: none; }
+    #khero-{{ section.id }} .khero__ship{
+      display: inline-flex; align-items: center; gap: 8px;
+      margin-top: 14px; padding: 8px 14px;
+      background: var(--ki-offwhite); color: var(--ki-purple-dark);
+      border-radius: 999px; font-size: 13px; font-weight: 650;
+      border: 1px solid rgba(73,61,154,.14);
+    }
+    #khero-{{ section.id }} .khero__plans{ margin-top: 20px; display: flex; flex-direction: column; gap: 12px; }
+    #khero-{{ section.id }} .khero__plan{
+      display: block; padding: 16px 18px; border-radius: 18px; position: relative;
+      background: #fff; border: 2px solid rgba(73,61,154,.14);
+      box-shadow: 0 12px 28px rgba(73,61,154,.10);
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+    #khero-{{ section.id }} .khero__plan:hover{ transform: translateY(-2px); border-color: rgba(73,61,154,.30); }
+    #khero-{{ section.id }} .khero__plan--rec{ border-color: var(--ki-purple-dark); }
+    #khero-{{ section.id }} .khero__rec{
+      position: absolute; top: -12px; left: 18px;
+      background: var(--ki-purple-dark); color: #fff;
+      font-size: 11px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase;
+      padding: 6px 12px; border-radius: 999px;
+    }
+    #khero-{{ section.id }} .khero__prow{ display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+    #khero-{{ section.id }} .khero__pt{ font-weight: 700; color: var(--ki-purple-dark); }
+    #khero-{{ section.id }} .khero__pd{ font-size: 13px; color: var(--muted); margin-top: 2px; }
+    #khero-{{ section.id }} .khero__pp{ font-weight: 700; color: var(--ki-purple-dark); font-size: 18px; }
+    #khero-{{ section.id }} .khero__cta{
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 100%; margin-top: 20px; padding: 16px 24px;
+      background: var(--ki-purple-dark); color: #fff;
+      border-radius: 999px; border: 0; cursor: pointer;
+      font-size: 15px; font-weight: 650; text-decoration: none;
+      box-shadow: 0 14px 32px rgba(73,61,154,.22);
+      transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+    }
+    #khero-{{ section.id }} .khero__cta:hover{ transform: translateY(-2px); background: #3f347f; box-shadow: 0 18px 40px rgba(73,61,154,.28); }
+    #khero-{{ section.id }} .khero__cta:focus-visible{ outline: 2px solid var(--ki-purple); outline-offset: 2px; }
+    @media (max-width: 990px){
+      #khero-{{ section.id }} .khero__wrap{ padding: 48px 20px; }
+      #khero-{{ section.id }} .khero__grid{ grid-template-columns: 1fr; gap: 24px; }
+      #khero-{{ section.id }} .khero__gallery{ position: static; }
+    }
+    @media (max-width: 750px){
+      #khero-{{ section.id }} .khero__wrap{ padding: 36px 16px; }
+    }
+  </style>
+
+  <div class="khero__wrap">
+    <div class="khero__grid">
+      <div class="khero__gallery">
+        {% if product.featured_image %}
+          <img src="{{ product.featured_image | image_url: width: 900 }}" alt="{{ product.title | escape }}" class="khero__img" width="{{ product.featured_image.width }}" height="{{ product.featured_image.height }}" loading="eager">
+        {% elsif section.settings.image != blank %}
+          <img src="{{ section.settings.image | image_url: width: 900 }}" alt="{{ section.settings.title | escape }}" class="khero__img" width="{{ section.settings.image.width }}" height="{{ section.settings.image.height }}" loading="eager">
+        {% else %}
+          <div class="khero__placeholder">{{ 'product-1' | placeholder_svg_tag }}</div>
+        {% endif %}
+      </div>
+      <div class="khero__info">
+        {% if section.settings.badge != blank %}
+          <div class="khero__badge">{{ section.settings.badge }}</div>
+        {% endif %}
+        <h1 class="khero__title">{{ section.settings.title }}</h1>
+        {% if section.settings.subtitle != blank %}
+          <p class="khero__sub">{{ section.settings.subtitle }}</p>
+        {% endif %}
+        {% if section.settings.show_rating %}
+          <div class="khero__rating">
+            <span class="khero__stars" aria-hidden="true">★★★★★</span>
+            <a href="#reviews" class="khero__rlink">{{ section.settings.rating_text }}</a>
+          </div>
+        {% endif %}
+        {% if section.settings.shipping_note != blank %}
+          <div class="khero__ship">🚚 {{ section.settings.shipping_note }}</div>
+        {% endif %}
+
+        <div class="khero__plans">
+          {% for block in section.blocks %}
+            {% if block.type == 'price_option' %}
+              <label class="khero__plan {% if block.settings.recommended %}khero__plan--rec{% endif %}" {{ block.shopify_attributes }}>
+                {% if block.settings.recommended %}<span class="khero__rec">{{ block.settings.recommended_label }}</span>{% endif %}
+                <div class="khero__prow">
+                  <div>
+                    <div class="khero__pt">{{ block.settings.title }}</div>
+                    <div class="khero__pd">{{ block.settings.description }}</div>
+                  </div>
+                  <div class="khero__pp">{{ block.settings.price }}</div>
+                </div>
+              </label>
+            {% endif %}
+          {% endfor %}
+        </div>
+
+        {% if product != blank %}
+          <form method="post" action="{{ routes.cart_add_url }}" enctype="multipart/form-data">
+            <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+            <button type="submit" class="khero__cta">{{ section.settings.cta_text | default: 'Sepete ekle' }}</button>
+          </form>
+        {% else %}
+          <a href="{{ section.settings.cta_link | default: '#' }}" class="khero__cta">{{ section.settings.cta_text | default: 'Sepete ekle' }}</a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": ".ki Product Hero",
+  "tag": "section",
+  "settings": [
+    { "type": "product",      "id": "product", "label": "Bağlı ürün (opsiyonel)" },
+    { "type": "image_picker", "id": "image",   "label": "Ürün görseli (ürün yoksa)" },
+    { "type": "text",     "id": "badge",         "label": "Üst rozet metni",    "default": "90+ kişi bu ürünü satın aldı" },
+    { "type": "text",     "id": "title",         "label": "Başlık",             "default": ".ki Balance — Döngü Takviyesi" },
+    { "type": "textarea", "id": "subtitle",      "label": "Alt başlık",         "default": "Eczacı ve doktorlar tarafından geliştirilmiş bilimsel formülasyon." },
+    { "type": "checkbox", "id": "show_rating",   "label": "Yıldız puanı göster","default": true },
+    { "type": "text",     "id": "rating_text",   "label": "Puan metni",         "default": "5.0 · 90+ doğrulanmış değerlendirme" },
+    { "type": "text",     "id": "shipping_note", "label": "Kargo notu",         "default": "Bugün 14:00'a kadar sipariş ver, yarın kapında" },
+    { "type": "text",     "id": "cta_text",      "label": "Buton metni",        "default": "Sepete ekle" },
+    { "type": "url",      "id": "cta_link",      "label": "Buton linki (ürün yoksa)" },
+
+    { "type": "header", "content": "Style" },
+    { "type": "color", "id": "bg",    "label": "Background", "default": "#ffffff" },
+    { "type": "color", "id": "text",  "label": "Text",       "default": "#1a1a1a" },
+    { "type": "color", "id": "muted", "label": "Muted text", "default": "#493d9a" },
+    { "type": "range", "id": "max_width", "label": "Max width (px)", "min": 1000, "max": 1600, "step": 10, "default": 1200 },
+    { "type": "range", "id": "pad_y",     "label": "Vertical padding (px)", "min": 24, "max": 160, "step": 4, "default": 72 },
+    { "type": "range", "id": "pad_x",     "label": "Horizontal padding (px)", "min": 16, "max": 90, "step": 2, "default": 40 }
+  ],
+  "blocks": [
+    {
+      "type": "price_option",
+      "name": "Fiyat seçeneği",
+      "settings": [
+        { "type": "text",     "id": "title",             "label": "Başlık",          "default": "Tek seferlik" },
+        { "type": "text",     "id": "description",       "label": "Açıklama",        "default": "30 günlük kutu" },
+        { "type": "text",     "id": "price",             "label": "Fiyat",           "default": "₺350" },
+        { "type": "checkbox", "id": "recommended",       "label": "Önerilen" },
+        { "type": "text",     "id": "recommended_label", "label": "Önerilen rozeti", "default": "EN POPÜLER" }
+      ]
+    }
+  ],
+  "presets": [{ "name": ".ki Product Hero" }]
+}
+{% endschema %}

@@ -1,0 +1,311 @@
+{% comment %}
+  .ki Hero Slider v3
+  Mobil: aspect-ratio 3/4
+  Video: HTML5 <video> tag ile iOS uyumlu
+  BU DOSYAYA SADECE HERO ICIN DOKUNUN
+{% endcomment %}
+
+<link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,400;0,600;0,700;0,800;1,700;1,800&display=swap" rel="stylesheet">
+
+<style>
+.kh3-{{ section.id }} {
+  --p: #493d9a; --lil: #dad2ff;
+  --bg: {{ section.settings.panel_bg | default: '#f0eef8' }};
+  --txt: {{ section.settings.panel_text | default: '#1a1340' }};
+  --muted: #6b6b8a;
+  position: relative; width: 100%; overflow: hidden; background: var(--bg);
+}
+.kh3-{{ section.id }} .kh3-track { display: flex; width: 100%; will-change: transform; }
+.kh3-{{ section.id }} .kh3-slide {
+  flex: 0 0 100%; width: 100%;
+  display: grid; grid-template-columns: 1fr 1fr;
+  min-height: 88vh;
+}
+.kh3-{{ section.id }} .kh3-media { position: relative; overflow: hidden; background: #111; }
+.kh3-{{ section.id }} .kh3-media video,
+.kh3-{{ section.id }} .kh3-media img {
+  position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block;
+}
+.kh3-{{ section.id }} .kh3-slide.is-active .kh3-media img {
+  animation: kh3kb-{{ section.id }} 9s ease-out forwards;
+}
+@keyframes kh3kb-{{ section.id }} { from { transform: scale(1.07); } to { transform: scale(1.00); } }
+.kh3-{{ section.id }} .kh3-media::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(to right, transparent 70%, rgba({{ section.settings.panel_bg_rgb | default: '240,238,248' }}, 0.35) 100%);
+  pointer-events: none;
+}
+.kh3-{{ section.id }} .kh3-panel {
+  background: var(--bg); display: flex; flex-direction: column; justify-content: center;
+  padding: 60px 56px 60px 52px; position: relative; z-index: 2;
+}
+.kh3-{{ section.id }} .kh3-text-wrap { opacity: 0; transform: translateY(20px); transition: opacity 0.65s ease, transform 0.65s ease; }
+.kh3-{{ section.id }} .kh3-slide.is-active .kh3-text-wrap { opacity: 1; transform: translateY(0); }
+.kh3-{{ section.id }} .kh3-badge { font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--p); margin-bottom: 16px; opacity: 0.75; }
+.kh3-{{ section.id }} .kh3-title {
+  font-family: 'Raleway', system-ui, sans-serif;
+  font-size: clamp(32px, 3.6vw, 58px); font-weight: 800; line-height: 1.05;
+  color: var(--txt); margin: 0 0 20px; letter-spacing: -0.025em;
+}
+.kh3-{{ section.id }} .kh3-title em { font-style: italic; font-weight: 800; color: var(--p); }
+.kh3-{{ section.id }} .kh3-desc {
+  font-size: clamp(13px, 1.1vw, 16px); line-height: 1.65;
+  color: var(--muted); margin: 0 0 32px; max-width: 440px;
+}
+.kh3-{{ section.id }} .kh3-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 15px 30px; border-radius: 50px;
+  background: var(--p); color: #fff; font-weight: 800; font-size: 14px;
+  text-decoration: none; transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 6px 22px rgba(73,61,154,0.28); border: none; cursor: pointer; width: fit-content;
+}
+.kh3-{{ section.id }} .kh3-btn:hover { background: #3b3280; transform: translateY(-2px); box-shadow: 0 10px 28px rgba(73,61,154,0.35); }
+.kh3-{{ section.id }} .kh3-btn svg { width: 15px; height: 15px; transition: transform 0.2s; }
+.kh3-{{ section.id }} .kh3-btn:hover svg { transform: translateX(3px); }
+.kh3-{{ section.id }} .kh3-proof { display: flex; align-items: center; gap: 16px; margin-top: 24px; flex-wrap: wrap; }
+.kh3-{{ section.id }} .kh3-stars { display: flex; align-items: center; gap: 4px; font-size: 13px; font-weight: 600; color: #333; }
+.kh3-{{ section.id }} .kh3-stars svg { width: 15px; height: 15px; fill: #f5a623; stroke: none; }
+.kh3-{{ section.id }} .kh3-proof-divider { width: 1px; height: 16px; background: rgba(0,0,0,0.15); }
+.kh3-{{ section.id }} .kh3-proof-text { font-size: 13px; color: var(--muted); font-weight: 500; }
+.kh3-{{ section.id }} .kh3-nav-row { display: flex; align-items: center; gap: 16px; margin-top: 36px; }
+.kh3-{{ section.id }} .kh3-nav-btn {
+  width: 40px; height: 40px; border-radius: 50%;
+  border: 1.5px solid rgba(73,61,154,0.25); background: transparent; color: var(--p);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: all 0.2s; flex-shrink: 0;
+}
+.kh3-{{ section.id }} .kh3-nav-btn svg { width: 16px; height: 16px; }
+.kh3-{{ section.id }} .kh3-nav-btn:hover { background: var(--p); color: #fff; border-color: var(--p); box-shadow: 0 4px 14px rgba(73,61,154,0.28); }
+.kh3-{{ section.id }} .kh3-counter { font-size: 13px; font-weight: 600; color: var(--muted); min-width: 32px; text-align: center; }
+.kh3-{{ section.id }} .kh3-progress-wrap { display: flex; gap: 6px; align-items: center; flex: 1; }
+.kh3-{{ section.id }} .kh3-progress-item { height: 2px; border-radius: 2px; background: rgba(73,61,154,0.18); overflow: hidden; cursor: pointer; flex: 1; }
+.kh3-{{ section.id }} .kh3-progress-fill { height: 100%; width: 0%; background: var(--p); border-radius: 2px; }
+
+@media (min-width: 750px) and (max-width: 1099px) {
+  .kh3-{{ section.id }} .kh3-slide { min-height: 75vh; }
+  .kh3-{{ section.id }} .kh3-panel { padding: 40px 36px 40px 32px; }
+  .kh3-{{ section.id }} .kh3-title { font-size: clamp(26px, 3.5vw, 42px); }
+}
+
+/* MOBIL <= 749px - aspect-ratio 3/4 */
+@media (max-width: 749px) {
+  .kh3-{{ section.id }} .kh3-slide {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+    min-height: unset;
+    aspect-ratio: 3 / 4;
+    position: relative;
+  }
+  .kh3-{{ section.id }} .kh3-media {
+    grid-row: 1; grid-column: 1;
+    position: absolute; inset: 0; width: 100%; height: 100%;
+  }
+  .kh3-{{ section.id }} .kh3-media::after {
+    background: linear-gradient(to top, rgba(15,8,50,0.88) 0%, rgba(40,24,100,0.50) 42%, rgba(0,0,0,0.12) 72%, transparent 100%);
+  }
+  .kh3-{{ section.id }} .kh3-panel {
+    grid-row: 1; grid-column: 1;
+    position: relative; z-index: 3;
+    background: transparent; justify-content: flex-end;
+    padding: 0 20px 24px;
+  }
+  .kh3-{{ section.id }} .kh3-badge { color: rgba(255,255,255,0.65); }
+  .kh3-{{ section.id }} .kh3-title { color: #fff; font-size: clamp(22px, 6.5vw, 32px); margin-bottom: 10px; }
+  .kh3-{{ section.id }} .kh3-title em { color: var(--lil); }
+  .kh3-{{ section.id }} .kh3-desc { color: rgba(255,255,255,0.80); font-size: 12px; line-height: 1.5; margin-bottom: 16px; }
+  .kh3-{{ section.id }} .kh3-btn { width: auto; align-self: flex-start; padding: 9px 18px; font-size: 12px; font-weight: 700; border-radius: 50px; box-shadow: 0 3px 12px rgba(73,61,154,0.3); margin-top: 16px; }
+  .kh3-{{ section.id }} .kh3-stars { color: #fff; }
+  .kh3-{{ section.id }} .kh3-stars svg { fill: #f5a623; }
+  .kh3-{{ section.id }} .kh3-proof-text { color: rgba(255,255,255,0.60); font-size: 11px; }
+  .kh3-{{ section.id }} .kh3-proof-divider { background: rgba(255,255,255,0.20); }
+  .kh3-{{ section.id }} .kh3-proof { margin-top: 12px; gap: 10px; }
+  .kh3-{{ section.id }} .kh3-nav-row { margin-top: 14px; gap: 12px; }
+  .kh3-{{ section.id }} .kh3-nav-btn { width: 34px; height: 34px; border-color: rgba(255,255,255,0.30); color: #fff; }
+  .kh3-{{ section.id }} .kh3-nav-btn:hover { background: rgba(255,255,255,0.18); border-color: transparent; }
+  .kh3-{{ section.id }} .kh3-counter { color: rgba(255,255,255,0.55); font-size: 12px; }
+  .kh3-{{ section.id }} .kh3-progress-item { background: rgba(255,255,255,0.22); }
+  .kh3-{{ section.id }} .kh3-progress-fill { background: #fff; }
+}
+</style>
+
+{%- assign slide_count = section.blocks.size -%}
+{%- assign spd = section.settings.change_slides_speed | default: 6 -%}
+
+<section class="kh3-{{ section.id }}" id="KH3-{{ section.id }}" data-autoplay="{{ section.settings.auto_rotate }}" data-speed="{{ spd }}" data-total="{{ slide_count }}">
+  <div class="kh3-track" id="KH3Track-{{ section.id }}">
+    {%- for block in section.blocks -%}
+    <div class="kh3-slide{% if forloop.first %} is-active{% endif %}" id="KH3Slide-{{ section.id }}-{{ forloop.index0 }}" {{ block.shopify_attributes }}>
+      <div class="kh3-media">
+        {%- if block.settings.video != blank -%}
+          {%- comment %} HTML5 video - iOS Safari icin tum attribute'lar boolean degil string olarak yazildi {%- endcomment -%}
+          {%- assign vid_url = block.settings.video.sources | first -%}
+          <video
+            autoplay
+            muted
+            loop
+            playsinline
+            preload="auto"
+            style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;"
+          >
+            {%- for source in block.settings.video.sources -%}
+              <source src="{{ source.url }}" type="{{ source.mime_type }}">
+            {%- endfor -%}
+          </video>
+        {%- elsif block.settings.image != blank -%}
+          {{ block.settings.image | image_url: width: 1400 | image_tag: loading: 'eager', decoding: 'async', alt: block.settings.title }}
+        {%- else -%}
+          {{ 'hero-apparel-1' | placeholder_svg_tag: 'placeholder-svg' }}
+        {%- endif -%}
+      </div>
+      <div class="kh3-panel">
+        <div class="kh3-text-wrap">
+          {%- if block.settings.badge != blank -%}<div class="kh3-badge">{{ block.settings.badge | escape }}</div>{%- endif -%}
+          {%- if block.settings.title != blank -%}<h1 class="kh3-title">{{ block.settings.title }}</h1>{%- endif -%}
+          {%- if block.settings.description != blank -%}<p class="kh3-desc">{{ block.settings.description | escape }}</p>{%- endif -%}
+          {%- if block.settings.show_proof -%}
+          <div class="kh3-proof">
+            <div class="kh3-stars">
+              {%- for i in (1..5) -%}<svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>{%- endfor -%}
+              &nbsp;{{ block.settings.proof_rating | default: '5.0' }} &middot; {{ block.settings.proof_reviews | default: '90+' }} yorum
+            </div>
+            {%- if block.settings.proof_social != blank -%}
+              <div class="kh3-proof-divider"></div>
+              <span class="kh3-proof-text">{{ block.settings.proof_social | escape }}</span>
+            {%- endif -%}
+          </div>
+          {%- endif -%}
+          {%- if block.settings.button_text != blank and block.settings.button_link != blank -%}
+            <a href="{{ block.settings.button_link }}" class="kh3-btn">
+              {{ block.settings.button_text | escape }}
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+          {%- endif -%}
+        </div>
+        {%- if slide_count > 1 -%}
+        <div class="kh3-nav-row">
+          <button class="kh3-nav-btn kh3-prev" type="button" aria-label="Önceki"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg></button>
+          <span class="kh3-counter" id="KH3Counter-{{ section.id }}">1 / {{ slide_count }}</span>
+          <button class="kh3-nav-btn kh3-next" type="button" aria-label="Sonraki"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg></button>
+          <div class="kh3-progress-wrap" id="KH3Prog-{{ section.id }}">
+            {%- for b in section.blocks -%}<div class="kh3-progress-item" data-index="{{ forloop.index0 }}"><div class="kh3-progress-fill"></div></div>{%- endfor -%}
+          </div>
+        </div>
+        {%- endif -%}
+      </div>
+    </div>
+    {%- endfor -%}
+  </div>
+</section>
+
+<script>
+(function(){
+  var sid = '{{ section.id }}';
+  var root = document.getElementById('KH3-' + sid);
+  if (!root) return;
+
+  /* iOS Safari icin tum videolari agresif bicimde baslat */
+  function forcePlayVideos() {
+    root.querySelectorAll('video').forEach(function(v) {
+      v.muted = true;
+      v.playsInline = true;
+      /* setAttribute ile de yaz - bazi tarayicilar property'e bakmiyor */
+      v.setAttribute('muted', '');
+      v.setAttribute('playsinline', '');
+      v.setAttribute('autoplay', '');
+      v.play().catch(function() {});
+    });
+  }
+
+  /* DOM hazir olunca hemen calistir */
+  forcePlayVideos();
+
+  /* Kullanici etklesimi sonrasi tekrar dene (iOS politikasi) */
+  document.addEventListener('touchstart', function onTouch() {
+    forcePlayVideos();
+    document.removeEventListener('touchstart', onTouch);
+  }, { once: true, passive: true });
+
+  var total = parseInt(root.dataset.total, 10) || 0;
+  var autoplay = root.dataset.autoplay === 'true';
+  var spd = (parseInt(root.dataset.speed, 10) || 6) * 1000;
+  if (total < 2) return;
+  var track = document.getElementById('KH3Track-' + sid);
+  var progWrap = document.getElementById('KH3Prog-' + sid);
+  var counter = document.getElementById('KH3Counter-' + sid);
+  var slides = track ? Array.from(track.querySelectorAll('.kh3-slide')) : [];
+  var progs = progWrap ? Array.from(progWrap.querySelectorAll('.kh3-progress-item')) : [];
+  var prevBtns = root.querySelectorAll('.kh3-prev');
+  var nextBtns = root.querySelectorAll('.kh3-next');
+  var current = 0, timer = null;
+
+  function goTo(idx) {
+    current = (idx + total) % total;
+    slides.forEach(function(s,i){ s.classList.toggle('is-active', i===current); });
+    if (track) { track.style.transition='transform 0.7s cubic-bezier(0.4,0,0.2,1)'; track.style.transform='translateX(-'+(current*100)+'%)'; }
+    if (counter) counter.textContent=(current+1)+' / '+total;
+    slides.forEach(function(s,i){
+      var v=s.querySelector('video');
+      if(!v) return;
+      if(i===current){
+        v.currentTime=0;
+        v.muted=true;
+        v.play().catch(function(){});
+      } else {
+        v.pause();
+      }
+    });
+    progs.forEach(function(p,i){ var f=p.querySelector('.kh3-progress-fill'); if(!f) return; f.style.transition='none'; f.style.width=i<current?'100%':'0%'; });
+    var ap=progs[current]; if(ap){ var af=ap.querySelector('.kh3-progress-fill'); if(af) requestAnimationFrame(function(){ requestAnimationFrame(function(){ af.style.transition='width '+spd+'ms linear'; af.style.width='100%'; }); }); }
+  }
+
+  function startAuto(){ if(!autoplay) return; clearInterval(timer); timer=setInterval(function(){ goTo(current+1); },spd); }
+  function stopAuto(){ clearInterval(timer); }
+
+  prevBtns.forEach(function(b){ b.addEventListener('click',function(){ stopAuto(); goTo(current-1); startAuto(); }); });
+  nextBtns.forEach(function(b){ b.addEventListener('click',function(){ stopAuto(); goTo(current+1); startAuto(); }); });
+  progs.forEach(function(p){ p.addEventListener('click',function(){ stopAuto(); goTo(parseInt(p.dataset.index,10)); startAuto(); }); });
+  var tx=0;
+  root.addEventListener('touchstart',function(e){ tx=e.changedTouches[0].clientX; },{passive:true});
+  root.addEventListener('touchend',function(e){ var d=tx-e.changedTouches[0].clientX; if(Math.abs(d)>44){stopAuto();goTo(d>0?current+1:current-1);startAuto();} },{passive:true});
+
+  goTo(0); startAuto();
+  document.addEventListener('shopify:section:select',function(e){ if(e.detail&&e.detail.sectionId===sid){stopAuto();goTo(0);} });
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Hero Slider v3 (.ki)",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {"type":"header","content":"Panel Rengi"},
+    {"type":"color","id":"panel_bg","label":"Sag panel arka plan","default":"#f0eef8"},
+    {"type":"color","id":"panel_text","label":"Sag panel metin rengi","default":"#1a1340"},
+    {"type":"text","id":"panel_bg_rgb","label":"Panel RGB","default":"240,238,248"},
+    {"type":"header","content":"Otomatik Kaydirma"},
+    {"type":"checkbox","id":"auto_rotate","label":"Otomatik kaydir","default":true},
+    {"type":"range","id":"change_slides_speed","min":3,"max":12,"step":1,"unit":"s","label":"Gecis hizi","default":6}
+  ],
+  "blocks": [{
+    "type": "slide", "name": "Slide", "limit": 5,
+    "settings": [
+      {"type":"header","content":"Medya"},
+      {"type":"video","id":"video","label":"Video"},
+      {"type":"image_picker","id":"image","label":"Gorsel"},
+      {"type":"header","content":"Icerik"},
+      {"type":"text","id":"badge","label":"Rozet"},
+      {"type":"richtext","id":"title","label":"Baslik","default":"<p>Dongunun <em>her gununude</em> dengede kal.</p>"},
+      {"type":"textarea","id":"description","label":"Aciklama"},
+      {"type":"text","id":"button_text","label":"Buton metni","default":"Urunu Incele"},
+      {"type":"url","id":"button_link","label":"Buton linki"},
+      {"type":"header","content":"Sosyal Kanit"},
+      {"type":"checkbox","id":"show_proof","label":"Yildiz satirini goster","default":true},
+      {"type":"text","id":"proof_rating","label":"Puan","default":"5.0"},
+      {"type":"text","id":"proof_reviews","label":"Yorum sayisi","default":"90+"},
+      {"type":"text","id":"proof_social","label":"Sag metin","default":"2.400+ kadin tercih ediyor"}
+    ]
+  }],
+  "presets": [{"name":"Hero Slider v3 (.ki)","blocks":[{"type":"slide"},{"type":"slide"}]}]
+}
+{% endschema %}

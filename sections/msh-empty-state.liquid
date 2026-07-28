@@ -1,0 +1,117 @@
+{% comment %}
+  .ki Empty State (scoped) — Brand Kit
+  Centered card with soft purple icon chip, title, description, optional CTA.
+  Reusable for "henüz abonelik yok", "henüz sipariş yok", etc.
+
+  Brand kit:
+    #493d9a / #f8f8f6 / #b2a5ff / #dad2ff
+{% endcomment %}
+
+<section id="mshemp-{{ section.id }}" class="section">
+  <style>
+    #mshemp-{{ section.id }}{
+      --ki-purple-dark: #493d9a;
+      --ki-offwhite: #f8f8f6;
+      --ki-purple: #b2a5ff;
+      --ki-lilac: #dad2ff;
+
+      --bg: {{ section.settings.bg | default: '#ffffff' }};
+      --text: {{ section.settings.text | default: '#1a1a1a' }};
+      --muted: {{ section.settings.muted | default: 'rgba(26,26,26,.64)' }};
+      --line: rgba(73,61,154,.14);
+
+      --maxw: {{ section.settings.max_width | default: 1000 }}px;
+      --py: {{ section.settings.pad_y | default: 40 }}px;
+      --px: {{ section.settings.pad_x | default: 32 }}px;
+
+      background: var(--bg); color: var(--text);
+    }
+    #mshemp-{{ section.id }} .mshemp__wrap{ max-width: var(--maxw); margin: 0 auto; padding: var(--py) var(--px); }
+    #mshemp-{{ section.id }} .mshemp__card{
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      padding: 80px 24px; text-align: center; border-radius: 18px; background: #fff;
+      border: 1px solid var(--line); box-shadow: 0 18px 40px rgba(73,61,154,.14);
+      transition: transform .2s, box-shadow .2s;
+    }
+    #mshemp-{{ section.id }} .mshemp__card:hover{
+      transform: translateY(-4px); box-shadow: 0 22px 50px rgba(73,61,154,.18);
+    }
+    #mshemp-{{ section.id }} .mshemp__icon{
+      width: 56px; height: 56px; border-radius: 999px; display: grid; place-items: center;
+      background: rgba(178,165,255,.22); color: var(--ki-purple-dark); margin-bottom: 18px;
+    }
+    #mshemp-{{ section.id }} .mshemp__title{ margin: 0; font-size: 20px; font-weight: 650; color: var(--text); }
+    #mshemp-{{ section.id }} .mshemp__desc{
+      margin: 8px auto 0; max-width: 440px; font-size: 14px; color: var(--muted); line-height: 1.6;
+    }
+    #mshemp-{{ section.id }} .mshemp__cta{
+      display: inline-flex; align-items: center; gap: 8px; height: 44px; padding: 0 22px;
+      margin-top: 22px; border-radius: 999px; background: var(--ki-purple-dark); color: #fff;
+      font-weight: 650; font-size: 14px; text-decoration: none;
+      transition: transform .2s, box-shadow .2s;
+    }
+    #mshemp-{{ section.id }} .mshemp__cta:hover{
+      transform: translateY(-2px); box-shadow: 0 14px 28px rgba(73,61,154,.24);
+    }
+    #mshemp-{{ section.id }} .mshemp__cta:focus-visible{ outline: 2px solid var(--ki-purple-dark); outline-offset: 3px; }
+    @media (max-width: 750px){
+      #mshemp-{{ section.id }} .mshemp__wrap{ padding: 24px 16px; }
+      #mshemp-{{ section.id }} .mshemp__card{ padding: 56px 20px; }
+    }
+  </style>
+
+  <div class="mshemp__wrap">
+    <div class="mshemp__card">
+      <div class="mshemp__icon" aria-hidden="true">
+        {% case section.settings.icon %}
+          {% when 'bag' %}
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          {% when 'package' %}
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="16.5" y1="9.4" x2="7.5" y2="4.21"/><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+          {% else %}
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
+        {% endcase %}
+      </div>
+      <h3 class="mshemp__title">{{ section.settings.title | default: 'Henüz aboneliğin yok' }}</h3>
+      {% if section.settings.description != blank %}
+        <p class="mshemp__desc">{{ section.settings.description }}</p>
+      {% endif %}
+      {% if section.settings.cta_label != blank %}
+        <a href="{{ section.settings.cta_href | default: '#' }}" class="mshemp__cta">
+          {{ section.settings.cta_label }}
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+        </a>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "MSH · Empty state",
+  "settings": [
+    {
+      "type": "select", "id": "icon", "label": "İkon",
+      "options": [
+        { "value": "repeat", "label": "Abonelik" },
+        { "value": "bag", "label": "Sipariş" },
+        { "value": "package", "label": "Paket" }
+      ],
+      "default": "repeat"
+    },
+    { "type": "text", "id": "title", "label": "Başlık", "default": "Henüz aboneliğin yok" },
+    { "type": "textarea", "id": "description", "label": "Açıklama", "default": "Düzenli ihtiyaçların için bir abonelik oluştur." },
+    { "type": "text", "id": "cta_label", "label": "CTA etiketi", "default": "Mağazaya git" },
+    { "type": "url", "id": "cta_href", "label": "CTA linki" },
+
+    { "type": "header", "content": "Style" },
+    { "type": "color", "id": "bg", "label": "Background", "default": "#ffffff" },
+    { "type": "color", "id": "text", "label": "Text", "default": "#1a1a1a" },
+    { "type": "color", "id": "muted", "label": "Muted", "default": "#493d9a" },
+    { "type": "range", "id": "max_width", "label": "Max width (px)", "min": 600, "max": 1400, "step": 20, "default": 1000 },
+    { "type": "range", "id": "pad_y", "label": "Vertical padding (px)", "min": 16, "max": 120, "step": 4, "default": 40 },
+    { "type": "range", "id": "pad_x", "label": "Horizontal padding (px)", "min": 12, "max": 80, "step": 2, "default": 32 }
+  ],
+  "presets": [{ "name": "MSH · Empty state" }]
+}
+{% endschema %}

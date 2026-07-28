@@ -1,0 +1,182 @@
+{% comment %}UGC Carousel v5 — seamless infinite loop, auto-clone{% endcomment %}
+
+<link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,700;0,800;1,700;1,800&display=swap" rel="stylesheet">
+
+<style>
+.ugc-{{ section.id }}{
+  --p:#493d9a;--lil:#dad2ff;
+  --bg:{{ section.settings.bg | default: '#f8f8f6' }};
+  background:var(--bg);
+  padding:{{ section.settings.padding_top | default: 56 }}px 0 {{ section.settings.padding_bottom | default: 64 }}px;
+  overflow:hidden;
+}
+.ugc-{{ section.id }} .ugc-header{text-align:center;padding:0 24px;margin-bottom:36px;}
+.ugc-{{ section.id }} .ugc-eyebrow{display:inline-flex;align-items:center;gap:6px;font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--p);opacity:.72;margin-bottom:10px;justify-content:center;}
+.ugc-{{ section.id }} .ugc-eyebrow::before,.ugc-{{ section.id }} .ugc-eyebrow::after{content:'';display:inline-block;width:18px;height:1.5px;background:var(--p);opacity:.5;}
+.ugc-{{ section.id }} .ugc-title{font-family:'Raleway',system-ui,sans-serif;font-size:clamp(26px,3.4vw,46px);font-weight:800;line-height:1.08;color:#1a1340;margin:0 0 12px;letter-spacing:-.025em;}
+.ugc-{{ section.id }} .ugc-title em{font-style:italic;color:var(--p);}
+.ugc-{{ section.id }} .ugc-subtitle{font-size:15px;color:#888;margin:0;line-height:1.65;}
+.ugc-{{ section.id }} .ugc-marquee-outer{position:relative;overflow:hidden;}
+.ugc-{{ section.id }} .ugc-marquee-outer::before,.ugc-{{ section.id }} .ugc-marquee-outer::after{content:'';position:absolute;top:0;bottom:0;width:60px;z-index:3;pointer-events:none;}
+.ugc-{{ section.id }} .ugc-marquee-outer::before{left:0;background:linear-gradient(to right,var(--bg) 0%,transparent 100%);}
+.ugc-{{ section.id }} .ugc-marquee-outer::after{right:0;background:linear-gradient(to left,var(--bg) 0%,transparent 100%);}
+.ugc-{{ section.id }} .ugc-track{display:flex;width:max-content;will-change:transform;padding:8px 0 16px;}
+.ugc-{{ section.id }} .ugc-marquee-outer:hover .ugc-track{animation-play-state:paused !important;}
+.ugc-{{ section.id }} .ugc-card{position:relative;border-radius:16px;overflow:hidden;width:180px;aspect-ratio:9/16;background:#1a1340;flex-shrink:0;cursor:pointer;box-shadow:0 6px 24px rgba(0,0,0,.18);transition:transform .3s,box-shadow .3s;margin-right:14px;}
+.ugc-{{ section.id }} .ugc-card:hover{transform:translateY(-4px) scale(1.02);box-shadow:0 14px 36px rgba(0,0,0,.26);}
+.ugc-{{ section.id }} .ugc-card video{position:absolute;inset:0;width:100% !important;height:100% !important;object-fit:cover;display:block;pointer-events:none;}
+.ugc-{{ section.id }} .ugc-card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;}
+.ugc-{{ section.id }} .ugc-card-ov{position:absolute;bottom:0;left:0;right:0;padding:40px 12px 14px;background:linear-gradient(to top,rgba(10,5,30,.82) 0%,rgba(30,15,60,.40) 60%,transparent 100%);z-index:2;display:flex;align-items:flex-end;justify-content:space-between;gap:6px;}
+.ugc-{{ section.id }} .ugc-card-label{font-size:11px;font-weight:600;color:rgba(255,255,255,.92);line-height:1.3;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.ugc-{{ section.id }} .ugc-play-btn{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.22);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;transition:background .2s,transform .2s;color:#fff;z-index:3;position:relative;}
+.ugc-{{ section.id }} .ugc-play-btn:hover{background:rgba(255,255,255,.4);transform:scale(1.1);}
+.ugc-{{ section.id }} .ugc-play-btn svg{width:14px;height:14px;}
+.ugc-{{ section.id }} .ugc-card .icon-pause{display:none;}
+.ugc-{{ section.id }} .ugc-card.is-playing .icon-play{display:none;}
+.ugc-{{ section.id }} .ugc-card.is-playing .icon-pause{display:block;}
+.ugc-{{ section.id }} .ugc-yt-badge{position:absolute;top:10px;right:10px;z-index:3;background:rgba(255,0,0,.85);color:#fff;font-size:9px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:3px 8px;border-radius:50px;display:flex;align-items:center;gap:4px;}
+.ugc-{{ section.id }} .ugc-yt-badge svg{width:10px;height:10px;fill:#fff;}
+.ugc-{{ section.id }} .ugc-card-badge{position:absolute;top:10px;left:10px;z-index:3;background:rgba(73,61,154,.75);backdrop-filter:blur(6px);color:var(--lil);font-size:9px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:3px 8px;border-radius:50px;border:1px solid rgba(218,210,255,.25);}
+.ugc-lightbox{position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,.88);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .25s;padding:20px;}
+.ugc-lightbox.is-open{opacity:1;pointer-events:all;}
+.ugc-lightbox__inner{position:relative;width:100%;max-width:400px;aspect-ratio:9/16;border-radius:20px;overflow:hidden;background:#000;box-shadow:0 24px 80px rgba(0,0,0,.6);transform:scale(.92);transition:transform .3s;}
+.ugc-lightbox.is-open .ugc-lightbox__inner{transform:scale(1);}
+.ugc-lightbox__inner iframe,.ugc-lightbox__inner video{position:absolute;inset:0;width:100%;height:100%;border:none;}
+.ugc-lightbox__close{position:absolute;top:12px;right:12px;z-index:10;width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s;}
+.ugc-lightbox__close:hover{background:rgba(255,255,255,.3);}
+.ugc-lightbox__close svg{width:16px;height:16px;stroke:#fff;fill:none;stroke-width:2.5;stroke-linecap:round;}
+@media(max-width:749px){.ugc-{{ section.id }}{padding:36px 0 44px;}.ugc-{{ section.id }} .ugc-header{margin-bottom:24px;}.ugc-{{ section.id }} .ugc-card{width:44vw;border-radius:12px;margin-right:10px;}.ugc-{{ section.id }} .ugc-marquee-outer::before,.ugc-{{ section.id }} .ugc-marquee-outer::after{width:30px;}.ugc-lightbox{padding:12px;}.ugc-lightbox__inner{max-width:100%;}}
+</style>
+
+{%- assign block_count = section.blocks.size -%}
+{%- assign spd = section.settings.speed | default: 30 -%}
+
+<div class="ugc-lightbox" id="UGCLightbox-{{ section.id }}" role="dialog" aria-modal="true">
+  <div class="ugc-lightbox__inner" id="UGCLBInner-{{ section.id }}"></div>
+  <button class="ugc-lightbox__close" id="UGCLBClose-{{ section.id }}" aria-label="Kapat">
+    <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+  </button>
+</div>
+
+<section class="ugc-{{ section.id }}" id="UGC-{{ section.id }}">
+  {%- if section.settings.title != blank -%}
+  <div class="ugc-header">
+    {%- if section.settings.eyebrow != blank -%}<p class="ugc-eyebrow">{{ section.settings.eyebrow | escape }}</p>{%- endif -%}
+    <h2 class="ugc-title">{{ section.settings.title }}</h2>
+    {%- if section.settings.subtitle != blank -%}<p class="ugc-subtitle">{{ section.settings.subtitle | escape }}</p>{%- endif -%}
+  </div>
+  {%- endif -%}
+
+  {%- if block_count > 0 -%}
+  <div class="ugc-marquee-outer">
+    <div class="ugc-track" id="UGCTrack-{{ section.id }}" data-speed="{{ spd }}" data-count="{{ block_count }}">
+      {%- for block in section.blocks -%}
+        {%- assign yt_id = '' -%}
+        {%- assign yt_embed = '' -%}
+        {%- if block.settings.youtube_url != blank -%}
+          {%- if block.settings.youtube_url contains 'youtu.be/' -%}{%- assign yt_id = block.settings.youtube_url | split: 'youtu.be/' | last | split: '?' | first -%}
+          {%- elsif block.settings.youtube_url contains 'v=' -%}{%- assign yt_id = block.settings.youtube_url | split: 'v=' | last | split: '&' | first -%}{%- endif -%}
+          {%- if yt_id != '' -%}{%- assign yt_embed = 'https://www.youtube.com/embed/' | append: yt_id | append: '?autoplay=1&rel=0&modestbranding=1' -%}{%- endif -%}
+        {%- endif -%}
+        <div class="ugc-card ugc-orig" data-orig="1" {{ block.shopify_attributes }}{%- if yt_embed != '' %} data-yt-embed="{{ yt_embed | escape }}"{%- endif -%}>
+          {%- if block.settings.badge != blank -%}<span class="ugc-card-badge">{{ block.settings.badge | escape }}</span>{%- endif -%}
+          {%- if yt_id != '' -%}
+            <img src="https://img.youtube.com/vi/{{ yt_id }}/hqdefault.jpg" alt="{{ block.settings.label | escape }}" loading="lazy">
+            <span class="ugc-yt-badge"><svg viewBox="0 0 24 24"><path d="M23 7s-.3-2-1.2-2.7c-1.1-1.2-2.4-1.2-3-1.3C16.4 3 12 3 12 3s-4.4 0-6.8.1c-.6.1-1.9.1-3 1.3C1.3 5 1 7 1 7S.7 9.1.7 11.2v2c0 2 .3 4.1.3 4.1s.3 2 1.2 2.7c1.1 1.2 2.6 1.1 3.3 1.2C7.3 21.3 12 21.3 12 21.3s4.4 0 6.8-.2c.6-.1 1.9-.1 3-1.2.9-.7 1.2-2.7 1.2-2.7s.3-2.1.3-4.1v-2C23.3 9.1 23 7 23 7zM9.7 15.5V8.4l8.1 3.6-8.1 3.5z"/></svg>YouTube</span>
+          {%- elsif block.settings.video != blank -%}
+            {{- block.settings.video | video_tag: autoplay: true, loop: true, muted: true, controls: false, playsinline: true, preload: 'auto' -}}
+          {%- elsif block.settings.image != blank -%}
+            {{ block.settings.image | image_url: width: 600 | image_tag: loading: 'lazy', alt: block.settings.label }}
+          {%- else -%}{{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}{%- endif -%}
+          <div class="ugc-card-ov">
+            <span class="ugc-card-label">{{ block.settings.label | escape }}</span>
+            <button class="ugc-play-btn" aria-label="Oynat" type="button">
+              <svg class="icon-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              <svg class="icon-pause" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+            </button>
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+  {%- endif -%}
+</section>
+
+<script>
+(function(){
+  var sid='{{ section.id }}';
+  var sec=document.getElementById('UGC-'+sid);
+  var track=document.getElementById('UGCTrack-'+sid);
+  var lb=document.getElementById('UGCLightbox-'+sid);
+  var lbInner=document.getElementById('UGCLBInner-'+sid);
+  var lbClose=document.getElementById('UGCLBClose-'+sid);
+  if(!sec||!track) return;
+  var speed=parseFloat(track.dataset.speed)||30;
+  var origCount=parseInt(track.dataset.count,10)||1;
+  var styleEl;
+  function getStyleEl(){if(!styleEl){styleEl=document.getElementById('ugcstyle_'+sid);if(!styleEl){styleEl=document.createElement('style');styleEl.id='ugcstyle_'+sid;document.head.appendChild(styleEl);}}return styleEl;}
+  function cloneUntilFull(){
+    var origCards=Array.from(track.querySelectorAll('.ugc-orig'));
+    if(!origCards.length) return;
+    var needed=window.innerWidth*3.5;
+    var attempts=0;
+    while(track.scrollWidth<needed&&attempts<30){
+      origCards.forEach(function(c){
+        var cl=c.cloneNode(true);
+        cl.classList.remove('ugc-orig');
+        cl.removeAttribute('data-orig');
+        cl.setAttribute('aria-hidden','true');
+        cl.style.pointerEvents='none';
+        var v=cl.querySelector('video');
+        if(v){v.muted=true;v.autoplay=true;v.loop=true;}
+        track.appendChild(cl);
+      });
+      attempts++;
+    }
+  }
+  function initMarquee(){
+    var extras=track.querySelectorAll('.ugc-card:not(.ugc-orig)');
+    extras.forEach(function(c){c.remove();});
+    cloneUntilFull();
+    var allCards=track.querySelectorAll('.ugc-card');
+    if(!allCards.length) return;
+    var fc=allCards[0];
+    var cs=window.getComputedStyle(fc);
+    var cw=fc.offsetWidth+parseFloat(cs.marginRight)||194;
+    if(cw<10){setTimeout(initMarquee,100);return;}
+    var setW=cw*origCount;
+    var kn='ugcmq_'+sid;
+    getStyleEl().textContent='@keyframes '+kn+'{0%{transform:translateX(0)}100%{transform:translateX(-'+setW+'px)}}';
+    track.style.animation=kn+' '+speed+'s linear infinite';
+  }
+  function tryInit(){requestAnimationFrame(function(){requestAnimationFrame(function(){initMarquee();});});}
+  if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',tryInit);}else{tryInit();}
+  window.addEventListener('load',initMarquee);
+  var rt;window.addEventListener('resize',function(){clearTimeout(rt);rt=setTimeout(function(){track.style.animation='none';initMarquee();},200);});
+  sec.querySelectorAll('.ugc-orig video').forEach(function(v){v.muted=true;v.play().catch(function(){});});
+  function openLightbox(embedUrl,videoEl){
+    if(!lb||!lbInner) return;
+    lbInner.innerHTML='';
+    if(embedUrl){var iframe=document.createElement('iframe');iframe.src=embedUrl;iframe.allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';iframe.allowFullscreen=true;lbInner.appendChild(iframe);}
+    else if(videoEl){var clone=videoEl.cloneNode(true);clone.muted=false;clone.controls=true;clone.autoplay=true;clone.loop=false;clone.style.cssText='position:absolute;inset:0;width:100%;height:100%;object-fit:cover;';lbInner.appendChild(clone);clone.play().catch(function(){});}
+    lb.classList.add('is-open');document.body.style.overflow='hidden';
+  }
+  function closeLightbox(){if(!lb) return;lb.classList.remove('is-open');document.body.style.overflow='';setTimeout(function(){lbInner.innerHTML='';},300);}
+  if(lbClose) lbClose.addEventListener('click',closeLightbox);
+  if(lb) lb.addEventListener('click',function(e){if(e.target===lb) closeLightbox();});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape') closeLightbox();});
+  sec.querySelectorAll('.ugc-card[data-orig]').forEach(function(card){
+    var ytEmbed=card.getAttribute('data-yt-embed');
+    var vid=card.querySelector('video');
+    var btn=card.querySelector('.ugc-play-btn');
+    if(ytEmbed){card.addEventListener('click',function(){openLightbox(ytEmbed,null);});if(btn) btn.addEventListener('click',function(e){e.stopPropagation();openLightbox(ytEmbed,null);});}
+    else if(vid){vid.muted=true;vid.play().catch(function(){});card.classList.add('is-playing');card.addEventListener('click',function(e){if(e.target.closest('.ugc-play-btn')) return;openLightbox(null,vid);});if(btn){btn.addEventListener('click',function(e){e.stopPropagation();if(vid.paused){vid.play().catch(function(){});card.classList.add('is-playing');}else{vid.pause();card.classList.remove('is-playing');}});}}
+    else{if(btn) btn.style.display='none';}
+  });
+  document.addEventListener('shopify:section:load',function(e){if(e.detail&&e.detail.sectionId===sid){track.style.animation='none';setTimeout(tryInit,200);}});
+})();
+</script>
+
+{% schema %}
+{"name":"UGC Video Carousel (.ki)","tag":"section","class":"section","settings":[{"type":"color","id":"bg","label":"Arka plan","default":"#f8f8f6"},{"type":"text","id":"eyebrow","label":"\u00dcst etiket"},{"type":"richtext","id":"title","label":"Ba\u015fl\u0131k","default":"<p>Bizi bir de <em>onlardan<\/em> dinle.<\/p>"},{"type":"text","id":"subtitle","label":"Alt ba\u015fl\u0131k"},{"type":"range","id":"speed","min":15,"max":60,"step":5,"unit":"s","label":"Kayd\u0131rma h\u0131z\u0131","default":30},{"type":"header","content":"Bo\u015fluk"},{"type":"range","id":"padding_top","min":0,"max":100,"step":4,"unit":"px","label":"\u00dcst bo\u015fluk","default":56},{"type":"range","id":"padding_bottom","min":0,"max":100,"step":4,"unit":"px","label":"Alt bo\u015fluk","default":64}],"blocks":[{"type":"video_card","name":"Video Kart\u0131","settings":[{"type":"header","content":"YouTube (\u00f6nerilen)"},{"type":"text","id":"youtube_url","label":"YouTube URL","info":"youtube.com/watch?v=... veya youtu.be/... format\u0131."},{"type":"header","content":"Shopify Video (alternatif)"},{"type":"video","id":"video","label":"Video","info":"9:16 dikey video \u00f6nerilir."},{"type":"image_picker","id":"image","label":"G\u00f6rsel (video yoksa)"},{"type":"header","content":"Etiketler"},{"type":"text","id":"label","label":"Alt etiket","default":"izleyici yorumu"},{"type":"text","id":"badge","label":"Sol rozet (opsiyonel)"}]}],"presets":[{"name":"UGC Video Carousel (.ki)","blocks":[{"type":"video_card","settings":{"label":"\"Hayat\u0131m de\u011fi\u015fti\""}},{"type":"video_card","settings":{"label":"PMS art\u0131k daha kolay"}},{"type":"video_card","settings":{"label":"sabah rutini"}},{"type":"video_card","settings":{"label":"spor sonras\u0131"}}]}]}
+{% endschema %}

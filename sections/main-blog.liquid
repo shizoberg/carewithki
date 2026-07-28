@@ -1,0 +1,469 @@
+{% comment %}
+  Main Blog — Ki Brand
+  AG1-style layout: Featured hero + tag filters + 3-col grid
+  Modular, works with Shopify's built-in blog/article system
+{% endcomment %}
+
+{%- paginate blog.articles by section.settings.articles_per_page -%}
+
+<style>
+  :root {
+    --ki-purple-dark: #493d9a;
+    --ki-offwhite: #f8f8f6;
+    --ki-purple: #b2a5ff;
+    --ki-lilac: #dad2ff;
+  }
+
+  .kiblog-section {
+    padding: 48px 20px 80px;
+    background: {{ section.settings.bg | default: '#ffffff' }};
+  }
+
+  .kiblog-container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  /* ===== Header ===== */
+  .kiblog-header {
+    text-align: center;
+    margin-bottom: 32px;
+  }
+  .kiblog-title {
+    font-size: clamp(32px, 5vw, 52px);
+    font-weight: 700;
+    color: var(--ki-purple-dark);
+    margin: 0 0 12px 0;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+  }
+  .kiblog-subtitle {
+    font-size: 16px;
+    color: #666;
+    margin: 0;
+    line-height: 1.6;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  /* ===== Tag Filter Pills ===== */
+  .kiblog-tags {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 40px;
+  }
+  .kiblog-tag {
+    padding: 8px 18px;
+    border-radius: 999px;
+    border: 1.5px solid rgba(73, 61, 154, 0.2);
+    background: transparent;
+    color: #555;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+  }
+  .kiblog-tag:hover {
+    border-color: var(--ki-purple-dark);
+    color: var(--ki-purple-dark);
+    background: rgba(73, 61, 154, 0.04);
+  }
+  .kiblog-tag.is-active {
+    background: var(--ki-purple-dark);
+    color: #fff;
+    border-color: var(--ki-purple-dark);
+  }
+
+  /* ===== Featured / Hero Area ===== */
+  .kiblog-featured {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 20px;
+    margin-bottom: 40px;
+  }
+  @media (max-width: 768px) {
+    .kiblog-featured {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .kiblog-featured-main {
+    position: relative;
+    border-radius: 16px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    min-height: 420px;
+    background: #eee;
+  }
+  .kiblog-featured-main img {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+  }
+  .kiblog-featured-main .kiblog-featured-overlay {
+    position: relative;
+    z-index: 1;
+    padding: 28px 24px;
+    background: linear-gradient(to top, rgba(73, 61, 154, 0.92) 0%, rgba(73, 61, 154, 0.5) 60%, transparent 100%);
+  }
+  .kiblog-featured-main .kiblog-featured-overlay h2 {
+    font-size: clamp(20px, 3vw, 28px);
+    font-weight: 700;
+    color: #fff;
+    margin: 0 0 8px 0;
+    line-height: 1.25;
+  }
+  .kiblog-featured-main .kiblog-featured-overlay .kiblog-card-tag {
+    color: var(--ki-lilac);
+    border-color: rgba(218, 210, 255, 0.4);
+  }
+  .kiblog-featured-main a {
+    text-decoration: none;
+    display: block;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0; left: 0;
+    z-index: 2;
+  }
+
+  .kiblog-featured-side {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .kiblog-featured-side .kiblog-side-card {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ===== Article Cards ===== */
+  .kiblog-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+  @media (max-width: 990px) {
+    .kiblog-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (max-width: 600px) {
+    .kiblog-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .kiblog-card {
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.2s ease;
+  }
+  .kiblog-card:hover {
+    transform: translateY(-4px);
+  }
+  .kiblog-card:hover .kiblog-card-img img {
+    transform: scale(1.04);
+  }
+
+  .kiblog-card-img {
+    border-radius: 12px;
+    overflow: hidden;
+    aspect-ratio: 4/3;
+    background: #f0f0f0;
+    margin-bottom: 14px;
+  }
+  .kiblog-card-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.35s ease;
+  }
+
+  .kiblog-card-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .kiblog-card-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #1a1a1a;
+    line-height: 1.35;
+    margin: 0;
+  }
+
+  .kiblog-card-tag {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--ki-purple-dark);
+    margin-top: 4px;
+  }
+
+  .kiblog-card-excerpt {
+    font-size: 13px;
+    color: #888;
+    line-height: 1.5;
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .kiblog-card-meta {
+    font-size: 12px;
+    color: #aaa;
+    margin-top: auto;
+    padding-top: 8px;
+  }
+
+  /* ===== Pagination ===== */
+  .kiblog-pagination {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 48px;
+    flex-wrap: wrap;
+  }
+  .kiblog-pagination a,
+  .kiblog-pagination span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 40px;
+    height: 40px;
+    padding: 0 12px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    color: #555;
+    border: 1.5px solid rgba(73, 61, 154, 0.15);
+    background: #fff;
+  }
+  .kiblog-pagination a:hover {
+    border-color: var(--ki-purple-dark);
+    color: var(--ki-purple-dark);
+    background: rgba(73, 61, 154, 0.04);
+  }
+  .kiblog-pagination .is-current {
+    background: var(--ki-purple-dark);
+    color: #fff;
+    border-color: var(--ki-purple-dark);
+  }
+
+  /* ===== Empty ===== */
+  .kiblog-empty {
+    text-align: center;
+    padding: 60px 20px;
+    color: #999;
+    font-size: 15px;
+  }
+
+  /* ===== Side card (for featured) ===== */
+  .kiblog-side-card .kiblog-card-img {
+    aspect-ratio: 16/10;
+    margin-bottom: 10px;
+  }
+  .kiblog-side-card .kiblog-card-title {
+    font-size: 15px;
+  }
+</style>
+
+<section class="kiblog-section">
+  <div class="kiblog-container">
+
+    <!-- Header -->
+    <div class="kiblog-header">
+      <h1 class="kiblog-title">{{ section.settings.custom_title | default: blog.title | escape }}</h1>
+      {% if section.settings.subtitle != blank %}
+        <p class="kiblog-subtitle">{{ section.settings.subtitle | escape }}</p>
+      {% endif %}
+    </div>
+
+    <!-- Tag Filter Pills -->
+    {% if blog.all_tags.size > 0 %}
+      <div class="kiblog-tags">
+        <a href="{{ blog.url }}" class="kiblog-tag {% if current_tags == blank %}is-active{% endif %}">
+          Tüm Yazılar
+        </a>
+        {% for tag in blog.all_tags %}
+          {% if current_tags contains tag %}
+            <a href="{{ blog.url }}" class="kiblog-tag is-active">{{ tag }}</a>
+          {% else %}
+            <a href="{{ blog.url }}/tagged/{{ tag | handle }}" class="kiblog-tag">{{ tag }}</a>
+          {% endif %}
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    {% if blog.articles.size > 0 %}
+
+      <!-- Featured Hero (first page, no tag filter active) -->
+      {% if paginate.current_page == 1 and current_tags == blank and blog.articles.size >= 3 %}
+        <div class="kiblog-featured">
+          <!-- Main Featured -->
+          {% assign hero = blog.articles[0] %}
+          <div class="kiblog-featured-main">
+            {% if hero.image %}
+              {{ hero.image | image_url: width: 1200 | image_tag: loading: 'eager', alt: hero.title }}
+            {% endif %}
+            <div class="kiblog-featured-overlay">
+              <h2>{{ hero.title | escape }}</h2>
+              {% if hero.tags.size > 0 %}
+                <span class="kiblog-card-tag">{{ hero.tags[0] | upcase }}</span>
+              {% endif %}
+            </div>
+            <a href="{{ hero.url }}" aria-label="{{ hero.title | escape }}"></a>
+          </div>
+
+          <!-- Side Cards -->
+          <div class="kiblog-featured-side">
+            {% for i in (1..2) %}
+              {% assign side_article = blog.articles[i] %}
+              {% if side_article %}
+                <a href="{{ side_article.url }}" class="kiblog-card kiblog-side-card">
+                  <div class="kiblog-card-img">
+                    {% if side_article.image %}
+                      {{ side_article.image | image_url: width: 600 | image_tag: loading: 'eager', alt: side_article.title }}
+                    {% endif %}
+                  </div>
+                  <div class="kiblog-card-body">
+                    <h3 class="kiblog-card-title">{{ side_article.title | escape }}</h3>
+                    {% if side_article.tags.size > 0 %}
+                      <span class="kiblog-card-tag">{{ side_article.tags[0] | upcase }}</span>
+                    {% endif %}
+                  </div>
+                </a>
+              {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+      {% endif %}
+
+      <!-- Article Grid -->
+      <div class="kiblog-grid">
+        {% for article in blog.articles %}
+          {% comment %} Skip first 3 on first page (they're in featured) {% endcomment %}
+          {% if paginate.current_page == 1 and current_tags == blank and blog.articles.size >= 3 and forloop.index <= 3 %}
+            {% continue %}
+          {% endif %}
+
+          <a href="{{ article.url }}" class="kiblog-card">
+            <div class="kiblog-card-img">
+              {% if article.image %}
+                {{ article.image | image_url: width: 600 | image_tag: loading: 'lazy', alt: article.title }}
+              {% endif %}
+            </div>
+            <div class="kiblog-card-body">
+              <h3 class="kiblog-card-title">{{ article.title | escape }}</h3>
+              {% if section.settings.show_excerpt and article.excerpt_or_content != blank %}
+                <p class="kiblog-card-excerpt">{{ article.excerpt_or_content | strip_html | truncatewords: 18 }}</p>
+              {% endif %}
+              {% if article.tags.size > 0 %}
+                <span class="kiblog-card-tag">{{ article.tags[0] | upcase }}</span>
+              {% endif %}
+              {% if section.settings.show_date %}
+                <div class="kiblog-card-meta">{{ article.published_at | date: "%d.%m.%Y" }}</div>
+              {% endif %}
+            </div>
+          </a>
+        {% endfor %}
+      </div>
+
+      <!-- Pagination -->
+      {% if paginate.pages > 1 %}
+        <div class="kiblog-pagination">
+          {% if paginate.previous %}
+            <a href="{{ paginate.previous.url }}">‹</a>
+          {% endif %}
+          {% for part in paginate.parts %}
+            {% if part.is_link %}
+              <a href="{{ part.url }}">{{ part.title }}</a>
+            {% else %}
+              <span class="{% if part.title == paginate.current_page %}is-current{% endif %}">{{ part.title }}</span>
+            {% endif %}
+          {% endfor %}
+          {% if paginate.next %}
+            <a href="{{ paginate.next.url }}">›</a>
+          {% endif %}
+        </div>
+      {% endif %}
+
+    {% else %}
+      <div class="kiblog-empty">Henüz blog yazısı eklenmemiş.</div>
+    {% endif %}
+
+  </div>
+</section>
+
+{%- endpaginate -%}
+
+{% schema %}
+{
+  "name": "Ki Blog Sayfası",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "custom_title",
+      "label": "Özel başlık",
+      "info": "Boş bırakılırsa blog'un kendi başlığı kullanılır."
+    },
+    {
+      "type": "textarea",
+      "id": "subtitle",
+      "label": "Alt açıklama",
+      "default": "Sağlık, beslenme ve yaşam kalitesi hakkında bilgilendirici yazılar."
+    },
+    {
+      "type": "range",
+      "id": "articles_per_page",
+      "label": "Sayfa başına makale",
+      "min": 3,
+      "max": 24,
+      "step": 3,
+      "default": 12
+    },
+    {
+      "type": "checkbox",
+      "id": "show_excerpt",
+      "label": "Özet göster",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_date",
+      "label": "Tarih göster",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "bg",
+      "label": "Arka plan rengi",
+      "default": "#ffffff"
+    }
+  ]
+}
+{% endschema %}

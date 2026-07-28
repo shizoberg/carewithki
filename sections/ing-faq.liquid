@@ -1,0 +1,196 @@
+<style>
+  .ing-sec {
+    padding: 100px 24px;
+    font-family: 'Raleway', 'Segoe UI', system-ui, sans-serif;
+    color: #121212;
+    line-height: 1.7;
+    background: {{ section.settings.bg_color }};
+  }
+  .ing-wrap-sm {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  .ing-sec-tag {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: #493D9A;
+    margin-bottom: 16px;
+    background: rgba(73, 61, 154, 0.06);
+    padding: 6px 16px;
+    border-radius: 999px;
+  }
+  .ing-sec h2 {
+    font-size: clamp(2rem, 4.5vw, 3rem);
+    font-weight: 300;
+    line-height: 1.1;
+    margin-top: 0;
+    margin-bottom: 24px;
+    color: #121212;
+    letter-spacing: -0.01em;
+  }
+  .ing-sec h2 strong {
+    font-weight: 800;
+  }
+  .ing-faq-list {
+    background: #fff;
+    border-radius: 28px;
+    padding: 24px 32px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+    border: 1px solid rgba(73, 61, 154, 0.05);
+  }
+  .ing-faq-item {
+    border-bottom: 1px solid rgba(73, 61, 154, .08);
+  }
+  .ing-faq-item:last-child {
+    border-bottom: none;
+  }
+  .ing-faq-btn {
+    width: 100%;
+    background: none;
+    border: none;
+    font-family: inherit;
+    font-size: 16px;
+    font-weight: 700;
+    color: #121212;
+    text-align: left;
+    padding: 24px 0;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    transition: color .2s;
+  }
+  .ing-faq-btn:hover {
+    color: #493D9A;
+  }
+  .ing-faq-ico {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: rgba(73, 61, 154, 0.06);
+    color: #493D9A;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: all .3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .ing-faq-btn[aria-expanded="true"] .ing-faq-ico {
+    background: #493D9A;
+    color: #fff;
+    transform: rotate(45deg);
+  }
+  .ing-faq-body {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows .3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .ing-faq-body.open {
+    grid-template-rows: 1fr;
+  }
+  .ing-faq-body-inner {
+    overflow: hidden;
+  }
+  .ing-faq-body p {
+    font-size: 15px;
+    color: #555;
+    line-height: 1.7;
+    margin: 0;
+    padding-bottom: 24px;
+    padding-right: 48px;
+  }
+  @media(max-width: 720px) {
+    .ing-sec { padding: 60px 20px; }
+    .ing-faq-list { padding: 8px 20px; }
+    .ing-faq-body p { padding-right: 0; padding-bottom: 20px; }
+  }
+</style>
+
+<section class="ing-sec" id="{{ section.id }}">
+  <div class="ing-wrap-sm">
+    <div style="text-align:center;margin-bottom:48px">
+      {%- if section.settings.tag != blank -%}
+        <div class="ing-sec-tag">{{ section.settings.tag }}</div>
+      {%- endif -%}
+      <h2>{{ section.settings.title_light }} <strong>{{ section.settings.title_bold }}</strong></h2>
+    </div>
+    
+    <div class="ing-faq-list">
+      {%- for block in section.blocks -%}
+        <div class="ing-faq-item" {{ block.shopify_attributes }}>
+          <button class="ing-faq-btn" type="button" aria-expanded="false">
+            {{ block.settings.question }}
+            <span class="ing-faq-ico">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            </span>
+          </button>
+          <div class="ing-faq-body">
+            <div class="ing-faq-body-inner">
+              <div class="ing-faq-answer">{{ block.settings.answer }}</div>
+            </div>
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+<script>
+  (function(){
+    var section = document.getElementById('{{ section.id }}');
+    if(!section) return;
+    section.querySelectorAll('.ing-faq-btn').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        var isExpanded = this.getAttribute('aria-expanded') === 'true';
+        var body = this.nextElementSibling;
+        
+        // Close all others
+        this.closest('.ing-faq-list').querySelectorAll('.ing-faq-btn').forEach(function(otherBtn){
+          otherBtn.setAttribute('aria-expanded', 'false');
+          otherBtn.nextElementSibling.classList.remove('open');
+        });
+        
+        // Toggle current toggle
+        if(!isExpanded){
+          this.setAttribute('aria-expanded', 'true');
+          body.classList.add('open');
+        }
+      });
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Ing: Premium FAQ List",
+  "settings": [
+    { "type": "color", "id": "bg_color", "label": "Arka Plan Rengi", "default": "#ffffff" },
+    { "type": "text", "id": "tag", "label": "Bölüm Etiketi", "default": "Sıkça Sorulan Sorular" },
+    { "type": "text", "id": "title_light", "label": "Başlık (İnce)", "default": "Merak" },
+    { "type": "text", "id": "title_bold", "label": "Başlık (Kalın)", "default": "Ettiklerin" }
+  ],
+  "blocks": [
+    {
+      "type": "faq",
+      "name": "SSS Maddesi",
+      "settings": [
+        { "type": "text", "id": "question", "label": "Soru" },
+        { "type": "richtext", "id": "answer", "label": "Cevap" }
+      ]
+    }
+  ],
+  "presets": [
+    { 
+      "name": "Ing: Premium FAQ List",
+      "blocks": [
+        { "type": "faq", "settings": {"question":"Nasıl kullanmalıyım?"} },
+        { "type": "faq", "settings": {"question":"Yan etkisi var mı?"} }
+      ]
+    }
+  ]
+}
+{% endschema %}

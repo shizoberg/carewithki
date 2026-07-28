@@ -1,0 +1,158 @@
+{% comment %}
+  .ki FAQ (scoped) — mobil font fix
+{% endcomment %}
+
+<section id="kfaq-{{ section.id }}" class="section">
+  <style>
+    #kfaq-{{ section.id }}{
+      --ki-purple-dark: #493d9a;
+      --ki-offwhite: #f8f8f6;
+      --ki-purple: #b2a5ff;
+      --ki-lilac: #dad2ff;
+      --bg: {{ section.settings.bg | default: '#ffffff' }};
+      --text: {{ section.settings.text | default: '#1a1a1a' }};
+      --muted: {{ section.settings.muted | default: 'rgba(26,26,26,.72)' }};
+      --line: rgba(73,61,154,.18);
+      --maxw: {{ section.settings.max_width | default: 860 }}px;
+      --py: {{ section.settings.pad_y | default: 88 }}px;
+      --px: {{ section.settings.pad_x | default: 40 }}px;
+      background: var(--bg);
+      color: var(--text);
+    }
+    #kfaq-{{ section.id }} .kfaq__wrap{ max-width: var(--maxw); margin: 0 auto; padding: var(--py) var(--px); }
+    #kfaq-{{ section.id }} .kfaq__head{ text-align: center; margin-bottom: clamp(24px,4vw,56px); }
+    #kfaq-{{ section.id }} .kfaq__eyebrow{
+      font-size: 11px; font-weight: 700; letter-spacing: 1.6px; text-transform: uppercase;
+      color: var(--ki-purple-dark); margin: 0 0 10px;
+    }
+    #kfaq-{{ section.id }} .kfaq__title{
+      font-size: clamp(24px,4vw,48px); font-weight: 650; letter-spacing: -0.02em;
+      line-height: 1.1; color: var(--ki-purple-dark);
+      text-shadow: 0 10px 26px rgba(73,61,154,.10); margin: 0;
+    }
+    #kfaq-{{ section.id }} .kfaq__list{ border-top: 1px solid var(--line); }
+    #kfaq-{{ section.id }} details.kfaq__item{
+      border-bottom: 1px solid var(--line); padding: 20px 0;
+    }
+    #kfaq-{{ section.id }} summary.kfaq__summary{
+      list-style: none; display: grid; grid-template-columns: 1fr 38px;
+      gap: 14px; align-items: center; cursor: pointer; user-select: none;
+    }
+    #kfaq-{{ section.id }} summary.kfaq__summary::-webkit-details-marker{ display: none; }
+    #kfaq-{{ section.id }} .kfaq__q{
+      font-size: 15px; font-weight: 650; line-height: 1.35; margin: 0;
+      color: var(--text); letter-spacing: -0.01em; transition: color 0.2s ease;
+    }
+    #kfaq-{{ section.id }} details:hover .kfaq__q{ color: var(--ki-purple-dark); }
+    #kfaq-{{ section.id }} .kfaq__icon{
+      width: 34px; height: 34px; display: grid; place-items: center;
+      color: var(--ki-purple-dark); border-radius: 999px;
+      border: 1px solid rgba(73,61,154,.18); background: #fff;
+      box-shadow: 0 4px 12px rgba(73,61,154,.10);
+      transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease;
+      flex-shrink: 0;
+    }
+    #kfaq-{{ section.id }} details[open] .kfaq__icon{
+      background: var(--ki-purple-dark); color: #fff; border-color: var(--ki-purple-dark);
+    }
+    #kfaq-{{ section.id }} .kfaq__icon span{ font-size: 18px; line-height: 1; font-weight: 600; }
+    #kfaq-{{ section.id }} details[open] .kfaq__icon .plus{ display: none; }
+    #kfaq-{{ section.id }} details:not([open]) .kfaq__icon .minus{ display: none; }
+    #kfaq-{{ section.id }} .kfaq__a{
+      padding-top: 10px; max-width: 78ch; color: var(--muted);
+      font-size: 14px; line-height: 1.7;
+    }
+    #kfaq-{{ section.id }} .kfaq__a a{
+      color: var(--ki-purple-dark); text-decoration: underline; text-underline-offset: 3px;
+    }
+    #kfaq-{{ section.id }} details[open]{
+      background: linear-gradient(90deg, rgba(218,210,255,.40) 0%, rgba(218,210,255,0) 100%);
+      border-left: 3px solid var(--ki-purple-dark);
+      margin-left: -3px; padding-left: 3px;
+    }
+    #kfaq-{{ section.id }} details[open] .kfaq__q{ color: var(--ki-purple-dark); }
+    #kfaq-{{ section.id }} .kfaq__summary:focus-visible{
+      outline: 2px solid var(--ki-purple-dark); outline-offset: 4px; border-radius: 4px;
+    }
+    @media (max-width: 990px){
+      #kfaq-{{ section.id }} .kfaq__wrap{ padding: 56px 20px; }
+    }
+    @media (max-width: 750px){
+      #kfaq-{{ section.id }} .kfaq__wrap{ padding: 36px 16px; }
+      #kfaq-{{ section.id }} .kfaq__title{ font-size: 22px; }
+      #kfaq-{{ section.id }} .kfaq__q{ font-size: 14px; }
+      #kfaq-{{ section.id }} .kfaq__a{ font-size: 13px; line-height: 1.65; }
+      #kfaq-{{ section.id }} details.kfaq__item{ padding: 14px 0; }
+    }
+  </style>
+
+  <div class="kfaq__wrap">
+    <div class="kfaq__head">
+      {% if section.settings.eyebrow != blank %}
+        <p class="kfaq__eyebrow">{{ section.settings.eyebrow }}</p>
+      {% endif %}
+      {% if section.settings.title != blank %}
+        <h2 class="kfaq__title">{{ section.settings.title }}</h2>
+      {% endif %}
+    </div>
+
+    <div class="kfaq__list" role="region" aria-label="{{ section.settings.aria_label | escape }}">
+      {% for block in section.blocks %}
+        <details class="kfaq__item" {% if forloop.first and section.settings.open_first %}open{% endif %} {{ block.shopify_attributes }}>
+          <summary class="kfaq__summary">
+            <p class="kfaq__q">{{ block.settings.question | escape }}</p>
+            <div class="kfaq__icon" aria-hidden="true">
+              <span class="plus">+</span>
+              <span class="minus">–</span>
+            </div>
+          </summary>
+          {% if block.settings.answer != blank %}
+            <div class="kfaq__a rte">{{ block.settings.answer }}</div>
+          {% endif %}
+        </details>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": ".ki FAQ",
+  "tag": "section",
+  "settings": [
+    { "type": "text",     "id": "eyebrow",    "label": "Üst etiket", "default": "SSS" },
+    { "type": "text",     "id": "title",      "label": "Başlık",     "default": "Sık Sorulan Sorular" },
+    { "type": "text",     "id": "aria_label", "label": "ARIA label", "default": "Sık Sorulan Sorular." },
+    { "type": "checkbox", "id": "open_first", "label": "İlk soruyu açık göster", "default": true },
+    { "type": "header", "content": "Style" },
+    { "type": "color", "id": "bg",    "label": "Background", "default": "#ffffff" },
+    { "type": "color", "id": "text",  "label": "Text",       "default": "#1a1a1a" },
+    { "type": "color", "id": "muted", "label": "Muted text", "default": "#493d9a" },
+    { "type": "range", "id": "max_width", "label": "Max width (px)", "min": 700, "max": 1400, "step": 10, "default": 860 },
+    { "type": "range", "id": "pad_y",     "label": "Vertical padding (px)", "min": 24, "max": 160, "step": 4, "default": 88 },
+    { "type": "range", "id": "pad_x",     "label": "Horizontal padding (px)", "min": 16, "max": 90, "step": 2, "default": 40 }
+  ],
+  "blocks": [
+    {
+      "type": "faq",
+      "name": "Soru",
+      "settings": [
+        { "type": "text",     "id": "question", "label": "Soru",  "default": "Ürünü nasıl kullanmalıyım?" },
+        { "type": "richtext", "id": "answer",   "label": "Cevap", "default": "<p>Günde 1 sachet, tercihen sabah kahvaltıyla.</p>" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": ".ki FAQ",
+      "blocks": [
+        { "type": "faq", "settings": { "question": "Ürünü nasıl kullanmalıyım?",   "answer": "<p>Günde 1 sachet, tercihen sabah kahvaltıyla birlikte bir bardak suya karıştırarak tþketin.</p>" } },
+        { "type": "faq", "settings": { "question": "Kaç günde etki görülür?",       "answer": "<p>Çoğu kullanıcı 2–4 hafta içinde rahatlama bildirmektedir.</p>" } },
+        { "type": "faq", "settings": { "question": "Vegan mı?",                     "answer": "<p>Evet, %100 vegan sertifikalı.</p>" } },
+        { "type": "faq", "settings": { "question": "İade politikası nedir?",        "answer": "<p>30 gün koşulsuz iade.</p>" } },
+        { "type": "faq", "settings": { "question": "Aboneliği nasıl iptal ederim?", "answer": "<p>İstediğin zaman, hesabından tek tıkla iptal.</p>" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

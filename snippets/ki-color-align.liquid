@@ -1,0 +1,13 @@
+{%- comment -%}
+  Ki abonelik/paket sayfalari renk uyumu.
+  theme.liquid'deki inline :root, ki-base.css'ten SONRA yuklendigi icin
+  --ki-primary'yi oradaki #3a2d6e override ediyordu. Bu dosya header/footer
+  render'i icinde (dolayisiyla body'de, inline :root'tan sonra) yuklendigi
+  icin token'i site moruyla (#493d9a) hizalar. Sadece renk; endpoint yok.
+{%- endcomment -%}
+<style>
+  :root{
+    --ki-primary: #493d9a !important;
+    --ki-primary-medium: #5946b3 !important;
+  }
+</style>

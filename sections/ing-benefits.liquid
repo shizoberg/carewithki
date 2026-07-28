@@ -1,0 +1,154 @@
+<style>
+  .ing-sec {
+    padding: 100px 24px;
+    font-family: 'Raleway', 'Segoe UI', system-ui, sans-serif;
+    color: #121212;
+    line-height: 1.7;
+    background: {{ section.settings.bg_color }};
+  }
+  .ing-wrap {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .ing-sec-tag {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: #493D9A;
+    margin-bottom: 16px;
+    background: rgba(73, 61, 154, 0.06);
+    padding: 6px 16px;
+    border-radius: 999px;
+  }
+  .ing-sec h2 {
+    font-size: clamp(2.2rem, 4.5vw, 3.2rem);
+    font-weight: 300;
+    line-height: 1.1;
+    margin-top: 0;
+    margin-bottom: 24px;
+    color: #121212;
+    letter-spacing: -0.01em;
+  }
+  .ing-sec h2 strong {
+    font-weight: 800;
+  }
+  .ing-bgrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+    margin-top: 50px;
+  }
+  .ing-bcard {
+    background: #fff;
+    border-radius: 24px;
+    padding: 40px 32px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+    border: 1px solid rgba(73, 61, 154, 0.04);
+    transition: all .3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .ing-bcard:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(73, 61, 154, 0.08);
+    border-color: rgba(73, 61, 154, 0.15);
+  }
+  .ing-bcard .ico {
+    width: 64px;
+    height: 64px;
+    background: rgba(73, 61, 154, 0.05);
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    margin-bottom: 24px;
+    color: #493D9A;
+    transition: transform .3s ease, background .3s;
+  }
+  .ing-bcard:hover .ico {
+    transform: scale(1.1) rotate(-5deg);
+    background: rgba(73, 61, 154, 0.1);
+  }
+  .ing-bcard h3 {
+    font-size: 20px;
+    font-weight: 800;
+    margin-top: 0;
+    margin-bottom: 12px;
+    color: #121212;
+    line-height: 1.3;
+  }
+  .ing-bcard p {
+    font-size: 15px;
+    color: #555;
+    line-height: 1.6;
+    margin: 0;
+  }
+  @media(max-width: 720px) {
+    .ing-sec { padding: 60px 20px; }
+    .ing-bgrid { grid-template-columns: 1fr; margin-top: 32px; }
+    .ing-bcard { padding: 32px 24px; }
+  }
+</style>
+
+<section class="ing-sec">
+  <div class="ing-wrap">
+    <div style="text-align:center;max-width:600px;margin:0 auto">
+      {%- if section.settings.tag != blank -%}
+        <div class="ing-sec-tag">{{ section.settings.tag }}</div>
+      {%- endif -%}
+      <h2>{{ section.settings.title_light }}<br><strong>{{ section.settings.title_bold }}</strong></h2>
+      {%- if section.settings.text != blank -%}
+        <div class="ing-btext" style="color:#555;font-size:16px;margin-top:16px">{{ section.settings.text }}</div>
+      {%- endif -%}
+    </div>
+    
+    {%- if section.blocks.size > 0 -%}
+    <div class="ing-bgrid">
+      {%- for block in section.blocks -%}
+        <div class="ing-bcard" {{ block.shopify_attributes }}>
+          <div class="ico">{{ block.settings.icon }}</div>
+          <h3>{{ block.settings.title }}</h3>
+          <div class="ing-bcard-text">{{ block.settings.text }}</div>
+        </div>
+      {%- endfor -%}
+    </div>
+    {%- endif -%}
+
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Ing: Premium Benefits",
+  "settings": [
+    { "type": "color", "id": "bg_color", "label": "Arka Plan Rengi", "default": "#F8F7FC" },
+    { "type": "text", "id": "tag", "label": "Bölüm Etiketi", "default": "Ne Sağlar?" },
+    { "type": "text", "id": "title_light", "label": "Bitkinin Temel" },
+    { "type": "text", "id": "title_bold", "label": "Faydaları Nelerdir?" },
+    { "type": "richtext", "id": "text", "label": "Alt Açıklama", "default": "<p>Klinik araştırmalarla desteklenen temel avantajlar.</p>" }
+  ],
+  "blocks": [
+    {
+      "type": "benefit",
+      "name": "Kart",
+      "settings": [
+        { "type": "text", "id": "icon", "label": "İkon (emoji)" },
+        { "type": "text", "id": "title", "label": "Başlık" },
+        { "type": "richtext", "id": "text", "label": "Açıklama" }
+      ]
+    }
+  ],
+  "presets": [
+    { 
+      "name": "Ing: Premium Benefits",
+      "blocks": [
+        { "type": "benefit" }, { "type": "benefit" }, { "type": "benefit" }, { "type": "benefit" }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,273 @@
+{% comment %}Media Cards Slider v2 — unified typography{% endcomment %}
+
+<link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,400;0,700;0,800;1,700;1,800&display=swap" rel="stylesheet">
+
+<style>
+.mcs2-{{ section.id }} {
+  --p:   #493d9a;
+  --lil: #dad2ff;
+  --bg:  {{ section.settings.bg | default: '#f8f8f6' }};
+  background: var(--bg);
+  padding: {{ section.settings.padding_top | default: 64 }}px 0 {{ section.settings.padding_bottom | default: 72 }}px;
+  overflow: hidden;
+}
+.mcs2-{{ section.id }} .mcs2-wrap { max-width: 1400px; margin: 0 auto; padding: 0 32px; }
+
+/* Header */
+.mcs2-{{ section.id }} .mcs2-header { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; margin-bottom: 40px; flex-wrap: wrap; }
+.mcs2-{{ section.id }} .mcs2-header-text { flex: 1; min-width: 0; }
+.mcs2-{{ section.id }} .mcs2-eyebrow {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 10px; font-weight: 700;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--p); opacity: 0.72; margin-bottom: 10px;
+}
+.mcs2-{{ section.id }} .mcs2-eyebrow::before { content: ''; display: inline-block; width: 18px; height: 1.5px; background: var(--p); opacity: 0.5; }
+.mcs2-{{ section.id }} .mcs2-title {
+  font-family: 'Raleway', system-ui, sans-serif;
+  font-size: clamp(26px, 3.4vw, 46px);
+  font-weight: 800; line-height: 1.08;
+  color: #1a1340; margin: 0 0 10px;
+  letter-spacing: -0.025em;
+}
+.mcs2-{{ section.id }} .mcs2-title em { font-style: italic; color: var(--p); }
+.mcs2-{{ section.id }} .mcs2-desc { font-size: 15px; line-height: 1.65; color: #888; margin: 0; max-width: 560px; }
+.mcs2-{{ section.id }} .mcs2-nav { display: flex; gap: 10px; flex-shrink: 0; }
+.mcs2-{{ section.id }} .mcs2-nav-btn {
+  width: 44px; height: 44px; border-radius: 50%;
+  border: 1.5px solid rgba(73,61,154,0.22); background: transparent; color: var(--p);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: all 0.2s;
+}
+.mcs2-{{ section.id }} .mcs2-nav-btn svg { width: 18px; height: 18px; }
+.mcs2-{{ section.id }} .mcs2-nav-btn:hover { background: var(--p); color: #fff; border-color: var(--p); box-shadow: 0 4px 14px rgba(73,61,154,0.28); }
+
+/* Layout */
+.mcs2-{{ section.id }} .mcs2-layout { display: grid; grid-template-columns: 1.8fr 1fr; gap: 16px; align-items: start; }
+.mcs2-{{ section.id }} .mcs2-featured { position: relative; border-radius: 20px; overflow: hidden; aspect-ratio: 4/5; background: #1a1060; cursor: pointer; }
+.mcs2-{{ section.id }} .mcs2-featured-media { position: absolute; inset: 0; width: 100%; height: 100%; }
+.mcs2-{{ section.id }} .mcs2-featured-media img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.6s; }
+.mcs2-{{ section.id }} .mcs2-featured:hover .mcs2-featured-media img { transform: scale(1.03); }
+.mcs2-{{ section.id }} .mcs2-featured-ov { position: absolute; inset: 0; background: linear-gradient(to top, rgba(10,5,40,0.90) 0%, rgba(30,18,80,0.50) 40%, rgba(0,0,0,0.08) 75%); z-index: 2; display: flex; flex-direction: column; justify-content: flex-end; padding: 32px 28px; }
+.mcs2-{{ section.id }} .mcs2-feat-name { font-family: 'Raleway', system-ui, sans-serif; font-size: clamp(22px, 2.4vw, 32px); font-weight: 800; color: #fff; margin: 0 0 4px; line-height: 1.15; }
+.mcs2-{{ section.id }} .mcs2-feat-role { font-size: 11px; font-weight: 600; letter-spacing: 0.10em; text-transform: uppercase; color: var(--lil); margin: 0 0 18px; opacity: 0.85; }
+.mcs2-{{ section.id }} .mcs2-feat-quote { font-size: 14px; line-height: 1.65; color: rgba(255,255,255,0.88); margin: 0 0 20px; max-width: 460px; }
+.mcs2-{{ section.id }} .mcs2-feat-quote strong { color: #fff; font-weight: 700; }
+.mcs2-{{ section.id }} .mcs2-play-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(255,255,255,0.14); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.25); color: #fff;
+  font-size: 12px; font-weight: 700; letter-spacing: 0.05em;
+  padding: 8px 16px; border-radius: 50px; cursor: pointer; width: fit-content; text-decoration: none; transition: background 0.2s;
+}
+.mcs2-{{ section.id }} .mcs2-play-btn:hover { background: rgba(255,255,255,0.24); }
+.mcs2-{{ section.id }} .mcs2-play-btn svg { width: 14px; height: 14px; }
+
+.mcs2-{{ section.id }} .mcs2-previews { display: flex; flex-direction: column; gap: 16px; }
+.mcs2-{{ section.id }} .mcs2-preview { position: relative; border-radius: 16px; overflow: hidden; aspect-ratio: 4/3; background: #1a1060; cursor: pointer; transition: transform 0.25s, opacity 0.25s; opacity: 0.72; }
+.mcs2-{{ section.id }} .mcs2-preview:hover,
+.mcs2-{{ section.id }} .mcs2-preview.is-next { opacity: 0.88; transform: translateX(-4px); }
+.mcs2-{{ section.id }} .mcs2-preview img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.4s; }
+.mcs2-{{ section.id }} .mcs2-preview:hover img { transform: scale(1.04); }
+.mcs2-{{ section.id }} .mcs2-preview-ov { position: absolute; inset: 0; background: linear-gradient(to top, rgba(10,5,40,0.78) 0%, transparent 60%); display: flex; flex-direction: column; justify-content: flex-end; padding: 14px; z-index: 2; }
+.mcs2-{{ section.id }} .mcs2-preview-name { font-size: 14px; font-weight: 700; color: #fff; margin: 0 0 2px; line-height: 1.2; }
+.mcs2-{{ section.id }} .mcs2-preview-role { font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--lil); opacity: 0.80; }
+.mcs2-{{ section.id }} .mcs2-counter { font-size: 13px; font-weight: 600; color: #aaa; letter-spacing: 0.04em; margin-top: 20px; text-align: right; }
+
+@media (max-width: 749px) {
+  .mcs2-{{ section.id }} { padding: 36px 0 48px; }
+  .mcs2-{{ section.id }} .mcs2-wrap { padding: 0 16px; }
+  .mcs2-{{ section.id }} .mcs2-header { margin-bottom: 24px; flex-direction: column; align-items: flex-start; gap: 14px; }
+  .mcs2-{{ section.id }} .mcs2-title { font-size: clamp(22px, 6.5vw, 32px); }
+  .mcs2-{{ section.id }} .mcs2-layout { display: none; }
+  .mcs2-{{ section.id }} .mcs2-mobile { display: block; }
+  .mcs2-{{ section.id }} .mcs2-mob-track-wrap { overflow: hidden; }
+  .mcs2-{{ section.id }} .mcs2-mob-track { display: flex; gap: 12px; transition: transform 0.6s cubic-bezier(0.4,0,0.2,1); }
+  .mcs2-{{ section.id }} .mcs2-mob-slide { flex: 0 0 100%; border-radius: 16px; overflow: hidden; position: relative; aspect-ratio: 4/5; background: #1a1060; }
+  .mcs2-{{ section.id }} .mcs2-mob-slide img { width: 100%; height: 100%; object-fit: cover; display: block; position: absolute; inset: 0; }
+  .mcs2-{{ section.id }} .mcs2-mob-slide-ov { position: absolute; inset: 0; z-index: 2; background: linear-gradient(to top, rgba(10,5,40,0.90) 0%, rgba(30,18,80,0.40) 45%, transparent 75%); display: flex; flex-direction: column; justify-content: flex-end; padding: 24px 20px; }
+  .mcs2-{{ section.id }} .mcs2-mob-name { font-size: 22px; font-weight: 800; color: #fff; margin: 0 0 3px; font-family: 'Raleway', system-ui, sans-serif; }
+  .mcs2-{{ section.id }} .mcs2-mob-role { font-size: 10px; font-weight: 600; letter-spacing: 0.10em; text-transform: uppercase; color: var(--lil); margin: 0 0 14px; opacity: 0.85; }
+  .mcs2-{{ section.id }} .mcs2-mob-quote { font-size: 13px; line-height: 1.6; color: rgba(255,255,255,0.85); margin: 0; }
+  .mcs2-{{ section.id }} .mcs2-mob-quote strong { color: #fff; }
+  .mcs2-{{ section.id }} .mcs2-mob-dots { display: flex; justify-content: center; gap: 8px; margin-top: 16px; }
+  .mcs2-{{ section.id }} .mcs2-mob-dot { width: 7px; height: 7px; border-radius: 50%; background: rgba(73,61,154,0.25); border: none; cursor: pointer; padding: 0; transition: background 0.3s, transform 0.3s; }
+  .mcs2-{{ section.id }} .mcs2-mob-dot.is-active { background: var(--p); transform: scale(1.35); }
+  .mcs2-{{ section.id }} .mcs2-mob-nav { display: flex; align-items: center; justify-content: space-between; margin-top: 12px; }
+}
+@media (min-width: 750px) { .mcs2-{{ section.id }} .mcs2-mobile { display: none; } }
+@media (min-width: 750px) and (max-width: 1099px) {
+  .mcs2-{{ section.id }} .mcs2-layout { grid-template-columns: 1.4fr 1fr; }
+  .mcs2-{{ section.id }} .mcs2-feat-name { font-size: clamp(18px, 2.5vw, 26px); }
+}
+</style>
+
+{%- assign total = section.blocks.size -%}
+
+<section class="mcs2-{{ section.id }}" id="MCS2-{{ section.id }}" data-total="{{ total }}">
+  <div class="mcs2-wrap">
+    <div class="mcs2-header">
+      <div class="mcs2-header-text">
+        {%- if section.settings.eyebrow != blank -%}<p class="mcs2-eyebrow">{{ section.settings.eyebrow | escape }}</p>{%- endif -%}
+        {%- if section.settings.heading != blank -%}<h2 class="mcs2-title">{{ section.settings.heading }}</h2>{%- endif -%}
+        {%- if section.settings.description != blank -%}<p class="mcs2-desc">{{ section.settings.description | escape }}</p>{%- endif -%}
+      </div>
+      {%- if total > 1 -%}
+      <div class="mcs2-nav">
+        <button class="mcs2-nav-btn" id="MCS2Prev-{{ section.id }}" type="button" aria-label="Önceki"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg></button>
+        <button class="mcs2-nav-btn" id="MCS2Next-{{ section.id }}" type="button" aria-label="Sonraki"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg></button>
+      </div>
+      {%- endif -%}
+    </div>
+
+    <div class="mcs2-layout" id="MCS2Desktop-{{ section.id }}">
+      <div class="mcs2-featured" id="MCS2Featured-{{ section.id }}">
+        <div class="mcs2-featured-media">
+          {%- assign fb = section.blocks.first -%}
+          {%- if fb.settings.image != blank -%}
+            {{ fb.settings.image | image_url: width: 1000 | image_tag: loading: 'eager', alt: fb.settings.title, id: 'MCS2FeatImg-' | append: section.id }}
+          {%- else -%}{{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}{%- endif -%}
+        </div>
+        <div class="mcs2-featured-ov">
+          <p class="mcs2-feat-name" id="MCS2FeatName-{{ section.id }}">{{ fb.settings.title | escape }}</p>
+          <p class="mcs2-feat-role" id="MCS2FeatRole-{{ section.id }}">{{ fb.settings.role | escape }}</p>
+          {%- if fb.settings.quote != blank -%}<div class="mcs2-feat-quote" id="MCS2FeatQuote-{{ section.id }}">{{ fb.settings.quote }}</div>{%- endif -%}
+          {%- if fb.settings.video_url != blank -%}<a href="{{ fb.settings.video_url }}" class="mcs2-play-btn" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>Videoyu izle</a>{%- endif -%}
+        </div>
+      </div>
+      <div class="mcs2-previews" id="MCS2Previews-{{ section.id }}">
+        {%- for block in section.blocks limit: 2 offset: 1 -%}
+        <div class="mcs2-preview{% if forloop.first %} is-next{% endif %}" data-gotoindex="{{ forloop.index0 | plus: 1 }}" {{ block.shopify_attributes }}>
+          {%- if block.settings.image != blank -%}{{ block.settings.image | image_url: width: 600 | image_tag: loading: 'lazy', alt: block.settings.title }}{%- else -%}{{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}{%- endif -%}
+          <div class="mcs2-preview-ov">
+            <p class="mcs2-preview-name">{{ block.settings.title | escape }}</p>
+            <p class="mcs2-preview-role">{{ block.settings.role | escape }}</p>
+          </div>
+        </div>
+        {%- endfor -%}
+      </div>
+    </div>
+
+    {%- if total > 1 -%}<p class="mcs2-counter" id="MCS2Counter-{{ section.id }}">01 / {{ total | prepend: '0' | slice: -2, 2 }}</p>{%- endif -%}
+
+    <div class="mcs2-mobile">
+      <div class="mcs2-mob-track-wrap">
+        <div class="mcs2-mob-track" id="MCS2MobTrack-{{ section.id }}">
+          {%- for block in section.blocks -%}
+          <div class="mcs2-mob-slide">
+            {%- if block.settings.image != blank -%}{{ block.settings.image | image_url: width: 800 | image_tag: loading: 'lazy', alt: block.settings.title }}{%- else -%}{{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}{%- endif -%}
+            <div class="mcs2-mob-slide-ov">
+              <p class="mcs2-mob-name">{{ block.settings.title | escape }}</p>
+              <p class="mcs2-mob-role">{{ block.settings.role | escape }}</p>
+              {%- if block.settings.quote != blank -%}<div class="mcs2-mob-quote">{{ block.settings.quote }}</div>{%- endif -%}
+            </div>
+          </div>
+          {%- endfor -%}
+        </div>
+      </div>
+      <div class="mcs2-mob-nav">
+        <button class="mcs2-nav-btn" id="MCS2MobPrev-{{ section.id }}" type="button" aria-label="Önceki"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg></button>
+        <div class="mcs2-mob-dots" id="MCS2MobDots-{{ section.id }}">
+          {%- for block in section.blocks -%}<button class="mcs2-mob-dot{% if forloop.first %} is-active{% endif %}" data-index="{{ forloop.index0 }}"></button>{%- endfor -%}
+        </div>
+        <button class="mcs2-nav-btn" id="MCS2MobNext-{{ section.id }}" type="button" aria-label="Sonraki"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg></button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+(function(){
+  var sid = '{{ section.id }}';
+  var root = document.getElementById('MCS2-' + sid);
+  if (!root) return;
+  var total = parseInt(root.dataset.total, 10) || 0;
+  if (total < 2) return;
+  var blocks = [{%- for block in section.blocks -%}{ name: {{ block.settings.title | json }}, role: {{ block.settings.role | json }}, quote: {{ block.settings.quote | json }}, video: {{ block.settings.video_url | json }}, img: {%- if block.settings.image != blank -%}{{ block.settings.image | image_url: width: 1000 | json }}{%- else -%}null{%- endif -%} }{%- unless forloop.last -%},{%- endunless -%}{%- endfor -%}];
+  var current = 0;
+  var featImg = document.getElementById('MCS2FeatImg-' + sid);
+  var featName = document.getElementById('MCS2FeatName-' + sid);
+  var featRole = document.getElementById('MCS2FeatRole-' + sid);
+  var featQuote = document.getElementById('MCS2FeatQuote-' + sid);
+  var previews = document.getElementById('MCS2Previews-' + sid);
+  var counter = document.getElementById('MCS2Counter-' + sid);
+  var mobTrack = document.getElementById('MCS2MobTrack-' + sid);
+  var mobDots = document.getElementById('MCS2MobDots-' + sid);
+  function pad(n) { return n < 10 ? '0' + n : '' + n; }
+  function goTo(idx) {
+    current = (idx + total) % total;
+    var b = blocks[current];
+    if (featImg && b.img) { featImg.style.opacity = '0'; setTimeout(function(){ featImg.src = b.img; featImg.style.opacity = '1'; featImg.style.transition = 'opacity 0.4s ease'; }, 200); }
+    if (featName) featName.textContent = b.name || '';
+    if (featRole) featRole.textContent = b.role || '';
+    if (featQuote) featQuote.innerHTML = b.quote || '';
+    if (counter) counter.textContent = pad(current + 1) + ' / ' + pad(total);
+    if (previews) {
+      var cards = previews.querySelectorAll('.mcs2-preview');
+      var indices = [current + 1, current + 2];
+      cards.forEach(function(card, ci) {
+        var bi = ((indices[ci] % total) + total) % total;
+        var pb = blocks[bi];
+        card.dataset.gotoindex = bi;
+        card.classList.toggle('is-next', ci === 0);
+        var img = card.querySelector('img');
+        if (img && pb.img) img.src = pb.img;
+        var pname = card.querySelector('.mcs2-preview-name');
+        var prole = card.querySelector('.mcs2-preview-role');
+        if (pname) pname.textContent = pb.name || '';
+        if (prole) prole.textContent = pb.role || '';
+      });
+    }
+    if (mobTrack) { mobTrack.style.transition = 'transform 0.6s cubic-bezier(0.4,0,0.2,1)'; mobTrack.style.transform = 'translateX(-' + (current * 100) + '%)'; }
+    if (mobDots) { mobDots.querySelectorAll('.mcs2-mob-dot').forEach(function(d, i){ d.classList.toggle('is-active', i === current); }); }
+  }
+  var prevBtn = document.getElementById('MCS2Prev-' + sid);
+  var nextBtn = document.getElementById('MCS2Next-' + sid);
+  var mobPrev = document.getElementById('MCS2MobPrev-' + sid);
+  var mobNext = document.getElementById('MCS2MobNext-' + sid);
+  if (prevBtn) prevBtn.addEventListener('click', function(){ goTo(current - 1); });
+  if (nextBtn) nextBtn.addEventListener('click', function(){ goTo(current + 1); });
+  if (mobPrev) mobPrev.addEventListener('click', function(){ goTo(current - 1); });
+  if (mobNext) mobNext.addEventListener('click', function(){ goTo(current + 1); });
+  if (previews) { previews.addEventListener('click', function(e){ var card = e.target.closest('.mcs2-preview[data-gotoindex]'); if (card) goTo(parseInt(card.dataset.gotoindex, 10)); }); }
+  if (mobDots) { mobDots.addEventListener('click', function(e){ var dot = e.target.closest('.mcs2-mob-dot'); if (dot) goTo(parseInt(dot.dataset.index, 10)); }); }
+  var tx = 0;
+  if (mobTrack) {
+    mobTrack.parentElement.addEventListener('touchstart', function(e){ tx = e.changedTouches[0].clientX; }, { passive: true });
+    mobTrack.parentElement.addEventListener('touchend', function(e){ var d = tx - e.changedTouches[0].clientX; if (Math.abs(d) > 44) goTo(d > 0 ? current + 1 : current - 1); }, { passive: true });
+  }
+  goTo(0);
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Media Cards Slider (.ki)",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    { "type": "color",    "id": "bg",           "label": "Arka plan",   "default": "#f8f8f6" },
+    { "type": "text",     "id": "eyebrow",      "label": "Üst etiket",  "info": "Örn: Gerçek Hikayeler" },
+    { "type": "richtext", "id": "heading",      "label": "Başlık",       "default": "<p>Kendine İyi Bakanlar</p>" },
+    { "type": "textarea","id": "description",  "label": "Açıklama",     "default": "Farklı rutinler. Bir ortak nokta; kendisi için bir şey yapanlar." },
+    { "type": "range",   "id": "padding_top",  "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Üst boşluk", "default": 64 },
+    { "type": "range",   "id": "padding_bottom","min": 0, "max": 100, "step": 4, "unit": "px", "label": "Alt boşluk",  "default": 72 }
+  ],
+  "blocks": [{
+    "type": "slide", "name": "Slide",
+    "settings": [
+      { "type": "image_picker", "id": "image",     "label": "Görsel" },
+      { "type": "text",        "id": "title",     "label": "Ad",      "default": "Ulyana" },
+      { "type": "text",        "id": "role",      "label": "Rol / Yaş", "default": "Yazılımcı, 21" },
+      { "type": "richtext",   "id": "quote",     "label": "Algıntı",  "default": "<p>Yoğun toplantılar, uzun günler… <strong>Dengede kalmak</strong> benim için önemli.</p>" },
+      { "type": "url",        "id": "video_url", "label": "Video URL" }
+    ]
+  }],
+  "presets": [{ "name": "Media Cards Slider (.ki)", "blocks": [
+    { "type": "slide", "settings": { "title": "Ulyana", "role": "Yazılımcı, 21", "quote": "<p>Yoğun toplantılar, uzun günler… <strong>Döngü öncesi gerginlik</strong> ve şişkinlikte ritmimi korumama yardımcı oluyor.</p>" } },
+    { "type": "slide", "settings": { "title": "Simge", "role": "Influencer, 25", "quote": "<p>Döngü öncesi <strong>ruh hali dalgalanmalarında</strong> daha dengeli kalmamı destekliyor.</p>" } },
+    { "type": "slide", "settings": { "title": "Ecem", "role": "Sporcu, 23", "quote": "<p><strong>Enerji düşklüğü</strong> ile mücadele ediyordum, artık etmiyorum.</p>" } },
+    { "type": "slide", "settings": { "title": "Şerife", "role": "Yoga Eğitmeni, 63", "quote": "<p><strong>Isı dalgaları</strong> döneminde kendimi daha dengeli hissediyorum.</p>" } }
+  ]}]
+}
+{% endschema %}

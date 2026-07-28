@@ -1,0 +1,163 @@
+{% comment %}
+  .ki Ingredients (scoped) — Brand Kit
+  Ingredient card grid with icon/image, name, dose, description.
+
+  Brand kit:
+    #493d9a (main)
+    #f8f8f6 (offwhite)
+    #b2a5ff (primary)
+    #dad2ff (lilac)
+{% endcomment %}
+
+<section id="king-{{ section.id }}" class="section">
+  <style>
+    #king-{{ section.id }}{
+      --ki-purple-dark: #493d9a;
+      --ki-offwhite: #f8f8f6;
+      --ki-purple: #b2a5ff;
+      --ki-lilac: #dad2ff;
+
+      --bg: {{ section.settings.bg | default: '#ffffff' }};
+      --text: {{ section.settings.text | default: '#1a1a1a' }};
+      --muted: {{ section.settings.muted | default: 'rgba(26,26,26,.72)' }};
+
+      --maxw: {{ section.settings.max_width | default: 1200 }}px;
+      --py: {{ section.settings.pad_y | default: 88 }}px;
+      --px: {{ section.settings.pad_x | default: 40 }}px;
+
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    #king-{{ section.id }} .king__wrap{ max-width: var(--maxw); margin: 0 auto; padding: var(--py) var(--px); }
+    #king-{{ section.id }} .king__head{ text-align: center; margin-bottom: clamp(32px,4vw,56px); }
+    #king-{{ section.id }} .king__eyebrow{
+      font-size: 12px; font-weight: 700; letter-spacing: 1.6px; text-transform: uppercase;
+      color: var(--ki-purple-dark); margin: 0 0 10px;
+    }
+    #king-{{ section.id }} .king__title{
+      font-size: clamp(36px,5vw,56px); font-weight: 650; letter-spacing: -0.02em;
+      line-height: 1.05; color: var(--ki-purple-dark);
+      text-shadow: 0 10px 26px rgba(73,61,154,.10); margin: 0;
+    }
+    #king-{{ section.id }} .king__sub{
+      margin: 14px auto 0; max-width: 640px; color: var(--muted);
+      font-size: 16px; line-height: 1.7;
+    }
+    #king-{{ section.id }} .king__grid{
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px;
+    }
+    #king-{{ section.id }} .king__card{
+      background: #fff; border: 1px solid rgba(73,61,154,.14);
+      border-radius: 18px; padding: 22px; text-align: center;
+      box-shadow: 0 18px 40px rgba(73,61,154,.14);
+      transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+    }
+    #king-{{ section.id }} .king__card:hover{
+      transform: translateY(-4px);
+      box-shadow: 0 22px 50px rgba(73,61,154,.22);
+      border-color: rgba(73,61,154,.24);
+    }
+    #king-{{ section.id }} .king__img,
+    #king-{{ section.id }} .king__icon{
+      width: 88px; height: 88px; margin: 0 auto 14px;
+      border-radius: 50%; object-fit: cover; display: flex;
+      align-items: center; justify-content: center;
+      color: #fff; font-weight: 700; font-size: 28px;
+      box-shadow: 0 10px 24px rgba(73,61,154,.18);
+    }
+    #king-{{ section.id }} .king__name{
+      font-weight: 700; color: var(--ki-purple-dark); font-size: 17px;
+      margin: 0; letter-spacing: -0.01em;
+    }
+    #king-{{ section.id }} .king__dose{
+      display: inline-block; margin-top: 6px; padding: 4px 12px;
+      background: var(--ki-lilac); color: var(--ki-purple-dark);
+      border-radius: 999px; font-size: 12px; font-weight: 700;
+    }
+    #king-{{ section.id }} .king__desc{
+      font-size: 14px; color: var(--muted); margin-top: 10px; line-height: 1.55;
+    }
+    @media (max-width: 990px){
+      #king-{{ section.id }} .king__wrap{ padding: 64px 20px; }
+      #king-{{ section.id }} .king__grid{ grid-template-columns: repeat(2, 1fr); gap: 16px; }
+    }
+    @media (max-width: 750px){
+      #king-{{ section.id }} .king__wrap{ padding: 48px 16px; }
+      #king-{{ section.id }} .king__grid{ gap: 14px; }
+    }
+  </style>
+
+  <div class="king__wrap">
+    <div class="king__head">
+      {% if section.settings.eyebrow != blank %}
+        <p class="king__eyebrow">{{ section.settings.eyebrow }}</p>
+      {% endif %}
+      {% if section.settings.title != blank %}
+        <h2 class="king__title">{{ section.settings.title }}</h2>
+      {% endif %}
+      {% if section.settings.subtitle != blank %}
+        <p class="king__sub">{{ section.settings.subtitle }}</p>
+      {% endif %}
+    </div>
+
+    <div class="king__grid">
+      {% for block in section.blocks %}
+        <div class="king__card" {{ block.shopify_attributes }}>
+          {% if block.settings.image != blank %}
+            <img class="king__img" src="{{ block.settings.image | image_url: width: 200 }}" alt="{{ block.settings.name | escape }}" width="{{ block.settings.image.width }}" height="{{ block.settings.image.height }}" loading="lazy" decoding="async">
+          {% else %}
+            <div class="king__icon" style="background: {{ block.settings.color | default: '#493d9a' }};">{{ block.settings.name | slice: 0 }}</div>
+          {% endif %}
+          <h3 class="king__name">{{ block.settings.name }}</h3>
+          <div class="king__dose">{{ block.settings.dose }}</div>
+          <p class="king__desc">{{ block.settings.description }}</p>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": ".ki Ingredients",
+  "tag": "section",
+  "settings": [
+    { "type": "text",     "id": "eyebrow",  "label": "Üst etiket", "default": "İÇİNDEKİLER" },
+    { "type": "text",     "id": "title",    "label": "Başlık",     "default": "Klinik dozlar, şeffaf formül" },
+    { "type": "textarea", "id": "subtitle", "label": "Alt başlık", "default": "Her sachet, etken maddenin bilimsel olarak desteklenen dozunu içerir." },
+
+    { "type": "header", "content": "Style" },
+    { "type": "color", "id": "bg",    "label": "Background", "default": "#ffffff" },
+    { "type": "color", "id": "text",  "label": "Text",       "default": "#1a1a1a" },
+    { "type": "color", "id": "muted", "label": "Muted text", "default": "#493d9a" },
+    { "type": "range", "id": "max_width", "label": "Max width (px)", "min": 1000, "max": 1600, "step": 10, "default": 1200 },
+    { "type": "range", "id": "pad_y",     "label": "Vertical padding (px)", "min": 24, "max": 160, "step": 4, "default": 88 },
+    { "type": "range", "id": "pad_x",     "label": "Horizontal padding (px)", "min": 16, "max": 90, "step": 2, "default": 40 }
+  ],
+  "blocks": [
+    {
+      "type": "ingredient",
+      "name": "İçerik",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Görsel" },
+        { "type": "text",     "id": "name",        "label": "İsim",      "default": "Hayıt" },
+        { "type": "text",     "id": "dose",        "label": "Doz",       "default": "200 mg" },
+        { "type": "textarea", "id": "description", "label": "Açıklama",  "default": "Hormonal dengeyi doğal yoldan destekler." },
+        { "type": "color",    "id": "color",       "label": "Renk",      "default": "#493d9a" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": ".ki Ingredients",
+      "blocks": [
+        { "type": "ingredient", "settings": { "name": "Hayıt",      "dose": "200 mg", "color": "#493d9a" } },
+        { "type": "ingredient", "settings": { "name": "Magnezyum",  "dose": "300 mg", "color": "#6B4E8C" } },
+        { "type": "ingredient", "settings": { "name": "B6 Vitamini","dose": "2 mg",   "color": "#b2a5ff" } },
+        { "type": "ingredient", "settings": { "name": "Çinko",      "dose": "10 mg",  "color": "#dad2ff" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

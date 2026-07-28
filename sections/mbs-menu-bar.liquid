@@ -1,0 +1,373 @@
+{% comment %}
+  .ki Menu Bar (scoped) — Brand Kit
+  Sticky top navigation: logo + links + "Takviye Edici Gıdalarımız" dropdown +
+  actions (Ürünler CTA, WhatsApp, Hesap, Sepet) + mobile drawer.
+
+  Brand kit:
+    #493d9a (purple dark)
+    #f8f8f6 (offwhite)
+    #b2a5ff (purple)
+    #dad2ff (lilac)
+{% endcomment %}
+
+<section id="mbsnav-{{ section.id }}" class="section">
+  <style>
+    #mbsnav-{{ section.id }}{
+      --ki-purple-dark: #493d9a;
+      --ki-offwhite: #f8f8f6;
+      --ki-purple: #b2a5ff;
+      --ki-lilac: #dad2ff;
+
+      --bg: {{ section.settings.bg | default: '#ffffff' }};
+      --text: {{ section.settings.text | default: '#1a1a1a' }};
+      --muted: {{ section.settings.muted | default: 'rgba(26,26,26,.72)' }};
+      --line: rgba(73,61,154,.14);
+
+      --maxw: {{ section.settings.max_width | default: 1400 }}px;
+      --px: {{ section.settings.pad_x | default: 32 }}px;
+
+      background: var(--bg);
+      color: var(--text);
+      position: sticky; top: 0; z-index: 50;
+      border-bottom: 1px solid var(--line);
+    }
+    #mbsnav-{{ section.id }} .mbsnav__wrap{
+      max-width: var(--maxw); margin: 0 auto;
+      padding: 0 var(--px);
+      display: flex; align-items: center; gap: 24px; height: 80px;
+    }
+    #mbsnav-{{ section.id }} .mbsnav__logo{
+      font-weight: 800; font-size: 36px; letter-spacing: -0.03em; line-height: 1;
+      color: var(--ki-purple-dark); text-decoration: none; flex-shrink: 0;
+    }
+    #mbsnav-{{ section.id }} .mbsnav__links{
+      display: none; margin-left: auto; list-style: none; padding: 0; margin-right: 0;
+      gap: 6px; align-items: center;
+    }
+    @media (min-width: 1024px){ #mbsnav-{{ section.id }} .mbsnav__links{ display: flex; } }
+    #mbsnav-{{ section.id }} .mbsnav__link{
+      font-size: 15px; color: rgba(26,26,26,.8); padding: 10px 14px; text-decoration: none;
+      border-radius: 8px; transition: color .2s;
+    }
+    #mbsnav-{{ section.id }} .mbsnav__link:hover{ color: var(--ki-purple-dark); }
+    #mbsnav-{{ section.id }} .mbsnav__drop{ position: relative; }
+    #mbsnav-{{ section.id }} .mbsnav__trig{
+      background: transparent; border: 0; font-size: 15px; font-weight: 500; cursor: pointer;
+      color: var(--text); text-decoration: underline; text-underline-offset: 6px;
+      text-decoration-thickness: 1px; padding: 10px 14px; border-radius: 8px;
+      display: inline-flex; align-items: center; gap: 6px;
+    }
+    #mbsnav-{{ section.id }} .mbsnav__trig:hover{ color: var(--ki-purple-dark); }
+    #mbsnav-{{ section.id }} .mbsnav__trig svg{ transition: transform .2s; }
+    #mbsnav-{{ section.id }} .mbsnav__drop:hover .mbsnav__trig svg,
+    #mbsnav-{{ section.id }} .mbsnav__drop:focus-within .mbsnav__trig svg{ transform: rotate(180deg); }
+    #mbsnav-{{ section.id }} .mbsnav__panel{
+      position: absolute; top: 100%; right: 0; width: 360px; padding: 8px;
+      background: #fff; border: 1px solid var(--line); border-radius: 14px;
+      box-shadow: 0 18px 40px rgba(73,61,154,.14);
+      opacity: 0; visibility: hidden; transform: translateY(8px);
+      transition: opacity .18s ease, transform .18s ease, visibility .18s;
+    }
+    #mbsnav-{{ section.id }} .mbsnav__drop:hover .mbsnav__panel,
+    #mbsnav-{{ section.id }} .mbsnav__drop:focus-within .mbsnav__panel{
+      opacity: 1; visibility: visible; transform: translateY(0);
+    }
+    #mbsnav-{{ section.id }} .mbsnav__sup{
+      display: flex; gap: 12px; padding: 12px; border-radius: 10px; text-decoration: none;
+      color: var(--text); transition: background .2s;
+    }
+    #mbsnav-{{ section.id }} .mbsnav__sup:hover{ background: var(--ki-lilac); }
+    #mbsnav-{{ section.id }} .mbsnav__supIcon{
+      width: 36px; height: 36px; flex-shrink: 0; border-radius: 10px;
+      background: rgba(178,165,255,.25); color: var(--ki-purple-dark);
+      display: grid; place-items: center;
+    }
+    #mbsnav-{{ section.id }} .mbsnav__supTitle{ font-size: 14px; font-weight: 650; }
+    #mbsnav-{{ section.id }} .mbsnav__supDesc{ font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+    #mbsnav-{{ section.id }} .mbsnav__actions{
+      display: flex; align-items: center; gap: 10px; margin-left: auto;
+    }
+    @media (min-width: 1024px){ #mbsnav-{{ section.id }} .mbsnav__actions{ margin-left: 12px; } }
+    #mbsnav-{{ section.id }} .mbsnav__cta{
+      display: none; height: 44px; padding: 0 22px; border-radius: 999px;
+      background: var(--ki-purple-dark); color: #fff; font-weight: 650; font-size: 15px;
+      text-decoration: none; align-items: center; transition: transform .2s, box-shadow .2s;
+    }
+    #mbsnav-{{ section.id }} .mbsnav__cta:hover{ transform: translateY(-2px); box-shadow: 0 14px 28px rgba(73,61,154,.24); }
+    @media (min-width: 1024px){ #mbsnav-{{ section.id }} .mbsnav__cta{ display: inline-flex; } }
+
+    #mbsnav-{{ section.id }} .mbsnav__wa{
+      display: none; height: 44px; padding: 0 16px; border-radius: 999px;
+      border: 1px solid rgba(37,211,102,.3); background: rgba(37,211,102,.10);
+      color: #128C7E; text-decoration: none; align-items: center; gap: 8px; font-size: 14px; font-weight: 500;
+    }
+    #mbsnav-{{ section.id }} .mbsnav__wa:hover{ background: rgba(37,211,102,.16); }
+    @media (min-width: 1024px){ #mbsnav-{{ section.id }} .mbsnav__wa{ display: inline-flex; } }
+
+    #mbsnav-{{ section.id }} .mbsnav__iconBtn{
+      width: 44px; height: 44px; border-radius: 999px; background: transparent; border: 0;
+      display: none; align-items: center; justify-content: center; cursor: pointer;
+      color: rgba(26,26,26,.8); position: relative;
+    }
+    @media (min-width: 768px){ #mbsnav-{{ section.id }} .mbsnav__iconBtn{ display: inline-flex; } }
+    #mbsnav-{{ section.id }} .mbsnav__iconBtn:hover{ background: var(--ki-lilac); color: var(--ki-purple-dark); }
+    #mbsnav-{{ section.id }} .mbsnav__cart{ display: inline-flex; }
+    #mbsnav-{{ section.id }} .mbsnav__badge{
+      position: absolute; top: 2px; right: 2px; width: 18px; height: 18px; border-radius: 999px;
+      background: var(--ki-purple-dark); color: #fff; font-size: 10px; font-weight: 650;
+      display: grid; place-items: center;
+    }
+    #mbsnav-{{ section.id }} .mbsnav__hamb{ display: inline-flex; }
+    @media (min-width: 1024px){ #mbsnav-{{ section.id }} .mbsnav__hamb{ display: none; } }
+
+    /* Mobile drawer via checkbox hack (no JS) */
+    #mbsnav-{{ section.id }} .mbsnav__chk{ display: none; }
+    #mbsnav-{{ section.id }} .mbsnav__overlay{
+      position: fixed; inset: 0; background: rgba(26,26,26,.5); opacity: 0; pointer-events: none;
+      transition: opacity .25s; z-index: 60;
+    }
+    #mbsnav-{{ section.id }} .mbsnav__drawer{
+      position: fixed; top: 0; right: 0; width: 88%; max-width: 380px; height: 100%;
+      background: #fff; transform: translateX(100%); transition: transform .28s ease;
+      z-index: 61; display: flex; flex-direction: column; border-left: 1px solid var(--line);
+    }
+    #mbsnav-{{ section.id }} .mbsnav__chk:checked ~ .mbsnav__overlay{ opacity: 1; pointer-events: auto; }
+    #mbsnav-{{ section.id }} .mbsnav__chk:checked ~ .mbsnav__drawer{ transform: translateX(0); }
+    #mbsnav-{{ section.id }} .mbsnav__drawerHead{
+      display: flex; align-items: center; justify-content: space-between; padding: 0 20px;
+      height: 80px; border-bottom: 1px solid var(--line);
+    }
+    #mbsnav-{{ section.id }} .mbsnav__close{
+      width: 40px; height: 40px; border-radius: 999px; background: transparent; border: 0;
+      display: inline-flex; align-items: center; justify-content: center; cursor: pointer;
+      color: var(--text);
+    }
+    #mbsnav-{{ section.id }} .mbsnav__close:hover{ background: var(--ki-lilac); }
+    #mbsnav-{{ section.id }} .mbsnav__nav{ flex: 1; overflow-y: auto; padding: 16px 12px; }
+    #mbsnav-{{ section.id }} .mbsnav__mItem{
+      display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 10px;
+      color: rgba(26,26,26,.9); text-decoration: none; font-size: 15px;
+    }
+    #mbsnav-{{ section.id }} .mbsnav__mItem:hover{ background: var(--ki-lilac); color: var(--ki-purple-dark); }
+    #mbsnav-{{ section.id }} .mbsnav__mIcon{
+      width: 36px; height: 36px; border-radius: 10px; background: #f4f3ef;
+      color: rgba(26,26,26,.7); display: grid; place-items: center;
+    }
+    #mbsnav-{{ section.id }} .mbsnav__mIcon--purple{ background: rgba(178,165,255,.25); color: var(--ki-purple-dark); }
+    #mbsnav-{{ section.id }} .mbsnav__mIcon--wa{ background: rgba(37,211,102,.12); color: #25D366; }
+    #mbsnav-{{ section.id }} details.mbsnav__mGroup{ border-radius: 10px; }
+    #mbsnav-{{ section.id }} details.mbsnav__mGroup summary{
+      list-style: none; display: flex; align-items: center; gap: 12px; padding: 12px 16px;
+      cursor: pointer; border-radius: 10px;
+    }
+    #mbsnav-{{ section.id }} details.mbsnav__mGroup summary::-webkit-details-marker{ display: none; }
+    #mbsnav-{{ section.id }} details.mbsnav__mGroup summary:hover{ background: var(--ki-lilac); }
+    #mbsnav-{{ section.id }} details.mbsnav__mGroup summary .chev{ margin-left: auto; transition: transform .2s; color: var(--muted); }
+    #mbsnav-{{ section.id }} details.mbsnav__mGroup[open] summary .chev{ transform: rotate(180deg); }
+    #mbsnav-{{ section.id }} .mbsnav__mSub{ margin: 4px 0 8px 20px; padding-left: 12px; border-left: 1px solid var(--line); display: flex; flex-direction: column; gap: 4px; }
+    #mbsnav-{{ section.id }} .mbsnav__drawerFoot{ border-top: 1px solid var(--line); padding: 20px; }
+    #mbsnav-{{ section.id }} .mbsnav__drawerCta{
+      display: flex; align-items: center; justify-content: center; height: 48px; border-radius: 999px;
+      background: var(--ki-purple-dark); color: #fff; font-weight: 650; text-decoration: none;
+    }
+    #mbsnav-{{ section.id }} .mbsnav__drawerCta:hover{ background: #3a3180; }
+
+    #mbsnav-{{ section.id }} a:focus-visible, #mbsnav-{{ section.id }} button:focus-visible{
+      outline: 2px solid var(--ki-purple-dark); outline-offset: 3px; border-radius: 8px;
+    }
+
+    @media (max-width: 750px){
+      #mbsnav-{{ section.id }} .mbsnav__wrap{ padding: 0 16px; gap: 12px; height: 72px; }
+      #mbsnav-{{ section.id }} .mbsnav__logo{ font-size: 30px; }
+    }
+  </style>
+
+  <div class="mbsnav__wrap">
+    <a href="{{ section.settings.logo_link | default: '/' }}" class="mbsnav__logo" aria-label="{{ section.settings.logo_text | default: '.ki' }} anasayfa">
+      {{ section.settings.logo_text | default: '.ki' }}
+    </a>
+
+    <nav class="mbsnav__links" aria-label="Ana menü">
+      {% for block in section.blocks %}
+        {% if block.type == 'link' %}
+          <a href="{{ block.settings.href }}" class="mbsnav__link" {{ block.shopify_attributes }}>{{ block.settings.title }}</a>
+        {% endif %}
+      {% endfor %}
+
+      <div class="mbsnav__drop">
+        <button type="button" class="mbsnav__trig" aria-haspopup="true" aria-expanded="false">
+          {{ section.settings.dropdown_label | default: 'Takviye Edici Gıdalarımız' }}
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="mbsnav__panel" role="menu">
+          {% for block in section.blocks %}
+            {% if block.type == 'supplement' %}
+              <a href="{{ block.settings.href }}" class="mbsnav__sup" role="menuitem" {{ block.shopify_attributes }}>
+                <span class="mbsnav__supIcon" aria-hidden="true">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l2 5 5 .5-4 3.5 1 5-4-2.5-4 2.5 1-5-4-3.5 5-.5z"/></svg>
+                </span>
+                <span>
+                  <span class="mbsnav__supTitle">{{ block.settings.title }}</span>
+                  <span class="mbsnav__supDesc">{{ block.settings.description }}</span>
+                </span>
+              </a>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+    </nav>
+
+    <div class="mbsnav__actions">
+      <a href="{{ section.settings.cta_href | default: '/urunler' }}" class="mbsnav__cta">
+        {{ section.settings.cta_label | default: '.ki Ürünleri' }}
+      </a>
+      {% if section.settings.whatsapp_href != blank %}
+        <a href="{{ section.settings.whatsapp_href }}" class="mbsnav__wa" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp Hattımız">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+          <span>WhatsApp</span>
+        </a>
+      {% endif %}
+
+      <button type="button" class="mbsnav__iconBtn" aria-label="Hesabım">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      </button>
+
+      <button type="button" class="mbsnav__iconBtn mbsnav__cart" aria-label="Sepet">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"/></svg>
+        {% if section.settings.cart_count > 0 %}
+          <span class="mbsnav__badge">{{ section.settings.cart_count }}</span>
+        {% endif %}
+      </button>
+
+      <input type="checkbox" id="mbsnav-chk-{{ section.id }}" class="mbsnav__chk" aria-hidden="true">
+      <label for="mbsnav-chk-{{ section.id }}" class="mbsnav__iconBtn mbsnav__hamb" aria-label="Menü">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </label>
+
+      <label for="mbsnav-chk-{{ section.id }}" class="mbsnav__overlay" aria-hidden="true"></label>
+
+      <aside class="mbsnav__drawer" aria-label="Mobil menü">
+        <div class="mbsnav__drawerHead">
+          <span class="mbsnav__logo">{{ section.settings.logo_text | default: '.ki' }}</span>
+          <label for="mbsnav-chk-{{ section.id }}" class="mbsnav__close" aria-label="Kapat">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </label>
+        </div>
+
+        <nav class="mbsnav__nav">
+          {% for block in section.blocks %}
+            {% if block.type == 'link' %}
+              <a href="{{ block.settings.href }}" class="mbsnav__mItem">
+                <span class="mbsnav__mIcon" aria-hidden="true">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><circle cx="12" cy="12" r="4"/></svg>
+                </span>
+                {{ block.settings.title }}
+              </a>
+            {% endif %}
+          {% endfor %}
+
+          <details class="mbsnav__mGroup">
+            <summary>
+              <span class="mbsnav__mIcon mbsnav__mIcon--purple" aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><rect x="3" y="8" width="18" height="12" rx="6"/><path d="M12 8v12"/></svg>
+              </span>
+              <span>{{ section.settings.dropdown_label | default: 'Takviye Edici Gıdalarımız' }}</span>
+              <svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+            </summary>
+            <div class="mbsnav__mSub">
+              {% for block in section.blocks %}
+                {% if block.type == 'supplement' %}
+                  <a href="{{ block.settings.href }}" class="mbsnav__sup">
+                    <span class="mbsnav__supIcon" aria-hidden="true">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l2 5 5 .5-4 3.5 1 5-4-2.5-4 2.5 1-5-4-3.5 5-.5z"/></svg>
+                    </span>
+                    <span>
+                      <span class="mbsnav__supTitle">{{ block.settings.title }}</span>
+                      <span class="mbsnav__supDesc">{{ block.settings.description }}</span>
+                    </span>
+                  </a>
+                {% endif %}
+              {% endfor %}
+            </div>
+          </details>
+
+          <a href="/hesabim" class="mbsnav__mItem">
+            <span class="mbsnav__mIcon" aria-hidden="true">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            </span>
+            Hesabım
+          </a>
+
+          {% if section.settings.whatsapp_href != blank %}
+            <a href="{{ section.settings.whatsapp_href }}" target="_blank" rel="noopener noreferrer" class="mbsnav__mItem">
+              <span class="mbsnav__mIcon mbsnav__mIcon--wa" aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+              </span>
+              <span style="flex:1">WhatsApp Hattımız</span>
+              <span style="font-size:12px;color:var(--muted)">7/24</span>
+            </a>
+          {% endif %}
+        </nav>
+
+        <div class="mbsnav__drawerFoot">
+          <a href="{{ section.settings.cta_href | default: '/urunler' }}" class="mbsnav__drawerCta">
+            {{ section.settings.cta_label | default: '.ki Ürünleri' }}
+          </a>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "MBS · Menu bar",
+  "settings": [
+    { "type": "text", "id": "logo_text", "label": "Logo text", "default": ".ki" },
+    { "type": "url", "id": "logo_link", "label": "Logo link" },
+    { "type": "text", "id": "dropdown_label", "label": "Dropdown label", "default": "Takviye Edici Gıdalarımız" },
+    { "type": "text", "id": "cta_label", "label": "CTA label", "default": ".ki Ürünleri" },
+    { "type": "url", "id": "cta_href", "label": "CTA link" },
+    { "type": "url", "id": "whatsapp_href", "label": "WhatsApp link" },
+    { "type": "number", "id": "cart_count", "label": "Cart count", "default": 1 },
+
+    { "type": "header", "content": "Style" },
+    { "type": "color", "id": "bg", "label": "Background", "default": "#ffffff" },
+    { "type": "color", "id": "text", "label": "Text", "default": "#1a1a1a" },
+    { "type": "color", "id": "muted", "label": "Muted", "default": "#493d9a" },
+    { "type": "range", "id": "max_width", "label": "Max width (px)", "min": 1000, "max": 1600, "step": 10, "default": 1400 },
+    { "type": "range", "id": "pad_x", "label": "Horizontal padding (px)", "min": 12, "max": 80, "step": 2, "default": 32 }
+  ],
+  "blocks": [
+    {
+      "type": "link",
+      "name": "Link",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Title", "default": "Anlaşmalı Eczanelerimiz" },
+        { "type": "url", "id": "href", "label": "Link" }
+      ]
+    },
+    {
+      "type": "supplement",
+      "name": "Takviye",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Title", "default": "PMS Destek" },
+        { "type": "text", "id": "description", "label": "Description", "default": "Adet öncesi rahatlama formülü" },
+        { "type": "url", "id": "href", "label": "Link" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "MBS · Menu bar",
+      "blocks": [
+        { "type": "link", "settings": { "title": "Anlaşmalı Eczanelerimiz" } },
+        { "type": "link", "settings": { "title": "Blog" } },
+        { "type": "supplement", "settings": { "title": "PMS Destek", "description": "Adet öncesi rahatlama formülü" } },
+        { "type": "supplement", "settings": { "title": "Menopoz Destek", "description": "Menopoz dönemine özel takviye" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

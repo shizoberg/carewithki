@@ -1,0 +1,161 @@
+<style>
+  .ing-sec {
+    padding: 100px 24px;
+    font-family: 'Raleway', 'Segoe UI', system-ui, sans-serif;
+    color: #121212;
+    line-height: 1.7;
+    background: {{ section.settings.bg_color }};
+  }
+  .ing-wrap {
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+  .ing-sec-tag {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: #493D9A;
+    margin-bottom: 16px;
+    background: rgba(73, 61, 154, 0.06);
+    padding: 6px 16px;
+    border-radius: 999px;
+  }
+  .ing-sec h2 {
+    font-size: clamp(2rem, 4.5vw, 3rem);
+    font-weight: 300;
+    line-height: 1.1;
+    margin-top: 0;
+    margin-bottom: 24px;
+    color: #121212;
+    letter-spacing: -0.01em;
+  }
+  .ing-sec h2 strong {
+    font-weight: 800;
+  }
+  .ing-combo-section {
+    background: #493D9A;
+    border-radius: 32px;
+    padding: 60px;
+    margin-top: 40px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 24px 48px rgba(73, 61, 154, 0.2);
+  }
+  .ing-combo-section::before {
+    content: '';
+    position: absolute;
+    top: -50px; left: -50px;
+    width: 200px; height: 200px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 50%;
+  }
+  .ing-combo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 24px;
+    position: relative;
+    z-index: 2;
+  }
+  .ing-combo-item {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 24px;
+    padding: 32px 24px;
+    text-align: center;
+    backdrop-filter: blur(10px);
+    transition: transform .3s ease;
+  }
+  .ing-combo-item:hover {
+    transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.08);
+  }
+  .ing-combo-item .ico {
+    font-size: 2.5rem;
+    margin-bottom: 16px;
+    display: inline-block;
+  }
+  .ing-combo-item h4 {
+    font-size: 16px;
+    font-weight: 800;
+    color: #fff;
+    margin-top: 0;
+    margin-bottom: 8px;
+  }
+  .ing-synergy-card-text {
+    font-size: 14px;
+    color: rgba(255,255,255,0.8);
+    line-height: 1.6;
+    margin: 0;
+  }
+  .ing-synergy-card-text p {
+    margin: 0;
+  }
+  @media(max-width: 720px) {
+    .ing-sec { padding: 60px 20px; }
+    .ing-combo-grid { grid-template-columns: 1fr; }
+    .ing-combo-section { padding: 40px 24px; }
+  }
+</style>
+
+<section class="ing-sec">
+  <div class="ing-wrap">
+    <div style="text-align:center;">
+      {%- if section.settings.tag != blank -%}
+        <div class="ing-sec-tag">{{ section.settings.tag }}</div>
+      {%- endif -%}
+      <h2>{{ section.settings.title_light }}<br><strong>{{ section.settings.title_bold }}</strong></h2>
+      {%- if section.settings.text != blank -%}
+        <div class="ing-synergy-text" style="color:#555;font-size:16px;margin:8px auto 0;max-width:600px;">{{ section.settings.text }}</div>
+      {%- endif -%}
+    </div>
+    
+    {%- if section.blocks.size > 0 -%}
+    <div class="ing-combo-section">
+      <div class="ing-combo-grid">
+        {%- for block in section.blocks -%}
+          <div class="ing-combo-item" {{ block.shopify_attributes }}>
+            <div class="ico">{{ block.settings.icon }}</div>
+            <h4>{{ block.settings.title }}</h4>
+            <div class="ing-synergy-card-text">{{ block.settings.text }}</div>
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+    {%- endif -%}
+
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Ing: Premium Synergy",
+  "settings": [
+    { "type": "color", "id": "bg_color", "label": "Arka Plan Rengi", "default": "#ffffff" },
+    { "type": "text", "id": "tag", "label": "Bölüm Etiketi", "default": "Sinerji" },
+    { "type": "text", "id": "title_light", "label": "Başlık (İnce)", "default": "Üç Bitki," },
+    { "type": "text", "id": "title_bold", "label": "Başlık (Kalın)", "default": "Maksimum Fayda" },
+    { "type": "richtext", "id": "text", "label": "Açıklama" }
+  ],
+  "blocks": [
+    {
+      "type": "combo",
+      "name": "Sinerji Kartı",
+      "settings": [
+        { "type": "text", "id": "icon", "label": "İkon (emoji)" },
+        { "type": "text", "id": "title", "label": "Başlık" },
+        { "type": "richtext", "id": "text", "label": "Açıklama" }
+      ]
+    }
+  ],
+  "presets": [
+    { 
+      "name": "Ing: Premium Synergy",
+      "blocks": [
+        { "type": "combo" }, { "type": "combo" }, { "type": "combo" }
+      ]
+    }
+  ]
+}
+{% endschema %}

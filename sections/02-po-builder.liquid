@@ -1,0 +1,906 @@
+{% comment %}
+  Paket Builder — Kategori sekmeleri + ürün listesi + sağda canlı özet
+  Pozisyon: Paket Oluştur #2 (ana içerik)
+  Sol: kategori tab'ları + collapsible kategori panelleri (her panel ürün listesi + ipucu)
+  Sağ: sticky paket özeti (ürünler + ücretsiz kargo progress + toplam + CTA + "Nasıl çalışır?")
+  Mobile: alt sticky toplam + sepete ekle butonu
+  Hesaplama tamamen JS tarafında çalışır; ürünler block olarak tanımlıdır.
+{% endcomment %}
+
+<section id="paket-builder-{{ section.id }}" class="section paket-builder">
+  <style>
+    #paket-builder-{{ section.id }} {
+      --pb-bg: {{ section.settings.bg | default: '#fffaf3' }};
+      --pb-card: {{ section.settings.card_bg | default: '#ffffff' }};
+      --pb-secondary: {{ section.settings.secondary_color | default: '#f4ede1' }};
+      --pb-cream: {{ section.settings.cream_color | default: '#f7f1e6' }};
+      --pb-primary: {{ section.settings.primary_color | default: '#3a2d6e' }};
+      --pb-primary-fg: #ffffff;
+      --pb-text: #1a1a1a;
+      --pb-muted: rgba(26,26,26,.7);
+      --pb-rose: {{ section.settings.rose_color | default: '#d96d8a' }};
+      --pb-rose-light: {{ section.settings.rose_light | default: '#f6dce4' }};
+      --pb-sage: {{ section.settings.sage_color | default: '#7b9d6f' }};
+      --pb-sage-light: {{ section.settings.sage_light | default: '#dde8d4' }};
+      --pb-border: rgba(0,0,0,.12);
+      --pb-threshold: {{ section.settings.shipping_threshold | default: 750 }};
+      background: var(--pb-bg);
+      padding: 40px 0 96px;
+      font-family: system-ui, -apple-system, sans-serif;
+    }
+    #paket-builder-{{ section.id }} .pb-wrap {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    #paket-builder-{{ section.id }} .pb-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 32px;
+      align-items: start;
+    }
+
+    /* Tabs */
+    #paket-builder-{{ section.id }} .pb-tabs-wrap {
+      margin: 0 -20px 24px;
+      padding: 12px 20px;
+      border-bottom: 1px solid var(--pb-border);
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    #paket-builder-{{ section.id }} .pb-tabs-wrap::-webkit-scrollbar { display: none; }
+    #paket-builder-{{ section.id }} .pb-tabs {
+      display: flex; gap: 4px;
+      width: max-content;
+    }
+    #paket-builder-{{ section.id }} .pb-tab {
+      position: relative; flex-shrink: 0;
+      font-size: 13px; font-weight: 600;
+      padding: 10px 16px;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      background: var(--pb-secondary);
+      color: var(--pb-primary);
+      cursor: pointer;
+      transition: all .2s ease;
+    }
+    #paket-builder-{{ section.id }} .pb-tab:hover { background: rgba(244,237,225,.7); }
+    #paket-builder-{{ section.id }} .pb-tab.is-active {
+      background: var(--pb-primary);
+      color: var(--pb-primary-fg);
+      border-color: var(--pb-primary);
+    }
+    #paket-builder-{{ section.id }} .pb-tab-count {
+      display: inline-flex; align-items: center; justify-content: center;
+      min-width: 20px; height: 20px;
+      padding: 0 6px;
+      margin-left: 8px;
+      border-radius: 999px;
+      background: var(--pb-rose);
+      color: var(--pb-primary-fg);
+      font-size: 11px; font-weight: 700;
+    }
+    #paket-builder-{{ section.id }} .pb-tab.is-active .pb-tab-count {
+      background: var(--pb-primary-fg);
+      color: var(--pb-primary);
+    }
+    #paket-builder-{{ section.id }} .pb-tab-count[data-count="0"] { display: none; }
+
+    /* Categories */
+    #paket-builder-{{ section.id }} .pb-cats {
+      display: flex; flex-direction: column; gap: 16px;
+    }
+    #paket-builder-{{ section.id }} .pb-cat {
+      border: 1px solid rgba(0,0,0,.15);
+      border-radius: 16px;
+      background: var(--pb-card);
+      overflow: hidden;
+    }
+    #paket-builder-{{ section.id }} .pb-cat-head {
+      width: 100%;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 16px;
+      padding: 20px;
+      background: transparent;
+      border: 0; cursor: pointer;
+      text-align: left;
+      transition: background .2s ease;
+    }
+    #paket-builder-{{ section.id }} .pb-cat-head:hover { background: rgba(244,237,225,.4); }
+    #paket-builder-{{ section.id }} .pb-cat-title-row {
+      display: flex; align-items: center; gap: 12px;
+    }
+    #paket-builder-{{ section.id }} .pb-cat-title {
+      font-size: 22px; font-weight: 500;
+      color: var(--pb-primary);
+      margin: 0;
+    }
+    #paket-builder-{{ section.id }} .pb-cat-count {
+      display: inline-flex; align-items: center; justify-content: center;
+      min-width: 22px; height: 22px;
+      padding: 0 6px;
+      border-radius: 999px;
+      background: var(--pb-rose);
+      color: var(--pb-primary-fg);
+      font-size: 11px; font-weight: 700;
+    }
+    #paket-builder-{{ section.id }} .pb-cat-count[data-count="0"] { display: none; }
+    #paket-builder-{{ section.id }} .pb-cat-desc {
+      font-size: 13px;
+      color: var(--pb-muted);
+      margin: 4px 0 0;
+    }
+    #paket-builder-{{ section.id }} .pb-chev {
+      width: 20px; height: 20px;
+      flex-shrink: 0;
+      transition: transform .3s ease;
+      color: var(--pb-primary);
+    }
+    #paket-builder-{{ section.id }} .pb-cat[data-open="true"] .pb-chev { transform: rotate(180deg); }
+
+    #paket-builder-{{ section.id }} .pb-cat-body {
+      display: none;
+      border-top: 1px solid rgba(0,0,0,.1);
+    }
+    #paket-builder-{{ section.id }} .pb-cat[data-open="true"] .pb-cat-body { display: block; }
+
+    /* Items */
+    #paket-builder-{{ section.id }} .pb-items {
+      list-style: none; padding: 0; margin: 0;
+    }
+    #paket-builder-{{ section.id }} .pb-item {
+      display: flex; align-items: center; gap: 16px;
+      padding: 16px;
+      border-bottom: 1px solid rgba(0,0,0,.08);
+      transition: background .2s ease;
+    }
+    #paket-builder-{{ section.id }} .pb-item:last-child { border-bottom: 0; }
+    #paket-builder-{{ section.id }} .pb-item.is-selected { background: rgba(244,237,225,.4); }
+    #paket-builder-{{ section.id }} .pb-item-img {
+      flex-shrink: 0;
+      width: 64px; height: 64px;
+      border-radius: 12px;
+      overflow: hidden;
+      background: var(--pb-secondary);
+      border: 1px solid rgba(0,0,0,.08);
+    }
+    #paket-builder-{{ section.id }} .pb-item-img img { width: 100%; height: 100%; object-fit: cover; }
+    #paket-builder-{{ section.id }} .pb-item-info { flex: 1; min-width: 0; }
+    #paket-builder-{{ section.id }} .pb-item-name {
+      font-size: 14.5px; font-weight: 600;
+      color: var(--pb-primary);
+      line-height: 1.2;
+      display: flex; align-items: center; gap: 8px;
+      flex-wrap: wrap;
+    }
+    #paket-builder-{{ section.id }} .pb-item-badge {
+      display: inline-flex; align-items: center;
+      font-size: 10px; font-weight: 700;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+      padding: 2px 6px;
+      border-radius: 4px;
+      background: var(--pb-rose-light);
+      color: var(--pb-rose);
+    }
+    #paket-builder-{{ section.id }} .pb-item-short {
+      font-size: 12.5px;
+      color: var(--pb-muted);
+      margin: 2px 0 0;
+      display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    #paket-builder-{{ section.id }} .pb-item-price {
+      font-size: 13px; font-weight: 600;
+      color: var(--pb-primary);
+      margin: 4px 0 0;
+    }
+    #paket-builder-{{ section.id }} .pb-item-price small {
+      font-size: 11.5px; font-weight: 500;
+      color: var(--pb-muted);
+      margin-left: 4px;
+    }
+    #paket-builder-{{ section.id }} .pb-stepper {
+      flex-shrink: 0;
+      display: flex; align-items: center; gap: 4px;
+      background: var(--pb-bg);
+      border: 1px solid var(--pb-border);
+      border-radius: 999px;
+      padding: 4px;
+    }
+    #paket-builder-{{ section.id }} .pb-stepper button {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      display: grid; place-items: center;
+      cursor: pointer; border: 0;
+      transition: opacity .2s, background .2s;
+    }
+    #paket-builder-{{ section.id }} .pb-step-minus { background: transparent; color: var(--pb-primary); }
+    #paket-builder-{{ section.id }} .pb-step-minus:disabled { opacity: .3; cursor: not-allowed; }
+    #paket-builder-{{ section.id }} .pb-step-plus { background: var(--pb-primary); color: var(--pb-primary-fg); }
+    #paket-builder-{{ section.id }} .pb-step-qty {
+      min-width: 32px; text-align: center;
+      font-size: 14px; font-weight: 700;
+      color: var(--pb-primary);
+      font-variant-numeric: tabular-nums;
+    }
+
+    #paket-builder-{{ section.id }} .pb-cat-hint {
+      padding: 14px 20px;
+      background: rgba(221,232,212,.5);
+      border-top: 1px solid rgba(0,0,0,.08);
+      font-size: 12.5px;
+      color: var(--pb-sage);
+      display: flex; gap: 8px;
+    }
+
+    /* Summary */
+    #paket-builder-{{ section.id }} .pb-summary-card {
+      background: var(--pb-card);
+      border: 1px solid rgba(0,0,0,.15);
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 4px 20px -8px rgba(0,0,0,.08);
+    }
+    #paket-builder-{{ section.id }} .pb-sum-head {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 12px; margin-bottom: 4px;
+    }
+    #paket-builder-{{ section.id }} .pb-sum-title {
+      font-size: 24px; font-weight: 500;
+      color: var(--pb-primary);
+      margin: 0;
+    }
+    #paket-builder-{{ section.id }} .pb-sum-pill {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 11px; font-weight: 700;
+      color: var(--pb-sage);
+      background: var(--pb-sage-light);
+      padding: 4px 10px;
+      border-radius: 999px;
+    }
+    #paket-builder-{{ section.id }} .pb-sum-pill::before {
+      content: '';
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--pb-sage);
+    }
+    #paket-builder-{{ section.id }} .pb-sum-meta {
+      font-size: 12.5px;
+      color: var(--pb-muted);
+      margin: 0;
+    }
+    #paket-builder-{{ section.id }} .pb-sum-list {
+      list-style: none; padding: 0;
+      margin: 20px 0 0;
+      max-height: 280px;
+      overflow-y: auto;
+      display: flex; flex-direction: column; gap: 12px;
+    }
+    #paket-builder-{{ section.id }} .pb-sum-li {
+      display: flex; align-items: center; gap: 12px;
+    }
+    #paket-builder-{{ section.id }} .pb-sum-li-img {
+      position: relative;
+      width: 44px; height: 44px;
+      border-radius: 8px;
+      overflow: hidden;
+      background: var(--pb-secondary);
+      flex-shrink: 0;
+    }
+    #paket-builder-{{ section.id }} .pb-sum-li-img img { width: 100%; height: 100%; object-fit: cover; }
+    #paket-builder-{{ section.id }} .pb-sum-li-badge {
+      position: absolute;
+      top: -4px; right: -4px;
+      min-width: 18px; height: 18px;
+      padding: 0 4px;
+      border-radius: 999px;
+      background: var(--pb-primary);
+      color: var(--pb-primary-fg);
+      font-size: 10px; font-weight: 700;
+      display: inline-flex; align-items: center; justify-content: center;
+    }
+    #paket-builder-{{ section.id }} .pb-sum-li-info { flex: 1; min-width: 0; }
+    #paket-builder-{{ section.id }} .pb-sum-li-name {
+      font-size: 13px; font-weight: 600;
+      color: var(--pb-primary);
+      line-height: 1.2;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    #paket-builder-{{ section.id }} .pb-sum-li-meta {
+      font-size: 11.5px;
+      color: var(--pb-muted);
+      margin-top: 2px;
+    }
+    #paket-builder-{{ section.id }} .pb-sum-li-total {
+      font-size: 13px; font-weight: 700;
+      color: var(--pb-primary);
+      font-variant-numeric: tabular-nums;
+      flex-shrink: 0;
+    }
+
+    #paket-builder-{{ section.id }} .pb-ship {
+      margin-top: 20px;
+      padding: 14px;
+      background: var(--pb-secondary);
+      border-radius: 12px;
+    }
+    #paket-builder-{{ section.id }} .pb-ship-row {
+      display: flex; align-items: center; gap: 8px;
+      margin-bottom: 8px;
+    }
+    #paket-builder-{{ section.id }} .pb-ship-row svg { width: 16px; height: 16px; color: var(--pb-primary); }
+    #paket-builder-{{ section.id }} .pb-ship-text {
+      font-size: 12px; font-weight: 600;
+      color: var(--pb-primary);
+    }
+    #paket-builder-{{ section.id }} .pb-ship-bar {
+      height: 6px; border-radius: 999px;
+      background: var(--pb-bg);
+      overflow: hidden;
+    }
+    #paket-builder-{{ section.id }} .pb-ship-fill {
+      height: 100%; width: 0%;
+      background: linear-gradient(to right, var(--pb-primary), var(--pb-rose));
+      transition: width .5s ease;
+    }
+
+    #paket-builder-{{ section.id }} .pb-totals {
+      margin-top: 20px;
+      display: flex; flex-direction: column; gap: 8px;
+      font-size: 13.5px;
+    }
+    #paket-builder-{{ section.id }} .pb-tot-row {
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    #paket-builder-{{ section.id }} .pb-tot-row dt { color: var(--pb-muted); }
+    #paket-builder-{{ section.id }} .pb-tot-row dd { font-weight: 600; color: var(--pb-primary); margin: 0; font-variant-numeric: tabular-nums; }
+    #paket-builder-{{ section.id }} .pb-tot-grand {
+      padding-top: 12px;
+      border-top: 1px solid rgba(0,0,0,.1);
+      margin-top: 4px;
+    }
+    #paket-builder-{{ section.id }} .pb-tot-grand dt {
+      font-size: 18px; font-weight: 500;
+      color: var(--pb-primary);
+    }
+    #paket-builder-{{ section.id }} .pb-tot-grand dd {
+      font-size: 22px; font-weight: 500;
+    }
+
+    #paket-builder-{{ section.id }} .pb-cta {
+      margin-top: 20px;
+      width: 100%;
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      background: var(--pb-primary);
+      color: var(--pb-primary-fg);
+      font-size: 14px; font-weight: 700;
+      padding: 14px 20px;
+      border-radius: 999px;
+      border: 0; cursor: pointer;
+      transition: opacity .2s ease;
+    }
+    #paket-builder-{{ section.id }} .pb-cta:disabled { opacity: .4; cursor: not-allowed; }
+
+    #paket-builder-{{ section.id }} .pb-guarantees {
+      list-style: none; padding: 0;
+      margin: 20px 0 0;
+      display: flex; flex-direction: column; gap: 8px;
+      font-size: 11.5px;
+      color: var(--pb-muted);
+    }
+    #paket-builder-{{ section.id }} .pb-guarantees li { display: flex; align-items: center; gap: 8px; }
+    #paket-builder-{{ section.id }} .pb-guarantees svg { width: 12px; height: 12px; color: var(--pb-sage); }
+
+    #paket-builder-{{ section.id }} .pb-howit {
+      margin-top: 20px;
+      padding: 20px;
+      background: rgba(247,241,230,.6);
+      border: 1px solid rgba(0,0,0,.08);
+      border-radius: 16px;
+    }
+    #paket-builder-{{ section.id }} .pb-howit-title {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 18px; font-weight: 500;
+      color: var(--pb-primary);
+      margin: 0 0 12px;
+    }
+    #paket-builder-{{ section.id }} .pb-howit-title svg { width: 16px; height: 16px; }
+    #paket-builder-{{ section.id }} .pb-howit ol {
+      list-style: none; padding: 0; margin: 0;
+      display: flex; flex-direction: column; gap: 10px;
+      font-size: 12.5px;
+      color: rgba(58,45,110,.85);
+    }
+    #paket-builder-{{ section.id }} .pb-howit li {
+      display: flex; align-items: flex-start; gap: 10px;
+    }
+    #paket-builder-{{ section.id }} .pb-howit-num {
+      flex-shrink: 0;
+      width: 20px; height: 20px;
+      border-radius: 50%;
+      background: var(--pb-primary);
+      color: var(--pb-primary-fg);
+      font-size: 11px; font-weight: 700;
+      display: grid; place-items: center;
+    }
+
+    /* Mobile sticky */
+    #paket-builder-{{ section.id }} .pb-mobile-sticky {
+      position: fixed; left: 0; right: 0; bottom: 0;
+      z-index: 30;
+      background: var(--pb-bg);
+      border-top: 1px solid var(--pb-border);
+      padding: 12px 20px;
+      box-shadow: 0 -8px 24px -12px rgba(0,0,0,.15);
+      display: none;
+    }
+    #paket-builder-{{ section.id }} .pb-mobile-sticky.is-visible { display: block; }
+    #paket-builder-{{ section.id }} .pb-mobile-sticky-row {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 12px;
+    }
+    #paket-builder-{{ section.id }} .pb-mobile-sticky .pb-ms-meta {
+      font-size: 11px; color: var(--pb-muted);
+    }
+    #paket-builder-{{ section.id }} .pb-mobile-sticky .pb-ms-total {
+      font-size: 20px; font-weight: 500;
+      color: var(--pb-primary);
+    }
+    #paket-builder-{{ section.id }} .pb-mobile-sticky .pb-ms-cta {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--pb-primary);
+      color: var(--pb-primary-fg);
+      font-size: 13px; font-weight: 700;
+      padding: 12px 20px;
+      border-radius: 999px;
+      border: 0; cursor: pointer;
+    }
+
+    @media (min-width: 1024px) {
+      #paket-builder-{{ section.id }} { padding: 56px 0 64px; }
+      #paket-builder-{{ section.id }} .pb-wrap { padding: 0 32px; }
+      #paket-builder-{{ section.id }} .pb-grid {
+        grid-template-columns: 1fr 400px;
+        gap: 40px;
+      }
+      #paket-builder-{{ section.id }} .pb-tabs-wrap {
+        margin: 0 0 24px;
+        padding: 0 0 12px;
+        border-bottom: 0;
+      }
+      #paket-builder-{{ section.id }} .pb-summary { position: sticky; top: 80px; }
+      #paket-builder-{{ section.id }} .pb-mobile-sticky { display: none !important; }
+    }
+  </style>
+
+  <div class="pb-wrap">
+    <div class="pb-grid">
+      <!-- LEFT: Categories -->
+      <div>
+        <div class="pb-tabs-wrap">
+          <div class="pb-tabs">
+            <button type="button" class="pb-tab is-active" data-pb-tab="">Tümü</button>
+            {%- assign cats = '' -%}
+            {%- for block in section.blocks -%}
+              {%- if block.type == 'product' -%}
+                {%- assign cats = cats | append: block.settings.category | append: '|' -%}
+              {%- endif -%}
+            {%- endfor -%}
+            {%- comment -%}Distinct categories from blocks{%- endcomment -%}
+            {%- for block in section.blocks -%}
+              {%- if block.type == 'category' -%}
+                <button type="button" class="pb-tab" data-pb-tab="{{ block.settings.key }}">
+                  {{ block.settings.label }}
+                  <span class="pb-tab-count" data-pb-tab-count="{{ block.settings.key }}" data-count="0">0</span>
+                </button>
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+        </div>
+
+        <div class="pb-cats">
+          {%- for catBlock in section.blocks -%}
+            {%- if catBlock.type == 'category' -%}
+              <div class="pb-cat" data-pb-cat="{{ catBlock.settings.key }}" data-open="{% if forloop.first %}true{% else %}false{% endif %}" {{ catBlock.shopify_attributes }}>
+                <button type="button" class="pb-cat-head" data-pb-cat-toggle>
+                  <div>
+                    <div class="pb-cat-title-row">
+                      <h2 class="pb-cat-title">{{ catBlock.settings.label }}</h2>
+                      <span class="pb-cat-count" data-pb-cat-count="{{ catBlock.settings.key }}" data-count="0">0</span>
+                    </div>
+                    <p class="pb-cat-desc">{{ catBlock.settings.description }}</p>
+                  </div>
+                  <svg class="pb-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+                <div class="pb-cat-body">
+                  <ul class="pb-items">
+                    {%- for item in section.blocks -%}
+                      {%- if item.type == 'product' and item.settings.category == catBlock.settings.key -%}
+                        <li class="pb-item" data-pb-item="{{ item.id }}" data-pb-cat-key="{{ item.settings.category }}" data-pb-step="{{ item.settings.step | default: 1 }}" data-pb-price="{{ item.settings.price | default: 0 }}" data-pb-unit="{{ item.settings.unit }}" {{ item.shopify_attributes }}>
+                          <div class="pb-item-img">
+                            {%- if item.settings.image != blank -%}
+                              {{ item.settings.image | image_url: width: 200 | image_tag: alt: item.settings.name, loading: 'lazy' }}
+                            {%- endif -%}
+                          </div>
+                          <div class="pb-item-info">
+                            <div class="pb-item-name">
+                              <span>{{ item.settings.name }}</span>
+                              {%- if item.settings.badge != blank -%}
+                                <span class="pb-item-badge">{{ item.settings.badge }}</span>
+                              {%- endif -%}
+                            </div>
+                            <p class="pb-item-short">{{ item.settings.short }}</p>
+                            <p class="pb-item-price">
+                              ₺{{ item.settings.price }}
+                              {%- if item.settings.step != blank and item.settings.step != '1' and item.settings.step != 1 -%}
+                                <small>/ {{ item.settings.step }} {{ item.settings.unit }}</small>
+                              {%- endif -%}
+                            </p>
+                          </div>
+                          <div class="pb-stepper">
+                            <button type="button" class="pb-step-minus" data-pb-minus aria-label="Azalt" disabled>
+                              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14" stroke-linecap="round"/></svg>
+                            </button>
+                            <span class="pb-step-qty" data-pb-qty>0</span>
+                            <button type="button" class="pb-step-plus" data-pb-plus aria-label="Arttır">
+                              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14" stroke-linecap="round"/></svg>
+                            </button>
+                          </div>
+                        </li>
+                      {%- endif -%}
+                    {%- endfor -%}
+                  </ul>
+                  {%- if catBlock.settings.hint != blank -%}
+                    <div class="pb-cat-hint">
+                      <span>💡</span>
+                      <span>{{ catBlock.settings.hint }}</span>
+                    </div>
+                  {%- endif -%}
+                </div>
+              </div>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      </div>
+
+      <!-- RIGHT: Summary -->
+      <aside class="pb-summary">
+        <div class="pb-summary-card">
+          <div class="pb-sum-head">
+            <h3 class="pb-sum-title">{{ section.settings.summary_title | default: 'Paketin' }}</h3>
+            <span class="pb-sum-pill">{{ section.settings.frequency_label | default: '2 ayda bir kapında' }}</span>
+          </div>
+          <p class="pb-sum-meta" data-pb-sum-meta>{{ section.settings.empty_message | default: 'Sol taraftan ürün ekleyerek paketini oluştur.' }}</p>
+
+          <ul class="pb-sum-list" data-pb-sum-list></ul>
+
+          <div class="pb-ship">
+            <div class="pb-ship-row">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 3h15v13H1z"/><path d="M16 8h4l3 3v5h-7"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+              <span class="pb-ship-text" data-pb-ship-text>Ücretsiz kargoya ₺{{ section.settings.shipping_threshold | default: 750 }} kaldı</span>
+            </div>
+            <div class="pb-ship-bar"><div class="pb-ship-fill" data-pb-ship-fill></div></div>
+          </div>
+
+          <dl class="pb-totals">
+            <div class="pb-tot-row">
+              <dt>Ara toplam</dt>
+              <dd data-pb-subtotal>₺0</dd>
+            </div>
+            <div class="pb-tot-row pb-tot-grand">
+              <dt>Toplam</dt>
+              <dd data-pb-total>₺0</dd>
+            </div>
+          </dl>
+
+          <button type="button" class="pb-cta" data-pb-cta disabled>
+            <span data-pb-cta-text>{{ section.settings.cta_idle | default: 'Önce ürün ekle' }}</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none" data-pb-cta-arrow><path d="M5 12h14M13 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+
+          <ul class="pb-guarantees">
+            {%- for block in section.blocks -%}
+              {%- if block.type == 'guarantee' -%}
+                <li>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  {{ block.settings.label }}
+                </li>
+              {%- endif -%}
+            {%- endfor -%}
+          </ul>
+        </div>
+
+        <div class="pb-howit">
+          <h4 class="pb-howit-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+            {{ section.settings.howit_title | default: 'Nasıl çalışır?' }}
+          </h4>
+          <ol>
+            {%- for block in section.blocks -%}
+              {%- if block.type == 'step' -%}
+                <li>
+                  <span class="pb-howit-num">{{ forloop.index }}</span>
+                  <span>{{ block.settings.text }}</span>
+                </li>
+              {%- endif -%}
+            {%- endfor -%}
+          </ol>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <!-- Mobile sticky -->
+  <div class="pb-mobile-sticky" data-pb-mobile>
+    <div class="pb-mobile-sticky-row">
+      <div>
+        <p class="pb-ms-meta"><span data-pb-ms-count>0</span> ürün · Toplam</p>
+        <p class="pb-ms-total" data-pb-ms-total>₺0</p>
+      </div>
+      <button type="button" class="pb-ms-cta">
+        Sepete ekle
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+  </div>
+</section>
+
+<script>
+  (function () {
+    var root = document.getElementById('paket-builder-{{ section.id }}');
+    if (!root) return;
+
+    var threshold = {{ section.settings.shipping_threshold | default: 750 }};
+    var idleText = {{ section.settings.cta_idle | default: 'Önce ürün ekle' | json }};
+    var emptyText = {{ section.settings.empty_message | default: 'Sol taraftan ürün ekleyerek paketini oluştur.' | json }};
+
+    /* Tabs */
+    var tabs = root.querySelectorAll('[data-pb-tab]');
+    var cats = root.querySelectorAll('[data-pb-cat]');
+    var activeTab = '';
+    tabs.forEach(function (t) {
+      t.addEventListener('click', function () {
+        var key = t.getAttribute('data-pb-tab');
+        activeTab = (activeTab === key) ? '' : key;
+        if (key === '') activeTab = '';
+        tabs.forEach(function (x) { x.classList.toggle('is-active', x.getAttribute('data-pb-tab') === activeTab); });
+        cats.forEach(function (c) {
+          var ck = c.getAttribute('data-pb-cat');
+          if (activeTab === '') {
+            c.style.display = '';
+          } else {
+            c.style.display = (ck === activeTab) ? '' : 'none';
+            if (ck === activeTab) c.setAttribute('data-open', 'true');
+          }
+        });
+      });
+    });
+
+    /* Category collapse */
+    cats.forEach(function (c) {
+      var head = c.querySelector('[data-pb-cat-toggle]');
+      head.addEventListener('click', function () {
+        var open = c.getAttribute('data-open') === 'true';
+        c.setAttribute('data-open', open ? 'false' : 'true');
+      });
+    });
+
+    /* Quantities */
+    var items = root.querySelectorAll('[data-pb-item]');
+    var qtyMap = {};
+
+    function fmt(n) { return '₺' + Number(n).toLocaleString('tr-TR'); }
+
+    function recalc() {
+      var subtotal = 0, count = 0;
+      var lines = [];
+      var perCat = {};
+
+      items.forEach(function (it) {
+        var id = it.getAttribute('data-pb-item');
+        var qty = qtyMap[id] || 0;
+        var step = parseInt(it.getAttribute('data-pb-step'), 10) || 1;
+        var price = parseFloat(it.getAttribute('data-pb-price')) || 0;
+        var cat = it.getAttribute('data-pb-cat-key');
+        var unit = it.getAttribute('data-pb-unit') || '';
+        var qtyEl = it.querySelector('[data-pb-qty]');
+        qtyEl.textContent = qty;
+        it.classList.toggle('is-selected', qty > 0);
+        it.querySelector('[data-pb-minus]').disabled = qty === 0;
+        if (qty > 0) {
+          var units = qty / step;
+          var lineTotal = units * price;
+          subtotal += lineTotal;
+          count += qty;
+          perCat[cat] = (perCat[cat] || 0) + qty;
+          var img = it.querySelector('.pb-item-img img');
+          var name = it.querySelector('.pb-item-name span').textContent;
+          lines.push({
+            id: id, qty: qty, units: units, unit: unit, price: price, total: lineTotal,
+            name: name, img: img ? img.src : ''
+          });
+        }
+      });
+
+      /* Update tab/cat counts */
+      root.querySelectorAll('[data-pb-tab-count]').forEach(function (el) {
+        var k = el.getAttribute('data-pb-tab-count');
+        var v = perCat[k] || 0;
+        el.textContent = v;
+        el.setAttribute('data-count', v);
+      });
+      root.querySelectorAll('[data-pb-cat-count]').forEach(function (el) {
+        var k = el.getAttribute('data-pb-cat-count');
+        var v = perCat[k] || 0;
+        el.textContent = v;
+        el.setAttribute('data-count', v);
+      });
+
+      /* Summary list */
+      var listEl = root.querySelector('[data-pb-sum-list]');
+      var metaEl = root.querySelector('[data-pb-sum-meta]');
+      if (lines.length === 0) {
+        listEl.innerHTML = '';
+        metaEl.textContent = emptyText;
+      } else {
+        metaEl.textContent = count + ' ürün seçildi.';
+        listEl.innerHTML = lines.map(function (l) {
+          return '<li class="pb-sum-li">' +
+            '<div class="pb-sum-li-img">' +
+              (l.img ? '<img src="' + l.img + '" alt="">' : '') +
+              '<span class="pb-sum-li-badge">' + l.units + '</span>' +
+            '</div>' +
+            '<div class="pb-sum-li-info">' +
+              '<div class="pb-sum-li-name">' + l.name + '</div>' +
+              '<div class="pb-sum-li-meta">' + l.qty + ' ' + l.unit + ' · ₺' + l.price.toLocaleString('tr-TR') + ' × ' + l.units + '</div>' +
+            '</div>' +
+            '<p class="pb-sum-li-total">₺' + l.total.toLocaleString('tr-TR') + '</p>' +
+          '</li>';
+        }).join('');
+      }
+
+      /* Shipping progress */
+      var pct = Math.min(1, subtotal / threshold);
+      root.querySelector('[data-pb-ship-fill]').style.width = (pct * 100) + '%';
+      root.querySelector('[data-pb-ship-text]').textContent = subtotal >= threshold
+        ? 'Ücretsiz kargo hak ettin 🎉'
+        : 'Ücretsiz kargoya ₺' + (threshold - subtotal).toLocaleString('tr-TR') + ' kaldı';
+
+      /* Totals */
+      root.querySelector('[data-pb-subtotal]').textContent = fmt(subtotal);
+      root.querySelector('[data-pb-total]').textContent = fmt(subtotal);
+
+      /* CTA */
+      var cta = root.querySelector('[data-pb-cta]');
+      var ctaTxt = root.querySelector('[data-pb-cta-text]');
+      var ctaArr = root.querySelector('[data-pb-cta-arrow]');
+      cta.disabled = count === 0;
+      ctaTxt.textContent = count === 0 ? idleText : 'Sepete ekle';
+      ctaArr.style.display = count === 0 ? 'none' : '';
+
+      /* Mobile sticky */
+      var ms = root.querySelector('[data-pb-mobile]');
+      ms.classList.toggle('is-visible', count > 0);
+      root.querySelector('[data-pb-ms-count]').textContent = count;
+      root.querySelector('[data-pb-ms-total]').textContent = fmt(subtotal);
+    }
+
+    items.forEach(function (it) {
+      var id = it.getAttribute('data-pb-item');
+      var step = parseInt(it.getAttribute('data-pb-step'), 10) || 1;
+      qtyMap[id] = 0;
+      it.querySelector('[data-pb-plus]').addEventListener('click', function () {
+        var n = (qtyMap[id] || 0) + step;
+        qtyMap[id] = Math.max(0, Math.min(200, Math.round(n / step) * step));
+        recalc();
+      });
+      it.querySelector('[data-pb-minus]').addEventListener('click', function () {
+        var n = (qtyMap[id] || 0) - step;
+        qtyMap[id] = Math.max(0, Math.round(n / step) * step);
+        recalc();
+      });
+    });
+
+    recalc();
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Paket Builder",
+  "tag": "section",
+  "class": "paket-builder",
+  "settings": [
+    { "type": "header", "content": "Genel" },
+    { "type": "text", "id": "summary_title", "label": "Özet kart başlığı", "default": "Paketin" },
+    { "type": "text", "id": "frequency_label", "label": "Sıklık etiketi", "default": "2 ayda bir kapında" },
+    { "type": "text", "id": "empty_message", "label": "Boş durum mesajı", "default": "Sol taraftan ürün ekleyerek paketini oluştur." },
+    { "type": "text", "id": "cta_idle", "label": "CTA boş durumda", "default": "Önce ürün ekle" },
+    { "type": "text", "id": "howit_title", "label": "Nasıl çalışır başlığı", "default": "Nasıl çalışır?" },
+    { "type": "number", "id": "shipping_threshold", "label": "Ücretsiz kargo eşiği (₺)", "default": 750 },
+
+    { "type": "header", "content": "Renkler" },
+    { "type": "color", "id": "bg", "label": "Arka plan", "default": "#fffaf3" },
+    { "type": "color", "id": "card_bg", "label": "Kart arka planı", "default": "#ffffff" },
+    { "type": "color", "id": "secondary_color", "label": "Secondary", "default": "#f4ede1" },
+    { "type": "color", "id": "cream_color", "label": "Cream", "default": "#f7f1e6" },
+    { "type": "color", "id": "primary_color", "label": "Primary", "default": "#3a2d6e" },
+    { "type": "color", "id": "rose_color", "label": "Rose", "default": "#d96d8a" },
+    { "type": "color", "id": "rose_light", "label": "Rose light", "default": "#f6dce4" },
+    { "type": "color", "id": "sage_color", "label": "Sage", "default": "#7b9d6f" },
+    { "type": "color", "id": "sage_light", "label": "Sage light", "default": "#dde8d4" }
+  ],
+  "blocks": [
+    {
+      "type": "category",
+      "name": "Kategori",
+      "settings": [
+        { "type": "text", "id": "key", "label": "Kategori anahtarı (ör. ped)", "info": "Ürünlerin 'Kategori anahtarı' alanı ile aynı olmalı" },
+        { "type": "text", "id": "label", "label": "Görünen ad", "default": "Pedler" },
+        { "type": "textarea", "id": "description", "label": "Açıklama" },
+        { "type": "textarea", "id": "hint", "label": "İpucu (panel altı)" }
+      ]
+    },
+    {
+      "type": "product",
+      "name": "Ürün",
+      "settings": [
+        { "type": "text", "id": "category", "label": "Kategori anahtarı", "default": "ped" },
+        { "type": "image_picker", "id": "image", "label": "Görsel" },
+        { "type": "text", "id": "name", "label": "Ürün adı", "default": ".ki Günlük Ped" },
+        { "type": "textarea", "id": "short", "label": "Kısa açıklama" },
+        { "type": "text", "id": "badge", "label": "Rozet (opsiyonel)" },
+        { "type": "number", "id": "price", "label": "Birim fiyat (₺)", "default": 149 },
+        { "type": "number", "id": "step", "label": "Adım miktarı", "default": 1, "info": "Pedlerde 30/12/8, diğerlerinde 1" },
+        { "type": "text", "id": "unit", "label": "Birim (adet, kutu, şişe...)", "default": "adet" }
+      ]
+    },
+    {
+      "type": "guarantee",
+      "name": "Garanti maddesi",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Metin", "default": "İstediğin an iptal et / atla" }
+      ]
+    },
+    {
+      "type": "step",
+      "name": "Nasıl çalışır adımı",
+      "settings": [
+        { "type": "textarea", "id": "text", "label": "Adım metni", "default": "İhtiyacın olan ürünleri ve adetleri seç." }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Paket Builder",
+      "blocks": [
+        { "type": "category", "settings": { "key": "ped", "label": "Pedler", "description": "Soft Cotton & Bamboo Fiber üst yüzey · Pelin Otu infüzeli", "hint": "Çoğu kullanıcı 1 paket Günlük (30), 1 Gündüz (12), 1 Gece (8) tercih ediyor." } },
+        { "type": "product", "settings": { "category": "ped", "name": ".ki Günlük Ped", "short": "155 mm · 30 adet · ultra ince", "price": 149, "step": 30, "unit": "adet" } },
+        { "type": "product", "settings": { "category": "ped", "name": ".ki Gündüz Pedi", "short": "245 mm · 12 adet · orta yoğun", "price": 169, "step": 12, "unit": "adet" } },
+        { "type": "product", "settings": { "category": "ped", "name": ".ki Gece Pedi", "short": "335 mm · 8 adet · yoğun akış", "price": 189, "step": 8, "unit": "adet" } },
+
+        { "type": "category", "settings": { "key": "supplement", "label": "Takviyeler", "description": ".ki Balance ve .ki Change", "hint": "Çoğunluk 1 kutu Balance ile başlıyor." } },
+        { "type": "product", "settings": { "category": "supplement", "name": ".ki Balance · Saşe", "short": "Regl döngüsü desteği · 30 saşe", "badge": "EN POPÜLER", "price": 395, "step": 1, "unit": "kutu" } },
+        { "type": "product", "settings": { "category": "supplement", "name": ".ki Change · Kapsül", "short": "Peri-menopoz & menopoz · 60 kapsül", "price": 449, "step": 1, "unit": "kutu" } },
+
+        { "type": "category", "settings": { "key": "gel", "label": "Bakım Jelleri", "description": "Daily · Sens · Flow · 50+", "hint": "Günlük için Daily, regl için Flow öneriyoruz." } },
+        { "type": "product", "settings": { "category": "gel", "name": "Bakım Jeli · Daily", "short": "Günlük pH dengeli · 200 ml", "price": 145, "step": 1, "unit": "şişe" } },
+        { "type": "product", "settings": { "category": "gel", "name": "Bakım Jeli · Flow", "short": "Regl döneminde rahatlatıcı · 200 ml", "price": 165, "step": 1, "unit": "şişe" } },
+
+        { "type": "category", "settings": { "key": "ritual", "label": "Yağ & Sprey", "description": "Cycle Care Yağı ve İntim Sprey", "hint": "Karın bölgene 2-3 damla yağ ile masaj yapabilirsin." } },
+        { "type": "product", "settings": { "category": "ritual", "name": "Cycle Care Yağı", "short": "Karın masaj yağı · 10 ml", "price": 189, "step": 1, "unit": "şişe" } },
+        { "type": "product", "settings": { "category": "ritual", "name": "İntim Bakım Spreyi", "short": "Anlık ferahlama · 100 ml", "price": 139, "step": 1, "unit": "şişe" } },
+
+        { "type": "guarantee", "settings": { "label": "İstediğin an iptal et / atla" } },
+        { "type": "guarantee", "settings": { "label": "Ücretsiz iade ve değişim" } },
+        { "type": "guarantee", "settings": { "label": "2 iş günü içinde kargoda" } },
+
+        { "type": "step", "settings": { "text": "İhtiyacın olan ürünleri ve adetleri seç." } },
+        { "type": "step", "settings": { "text": "2 ayda bir, ücretsiz olarak kapına gelsin." } },
+        { "type": "step", "settings": { "text": "İçeriğini istediğin zaman güncelle, atla veya durdur." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

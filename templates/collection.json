@@ -1,0 +1,437 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "banner": {
+      "type": "main-collection-banner",
+      "disabled": true,
+      "settings": {
+        "show_collection_description": true,
+        "show_collection_image": false,
+        "color_scheme": "scheme-1"
+      }
+    },
+    "product_showcase_dG4Tmc": {
+      "type": "product-showcase",
+      "disabled": true,
+      "name": "Product Showcase",
+      "settings": {
+        "bg": "#ffffff",
+        "heading": ".ki'yi Keşfet",
+        "padding_top": 48,
+        "padding_bottom": 60
+      }
+    },
+    "ingredients_grid_QzcrEn": {
+      "type": "ingredients-grid",
+      "blocks": {
+        "ingredient_HQGFTY": {
+          "type": "ingredient",
+          "settings": {
+            "image": "shopify://shop_images/krom.png",
+            "name": "Krom",
+            "popup_subtitle": "",
+            "category": "Change is Good",
+            "popup_title": "",
+            "popup_desc": "Bu hammadde hakkında kısa bir bilgi.",
+            "popup_why": "Hormonal dengeyi destekler, kasları gevşetir.",
+            "popup_products": ".ki Balance Your Cycle, .ki Change is Good",
+            "badge_balance": false,
+            "badge_change": false,
+            "badge_intimate": false,
+            "badge_custom": ""
+          }
+        },
+        "ingredient_KjngMR": {
+          "type": "ingredient",
+          "settings": {
+            "image": "shopify://shop_images/bor.png",
+            "name": "Bor",
+            "popup_subtitle": "",
+            "category": "Change is Good",
+            "popup_title": "",
+            "popup_desc": "Bu hammadde hakkında kısa bir bilgi.",
+            "popup_why": "Hormonal dengeyi destekler, kasları gevşetir.",
+            "popup_products": ".ki Balance Your Cycle, .ki Change is Good",
+            "badge_balance": false,
+            "badge_change": false,
+            "badge_intimate": false,
+            "badge_custom": ""
+          }
+        },
+        "ingredient_9T7Pr6": {
+          "type": "ingredient",
+          "settings": {
+            "image": "shopify://shop_images/manganes.png",
+            "name": "Manganez",
+            "popup_subtitle": "",
+            "category": "Balance Your Cycle",
+            "popup_title": "",
+            "popup_desc": "Bu hammadde hakkında kısa bir bilgi.",
+            "popup_why": "Hormonal dengeyi destekler, kasları gevşetir.",
+            "popup_products": ".ki Balance Your Cycle, .ki Change is Good",
+            "badge_balance": false,
+            "badge_change": false,
+            "badge_intimate": false,
+            "badge_custom": ""
+          }
+        },
+        "ingredient_gmEjL8": {
+          "type": "ingredient",
+          "settings": {
+            "image": "shopify://shop_images/selenyum.png",
+            "name": "Selenyum",
+            "popup_subtitle": "",
+            "category": "Change is Good,Balance Your Cycle",
+            "popup_title": "",
+            "popup_desc": "Bu hammadde hakkında kısa bir bilgi.",
+            "popup_why": "Hormonal dengeyi destekler, kasları gevşetir.",
+            "popup_products": ".ki Balance Your Cycle, .ki Change is Good",
+            "badge_balance": false,
+            "badge_change": false,
+            "badge_intimate": false,
+            "badge_custom": ""
+          }
+        },
+        "ingredient_iaeAft": {
+          "type": "ingredient",
+          "settings": {
+            "image": "shopify://shop_images/demir.png",
+            "name": "Demir",
+            "popup_subtitle": "",
+            "category": "Balance Your Cycle",
+            "popup_title": "",
+            "popup_desc": "Bu hammadde hakkında kısa bir bilgi.",
+            "popup_why": "Hormonal dengeyi destekler, kasları gevşetir.",
+            "popup_products": ".ki Balance Your Cycle, .ki Change is Good",
+            "badge_balance": false,
+            "badge_change": false,
+            "badge_intimate": false,
+            "badge_custom": ""
+          }
+        },
+        "ingredient_eWeHG3": {
+          "type": "ingredient",
+          "settings": {
+            "image": "shopify://shop_images/vitamin_e.png",
+            "name": "Vitamin E",
+            "popup_subtitle": "",
+            "category": "Change is Good,Balance Your Cycle",
+            "popup_title": "",
+            "popup_desc": "Bu hammadde hakkında kısa bir bilgi.",
+            "popup_why": "Hormonal dengeyi destekler, kasları gevşetir.",
+            "popup_products": ".ki Balance Your Cycle, .ki Change is Good",
+            "badge_balance": false,
+            "badge_change": false,
+            "badge_intimate": false,
+            "badge_custom": ""
+          }
+        },
+        "ingredient_MnPUfc": {
+          "type": "ingredient",
+          "settings": {
+            "image": "shopify://shop_images/cvitamin.png",
+            "name": "Vitamin C",
+            "popup_subtitle": "",
+            "category": "Balance Your Cycle",
+            "popup_title": "",
+            "popup_desc": "Bu hammadde hakkında kısa bir bilgi.",
+            "popup_why": "Hormonal dengeyi destekler, kasları gevşetir.",
+            "popup_products": ".ki Balance Your Cycle, .ki Change is Good",
+            "badge_balance": false,
+            "badge_change": false,
+            "badge_intimate": false,
+            "badge_custom": ""
+          }
+        },
+        "ingredient_xMcTQK": {
+          "type": "ingredient",
+          "settings": {
+            "image": "shopify://shop_images/magnezyum.png",
+            "name": "Magnezyum",
+            "popup_subtitle": "",
+            "category": "Change is Good,Balance Your Cycle",
+            "popup_title": "test",
+            "popup_desc": "Bu hammadde hakkında kısa bir bilgi.",
+            "popup_why": "Hormonal dengeyi destekler, kasları gevşetir.",
+            "popup_products": ".ki Balance Your Cycle, .ki Change is Good",
+            "badge_balance": false,
+            "badge_change": false,
+            "badge_intimate": false,
+            "badge_custom": ""
+          }
+        },
+        "ingredient_mtHgmQ": {
+          "type": "ingredient",
+          "settings": {
+            "image": "shopify://shop_images/folik_asit.png",
+            "name": "Folik Asit (Folat)",
+            "popup_subtitle": "",
+            "category": "Change is Good",
+            "popup_title": "",
+            "popup_desc": "Bu hammadde hakkında kısa bir bilgi.",
+            "popup_why": "Hormonal dengeyi destekler, kasları gevşetir.",
+            "popup_products": ".ki Balance Your Cycle, .ki Change is Good",
+            "badge_balance": false,
+            "badge_change": false,
+            "badge_intimate": false,
+            "badge_custom": ""
+          }
+        },
+        "ingredient_UAUdUX": {
+          "type": "ingredient",
+          "settings": {
+            "image": "shopify://shop_images/b12.png",
+            "name": "Vitamin B12 (Metilkobalamin)",
+            "popup_subtitle": "",
+            "category": "Change is Good,Balance Your Cycle",
+            "popup_title": "",
+            "popup_desc": "Bu hammadde hakkında kısa bir bilgi.",
+            "popup_why": "Hormonal dengeyi destekler, kasları gevşetir.",
+            "popup_products": ".ki Balance Your Cycle, .ki Change is Good",
+            "badge_balance": false,
+            "badge_change": false,
+            "badge_intimate": false,
+            "badge_custom": ""
+          }
+        },
+        "ingredient_4HQrx3": {
+          "type": "ingredient",
+          "settings": {
+            "image": "shopify://shop_images/b6.png",
+            "name": "Vitamin B6 (Piridoksin)",
+            "popup_subtitle": "",
+            "category": "Change is Good,Balance Your Cycle",
+            "popup_title": "",
+            "popup_desc": "Bu hammadde hakkında kısa bir bilgi.",
+            "popup_why": "Hormonal dengeyi destekler, kasları gevşetir.",
+            "popup_products": ".ki Balance Your Cycle, .ki Change is Good",
+            "badge_balance": false,
+            "badge_change": false,
+            "badge_intimate": false,
+            "badge_custom": ""
+          }
+        },
+        "ingredient_qgXeT3": {
+          "type": "ingredient",
+          "settings": {
+            "image": "shopify://shop_images/0678c676-00bf-400b-a59f-4a59b485af3f.png",
+            "name": "Taurin",
+            "popup_subtitle": "",
+            "category": "Balance Your Cycle",
+            "popup_title": "",
+            "popup_desc": "Bu hammadde hakkında kısa bir bilgi.",
+            "popup_why": "Hormonal dengeyi destekler, kasları gevşetir.",
+            "popup_products": ".ki Balance Your Cycle, .ki Change is Good",
+            "badge_balance": false,
+            "badge_change": false,
+            "badge_intimate": false,
+            "badge_custom": ""
+          }
+        },
+        "ingredient_JUyFRj": {
+          "type": "ingredient",
+          "settings": {
+            "image": "shopify://shop_images/melisa.png",
+            "name": "Melisa Ekstresi (Melissa officinalis)",
+            "popup_subtitle": "",
+            "category": "Balance Your Cycle",
+            "popup_title": "",
+            "popup_desc": "Bu hammadde hakkında kısa bir bilgi.",
+            "popup_why": "Hormonal dengeyi destekler, kasları gevşetir.",
+            "popup_products": ".ki Balance Your Cycle, .ki Change is Good",
+            "badge_balance": false,
+            "badge_change": false,
+            "badge_intimate": false,
+            "badge_custom": ""
+          }
+        },
+        "ingredient_rYbFrE": {
+          "type": "ingredient",
+          "settings": {
+            "image": "shopify://shop_images/f0f1aa8a-8697-4869-a915-ba91f204afd6.png",
+            "name": "Mayıs Papatyası (Matricaria recutita)",
+            "popup_subtitle": "",
+            "category": "Balance Your Cycle",
+            "popup_title": "",
+            "popup_desc": "Bu hammadde hakkında kısa bir bilgi.",
+            "popup_why": "Hormonal dengeyi destekler, kasları gevşetir.",
+            "popup_products": ".ki Balance Your Cycle, .ki Change is Good",
+            "badge_balance": false,
+            "badge_change": false,
+            "badge_intimate": false,
+            "badge_custom": ""
+          }
+        },
+        "ingredient_3h6yra": {
+          "type": "ingredient",
+          "settings": {
+            "image": "shopify://shop_images/7b704745-0327-4032-b015-03010d968e8a.png",
+            "name": "Tıbbi Nane (Mentha piperita)",
+            "popup_subtitle": "",
+            "category": "Balance Your Cycle",
+            "popup_title": "",
+            "popup_desc": "Bu hammadde hakkında kısa bir bilgi.",
+            "popup_why": "Hormonal dengeyi destekler, kasları gevşetir.",
+            "popup_products": ".ki Balance Your Cycle, .ki Change is Good",
+            "badge_balance": false,
+            "badge_change": false,
+            "badge_intimate": false,
+            "badge_custom": ""
+          }
+        },
+        "ingredient_Mzgepj": {
+          "type": "ingredient",
+          "settings": {
+            "image": "shopify://shop_images/7d8e7aa1-0cf7-40cf-aea3-b6ea44185fe8.png",
+            "name": "Zencefil (Zingiber officinale)",
+            "popup_subtitle": "",
+            "category": "Balance Your Cycle",
+            "popup_title": "",
+            "popup_desc": "Bu hammadde hakkında kısa bir bilgi.",
+            "popup_why": "Hormonal dengeyi destekler, kasları gevşetir.",
+            "popup_products": ".ki Balance Your Cycle, .ki Change is Good",
+            "badge_balance": false,
+            "badge_change": false,
+            "badge_intimate": false,
+            "badge_custom": ""
+          }
+        },
+        "ingredient_NQk9nb": {
+          "type": "ingredient",
+          "settings": {
+            "image": "shopify://shop_images/1bf1d4a4-a9ca-4a9c-bc40-a3c459b46c74.png",
+            "name": "Genistein",
+            "popup_subtitle": "",
+            "category": "Change is Good",
+            "popup_title": "",
+            "popup_desc": "Bu hammadde hakkında kısa bir bilgi.",
+            "popup_why": "Hormonal dengeyi destekler, kasları gevşetir.",
+            "popup_products": ".ki Balance Your Cycle, .ki Change is Good",
+            "badge_balance": false,
+            "badge_change": false,
+            "badge_intimate": false,
+            "badge_custom": ""
+          }
+        },
+        "ingredient_9UBe7n": {
+          "type": "ingredient",
+          "settings": {
+            "image": "shopify://shop_images/46fccffb-efa0-4efa-a4b6-024b09f6f084.png",
+            "name": "Şerbetçi Otu (Humulus lupulus)",
+            "popup_subtitle": "",
+            "category": "Change is Good",
+            "popup_title": "",
+            "popup_desc": "Bu hammadde hakkında kısa bir bilgi.",
+            "popup_why": "Hormonal dengeyi destekler, kasları gevşetir.",
+            "popup_products": ".ki Balance Your Cycle, .ki Change is Good",
+            "badge_balance": false,
+            "badge_change": false,
+            "badge_intimate": false,
+            "badge_custom": ""
+          }
+        },
+        "ingredient_7wgkAB": {
+          "type": "ingredient",
+          "settings": {
+            "image": "shopify://shop_images/e0435cc0-0bba-40bb-af65-8ef6afad60e1.png",
+            "name": "Hayıt (Vitex agnus-castus)",
+            "popup_subtitle": "",
+            "category": "Change is Good,Balance Your Cycle",
+            "popup_title": "",
+            "popup_desc": "Bu hammadde hakkında kısa bir bilgi.",
+            "popup_why": "Hormonal dengeyi destekler, kasları gevşetir.",
+            "popup_products": ".ki Balance Your Cycle, .ki Change is Good",
+            "badge_balance": false,
+            "badge_change": false,
+            "badge_intimate": false,
+            "badge_custom": ""
+          }
+        },
+        "ingredient_xU3Jck": {
+          "type": "ingredient",
+          "settings": {
+            "image": "shopify://shop_images/c3ba0a0a-bbef-4bbe-bd30-7bd3ada6d8ec.png",
+            "name": "Çin Melek Otu (Angelica sinensis)",
+            "popup_subtitle": "",
+            "category": "Change is Good,Balance Your Cycle",
+            "popup_title": "",
+            "popup_desc": "Bu hammadde hakkında kısa bir bilgi.",
+            "popup_why": "Hormonal dengeyi destekler, kasları gevşetir.",
+            "popup_products": ".ki Balance Your Cycle, .ki Change is Good",
+            "badge_balance": false,
+            "badge_change": false,
+            "badge_intimate": false,
+            "badge_custom": ""
+          }
+        },
+        "ingredient_n7hLkL": {
+          "type": "ingredient",
+          "settings": {
+            "image": "shopify://shop_images/76c9ad81-3395-4339-9347-65341938b5c2.png",
+            "name": "Karayılan Otu (Cimicifuga racemosa)",
+            "popup_subtitle": "",
+            "category": "Change is Good",
+            "popup_title": "",
+            "popup_desc": "Bu hammadde hakkında kısa bir bilgi.",
+            "popup_why": "Hormonal dengeyi destekler, kasları gevşetir.",
+            "popup_products": ".ki Balance Your Cycle, .ki Change is Good",
+            "badge_balance": false,
+            "badge_change": false,
+            "badge_intimate": false,
+            "badge_custom": ""
+          }
+        }
+      },
+      "block_order": [
+        "ingredient_HQGFTY",
+        "ingredient_KjngMR",
+        "ingredient_9T7Pr6",
+        "ingredient_gmEjL8",
+        "ingredient_iaeAft",
+        "ingredient_eWeHG3",
+        "ingredient_MnPUfc",
+        "ingredient_xMcTQK",
+        "ingredient_mtHgmQ",
+        "ingredient_UAUdUX",
+        "ingredient_4HQrx3",
+        "ingredient_qgXeT3",
+        "ingredient_JUyFRj",
+        "ingredient_rYbFrE",
+        "ingredient_3h6yra",
+        "ingredient_Mzgepj",
+        "ingredient_NQk9nb",
+        "ingredient_9UBe7n",
+        "ingredient_7wgkAB",
+        "ingredient_xU3Jck",
+        "ingredient_n7hLkL"
+      ],
+      "name": "Ingredients Grid (Ki)",
+      "settings": {
+        "title": ".ki’nin Gücünü Oluşturan Bileşenler",
+        "description": ".ki’de kullanılan her içerik; emilim, saflık ve etkileşim kriterleri\ngöz önünde bulundurularak seçilir ve maksimum uyum için bir araya getirilir.",
+        "button_label": ".ki Balance Your Cycle",
+        "button_link": "shopify://products/balance-your-cycle",
+        "button_label_2": ".ki Change is Good",
+        "button_link_2": "shopify://products/change-is-good",
+        "max_width": 1300,
+        "padding_top": 80,
+        "padding_bottom": 80,
+        "bg_color": "#f8f8f6",
+        "text_color": "#1a1a1a"
+      }
+    }
+  },
+  "order": [
+    "banner",
+    "product_showcase_dG4Tmc",
+    "ingredients_grid_QzcrEn"
+  ]
+}

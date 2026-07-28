@@ -1,0 +1,289 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "ki_pdp_hero": {
+      "type": "ki-pdp-hero",
+      "blocks": {
+        "opt_tekli": {
+          "type": "option_card",
+          "settings": {
+            "title": "Tekli Alım",
+            "qty": "1 Sprey",
+            "subtitle": "pH Dengeli Günlük Bakım",
+            "badge": "",
+            "price": "950₺",
+            "compare_price": "",
+            "per_unit": "",
+            "variant_id": "",
+            "cta_override": ""
+          }
+        },
+        "option_card_rnRadc": {
+          "type": "option_card",
+          "settings": {
+            "title": "Arkadaş Paketi 💜",
+            "qty": "2 Sprey",
+            "subtitle": "pH Dengeli Günlük Bakım",
+            "badge": "",
+            "price": "1.800₺",
+            "compare_price": "",
+            "per_unit": "",
+            "variant_id": "48958679187707",
+            "cta_override": ""
+          }
+        },
+        "badge_1": {
+          "type": "badge_item",
+          "settings": {
+            "badge_icon": "gmp",
+            "badge_label": "Paraben İçermez"
+          }
+        },
+        "badge_2": {
+          "type": "badge_item",
+          "settings": {
+            "badge_icon": "gmp",
+            "badge_label": "pH Dengeli"
+          }
+        },
+        "badge_3": {
+          "type": "badge_item",
+          "disabled": true,
+          "settings": {
+            "badge_icon": "gmp",
+            "badge_label": "Dermatolojik Test"
+          }
+        },
+        "badge_4": {
+          "type": "badge_item",
+          "disabled": true,
+          "settings": {
+            "badge_icon": "gmp",
+            "badge_label": "Ücretsiz Kargo"
+          }
+        }
+      },
+      "block_order": [
+        "opt_tekli",
+        "option_card_rnRadc",
+        "badge_1",
+        "badge_2",
+        "badge_3",
+        "badge_4"
+      ],
+      "settings": {
+        "pad_y": 32,
+        "pad_x": 32,
+        "bg": "#ffffff",
+        "text_color": "#111111",
+        "muted_color": "#666666",
+        "collection_label": "İntim bakım spreyi",
+        "review_rating": "4.9",
+        "review_count": "127+",
+        "purchase_heading": "Satın alma seçeneği",
+        "cta_label": "Sepete Ekle",
+        "trust_note": "Sağlık Bakanlığı Tarafından Onaylanmıştır."
+      }
+    },
+    "ki_ugc_carousel_TWtAnJ": {
+      "type": "ki-ugc-carousel",
+      "blocks": {
+        "video_card_WBKfpQ": {
+          "type": "video_card",
+          "settings": {
+            "youtube_url": "",
+            "video": "shopify://files/videos/arin-intimate.mp4",
+            "label": "Ecz. Arin Alan",
+            "badge": ""
+          }
+        },
+        "video_card_rAebpd": {
+          "type": "video_card",
+          "settings": {
+            "youtube_url": "",
+            "video": "shopify://files/videos/fe9ce64a-3eef-47ff-b81c-d32692fce05b.MP4",
+            "label": "\"Koruyucu İçerik\"",
+            "badge": ""
+          }
+        }
+      },
+      "block_order": [
+        "video_card_WBKfpQ",
+        "video_card_rAebpd"
+      ],
+      "name": "UGC Video Carousel (.ki)",
+      "settings": {
+        "bg": "#f8f8f6",
+        "eyebrow": "",
+        "title": "<p>Bizi bir de <em>onlardan</em> dinle.</p>",
+        "subtitle": "",
+        "speed": 30,
+        "padding_top": 56,
+        "padding_bottom": 64
+      }
+    },
+    "ki_why_ki": {
+      "type": "ki-why-ki",
+      "blocks": {
+        "card_idTC77": {
+          "type": "card",
+          "settings": {
+            "icon": "leaf",
+            "title": "Doğal Koku Kontrolü",
+            "description": "Ylang ylang ve nioli gibi doğal uçucu yağlar ile istenmeyen kokuları önleyerek gün içinde tazelik sunar."
+          }
+        },
+        "card_ULFnCz": {
+          "type": "card",
+          "settings": {
+            "icon": "leaf",
+            "title": "pH Dengeli İçerik",
+            "description": "Dış genital bölgenin doğal pH seviyesine tam uyumludur. Paraben ve sülfat içermez."
+          }
+        },
+        "card_mFE8Dc": {
+          "type": "card",
+          "settings": {
+            "icon": "leaf",
+            "title": "Anında Ferahlık",
+            "description": "Pratik sprey formu sayesinde gün içinde dilediğin an durulama gerektirmeden temizlik hissini yenilemeni sağlar."
+          }
+        },
+        "card_nAHzPm": {
+          "type": "card",
+          "settings": {
+            "icon": "leaf",
+            "title": "Parfümsüz Doğal Formül",
+            "description": "Aloe vera, ölmez otu , papatya özleriyle zenginleştirilmiş; sentetik parfüm içermeyen formül."
+          }
+        }
+      },
+      "block_order": [
+        "card_idTC77",
+        "card_ULFnCz",
+        "card_mFE8Dc",
+        "card_nAHzPm"
+      ],
+      "settings": {
+        "pad_y": 64,
+        "pad_x": 32,
+        "bg": "#f0eef8",
+        "text_color": "#1a1340",
+        "muted_color": "#666680",
+        "eyebrow": "neden ıntımate?",
+        "heading": "Ferah, Temiz ve Rahat Hisset",
+        "subtext": "Evde, dışarda, sporda ve çalışırken her an .ki Intimate yanında.",
+        "shopify_video": "shopify://files/videos/spreyvideolow.mp4",
+        "video_url": ""
+      }
+    },
+    "ki_how_it_works": {
+      "type": "ki-how-it-works",
+      "blocks": {
+        "s1": {
+          "type": "step",
+          "settings": {
+            "title": "Sipariş Ver",
+            "description": "İstediğin ürünü seç ve birkaç tıkla siparişini oluştur."
+          }
+        },
+        "s2": {
+          "type": "step",
+          "settings": {
+            "title": "Onaylandı",
+            "description": "Sipariş ekibimize ulaşır, kargon hızlıca hazırlanır."
+          }
+        },
+        "s3": {
+          "type": "step",
+          "settings": {
+            "title": "Kapına Gelsin",
+            "description": "Ücretsiz kargo ile ürünün özenle paketlenip sana ulaşır."
+          }
+        },
+        "s4": {
+          "type": "step",
+          "settings": {
+            "title": "Günlük Kullan",
+            "description": "Dış bölgeye 2–3 spreyleyerek uygula. Durulama gerektirmez."
+          }
+        }
+      },
+      "block_order": [
+        "s1",
+        "s2",
+        "s3",
+        "s4"
+      ],
+      "settings": {
+        "max_width": 860,
+        "pad_y": 56,
+        "pad_x": 24,
+        "bg": "#ffffff",
+        "text_color": "#111111",
+        "muted_color": "#666666",
+        "eyebrow": "gün içinde kargoda",
+        "heading": "Temiz ve Ferah Hissetmek Bir Tık Uzağında",
+        "subtext": ""
+      }
+    },
+    "ki_cross_sell": {
+      "type": "ki-cross-sell",
+      "blocks": {
+        "product_card_dewfVf": {
+          "type": "product_card",
+          "settings": {
+            "product": "balance-your-cycle",
+            "custom_name": "",
+            "category": "İntim Bakım",
+            "description": "",
+            "badge_text": "",
+            "badge_bg": "#493d9a",
+            "badge_color": "#ffffff"
+          }
+        },
+        "product_card_LQJYt7": {
+          "type": "product_card",
+          "settings": {
+            "product": "ki-sens-care-intim-bakim-jeli",
+            "custom_name": "",
+            "category": "İntim Bakım",
+            "description": "",
+            "badge_text": "",
+            "badge_bg": "#493d9a",
+            "badge_color": "#ffffff"
+          }
+        }
+      },
+      "block_order": [
+        "product_card_dewfVf",
+        "product_card_LQJYt7"
+      ],
+      "settings": {
+        "bg": "#f8f8f6",
+        "pad_y": 64,
+        "pad_x": 32,
+        "columns": 4,
+        "eyebrow": "Bunu da beğenebilirsin",
+        "title": "Diğer .ki Ürünleri",
+        "all_url": "/collections/all",
+        "all_label": "Tümünü Gör"
+      }
+    }
+  },
+  "order": [
+    "ki_pdp_hero",
+    "ki_ugc_carousel_TWtAnJ",
+    "ki_why_ki",
+    "ki_how_it_works",
+    "ki_cross_sell"
+  ]
+}

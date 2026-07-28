@@ -1,0 +1,287 @@
+{% comment %}.ki Bundle Koleksiyonu — Paket içindeki ürünler görünür{% endcomment %}
+<link href="https://fonts.googleapis.com/css2?family=Raleway:wght@700;800&display=swap" rel="stylesheet">
+<style>
+.kibdl-c-{{ section.id }}{
+  --p:#493d9a;--lil:#dad2ff;--pur:#b2a5ff;--bg:#f8f8f6;--txt:#1a1340;--mut:#6b6b8a;
+  background:var(--bg);min-height:60vh;
+}
+/* BANNER */
+.kibdl-c-{{ section.id }} .kbd-banner{
+  padding:52px 24px 46px;text-align:center;
+  background:linear-gradient(135deg,#1a1340 0%,#493d9a 55%,#7b6dd3 100%);
+  position:relative;overflow:hidden;
+}
+.kibdl-c-{{ section.id }} .kbd-banner::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at 30% 50%,rgba(218,210,255,.12) 0%,transparent 55%);
+  pointer-events:none;
+}
+.kibdl-c-{{ section.id }} .kbd-eyebrow{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--lil);margin:0 0 12px;
+}
+.kibdl-c-{{ section.id }} .kbd-eyebrow::before,.kibdl-c-{{ section.id }} .kbd-eyebrow::after{
+  content:'';display:inline-block;width:20px;height:1px;background:var(--lil);opacity:.6;
+}
+.kibdl-c-{{ section.id }} .kbd-title{
+  font-family:'Raleway',system-ui,sans-serif;
+  font-size:clamp(24px,4vw,44px);font-weight:800;color:#fff;
+  margin:0 0 10px;line-height:1.1;letter-spacing:-.02em;
+}
+.kibdl-c-{{ section.id }} .kbd-desc{
+  font-size:14px;color:rgba(255,255,255,.65);
+  max-width:520px;margin:0 auto;line-height:1.65;
+}
+.kibdl-c-{{ section.id }} .kbd-count{
+  display:inline-block;margin-top:16px;
+  background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);
+  padding:4px 14px;border-radius:50px;
+  font-size:11px;font-weight:600;color:rgba(255,255,255,.7);
+}
+/* GRID */
+.kibdl-c-{{ section.id }} .kbd-main{
+  max-width:1320px;margin:0 auto;padding:32px 32px 72px;
+}
+.kibdl-c-{{ section.id }} .kbd-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:24px;list-style:none;margin:0;padding:0;
+}
+/* BUNDLE KART */
+.kibdl-c-{{ section.id }} .kbd-card{
+  background:#fff;border-radius:20px;overflow:hidden;
+  border:1px solid rgba(73,61,154,.1);
+  box-shadow:0 4px 18px rgba(73,61,154,.07);
+  transition:transform .3s,box-shadow .3s;
+  display:flex;flex-direction:column;
+}
+.kibdl-c-{{ section.id }} .kbd-card:hover{
+  transform:translateY(-6px);
+  box-shadow:0 18px 48px rgba(73,61,154,.15);
+}
+/* Görsel — 16:9 hero */
+.kibdl-c-{{ section.id }} .kbd-card__hero{
+  position:relative;aspect-ratio:16/9;
+  overflow:hidden;background:linear-gradient(135deg,#e8e4ff,#f5f3ff);
+  display:block;text-decoration:none;
+}
+.kibdl-c-{{ section.id }} .kbd-card__hero-img{
+  width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s;
+}
+.kibdl-c-{{ section.id }} .kbd-card:hover .kbd-card__hero-img{transform:scale(1.03);}
+/* İndirim rozeti */
+.kibdl-c-{{ section.id }} .kbd-card__save{
+  position:absolute;top:12px;left:12px;
+  background:#22c55e;color:#fff;
+  font-size:11px;font-weight:800;
+  padding:5px 12px;border-radius:50px;
+  box-shadow:0 3px 10px rgba(34,197,94,.3);
+}
+/* Paket etiketi */
+.kibdl-c-{{ section.id }} .kbd-card__pack-label{
+  position:absolute;top:12px;right:12px;
+  background:rgba(73,61,154,.85);backdrop-filter:blur(8px);
+  color:#fff;font-size:9px;font-weight:700;
+  letter-spacing:.06em;text-transform:uppercase;
+  padding:4px 10px;border-radius:50px;
+}
+/* İçindeki ürünler — mini tag'ler */
+.kibdl-c-{{ section.id }} .kbd-card__products{
+  display:flex;flex-wrap:wrap;gap:5px;margin:8px 0 0;
+}
+.kibdl-c-{{ section.id }} .kbd-card__product-tag{
+  display:inline-flex;align-items:center;gap:4px;
+  font-size:10px;font-weight:600;
+  padding:3px 9px;border-radius:50px;
+  background:rgba(73,61,154,.08);color:var(--p);
+  border:1px solid rgba(73,61,154,.15);
+}
+.kibdl-c-{{ section.id }} .kbd-card__product-tag svg{width:10px;height:10px;}
+/* Body */
+.kibdl-c-{{ section.id }} .kbd-card__body{
+  padding:18px 20px 20px;flex:1;display:flex;flex-direction:column;gap:6px;
+}
+.kibdl-c-{{ section.id }} .kbd-card__title{
+  font-size:17px;font-weight:800;color:var(--txt);
+  text-decoration:none;line-height:1.25;font-family:'Raleway',system-ui,sans-serif;
+}
+.kibdl-c-{{ section.id }} .kbd-card__title:hover{color:var(--p);}
+.kibdl-c-{{ section.id }} .kbd-card__desc{
+  font-size:12px;color:var(--mut);line-height:1.55;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+}
+.kibdl-c-{{ section.id }} .kbd-card__footer{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-top:auto;padding-top:14px;
+  border-top:1px solid rgba(73,61,154,.07);
+}
+.kibdl-c-{{ section.id }} .kbd-card__prices{
+  display:flex;align-items:baseline;gap:6px;flex-wrap:wrap;
+}
+.kibdl-c-{{ section.id }} .kbd-card__price{font-size:20px;font-weight:900;color:var(--p);}
+.kibdl-c-{{ section.id }} .kbd-card__compare{font-size:12px;color:#bbb;text-decoration:line-through;}
+.kibdl-c-{{ section.id }} .kbd-card__btn{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:9px 18px;border-radius:50px;
+  background:var(--p);color:#fff;text-decoration:none;
+  font-size:12px;font-weight:700;
+  transition:background .15s,transform .15s;
+  white-space:nowrap;
+}
+.kibdl-c-{{ section.id }} .kbd-card__btn:hover{background:#3b3280;transform:translateY(-1px);}
+.kibdl-c-{{ section.id }} .kbd-card__btn svg{width:13px;height:13px;}
+/* EMPTY */
+.kibdl-c-{{ section.id }} .kbd-empty{
+  text-align:center;padding:80px 24px;
+  grid-column:1/-1;color:var(--mut);font-size:14px;
+}
+/* MOBILE */
+@media(max-width:749px){
+  .kibdl-c-{{ section.id }} .kbd-banner{padding:36px 16px 28px;}
+  .kibdl-c-{{ section.id }} .kbd-main{padding:18px 14px 48px;}
+  .kibdl-c-{{ section.id }} .kbd-grid{grid-template-columns:1fr!important;gap:16px;}
+  .kibdl-c-{{ section.id }} .kbd-card__hero{aspect-ratio:3/2;}
+  .kibdl-c-{{ section.id }} .kbd-card__body{padding:14px 16px 16px;}
+  .kibdl-c-{{ section.id }} .kbd-card__title{font-size:15px;}
+  .kibdl-c-{{ section.id }} .kbd-card__price{font-size:17px;}
+}
+@media(min-width:750px) and (max-width:989px){
+  .kibdl-c-{{ section.id }} .kbd-grid{grid-template-columns:1fr!important;}
+  .kibdl-c-{{ section.id }} .kbd-main{padding:24px 20px 56px;}
+}
+</style>
+
+{%- assign products_per_page = section.settings.products_per_page | default: 8 -%}
+{%- assign product_config_blocks = section.blocks | where: 'type', 'product_config' -%}
+
+<div class="kibdl-c-{{ section.id }}">
+  <!-- BANNER -->
+  <div class="kbd-banner">
+    <p class="kbd-eyebrow">Özel Paketler</p>
+    <h1 class="kbd-title">{{ collection.title | escape }}</h1>
+    {%- if collection.description != blank -%}
+      <p class="kbd-desc">{{ collection.description }}</p>
+    {%- endif -%}
+    <span class="kbd-count">{{ collection.products_count }} paket</span>
+  </div>
+
+  <!-- GRID -->
+  <div class="kbd-main">
+    {%- paginate collection.products by products_per_page -%}
+      {%- if collection.products.size > 0 -%}
+        <ul class="kbd-grid">
+          {%- for product in collection.products -%}
+            {%- assign cv = product.selected_or_first_available_variant -%}
+
+            {%- comment %}Bu ürüne ait config block'u bul{%- endcomment -%}
+            {%- assign cfg = nil -%}
+            {%- for bl in product_config_blocks -%}
+              {%- if bl.settings.product_handle == product.handle -%}
+                {%- assign cfg = bl -%}
+              {%- endif -%}
+            {%- endfor -%}
+
+            <li class="kbd-card">
+              <a href="{{ product.url }}" class="kbd-card__hero">
+                {%- if product.featured_image -%}
+                  {{ product.featured_image | image_url: width: 800 | image_tag: class: 'kbd-card__hero-img', loading: 'lazy', alt: product.title }}
+                {%- else -%}
+                  {{ 'product-2' | placeholder_svg_tag: 'kbd-card__hero-img' }}
+                {%- endif -%}
+                {%- if cv.compare_at_price > cv.price -%}
+                  {%- assign sp = cv.compare_at_price | minus: cv.price | times: 100 | divided_by: cv.compare_at_price -%}
+                  <span class="kbd-card__save">%{{ sp }} Tasarruf</span>
+                {%- endif -%}
+                {%- if cfg and cfg.settings.pack_label != blank -%}
+                  <span class="kbd-card__pack-label">{{ cfg.settings.pack_label | escape }}</span>
+                {%- endif -%}
+              </a>
+              <div class="kbd-card__body">
+                <a href="{{ product.url }}" class="kbd-card__title">{{ product.title | escape }}</a>
+                {%- if product.description != blank -%}
+                  <p class="kbd-desc">{{ product.description | strip_html | truncate: 80 }}</p>
+                {%- endif -%}
+
+                {%- comment %}Paketteki ürünler — config'ten al ya da tag'lerden öner{%- endcomment -%}
+                {%- if cfg and cfg.settings.contains_products != blank -%}
+                  <div class="kbd-card__products">
+                    {%- assign items = cfg.settings.contains_products | split: ',' -%}
+                    {%- for item in items -%}
+                      <span class="kbd-card__product-tag">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                        {{ item | strip | escape }}
+                      </span>
+                    {%- endfor -%}
+                  </div>
+                {%- elsif product.tags.size > 0 -%}
+                  <div class="kbd-card__products">
+                    {%- for tag in product.tags limit: 3 -%}
+                      <span class="kbd-card__product-tag">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                        {{ tag | escape }}
+                      </span>
+                    {%- endfor -%}
+                  </div>
+                {%- endif -%}
+
+                <div class="kbd-card__footer">
+                  <div class="kbd-card__prices">
+                    <span class="kbd-card__price">{{ cv.price | money }}</span>
+                    {%- if cv.compare_at_price > cv.price -%}
+                      <span class="kbd-card__compare">{{ cv.compare_at_price | money }}</span>
+                    {%- endif -%}
+                  </div>
+                  <a href="{{ product.url }}" class="kbd-card__btn">
+                    Paketi İncele
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                  </a>
+                </div>
+              </div>
+            </li>
+          {%- endfor -%}
+        </ul>
+
+        {%- if paginate.pages > 1 -%}
+          <div class="kb-pagination" style="display:flex;justify-content:center;gap:6px;padding:36px 0 0;">
+            {%- if paginate.previous -%}<a href="{{ paginate.previous.url }}" style="display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:10px;font-size:13px;font-weight:600;border:1px solid rgba(73,61,154,.18);color:#1a1340;text-decoration:none;">&#8592;</a>{%- endif -%}
+            {%- for part in paginate.parts -%}
+              {%- if part.is_link -%}
+                <a href="{{ part.url }}" style="display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:10px;font-size:13px;font-weight:600;border:1px solid rgba(73,61,154,.18);color:#1a1340;text-decoration:none;">{{ part.title }}</a>
+              {%- else -%}
+                <span style="display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:10px;font-size:13px;font-weight:600;background:#493d9a;color:#fff;border:1px solid #493d9a;">{{ part.title }}</span>
+              {%- endif -%}
+            {%- endfor -%}
+            {%- if paginate.next -%}<a href="{{ paginate.next.url }}" style="display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:10px;font-size:13px;font-weight:600;border:1px solid rgba(73,61,154,.18);color:#1a1340;text-decoration:none;">&#8594;</a>{%- endif -%}
+          </div>
+        {%- endif -%}
+
+      {%- else -%}
+        <div class="kbd-empty"><p>Bu koleksiyonda henüz paket bulunmuyor.</p></div>
+      {%- endif -%}
+    {%- endpaginate -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Bundle Koleksiyonu (.ki)",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {"type":"range","id":"products_per_page","label":"Sayfa başına paket","min":2,"max":16,"step":2,"default":8}
+  ],
+  "blocks": [{
+    "type": "product_config",
+    "name": "Paket Ayarı",
+    "settings": [
+      {"type":"text","id":"product_handle","label":"Ürün handle’i","info":"URL'deki ürün adı"},
+      {"type":"text","id":"pack_label","label":"Paket etiketi","default":"3'lü Paket"},
+      {"type":"textarea","id":"contains_products","label":"Paketteki ürünler (virgülle ayır)","default":".ki Balance,.ki Change","info":"Her ürün adını virgülle ayırın: .ki Balance, .ki Change"}
+    ]
+  }],
+  "presets":[{"name":"Bundle Koleksiyonu (.ki)","blocks":[
+    {"type":"product_config","settings":{"pack_label":"3'lü Paket","contains_products":".ki Balance,.ki Change,.ki intimate"}}
+  ]}]
+}
+{% endschema %}

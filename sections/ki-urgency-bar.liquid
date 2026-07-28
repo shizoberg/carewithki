@@ -1,0 +1,73 @@
+{% comment %}
+  .ki Urgency Bar (scoped) — Brand Kit
+  Thin top urgency strip with icon + message + CTA.
+
+  Brand kit:
+    #493d9a (main)
+    #f8f8f6 (offwhite)
+    #b2a5ff (primary)
+    #dad2ff (lilac)
+{% endcomment %}
+
+<section id="kub-{{ section.id }}" class="section">
+  <style>
+    #kub-{{ section.id }}{
+      --ki-purple-dark: #493d9a;
+      --ki-offwhite: #f8f8f6;
+      --ki-purple: #b2a5ff;
+      --ki-lilac: #dad2ff;
+
+      --bg: {{ section.settings.bg | default: '#493d9a' }};
+      --text: {{ section.settings.text | default: '#ffffff' }};
+
+      --px: {{ section.settings.pad_x | default: 24 }}px;
+
+      background: var(--bg);
+      color: var(--text);
+    }
+    #kub-{{ section.id }} .kub__wrap{
+      display: flex; align-items: center; justify-content: center;
+      gap: 12px; flex-wrap: wrap; padding: 10px var(--px);
+      font-size: 13px; font-weight: 650; letter-spacing: 0.01em; text-align: center;
+    }
+    #kub-{{ section.id }} .kub__icon{ font-size: 15px; }
+    #kub-{{ section.id }} .kub__cta{
+      color: inherit; text-decoration: underline; text-underline-offset: 3px;
+      font-weight: 700;
+    }
+    #kub-{{ section.id }} .kub__cta:focus-visible{ outline: 2px solid #fff; outline-offset: 2px; border-radius: 3px; }
+    @media (max-width: 750px){
+      #kub-{{ section.id }} .kub__wrap{ padding: 10px 14px; font-size: 12px; gap: 8px; }
+    }
+  </style>
+
+  <div class="kub__wrap">
+    {% if section.settings.icon != blank %}
+      <span class="kub__icon" aria-hidden="true">{{ section.settings.icon }}</span>
+    {% endif %}
+    <span>{{ section.settings.message }}</span>
+    {% if section.settings.cta_text != blank %}
+      <a href="{{ section.settings.cta_link | default: '#' }}" class="kub__cta">{{ section.settings.cta_text }} →</a>
+    {% endif %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": ".ki Urgency Bar",
+  "tag": "section",
+  "class": "ki-section",
+  "settings": [
+    { "type": "text", "id": "icon",     "label": "İkon (emoji)", "default": "🚚" },
+    { "type": "text", "id": "message",  "label": "Mesaj",        "default": "Bugün 14:00'a kadar sipariş ver, yarın kapında" },
+    { "type": "text", "id": "cta_text", "label": "CTA metni",    "default": "Hemen sipariş ver" },
+    { "type": "url",  "id": "cta_link", "label": "CTA linki" },
+
+    { "type": "header", "content": "Style" },
+    { "type": "color", "id": "bg",   "label": "Background", "default": "#493d9a" },
+    { "type": "color", "id": "text", "label": "Text",       "default": "#ffffff" },
+    { "type": "range", "id": "pad_x", "label": "Horizontal padding (px)", "min": 8, "max": 60, "step": 2, "default": 24 }
+  ],
+  "presets": [{ "name": ".ki Urgency Bar" }]
+}
+{% endschema %}

@@ -1,0 +1,116 @@
+{% comment %}
+  .ki Story Strip (scoped) — Brand Kit
+  Three story cards with image + text.
+
+  Brand kit:
+    #493d9a (main)
+    #f8f8f6 (offwhite)
+    #b2a5ff (primary)
+    #dad2ff (lilac)
+{% endcomment %}
+
+<section id="kss-{{ section.id }}" class="section">
+  <style>
+    #kss-{{ section.id }}{
+      --ki-purple-dark: #493d9a;
+      --ki-offwhite: #f8f8f6;
+      --ki-purple: #b2a5ff;
+      --ki-lilac: #dad2ff;
+
+      --bg: {{ section.settings.bg | default: '#ffffff' }};
+      --text: {{ section.settings.text | default: '#1a1a1a' }};
+      --muted: {{ section.settings.muted | default: 'rgba(26,26,26,.72)' }};
+
+      --maxw: {{ section.settings.max_width | default: 1200 }}px;
+      --py: {{ section.settings.pad_y | default: 88 }}px;
+      --px: {{ section.settings.pad_x | default: 40 }}px;
+
+      background: var(--bg);
+      color: var(--text);
+    }
+    #kss-{{ section.id }} .kss__wrap{ max-width: var(--maxw); margin: 0 auto; padding: var(--py) var(--px); }
+    #kss-{{ section.id }} .kss__grid{
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px;
+    }
+    #kss-{{ section.id }} .kss__card{
+      border-radius: 18px; overflow: hidden;
+      box-shadow: 0 18px 40px rgba(73,61,154,.14);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+    #kss-{{ section.id }} .kss__card:hover{
+      transform: translateY(-4px);
+      box-shadow: 0 22px 50px rgba(73,61,154,.22);
+    }
+    #kss-{{ section.id }} .kss__card img{ width: 100%; aspect-ratio: 4/3; object-fit: cover; display: block; }
+    #kss-{{ section.id }} .kss__text{ padding: 22px 24px 26px; }
+    #kss-{{ section.id }} .kss__text h3{
+      font-size: clamp(18px,2vw,22px); font-weight: 700;
+      margin: 0 0 6px; letter-spacing: -0.01em;
+    }
+    #kss-{{ section.id }} .kss__text p{ font-size: 15px; opacity: 0.88; line-height: 1.55; margin: 0; }
+    @media (max-width: 990px){
+      #kss-{{ section.id }} .kss__wrap{ padding: 64px 20px; }
+      #kss-{{ section.id }} .kss__grid{ grid-template-columns: 1fr 1fr; gap: 16px; }
+    }
+    @media (max-width: 750px){
+      #kss-{{ section.id }} .kss__wrap{ padding: 48px 16px; }
+      #kss-{{ section.id }} .kss__grid{ grid-template-columns: 1fr; gap: 14px; }
+    }
+  </style>
+
+  <div class="kss__wrap">
+    <div class="kss__grid">
+      {% for block in section.blocks %}
+        <div class="kss__card" style="background: {{ block.settings.bg | default: '#dad2ff' }};" {{ block.shopify_attributes }}>
+          {% if block.settings.image != blank %}
+            <img src="{{ block.settings.image | image_url: width: 640 }}" alt="{{ block.settings.title | escape }}" width="{{ block.settings.image.width }}" height="{{ block.settings.image.height }}" loading="lazy" decoding="async">
+          {% endif %}
+          <div class="kss__text" style="color: {{ block.settings.fg | default: '#493d9a' }};">
+            <h3>{{ block.settings.title }}</h3>
+            <p>{{ block.settings.description }}</p>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": ".ki Story Strip",
+  "tag": "section",
+  "settings": [
+    { "type": "header", "content": "Style" },
+    { "type": "color", "id": "bg",    "label": "Background", "default": "#ffffff" },
+    { "type": "color", "id": "text",  "label": "Text",       "default": "#1a1a1a" },
+    { "type": "color", "id": "muted", "label": "Muted text", "default": "#493d9a" },
+    { "type": "range", "id": "max_width", "label": "Max width (px)", "min": 1000, "max": 1600, "step": 10, "default": 1200 },
+    { "type": "range", "id": "pad_y",     "label": "Vertical padding (px)", "min": 24, "max": 160, "step": 4, "default": 88 },
+    { "type": "range", "id": "pad_x",     "label": "Horizontal padding (px)", "min": 16, "max": 90, "step": 2, "default": 40 }
+  ],
+  "blocks": [
+    {
+      "type": "story",
+      "name": "Hikaye",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Görsel" },
+        { "type": "text",     "id": "title",       "label": "Başlık",    "default": "Sabah rutini" },
+        { "type": "textarea", "id": "description", "label": "Açıklama",  "default": "Güne dengeyle başla." },
+        { "type": "color",    "id": "bg",          "label": "Arka plan", "default": "#dad2ff" },
+        { "type": "color",    "id": "fg",          "label": "Metin",     "default": "#493d9a" }
+      ]
+    }
+  ],
+  "max_blocks": 6,
+  "presets": [
+    {
+      "name": ".ki Story Strip",
+      "blocks": [
+        { "type": "story", "settings": { "title": "Sabah rutini", "description": "Güne dengeyle başla." } },
+        { "type": "story", "settings": { "title": "Gece ritüeli", "description": "Dinlendirici bir gece için." } },
+        { "type": "story", "settings": { "title": "Tam denge",    "description": "Döngünün her gününde yanında." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

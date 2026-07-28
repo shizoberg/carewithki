@@ -1,0 +1,200 @@
+<style>
+  .ing-sec {
+    padding: 100px 24px;
+    font-family: 'Raleway', 'Segoe UI', system-ui, sans-serif;
+    background: {{ section.settings.bg_color }};
+  }
+  .ing-wrap {
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+  .ing-cta-box {
+    background: linear-gradient(135deg, #493D9A 0%, #292257 100%);
+    border-radius: 36px;
+    padding: 80px 40px;
+    text-align: center;
+    box-shadow: 0 30px 60px rgba(73, 61, 154, 0.25);
+    position: relative;
+    overflow: hidden;
+  }
+  .ing-cta-box::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at top right, rgba(255,255,255,0.1) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .ing-sec-tag {
+    display: inline-block;
+    color: rgba(255,255,255,0.7);
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  .ing-cta-box h2 {
+    color: #fff;
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-size: clamp(2.2rem, 4.5vw, 3.5rem);
+    font-weight: 300;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+  }
+  .ing-cta-box h2 strong {
+    font-weight: 800;
+  }
+  .ing-cta-box p {
+    color: rgba(255, 255, 255, .8);
+    font-size: 17px;
+    margin-bottom: 40px;
+    margin-top: 0;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.6;
+  }
+  .ing-cta-box .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    background: #fff;
+    color: #493D9A;
+    font-family: inherit;
+    font-size: 16px;
+    font-weight: 800;
+    padding: 18px 48px;
+    border-radius: 999px;
+    text-decoration: none;
+    transition: all .25s ease;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    animation: ing-pulse 2s infinite cubic-bezier(0.66, 0, 0, 1);
+  }
+  .ing-cta-box .btn:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+    animation: none;
+  }
+  @keyframes ing-pulse {
+    to { box-shadow: 0 0 0 15px rgba(255, 255, 255, 0); }
+  }
+
+  /* STICKY BOTTOM BAR */
+  .ing-sticky-bar {
+    position: fixed;
+    bottom: -100px;
+    left: 0;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-top: 1px solid rgba(0,0,0,0.05);
+    box-shadow: 0 -10px 30px rgba(0,0,0,0.05);
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    z-index: 999;
+    transition: bottom 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+  .ing-sticky-bar.visible {
+    bottom: 0;
+  }
+  .ing-sticky-bar p {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 700;
+    color: #121212;
+    display: none;
+  }
+  .ing-sticky-bar .sbtn {
+    background: #493D9A;
+    color: #fff;
+    padding: 12px 32px;
+    border-radius: 999px;
+    font-weight: 800;
+    font-size: 15px;
+    text-decoration: none;
+    transition: transform .2s ease;
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+  }
+  .ing-sticky-bar .sbtn:hover {
+    transform: translateY(-2px);
+  }
+
+  @media(min-width: 600px) {
+    .ing-sticky-bar p { display: block; }
+    .ing-sticky-bar .sbtn { width: auto; }
+  }
+  @media(max-width: 720px) {
+    .ing-sec { padding: 60px 20px; }
+    .ing-cta-box { padding: 50px 24px; border-radius: 28px; }
+  }
+</style>
+
+<section class="ing-sec">
+  <div class="ing-wrap">
+    <div class="ing-cta-box">
+      {%- if section.settings.tag != blank -%}
+        <div class="ing-sec-tag">{{ section.settings.tag }}</div>
+      {%- endif -%}
+      
+      <h2>{{ section.settings.title_light }} <br><strong>{{ section.settings.title_bold }}</strong></h2>
+      
+      {%- if section.settings.text != blank -%}
+        <div class="ing-cta-text">{{ section.settings.text }}</div>
+      {%- endif -%}
+      
+      {%- if section.settings.btn_text != blank -%}
+        <a href="{{ section.settings.btn_link }}" class="btn">
+          {{ section.settings.btn_text }}
+        </a>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{%- if section.settings.enable_sticky -%}
+<div class="ing-sticky-bar" id="ing-sticky-{{ section.id }}">
+  <p>{{ section.settings.sticky_text }}</p>
+  <a href="{{ section.settings.btn_link }}" class="sbtn">{{ section.settings.btn_text }}</a>
+</div>
+
+<script>
+  (function(){
+    var bar = document.getElementById('ing-sticky-{{ section.id }}');
+    if(!bar) return;
+    window.addEventListener('scroll', function(){
+      if(window.scrollY > 600) {
+        bar.classList.add('visible');
+      } else {
+        bar.classList.remove('visible');
+      }
+    }, {passive: true});
+  })();
+</script>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Ing: Premium CTA",
+  "settings": [
+    { "type": "color", "id": "bg_color", "label": "Arka Plan Rengi", "default": "#ffffff" },
+    { "type": "text", "id": "tag", "label": "Etiket", "default": "Gelişmiş Formül" },
+    { "type": "text", "id": "title_light", "label": "Başlık (İnce)", "default": "Bitki İsmi Sır Değil," },
+    { "type": "text", "id": "title_bold", "label": "Başlık (Kalın)", "default": "Formülün Parçasıdır." },
+    { "type": "richtext", "id": "text", "label": "Açıklama", "default": "<p>Klinik destekli takviyeyi şimdi deneyin.</p>" },
+    { "type": "text", "id": "btn_text", "label": "Buton Yazı", "default": "Ürünü İncele" },
+    { "type": "url", "id": "btn_link", "label": "Buton Link" },
+    { "type": "header", "content": "Satış Arttırıcı: Yapışkan Alt Bar" },
+    { "type": "checkbox", "id": "enable_sticky", "label": "Sayfa Kaydırıldığında Alt Bar Göster", "default": true },
+    { "type": "text", "id": "sticky_text", "label": "Alt Bar Metni", "default": "Hayatınızı Değiştirmeye Hazır Mısınız?" }
+  ],
+  "presets": [
+    { "name": "Ing: Premium CTA" }
+  ]
+}
+{% endschema %}

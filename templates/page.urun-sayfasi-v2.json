@@ -1,0 +1,88 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "settings": {
+        "padding_top": 28,
+        "padding_bottom": 28
+      }
+    },
+    "pdp_hero_seed_ihDXJy": {
+      "type": "pdp-hero-seed",
+      "blocks": {
+        "accordion_LwkqtH": {
+          "type": "accordion",
+          "settings": {
+            "title": "Benefits*",
+            "content": "<ul><li>Reduces bloating and gas</li><li>Improves regularity and digestive discomfort</li><li>Supports whole body health.</li><li>Tested in multiple full formulation randomized, placebo-controlled clinical trials</li></ul>",
+            "link_text": "View Clinical Trials",
+            "link_url": "",
+            "open_by_default": true
+          }
+        },
+        "accordion_YfGKf6": {
+          "type": "accordion",
+          "settings": {
+            "title": "Ingredients",
+            "content": "<p>Probiotic Blend, Prebiotic Blend.</p>",
+            "link_text": "View Clinical Trials",
+            "link_url": "",
+            "open_by_default": false
+          }
+        }
+      },
+      "block_order": [
+        "accordion_LwkqtH",
+        "accordion_YfGKf6"
+      ],
+      "name": "PDP Hero Seed (Izgara)",
+      "settings": {
+        "product": "",
+        "bg_color": "#ffffff",
+        "text_color": "#1a1a1a",
+        "border_color": "#e6e5df",
+        "btn_color": "#493d9a",
+        "btn_text_color": "#ffffff",
+        "padding_top": 60,
+        "padding_bottom": 60,
+        "title": "",
+        "description": "Daily probiotic + prebiotic clinically validated to relieve bloating, gas, and irregularity - formulated with 24 strains to promote whole body health.*",
+        "badge_text": "Bestseller",
+        "badge_bg": "#e0ebd3",
+        "badge_text_color": "#2b5632",
+        "sub_product": "",
+        "sub_title": "Aylık Abonelik",
+        "sub_badge": "EN POPÜLER",
+        "sub_compare": "199₺",
+        "sub_price": "159₺",
+        "sub_per": "5,30₺/gün",
+        "sub_benefits": "<ul><li>Her ay kapınıza gelsin</li><li>İstediğiniz zaman iptal edin</li><li>30 gün para iade garantisi</li></ul>",
+        "once_title": "Tek Seferlik",
+        "once_badge": "",
+        "once_compare": "",
+        "once_price": "199₺",
+        "once_per": "6,63₺/gün",
+        "once_note": "<p>Standart teslimat</p>",
+        "cta_text": "Start Now",
+        "bundle_product": "",
+        "bundle_heading": "Bundle + Save 25%",
+        "bundle_desc": "Add DM-02™ Daily Multivitamin to your routine and save on your first order.",
+        "bundle_btn": "Add"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "pdp_hero_seed_ihDXJy"
+  ]
+}

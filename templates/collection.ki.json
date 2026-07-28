@@ -1,0 +1,24 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "ki_collection": {
+      "type": "ki-collection-page",
+      "settings": {
+        "columns_desktop": 3,
+        "products_per_page": 12,
+        "show_description": false,
+        "show_filters": true,
+        "show_sort": true
+      }
+    }
+  },
+  "order": ["ki_collection"]
+}

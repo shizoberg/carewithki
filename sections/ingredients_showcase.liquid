@@ -1,0 +1,774 @@
+{% comment %}
+  Ingredients Showcase — Horizontal scroll cards
+  Brand Kit uyumlu, Shopify editable
+{% endcomment %}
+
+<section id="ingshow-{{ section.id }}" class="section">
+  <style>
+    #ingshow-{{ section.id }} {
+      /* Brand Kit */
+      --ki-purple-dark: #493d9a;
+      --ki-offwhite: #f8f8f6;
+      --ki-purple: #b2a5ff;
+      --ki-lilac: #dad2ff;
+
+      /* Functional */
+      --bg: {{ section.settings.bg }};
+      --text: {{ section.settings.text }};
+      --muted: {{ section.settings.muted }};
+      --card-bg: {{ section.settings.card_bg }};
+      --line: rgba(73,61,154,.12);
+
+      background: #fff;
+      color: var(--text);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    #ingshow-{{ section.id }} .wrap {
+      max-width: {{ section.settings.max_width }}px;
+      margin: 0 auto;
+      padding: {{ section.settings.pad_y }}px {{ section.settings.pad_x }}px;
+    }
+
+    /* ===== HEADER ===== */
+    #ingshow-{{ section.id }} .header {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: start;
+      margin-bottom: 48px;
+      width: 100%;
+    }
+
+    #ingshow-{{ section.id }} .mainTitle {
+      font-size: clamp(32px, 4vw, 48px);
+      font-weight: 700;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      color: var(--ki-purple-dark);
+      margin: 0;
+      word-break: normal;
+      overflow-wrap: normal;
+      white-space: normal;
+      min-width: 0;
+    }
+
+    #ingshow-{{ section.id }} .headerDesc {
+      font-size: 15px;
+      line-height: 1.65;
+      color: var(--muted);
+      margin: 0;
+      padding-top: 8px;
+      word-break: normal;
+      overflow-wrap: normal;
+    }
+
+    /* ===== SCROLLER WRAPPER ===== */
+    #ingshow-{{ section.id }} .scrollerWrap {
+      position: relative;
+    }
+
+    /* ===== CARDS SCROLLER ===== */
+    #ingshow-{{ section.id }} .scroller {
+      display: flex;
+      gap: 20px;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      scroll-behavior: smooth;
+      padding-bottom: 16px;
+      margin: 0 -{{ section.settings.pad_x }}px;
+      padding-left: {{ section.settings.pad_x }}px;
+      padding-right: {{ section.settings.pad_x }}px;
+    }
+
+    #ingshow-{{ section.id }} .scroller::-webkit-scrollbar {
+      height: 6px;
+    }
+    #ingshow-{{ section.id }} .scroller::-webkit-scrollbar-track {
+      background: var(--line);
+      border-radius: 999px;
+    }
+    #ingshow-{{ section.id }} .scroller::-webkit-scrollbar-thumb {
+      background: var(--ki-purple);
+      border-radius: 999px;
+    }
+
+    /* ===== NAVIGATION ARROWS ===== */
+    #ingshow-{{ section.id }} .scrollNav {
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+      margin-top: 24px;
+      padding-right: 4px;
+    }
+
+    #ingshow-{{ section.id }} .scrollBtn {
+      position: relative;
+      width: 48px;
+      height: 48px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: #fff;
+      box-shadow: 0 4px 16px rgba(73,61,154,.12);
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      z-index: 2;
+      transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
+    }
+    #ingshow-{{ section.id }} .scrollBtn:hover {
+      transform: translateY(-50%) scale(1.05);
+      box-shadow: 0 6px 24px rgba(73,61,154,.18);
+      background: var(--ki-lilac);
+    }
+    #ingshow-{{ section.id }} .scrollBtn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+    #ingshow-{{ section.id }} .scrollBtn svg {
+      width: 18px;
+      height: 18px;
+      color: var(--ki-purple-dark);
+    }
+    #ingshow-{{ section.id }} .scrollPrev { }
+    #ingshow-{{ section.id }} .scrollNext { }
+
+    /* ===== PROGRESS DOTS (Mobile) ===== */
+    #ingshow-{{ section.id }} .scrollDots {
+      display: none;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 20px;
+    }
+    #ingshow-{{ section.id }} .scrollDot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: var(--line);
+      border: none;
+      padding: 0;
+      cursor: pointer;
+      transition: background .2s ease, transform .2s ease;
+    }
+    #ingshow-{{ section.id }} .scrollDot.is-active {
+      background: var(--ki-purple-dark);
+      transform: scale(1.2);
+    }
+    #ingshow-{{ section.id }} .scrollDot:hover {
+      background: var(--ki-purple);
+    }
+
+    /* ===== CARD ===== */
+    #ingshow-{{ section.id }} .card {
+      flex: 0 0 280px;
+      min-width: 260px;
+      max-width: 320px;
+      background: var(--card-bg);
+      border-radius: 16px;
+      padding: 24px 20px;
+      scroll-snap-align: start;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      border: 1px solid var(--line);
+      transition: transform .25s ease, box-shadow .25s ease;
+    }
+    #ingshow-{{ section.id }} .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 18px 40px rgba(73,61,154,.12);
+    }
+    #ingshow-{{ section.id }} .card:last-child {
+      margin-right: {{ section.settings.pad_x }}px;
+    }
+
+    /* Card Top - REMOVED per request */
+    #ingshow-{{ section.id }} .cardTop {
+      display: none;
+    }
+
+    #ingshow-{{ section.id }} .cardMedia {
+      width: 70%;
+      max-width: 200px;
+      aspect-ratio: 1 / 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      border-radius: 12px;
+      background: #fff;
+      margin: 4px auto;
+    }
+
+    #ingshow-{{ section.id }} .cardMedia img {
+      max-width: 100%;
+      max-height: 100%;
+      width: auto;
+      height: auto;
+      object-fit: contain;
+      display: block;
+    }
+
+    #ingshow-{{ section.id }} .cardMedia svg {
+      width: 60%;
+      height: 60%;
+      color: var(--ki-lilac);
+    }
+
+    /* Card Bottom - Name, Label & Info */
+    #ingshow-{{ section.id }} .cardBottom {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-top: auto;
+    }
+
+    #ingshow-{{ section.id }} .cardBottom .cardTitle {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--ki-purple-dark);
+      margin: 0;
+      line-height: 1.2;
+    }
+
+    #ingshow-{{ section.id }} .formLabel {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--ki-purple-dark);
+      margin: 0;
+    }
+
+    #ingshow-{{ section.id }} .formInfo {
+      font-size: 14px;
+      line-height: 1.5;
+      color: var(--muted);
+      margin: 0;
+    }
+
+    /* ===== SCROLL HINT (Mobile) ===== */
+    #ingshow-{{ section.id }} .scrollHint {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      margin-top: 12px;
+      font-size: 12px;
+      color: var(--muted);
+      animation: hintBounce 1.5s ease-in-out infinite;
+    }
+    #ingshow-{{ section.id }} .scrollHint svg {
+      width: 16px;
+      height: 16px;
+    }
+    @keyframes hintBounce {
+      0%, 100% { transform: translateX(0); }
+      50% { transform: translateX(6px); }
+    }
+
+    /* ===== EMPTY STATE ===== */
+    #ingshow-{{ section.id }} .emptyNote {
+      padding: 40px 20px;
+      border: 2px dashed var(--line);
+      border-radius: 16px;
+      background: var(--ki-offwhite);
+      font-size: 14px;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    /* ===== RESPONSIVE - TABLET ===== */
+    @media (max-width: 990px) {
+      #ingshow-{{ section.id }} .header {
+        display: block;
+        margin-bottom: 32px;
+      }
+      #ingshow-{{ section.id }} .mainTitle {
+        font-size: clamp(26px, 5vw, 36px);
+        margin-bottom: 16px;
+        word-break: normal;
+        overflow-wrap: normal;
+      }
+      #ingshow-{{ section.id }} .headerDesc {
+        word-break: normal;
+        overflow-wrap: normal;
+      }
+      #ingshow-{{ section.id }} .wrap {
+        padding: 48px 16px;
+      }
+      #ingshow-{{ section.id }} .scroller {
+        margin: 0 -16px;
+        padding-left: 16px;
+        padding-right: 16px;
+        gap: 16px;
+      }
+      #ingshow-{{ section.id }} .card:last-child {
+        margin-right: 16px;
+      }
+      /* Hide navigation arrows on mobile */
+      #ingshow-{{ section.id }} .scrollNav {
+        display: none;
+      }
+    }
+
+    /* ===== RESPONSIVE - MOBILE ===== */
+    @media (max-width: 600px) {
+      #ingshow-{{ section.id }} .wrap {
+        padding: 40px 16px;
+      }
+      #ingshow-{{ section.id }} .header {
+        display: block;
+        margin-bottom: 24px;
+      }
+      #ingshow-{{ section.id }} .mainTitle {
+        font-size: clamp(22px, 6vw, 28px);
+        margin-bottom: 12px;
+        word-break: normal;
+        overflow-wrap: normal;
+        white-space: normal;
+      }
+      #ingshow-{{ section.id }} .headerDesc {
+        font-size: 14px;
+        line-height: 1.55;
+        word-break: normal;
+        overflow-wrap: normal;
+      }
+      #ingshow-{{ section.id }} .scroller {
+        gap: 12px;
+        scroll-padding-left: 16px;
+      }
+      #ingshow-{{ section.id }} .card {
+        flex: 0 0 calc(100vw - 64px);
+        min-width: calc(100vw - 64px);
+        max-width: calc(100vw - 64px);
+        padding: 20px 16px;
+        scroll-snap-align: center;
+      }
+      #ingshow-{{ section.id }} .card:last-child {
+        margin-right: 16px;
+      }
+      #ingshow-{{ section.id }} .cardTitle {
+        font-size: 17px;
+      }
+      #ingshow-{{ section.id }} .cardDesc {
+        font-size: 13px;
+      }
+      #ingshow-{{ section.id }} .cardMedia {
+        aspect-ratio: 1 / 1;
+      }
+      #ingshow-{{ section.id }} .formLabel {
+        font-size: 9px;
+      }
+      #ingshow-{{ section.id }} .formInfo {
+        font-size: 12px;
+      }
+      /* Hide nav arrows on mobile */
+      #ingshow-{{ section.id }} .scrollNav {
+        display: none;
+      }
+      #ingshow-{{ section.id }} .scrollDots {
+        display: none;
+      }
+      #ingshow-{{ section.id }} .scrollHint {
+        display: none;
+      }
+      /* Hide scrollbar on mobile */
+      #ingshow-{{ section.id }} .scroller::-webkit-scrollbar {
+        display: none;
+      }
+      #ingshow-{{ section.id }} .scroller {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+    }
+
+    /* ===== TOUCH DEVICE OPTIMIZATIONS ===== */
+    @media (hover: none) and (pointer: coarse) {
+      #ingshow-{{ section.id }} .card:hover {
+        transform: none;
+        box-shadow: none;
+      }
+      #ingshow-{{ section.id }} .card:active {
+        transform: scale(0.98);
+      }
+    }
+  </style>
+
+  <div class="wrap">
+    <!-- Header -->
+    <div class="header">
+      {% if section.settings.heading != blank %}
+        <h2 class="mainTitle">{{ section.settings.heading }}</h2>
+      {% endif %}
+      {% if section.settings.description != blank %}
+        <p class="headerDesc">{{ section.settings.description }}</p>
+      {% endif %}
+    </div>
+
+    <!-- Cards -->
+    {% if section.blocks.size > 0 %}
+      <div class="scrollerWrap">
+        <div class="scroller" data-scroller>
+          {% for block in section.blocks %}
+            <div class="card" {{ block.shopify_attributes }} data-card-index="{{ forloop.index0 }}">
+              <div class="cardTop">
+                {% if block.settings.title != blank %}
+                  <h3 class="cardTitle">{{ block.settings.title }}</h3>
+                {% endif %}
+                {% if block.settings.description != blank %}
+                  <p class="cardDesc">{{ block.settings.description }}</p>
+                {% endif %}
+              </div>
+
+              <div class="cardMedia">
+                {% if block.settings.image != blank %}
+                  {{ block.settings.image | image_url: width: 600 | image_tag: loading: 'lazy', alt: block.settings.title }}
+                {% else %}
+                  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.5"/>
+                    <circle cx="12" cy="5" r="1.5" fill="currentColor"/>
+                    <circle cx="12" cy="19" r="1.5" fill="currentColor"/>
+                    <circle cx="5" cy="12" r="1.5" fill="currentColor"/>
+                    <circle cx="19" cy="12" r="1.5" fill="currentColor"/>
+                    <circle cx="7" cy="7" r="1" fill="currentColor"/>
+                    <circle cx="17" cy="7" r="1" fill="currentColor"/>
+                    <circle cx="7" cy="17" r="1" fill="currentColor"/>
+                    <circle cx="17" cy="17" r="1" fill="currentColor"/>
+                  </svg>
+                {% endif %}
+              </div>
+
+              <div class="cardBottom">
+                {% if block.settings.title != blank %}
+                  <h3 class="cardTitle">{{ block.settings.title }}</h3>
+                {% endif %}
+                {% if block.settings.form_label != blank %}
+                  <p class="formLabel">{{ block.settings.form_label }}</p>
+                {% endif %}
+                {% if block.settings.form_info != blank %}
+                  <p class="formInfo">{{ block.settings.form_info }}</p>
+                {% endif %}
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+
+        <!-- Navigation Arrows (Tablet) -->
+        <div class="scrollNav">
+          <button class="scrollBtn scrollPrev" type="button" aria-label="Önceki" data-scroll-prev>
+            <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12.8 3.6 6.4 10l6.4 6.4 1.2-1.2L8.8 10l5.2-5.2-1.2-1.2z" fill="currentColor"/>
+            </svg>
+          </button>
+          <button class="scrollBtn scrollNext" type="button" aria-label="Sonraki" data-scroll-next>
+            <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M7.2 16.4 13.6 10 7.2 3.6 6 4.8 11.2 10 6 15.2l1.2 1.2z" fill="currentColor"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Progress Dots (Mobile) -->
+      <div class="scrollDots" data-dots>
+        {% for block in section.blocks %}
+          <button class="scrollDot {% if forloop.first %}is-active{% endif %}" 
+            type="button" 
+            aria-label="Kart {{ forloop.index }}"
+            data-dot-index="{{ forloop.index0 }}">
+          </button>
+        {% endfor %}
+      </div>
+
+      <!-- Scroll Hint (Mobile) -->
+      <div class="scrollHint" data-scroll-hint>
+        <span>Kaydır</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M5 12h14M12 5l7 7-7 7"/>
+        </svg>
+      </div>
+    {% else %}
+      <div class="emptyNote">
+        İçerik eklemek için blok ekleyin.
+      </div>
+    {% endif %}
+  </div>
+
+  <script>
+    (function(){
+      var root = document.getElementById('ingshow-{{ section.id }}');
+      if(!root) return;
+
+      var scroller = root.querySelector('[data-scroller]');
+      var cards = root.querySelectorAll('.card');
+      var dots = root.querySelectorAll('.scrollDot');
+      var prevBtn = root.querySelector('[data-scroll-prev]');
+      var nextBtn = root.querySelector('[data-scroll-next]');
+      var hint = root.querySelector('[data-scroll-hint]');
+
+      if(!scroller || cards.length === 0) return;
+
+      var cardCount = cards.length;
+      var currentIndex = 0;
+
+      // Update dots
+      function updateDots(index) {
+        dots.forEach(function(dot, i) {
+          dot.classList.toggle('is-active', i === index);
+        });
+      }
+
+      // Scroll to card
+      function scrollToCard(index) {
+        if(index < 0) index = 0;
+        if(index >= cardCount) index = cardCount - 1;
+        
+        var card = cards[index];
+        if(!card) return;
+
+        scroller.scrollTo({
+          left: card.offsetLeft - 16,
+          behavior: 'smooth'
+        });
+
+        currentIndex = index;
+        updateDots(index);
+      }
+
+      // Handle scroll to update dots
+      var scrollTimeout;
+      scroller.addEventListener('scroll', function() {
+        clearTimeout(scrollTimeout);
+        scrollTimeout = setTimeout(function() {
+          var scrollLeft = scroller.scrollLeft;
+          var closestIndex = 0;
+          var closestDistance = Infinity;
+
+          cards.forEach(function(card, i) {
+            var distance = Math.abs(card.offsetLeft - scrollLeft - 16);
+            if(distance < closestDistance) {
+              closestDistance = distance;
+              closestIndex = i;
+            }
+          });
+
+          currentIndex = closestIndex;
+          updateDots(closestIndex);
+
+          // Hide hint after first scroll
+          if(hint && scrollLeft > 20) {
+            hint.style.display = 'none';
+          }
+        }, 100);
+      });
+
+      // Dot clicks
+      dots.forEach(function(dot) {
+        dot.addEventListener('click', function() {
+          var index = parseInt(dot.getAttribute('data-dot-index'), 10) || 0;
+          scrollToCard(index);
+        });
+      });
+
+      // Arrow clicks
+      if(prevBtn) {
+        prevBtn.addEventListener('click', function() {
+          scrollToCard(currentIndex - 1);
+        });
+      }
+      if(nextBtn) {
+        nextBtn.addEventListener('click', function() {
+          scrollToCard(currentIndex + 1);
+        });
+      }
+
+      // Keyboard navigation
+      scroller.setAttribute('tabindex', '0');
+      scroller.addEventListener('keydown', function(e) {
+        if(e.key === 'ArrowLeft') {
+          e.preventDefault();
+          scrollToCard(currentIndex - 1);
+        } else if(e.key === 'ArrowRight') {
+          e.preventDefault();
+          scrollToCard(currentIndex + 1);
+        }
+      });
+    })();
+  </script>
+</section>
+
+{% schema %}
+{
+  "name": "Ingredients Showcase",
+  "tag": "section",
+  "class": "ingredients-showcase",
+  "settings": [
+    {
+      "type": "header",
+      "content": "── Düzen ──"
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "label": "Maksimum genişlik (px)",
+      "min": 1000,
+      "max": 1600,
+      "step": 10,
+      "default": 1300
+    },
+    {
+      "type": "range",
+      "id": "pad_y",
+      "label": "Dikey padding (px)",
+      "min": 24,
+      "max": 120,
+      "step": 4,
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "pad_x",
+      "label": "Yatay padding (px)",
+      "min": 16,
+      "max": 60,
+      "step": 2,
+      "default": 32
+    },
+
+    {
+      "type": "header",
+      "content": "── Renkler ──"
+    },
+    {
+      "type": "color",
+      "id": "bg",
+      "label": "Arka plan",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "text",
+      "label": "Metin rengi",
+      "default": "#1a1a1a"
+    },
+    {
+      "type": "color",
+      "id": "muted",
+      "label": "Soluk metin",
+      "default": "#666666"
+    },
+    {
+      "type": "color",
+      "id": "card_bg",
+      "label": "Kart arka planı",
+      "default": "#ffffff"
+    },
+
+    {
+      "type": "header",
+      "content": "── İçerik ──"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Ana başlık",
+      "default": "Bioavailable nutrients that work harder for you."
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Açıklama",
+      "default": "Formülümüz, vücudunuzun kolayca tanıyıp emebileceği formlarda içeriklerle hazırlanmıştır, böylece sağlık faydalarının tam potansiyelini deneyimlersiniz."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "ingredient",
+      "name": "İçerik Kartı",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Başlık",
+          "default": "Vitamin D3"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Kısa açıklama",
+          "default": "Kalsiyum emilimini, kemik sağlığını ve kas fonksiyonunu destekler."
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Görsel (molekül/ikon)"
+        },
+        {
+          "type": "text",
+          "id": "form_label",
+          "label": "Form etiketi",
+          "default": "BİYOYARARLI FORM"
+        },
+        {
+          "type": "textarea",
+          "id": "form_info",
+          "label": "Form bilgisi",
+          "default": "Sentetik D2'ye kıyasla doğal ve daha etkili bir form olan Kolekalsiferol."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Ingredients Showcase",
+      "blocks": [
+        {
+          "type": "ingredient",
+          "settings": {
+            "title": "Vitamin D3",
+            "description": "Kalsiyum emilimini, kemik sağlığını ve kas fonksiyonunu destekler.",
+            "form_label": "BİYOYARARLI FORM",
+            "form_info": "Sentetik D2'ye kıyasla doğal ve daha etkili bir form olan Kolekalsiferol."
+          }
+        },
+        {
+          "type": "ingredient",
+          "settings": {
+            "title": "Vitamin E",
+            "description": "Hücreleri serbest radikallerin neden olduğu oksidatif hasara karşı korur.",
+            "form_label": "BİYOYARARLI FORM",
+            "form_info": "Güçlü ve aktif bir E vitamini formu olan saf alfa tokoferol."
+          }
+        },
+        {
+          "type": "ingredient",
+          "settings": {
+            "title": "Vitamin K",
+            "description": "Kemik sağlığı, mitokondriyal fonksiyon ve kan pıhtılaşması için gereklidir.",
+            "form_label": "BİYOYARARLI FORM",
+            "form_info": "Mikrobiyal olarak üretilen ve uzun ömürlü bir form olan K1 ve K2 MK-7 dahil olmak üzere iki K vitamini formu."
+          }
+        },
+        {
+          "type": "ingredient",
+          "settings": {
+            "title": "B Vitaminleri",
+            "description": "Enerji ve besin metabolizmasını destekler, NAD+ seviyelerini artırır.",
+            "form_label": "BİYOYARARLI FORM",
+            "form_info": "B6, folat, biotin ve B12 dahil olmak üzere aktif formlarda zengin bir B vitamini kompleksi."
+          }
+        },
+        {
+          "type": "ingredient",
+          "settings": {
+            "title": "Çinko, Selenyum, Bakır",
+            "description": "Doku oluşumunu, bağışıklık fonksiyonunu ve hücresel enerji üretimini destekler.",
+            "form_label": "BİYOYARARLI FORM",
+            "form_info": "Kolay emilen ve sindirime nazik şelatlanmış eser mineral formları."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,166 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "scroll_progress": {
+      "type": "balance-scroll-progress",
+      "settings": {}
+    },
+    "urgency_bar": {
+      "type": "balance-urgency-bar",
+      "settings": {
+        "text": "⚡ Bugün sipariş ver, yarın kargoda — ücretsiz kargo"
+      }
+    },
+    "hero": {
+      "type": "balance-hero",
+      "settings": {
+        "bg_image": "shopify://shop_images/2_c2d73989-9bdc-4dd0-b4c9-ce8ee33711ac.png",
+        "title": ".ki Balance",
+        "subtitle": "Döngü Dönemi Desteği",
+        "counter_target": 2400,
+        "counter_text": "kadın tarafından tercih ediliyor",
+        "product_gif": "shopify://shop_images/2_c2d73989-9bdc-4dd0-b4c9-ce8ee33711ac.png",
+        "rating_text": "5.0 ortalama puan",
+        "description": "<p>PMS döneminde yaşadığın <strong>şişkinlik</strong>, <strong>kas/sinir gerilimleri</strong> ve <strong>ruh hali dalgalanmalarını</strong> desteklemek için geliştirildi.</p>",
+        "cta_text": "Hikayeleri oku",
+        "cta_link": ""
+      }
+    },
+    "reviews": {
+      "type": "balance-reviews",
+      "blocks": {
+        "review_FmUKBq": {
+          "type": "review",
+          "settings": {
+            "initials": "SE",
+            "name": "Selin",
+            "info": "28 yaş, İstanbul",
+            "question": "Adet döneminde yaşadığım şiddetli kramplar için doğal bir çözüm var mı?",
+            "audio_url": ""
+          }
+        }
+      },
+      "block_order": [
+        "review_FmUKBq"
+      ],
+      "settings": {
+        "title": "Kullanıcılarımız Ne Soruyor?",
+        "subtitle": "Sıkça sorulan sorular ve uzman eczacımızın sesli yanıtları"
+      }
+    },
+    "video_testimonials": {
+      "type": "balance-video-testimonials",
+      "blocks": {
+        "video_URnW4d": {
+          "type": "video",
+          "settings": {
+            "name": "Ulyana",
+            "age": "21 yaş",
+            "bg_color_start": "#493d9a",
+            "bg_color_end": "#3f347f",
+            "external_video": ""
+          }
+        }
+      },
+      "block_order": [
+        "video_URnW4d"
+      ],
+      "settings": {
+        "title": "Video Yorumlar",
+        "hint": "kaydır"
+      }
+    },
+    "before_after": {
+      "type": "balance-before-after",
+      "settings": {
+        "label": "Fark Yarat",
+        "title": "Öncesi & Sonrası",
+        "before_title": "Öncesi",
+        "before_text": "Kramp, şişkinlik, ruh hali dalgalanması, uyku bozukluğu",
+        "after_title": "Sonrası",
+        "after_text": "Dengeli döngü, enerji, net zihin, rahat uyku"
+      }
+    },
+    "ingredients": {
+      "type": "balance-ingredients",
+      "blocks": {
+        "ingredient_gHiJwP": {
+          "type": "ingredient",
+          "settings": {
+            "icon": "🌿",
+            "title": "Vitex (Hayıt)",
+            "description": "Hormonal dengeyi destekler, PMS belirtilerini hafifletir"
+          }
+        },
+        "ingredient_DybRhA": {
+          "type": "ingredient",
+          "settings": {
+            "icon": "🌿",
+            "title": "Vitex (Hayıt)",
+            "description": "Hormonal dengeyi destekler, PMS belirtilerini hafifletir"
+          }
+        },
+        "badge_QUVwcJ": {
+          "type": "badge",
+          "settings": {
+            "text": "GMP sertifikalı"
+          }
+        }
+      },
+      "block_order": [
+        "ingredient_gHiJwP",
+        "ingredient_DybRhA",
+        "badge_QUVwcJ"
+      ],
+      "settings": {
+        "title": "İçindekiler"
+      }
+    },
+    "product": {
+      "type": "balance-product",
+      "settings": {
+        "product": "balance-your-cycle",
+        "top_badge": "90+ kişi bu ürünü satın aldı",
+        "title": "",
+        "description": "",
+        "rating_text": "5.0 (90+ yorum)",
+        "stock_text": "Stokta sadece 12 adet kaldı",
+        "single_label": "Tek seferlik satın al",
+        "single_sub": "30 günlük kullanım",
+        "triple_product": "triple-ki-balance-your-cycle-uclu-dongunu-dengele",
+        "triple_label": "3'lü paket satın al & %15 tasarruf",
+        "triple_sub": "3 aylık kullanım + Eczacı ile 15 dk özel takviye rutini hazırlama hizmeti",
+        "triple_badge": "EN POPÜLER",
+        "approval_image": "shopify://shop_images/pms_-_product_page-13.png",
+        "approval_title": ".Ki Magnezyum ve Hayıt İçeren Takviye Edici Gıda",
+        "approval_info": "Takviye Edici Gıda Onay Numarası: 024990-06.11.2025"
+      }
+    },
+    "sticky_atc": {
+      "type": "balance-sticky-atc",
+      "settings": {
+        "product": "",
+        "btn_text": ".ki Balance — Sepete Ekle"
+      }
+    }
+  },
+  "order": [
+    "scroll_progress",
+    "urgency_bar",
+    "hero",
+    "reviews",
+    "video_testimonials",
+    "before_after",
+    "ingredients",
+    "product",
+    "sticky_atc"
+  ]
+}

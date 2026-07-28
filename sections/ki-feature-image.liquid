@@ -1,0 +1,139 @@
+{% comment %}
+  .ki Feature Image (scoped) — Brand Kit
+  Two-column image + text with CTA.
+
+  Brand kit:
+    #493d9a (main)
+    #f8f8f6 (offwhite)
+    #b2a5ff (primary)
+    #dad2ff (lilac)
+{% endcomment %}
+
+<section id="kfi-{{ section.id }}" class="section">
+  <style>
+    #kfi-{{ section.id }}{
+      --ki-purple-dark: #493d9a;
+      --ki-offwhite: #f8f8f6;
+      --ki-purple: #b2a5ff;
+      --ki-lilac: #dad2ff;
+
+      --bg: {{ section.settings.bg | default: '#ffffff' }};
+      --text: {{ section.settings.text | default: '#1a1a1a' }};
+      --muted: {{ section.settings.muted | default: 'rgba(26,26,26,.72)' }};
+
+      --maxw: {{ section.settings.max_width | default: 1200 }}px;
+      --py: {{ section.settings.pad_y | default: 88 }}px;
+      --px: {{ section.settings.pad_x | default: 40 }}px;
+
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    #kfi-{{ section.id }} .kfi__wrap{ max-width: var(--maxw); margin: 0 auto; padding: var(--py) var(--px); }
+    #kfi-{{ section.id }} .kfi__grid{
+      display: grid; grid-template-columns: 1fr 1fr; gap: clamp(28px,5vw,64px); align-items: center;
+    }
+    #kfi-{{ section.id }} .kfi__grid--reverse .kfi__visual{ order: 2; }
+    #kfi-{{ section.id }} .kfi__visual img,
+    #kfi-{{ section.id }} .kfi__placeholder{
+      width: 100%; aspect-ratio: 4/5; object-fit: cover;
+      border-radius: 18px; display: block;
+      box-shadow: 0 18px 40px rgba(73,61,154,.14);
+    }
+    #kfi-{{ section.id }} .kfi__placeholder{ background: var(--ki-lilac); }
+    #kfi-{{ section.id }} .kfi__eyebrow{
+      font-size: 12px; font-weight: 700; letter-spacing: 1.6px; text-transform: uppercase;
+      color: var(--ki-purple-dark); margin: 0 0 14px;
+    }
+    #kfi-{{ section.id }} .kfi__title{
+      font-size: clamp(30px,4vw,48px); font-weight: 650; letter-spacing: -0.02em;
+      line-height: 1.1; color: var(--ki-purple-dark);
+      text-shadow: 0 10px 26px rgba(73,61,154,.10); margin: 0;
+    }
+    #kfi-{{ section.id }} .kfi__desc{
+      margin-top: 18px; font-size: 16px; line-height: 1.7; color: var(--muted); max-width: 46ch;
+    }
+    #kfi-{{ section.id }} .kfi__cta{
+      display: inline-flex; align-items: center; gap: 8px;
+      margin-top: 24px; padding: 14px 26px;
+      background: var(--ki-purple-dark); color: #fff;
+      border-radius: 999px; font-size: 14px; font-weight: 650;
+      text-decoration: none; border: 0;
+      box-shadow: 0 14px 32px rgba(73,61,154,.22);
+      transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    }
+    #kfi-{{ section.id }} .kfi__cta:hover{
+      transform: translateY(-2px); background: #3f347f;
+      box-shadow: 0 18px 40px rgba(73,61,154,.28);
+    }
+    #kfi-{{ section.id }} .kfi__cta:focus-visible{
+      outline: 2px solid var(--ki-purple); outline-offset: 2px;
+    }
+    @media (max-width: 990px){
+      #kfi-{{ section.id }} .kfi__wrap{ padding: 64px 20px; }
+      #kfi-{{ section.id }} .kfi__grid{ grid-template-columns: 1fr; gap: 32px; }
+      #kfi-{{ section.id }} .kfi__grid--reverse .kfi__visual{ order: 0; }
+    }
+    @media (max-width: 750px){
+      #kfi-{{ section.id }} .kfi__wrap{ padding: 48px 16px; }
+    }
+  </style>
+
+  <div class="kfi__wrap">
+    <div class="kfi__grid {% if section.settings.image_position == 'right' %}kfi__grid--reverse{% endif %}">
+      <div class="kfi__visual">
+        {% if section.settings.image != blank %}
+          <img
+            src="{{ section.settings.image | image_url: width: 900 }}"
+            srcset="{{ section.settings.image | image_url: width: 600 }} 600w, {{ section.settings.image | image_url: width: 900 }} 900w, {{ section.settings.image | image_url: width: 1200 }} 1200w"
+            sizes="(min-width: 990px) 50vw, 100vw"
+            width="{{ section.settings.image.width }}"
+            height="{{ section.settings.image.height }}"
+            alt="{{ section.settings.title | escape }}"
+            loading="lazy"
+            decoding="async">
+        {% else %}
+          <div class="kfi__placeholder"></div>
+        {% endif %}
+      </div>
+      <div class="kfi__text">
+        {% if section.settings.eyebrow != blank %}
+          <p class="kfi__eyebrow">{{ section.settings.eyebrow }}</p>
+        {% endif %}
+        <h2 class="kfi__title">{{ section.settings.title }}</h2>
+        {% if section.settings.description != blank %}
+          <p class="kfi__desc">{{ section.settings.description }}</p>
+        {% endif %}
+        {% if section.settings.cta_text != blank %}
+          <a href="{{ section.settings.cta_link | default: '#' }}" class="kfi__cta">{{ section.settings.cta_text }}</a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": ".ki Feature Image",
+  "tag": "section",
+  "settings": [
+    { "type": "image_picker", "id": "image", "label": "Görsel" },
+    { "type": "select", "id": "image_position", "label": "Görsel konumu", "default": "left",
+      "options": [ { "value": "left", "label": "Sol" }, { "value": "right", "label": "Sağ" } ] },
+    { "type": "text",     "id": "eyebrow",     "label": "Üst etiket", "default": "Gerçek Denge" },
+    { "type": "text",     "id": "title",       "label": "Başlık",     "default": "Eczacı onaylı, klinik dozajlı" },
+    { "type": "textarea", "id": "description", "label": "Açıklama",   "default": ".ki Balance — her sachet'te tutarlı standart, şeffaf kaynak takibi." },
+    { "type": "text",     "id": "cta_text",    "label": "CTA metni",  "default": "Ürünü incele" },
+    { "type": "url",      "id": "cta_link",    "label": "CTA linki" },
+
+    { "type": "header", "content": "Style" },
+    { "type": "color", "id": "bg",    "label": "Background", "default": "#ffffff" },
+    { "type": "color", "id": "text",  "label": "Text",       "default": "#1a1a1a" },
+    { "type": "color", "id": "muted", "label": "Muted text", "default": "#493d9a" },
+    { "type": "range", "id": "max_width", "label": "Max width (px)", "min": 1000, "max": 1600, "step": 10, "default": 1200 },
+    { "type": "range", "id": "pad_y",     "label": "Vertical padding (px)", "min": 24, "max": 160, "step": 4, "default": 88 },
+    { "type": "range", "id": "pad_x",     "label": "Horizontal padding (px)", "min": 16, "max": 90, "step": 2, "default": 40 }
+  ],
+  "presets": [{ "name": ".ki Feature Image" }]
+}
+{% endschema %}

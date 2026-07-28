@@ -1,0 +1,92 @@
+{% comment %}
+  .ki Subscriptions Header (scoped) — Brand Kit
+  Title + subtitle + primary CTA ("Yeni abonelik").
+
+  Brand kit:
+    #493d9a / #f8f8f6 / #b2a5ff / #dad2ff
+{% endcomment %}
+
+<section id="mshsh-{{ section.id }}" class="section">
+  <style>
+    #mshsh-{{ section.id }}{
+      --ki-purple-dark: #493d9a;
+      --ki-offwhite: #f8f8f6;
+      --ki-purple: #b2a5ff;
+      --ki-lilac: #dad2ff;
+
+      --bg: {{ section.settings.bg | default: '#ffffff' }};
+      --text: {{ section.settings.text | default: '#1a1a1a' }};
+      --muted: {{ section.settings.muted | default: 'rgba(26,26,26,.64)' }};
+
+      --maxw: {{ section.settings.max_width | default: 1400 }}px;
+      --py: {{ section.settings.pad_y | default: 48 }}px;
+      --px: {{ section.settings.pad_x | default: 32 }}px;
+
+      background: var(--bg); color: var(--text);
+    }
+    #mshsh-{{ section.id }} .mshsh__wrap{
+      max-width: var(--maxw); margin: 0 auto; padding: var(--py) var(--px) 0;
+      display: flex; flex-wrap: wrap; gap: 20px; justify-content: space-between; align-items: flex-end;
+    }
+    #mshsh-{{ section.id }} .mshsh__title{
+      margin: 0; font-size: clamp(28px, 4vw, 44px); font-weight: 650; letter-spacing: -0.02em;
+      line-height: 1.1; color: var(--ki-purple-dark);
+      text-shadow: 0 10px 26px rgba(73,61,154,.10);
+    }
+    #mshsh-{{ section.id }} .mshsh__desc{
+      margin: 8px 0 0; font-size: 14px; line-height: 1.6; color: var(--muted);
+      max-width: 640px;
+    }
+    #mshsh-{{ section.id }} .mshsh__cta{
+      display: inline-flex; align-items: center; gap: 8px; height: 44px; padding: 0 20px;
+      border-radius: 999px; background: var(--ki-purple-dark); color: #fff;
+      font-weight: 650; font-size: 14px; text-decoration: none; border: 0; cursor: pointer;
+      transition: transform .2s, box-shadow .2s;
+    }
+    #mshsh-{{ section.id }} .mshsh__cta:hover{
+      transform: translateY(-2px); box-shadow: 0 14px 28px rgba(73,61,154,.24);
+    }
+    #mshsh-{{ section.id }} .mshsh__cta:focus-visible{
+      outline: 2px solid var(--ki-purple-dark); outline-offset: 3px;
+    }
+    @media (max-width: 750px){
+      #mshsh-{{ section.id }} .mshsh__wrap{ padding: 32px 16px 0; }
+    }
+  </style>
+
+  <div class="mshsh__wrap">
+    <div>
+      <h1 class="mshsh__title">{{ section.settings.title | default: 'Abonelikler' }}</h1>
+      {% if section.settings.description != blank %}
+        <p class="mshsh__desc">{{ section.settings.description }}</p>
+      {% endif %}
+    </div>
+    {% if section.settings.cta_label != blank %}
+      <a href="{{ section.settings.cta_href | default: '#' }}" class="mshsh__cta">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        {{ section.settings.cta_label }}
+      </a>
+    {% endif %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "MSH · Subscriptions",
+  "settings": [
+    { "type": "text", "id": "title", "label": "Title", "default": "Abonelikler" },
+    { "type": "textarea", "id": "description", "label": "Description", "default": "Aktif aboneliklerini yönet, sepetini düzenle veya teslimat sıklığını değiştir." },
+    { "type": "text", "id": "cta_label", "label": "CTA label", "default": "Yeni abonelik" },
+    { "type": "url", "id": "cta_href", "label": "CTA link" },
+
+    { "type": "header", "content": "Style" },
+    { "type": "color", "id": "bg", "label": "Background", "default": "#ffffff" },
+    { "type": "color", "id": "text", "label": "Text", "default": "#1a1a1a" },
+    { "type": "color", "id": "muted", "label": "Muted", "default": "#493d9a" },
+    { "type": "range", "id": "max_width", "label": "Max width (px)", "min": 1000, "max": 1600, "step": 10, "default": 1400 },
+    { "type": "range", "id": "pad_y", "label": "Vertical padding (px)", "min": 16, "max": 120, "step": 4, "default": 48 },
+    { "type": "range", "id": "pad_x", "label": "Horizontal padding (px)", "min": 12, "max": 80, "step": 2, "default": 32 }
+  ],
+  "presets": [{ "name": "MSH · Subscriptions header" }]
+}
+{% endschema %}

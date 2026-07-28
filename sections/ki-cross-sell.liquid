@@ -1,0 +1,208 @@
+<link href="https://fonts.googleapis.com/css2?family=Raleway:wght@700;800&display=swap" rel="stylesheet">
+<style>
+.kics-{{ section.id }}{
+  --p:#493d9a;--lil:#dad2ff;
+  background:{{ section.settings.bg | default: '#f8f8f6' }};
+  padding:{{ section.settings.pad_y | default: 64 }}px 0;
+  font-family:system-ui,sans-serif;
+  overflow-x:hidden;
+}
+.kics-{{ section.id }} .kics-inner{
+  max-width:1180px;margin:0 auto;
+  padding:0 {{ section.settings.pad_x | default: 32 }}px;
+}
+.kics-{{ section.id }} .kics-head{
+  display:flex;align-items:flex-end;justify-content:space-between;
+  gap:16px;margin-bottom:28px;flex-wrap:wrap;
+}
+.kics-{{ section.id }} .kics-eyebrow{
+  font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  color:rgba(73,61,154,.5);display:block;margin-bottom:6px;
+}
+.kics-{{ section.id }} .kics-title{
+  font-family:'Raleway',system-ui,sans-serif;
+  font-size:clamp(20px,3vw,30px);font-weight:800;
+  color:#1a1340;letter-spacing:-.02em;margin:0;
+}
+.kics-{{ section.id }} .kics-all{
+  display:inline-flex;align-items:center;gap:5px;
+  font-size:12px;font-weight:700;color:var(--p);
+  text-decoration:none;white-space:nowrap;transition:gap .15s;
+}
+.kics-{{ section.id }} .kics-all:hover{gap:8px;}
+.kics-{{ section.id }} .kics-all svg{width:13px;height:13px;}
+
+/* Grid */
+.kics-{{ section.id }} .kics-grid{
+  display:grid;
+  grid-template-columns:repeat({{ section.settings.columns | default: 4 }},1fr);
+  gap:16px;
+}
+@media(max-width:900px){
+  .kics-{{ section.id }} .kics-grid{grid-template-columns:repeat(2,1fr);gap:12px;}
+}
+@media(max-width:480px){
+  .kics-{{ section.id }} .kics-inner{padding:0 12px;}
+  .kics-{{ section.id }} .kics-grid{gap:10px;}
+}
+
+/* Kart */
+.kics-{{ section.id }} .kics-card{
+  background:#fff;border-radius:16px;
+  border:1px solid rgba(73,61,154,.08);
+  box-shadow:0 2px 12px rgba(73,61,154,.06);
+  overflow:hidden;display:flex;flex-direction:column;
+  text-decoration:none;color:inherit;
+  transition:transform .22s,box-shadow .22s;
+  position:relative;
+}
+.kics-{{ section.id }} .kics-card:hover{
+  transform:translateY(-4px);
+  box-shadow:0 10px 32px rgba(73,61,154,.12);
+}
+
+/* Görsel — 4:5 oranı */
+.kics-{{ section.id }} .kics-card__media{
+  position:relative;
+  padding-top:125%; /* 4:5 = 100/80 * 100 = 125% */
+  overflow:hidden;
+  background:linear-gradient(135deg,#ede8ff,#f5f3ff);
+}
+.kics-{{ section.id }} .kics-card__media img{
+  position:absolute;top:0;left:0;
+  width:100%;height:100%;object-fit:cover;display:block;
+}
+
+/* Rozet */
+.kics-{{ section.id }} .kics-card__badge{
+  position:absolute;top:10px;left:10px;z-index:2;
+  display:inline-flex;align-items:center;gap:5px;
+  padding:4px 10px;border-radius:50px;
+  font-size:10px;font-weight:800;
+  line-height:1;pointer-events:none;
+}
+.kics-{{ section.id }} .kics-card__badge img{
+  width:14px;height:14px;object-fit:contain;flex-shrink:0;
+}
+
+/* Gövde */
+.kics-{{ section.id }} .kics-card__body{
+  padding:14px 14px 16px;
+  display:flex;flex-direction:column;flex:1;gap:4px;
+}
+.kics-{{ section.id }} .kics-card__category{
+  font-size:9px;font-weight:700;letter-spacing:.08em;
+  text-transform:uppercase;color:rgba(73,61,154,.5);
+}
+.kics-{{ section.id }} .kics-card__name{
+  font-size:14px;font-weight:700;color:#1a1340;
+  line-height:1.25;margin:2px 0 4px;
+}
+.kics-{{ section.id }} .kics-card__desc{
+  font-size:11px;color:#6b6b8a;line-height:1.5;flex:1;
+}
+.kics-{{ section.id }} .kics-card__footer{
+  display:flex;align-items:center;justify-content:space-between;margin-top:10px;
+}
+.kics-{{ section.id }} .kics-card__price{
+  font-size:15px;font-weight:900;color:var(--p);
+}
+.kics-{{ section.id }} .kics-card__btn{
+  width:30px;height:30px;border-radius:50%;
+  background:var(--p);color:#fff;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;transition:transform .15s,background .15s;
+}
+.kics-{{ section.id }} .kics-card:hover .kics-card__btn{transform:scale(1.1);background:#3b3280;}
+.kics-{{ section.id }} .kics-card__btn svg{width:14px;height:14px;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
+
+/* Mobil kart ismi küçük ekranda */
+@media(max-width:400px){
+  .kics-{{ section.id }} .kics-card__name{font-size:12px;}
+  .kics-{{ section.id }} .kics-card__body{padding:10px 10px 12px;}
+}
+</style>
+
+{%- assign cs_blocks = section.blocks | where: 'type', 'product_card' -%}
+{%- if cs_blocks.size > 0 -%}
+<section class="kics-{{ section.id }}" id="KiCS-{{ section.id }}">
+  <div class="kics-inner">
+    <div class="kics-head">
+      <div>
+        {%- if section.settings.eyebrow != blank -%}<span class="kics-eyebrow">{{ section.settings.eyebrow | escape }}</span>{%- endif -%}
+        <h2 class="kics-title">{{ section.settings.title | escape }}</h2>
+      </div>
+      {%- if section.settings.all_url != blank -%}
+        <a href="{{ section.settings.all_url }}" class="kics-all">
+          {{ section.settings.all_label | default: 'Tümünü Gör' | escape }}
+          <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+      {%- endif -%}
+    </div>
+    <div class="kics-grid">
+      {%- for block in cs_blocks -%}
+        {%- assign bp = block.settings -%}
+        {%- assign cs_product = bp.product -%}
+        {%- if cs_product != blank -%}
+        <a href="{{ cs_product.url }}" class="kics-card" {{ block.shopify_attributes }}>
+          <div class="kics-card__media">
+            {%- if cs_product.featured_image != blank -%}
+              <img src="{{ cs_product.featured_image | image_url: width: 800 }}" alt="{{ cs_product.featured_image.alt | escape }}" loading="lazy" width="800" height="1000">
+            {%- endif -%}
+            {%- if bp.badge_text != blank -%}
+              <span class="kics-card__badge" style="background:{{ bp.badge_bg | default: '#493d9a' }};color:{{ bp.badge_color | default: '#ffffff' }};">
+                {%- if bp.badge_image != blank -%}<img src="{{ bp.badge_image | image_url: width: 40 }}" alt="">{%- endif -%}
+                {{ bp.badge_text | escape }}
+              </span>
+            {%- endif -%}
+          </div>
+          <div class="kics-card__body">
+            {%- if bp.category != blank -%}<span class="kics-card__category">{{ bp.category | escape }}</span>{%- endif -%}
+            <p class="kics-card__name">{{ bp.custom_name | default: cs_product.title | escape }}</p>
+            {%- if bp.description != blank -%}<p class="kics-card__desc">{{ bp.description | escape }}</p>{%- endif -%}
+            <div class="kics-card__footer">
+              <span class="kics-card__price">{{ cs_product.price | money }}</span>
+              <span class="kics-card__btn"><svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+            </div>
+          </div>
+        </a>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Cross-sell Ürünler",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {"type":"color","id":"bg","label":"Arka plan","default":"#f8f8f6"},
+    {"type":"range","id":"pad_y","min":24,"max":120,"step":8,"unit":"px","label":"Dikey dolgu","default":64},
+    {"type":"range","id":"pad_x","min":12,"max":60,"step":4,"unit":"px","label":"Yatay dolgu","default":32},
+    {"type":"range","id":"columns","min":2,"max":5,"step":1,"label":"Kolon say\u0131s\u0131 (masa\u00fcst\u00fc)","default":4},
+    {"type":"text","id":"eyebrow","label":"\u00dcst etiket","default":"Bunu da be\u011fenebilirsin"},
+    {"type":"text","id":"title","label":"Ba\u015fl\u0131k","default":"Di\u011fer .ki \u00dcr\u00fcnleri"},
+    {"type":"url","id":"all_url","label":"T\u00fcm\u00fcn\u00fc g\u00f6r linki"},
+    {"type":"text","id":"all_label","label":"T\u00fcm link yaz\u0131s\u0131","default":"T\u00fcm\u00fcn\u00fc G\u00f6r"}
+  ],
+  "blocks":[{
+    "type":"product_card",
+    "name":"\u00dcr\u00fcn Kart\u0131",
+    "settings":[
+      {"type":"product","id":"product","label":"\u00dcr\u00fcn"},
+      {"type":"text","id":"custom_name","label":"\u00d6zel \u00fcr\u00fcn ad\u0131","info":"Bo\u015f b\u0131rak\u0131rsan \u00fcr\u00fcn\u00fcn as\u0131l ad\u0131 kullan\u0131l\u0131r"},
+      {"type":"text","id":"category","label":"Kategori","default":"\u0130ntim Bak\u0131m"},
+      {"type":"text","id":"description","label":"K\u0131sa a\u00e7\u0131klama"},
+      {"type":"header","content":"Rozet"},
+      {"type":"text","id":"badge_text","label":"Rozet metni","info":"Bo\u015f b\u0131rak\u0131rsan rozet g\u00f6r\u00fcnmez"},
+      {"type":"color","id":"badge_bg","label":"Rozet arka plan","default":"#493d9a"},
+      {"type":"color","id":"badge_color","label":"Rozet yaz\u0131 rengi","default":"#ffffff"},
+      {"type":"image_picker","id":"badge_image","label":"Rozet ikonu","info":"\u0130ste\u011fe ba\u011fl\u0131, 40x40px PNG"}
+    ]
+  }],
+  "presets":[{"name":"Cross-sell \u00dcr\u00fcnler"}]
+}
+{% endschema %}

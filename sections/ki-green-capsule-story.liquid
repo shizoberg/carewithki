@@ -1,0 +1,452 @@
+{% comment %}
+  .ki Green Capsule Story (scoped) — Brand Kit
+  Scroll-driven story: capsule → calendar → benefits stages.
+
+  Brand kit:
+    #493d9a (main)
+    #f8f8f6 (offwhite)
+    #b2a5ff (primary)
+    #dad2ff (lilac)
+
+  Stage colors are configurable via schema.
+{% endcomment %}
+
+{%- assign day_count = section.settings.day_count | default: 30 -%}
+{%- assign ingredients = section.blocks | where: 'type', 'ingredient' -%}
+{%- assign benefits = section.blocks | where: 'type', 'benefit' -%}
+
+<section id="kgs-{{ section.id }}" class="section">
+  <style>
+    #kgs-{{ section.id }}{
+      --ki-purple-dark: #493d9a;
+      --ki-offwhite: #f8f8f6;
+      --ki-purple: #b2a5ff;
+      --ki-lilac: #dad2ff;
+
+      --cap-light: {{ section.settings.capsule_top_color | default: '#b2a5ff' }};
+      --cap-dark:  {{ section.settings.capsule_bottom_color | default: '#493d9a' }};
+      --accent:    {{ section.settings.accent_color | default: '#493d9a' }};
+
+      --bg-top:    {{ section.settings.bg_top | default: '#f8f8f6' }};
+      --bg-bottom: {{ section.settings.bg_bottom | default: '#ffffff' }};
+
+      --text: {{ section.settings.text | default: '#1a1a1a' }};
+      --muted: {{ section.settings.muted | default: 'rgba(26,26,26,.72)' }};
+
+      --maxw: {{ section.settings.max_width | default: 1200 }}px;
+
+      background: linear-gradient(to bottom, var(--bg-top), var(--bg-bottom));
+      color: var(--text);
+    }
+    #kgs-{{ section.id }}.section{
+      position: relative; height: {{ section.settings.section_height | default: 320 }}vh;
+    }
+    #kgs-{{ section.id }} .kgs__sticky{
+      position: sticky; top: 0; height: 100vh;
+      display: flex; align-items: center; overflow: hidden;
+    }
+    #kgs-{{ section.id }} .kgs__wrap{
+      max-width: var(--maxw); margin: 0 auto; padding: 40px;
+      width: 100%;
+    }
+    #kgs-{{ section.id }} .kgs__head{ text-align: center; margin-bottom: 28px; }
+    #kgs-{{ section.id }} .kgs__eyebrow{
+      font-size: 12px; font-weight: 700; letter-spacing: 1.6px; text-transform: uppercase;
+      color: var(--accent); margin: 0 0 10px;
+    }
+    #kgs-{{ section.id }} .kgs__title{
+      font-size: clamp(28px,4vw,44px); font-weight: 650; letter-spacing: -0.02em;
+      line-height: 1.15; color: var(--ki-purple-dark);
+      text-shadow: 0 10px 26px rgba(73,61,154,.10); margin: 0;
+    }
+
+    #kgs-{{ section.id }} .kgs__grid{
+      display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center;
+    }
+    #kgs-{{ section.id }} .kgs__scene{ position: relative; height: 420px; }
+    #kgs-{{ section.id }} .kgs__stage{
+      position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
+    }
+    #kgs-{{ section.id }} .kgs__stage.is-active{ opacity: 1; pointer-events: auto; }
+
+    /* Capsule */
+    #kgs-{{ section.id }} .kgs__capwrap{
+      position: relative; width: 100%; height: 100%;
+      display: flex; align-items: center; justify-content: center;
+    }
+    #kgs-{{ section.id }} .kgs__cap{ position: relative; width: 240px; height: 88px; }
+    #kgs-{{ section.id }} .kgs__half{
+      position: absolute; top: 0; width: 120px; height: 88px;
+      box-shadow: 0 10px 24px rgba(73,61,154,.18);
+      transition: transform 0.3s ease-out;
+    }
+    #kgs-{{ section.id }} .kgs__top{
+      left: 0; border-radius: 999px 0 0 999px;
+      background: linear-gradient(135deg, var(--cap-light), color-mix(in srgb, var(--cap-light) 70%, transparent));
+      transform-origin: right center;
+    }
+    #kgs-{{ section.id }} .kgs__top::after{
+      content:''; position: absolute; inset: 0; border-radius: 999px 0 0 999px;
+      background: linear-gradient(to bottom, rgba(255,255,255,.35), transparent);
+    }
+    #kgs-{{ section.id }} .kgs__bot{
+      right: 0; border-radius: 0 999px 999px 0;
+      background: linear-gradient(135deg, var(--cap-dark), color-mix(in srgb, var(--cap-dark) 70%, black));
+      transform-origin: left center;
+      display: flex; align-items: center; justify-content: center;
+    }
+    #kgs-{{ section.id }} .kgs__brand{ color: #fff; font-weight: 700; font-size: 13px; letter-spacing: 0.05em; opacity: 0.88; }
+
+    #kgs-{{ section.id }} .kgs__ingpill{
+      position: absolute; z-index: 10; opacity: 0; pointer-events: none;
+      display: flex; flex-direction: column; align-items: center; gap: 6px;
+      transition: all 0.5s ease-out;
+    }
+    #kgs-{{ section.id }} .kgs__ingdot{
+      width: 60px; height: 60px; border-radius: 50%; background: var(--ing-color);
+      color: #fff; display: flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 700; text-align: center; padding: 0 4px; line-height: 1.1;
+      box-shadow: 0 8px 20px rgba(73,61,154,.22);
+    }
+    #kgs-{{ section.id }} .kgs__ingname{
+      font-size: 11px; font-weight: 700; color: var(--ki-purple-dark);
+      background: #fff; padding: 4px 10px; border-radius: 999px; white-space: nowrap;
+      box-shadow: 0 6px 14px rgba(73,61,154,.12);
+    }
+    #kgs-{{ section.id }} .kgs__hint{
+      position: absolute; bottom: -2rem; left: 50%; transform: translateX(-50%);
+      font-size: 13px; color: var(--muted); white-space: nowrap;
+      animation: kgs-pulse 2s ease-in-out infinite;
+    }
+    @keyframes kgs-pulse{ 0%,100%{ opacity:.5; } 50%{ opacity: 1; } }
+
+    /* Calendar */
+    #kgs-{{ section.id }} .kgs__calcard{
+      width: 100%; max-width: 400px;
+      background: #fff; border: 1px solid rgba(73,61,154,.14); border-radius: 18px;
+      padding: 22px; box-shadow: 0 18px 40px rgba(73,61,154,.14);
+    }
+    #kgs-{{ section.id }} .kgs__calhead{ display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+    #kgs-{{ section.id }} .kgs__caltitle{ font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--ki-purple-dark); }
+    #kgs-{{ section.id }} .kgs__calcounter{ font-size: 13px; font-weight: 700; color: var(--accent); }
+    #kgs-{{ section.id }} .kgs__calgrid{ display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; }
+    #kgs-{{ section.id }} .kgs__day{
+      aspect-ratio: 1; border-radius: 8px; background: var(--ki-lilac);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 700; color: var(--ki-purple-dark);
+      transform: scale(0.95); transition: all 0.2s ease; position: relative;
+    }
+    #kgs-{{ section.id }} .kgs__day .kgs__tick{ width: 60%; height: 60%; display: none; color: #fff; }
+    #kgs-{{ section.id }} .kgs__day.is-checked{
+      background: var(--accent); color: #fff; transform: scale(1);
+      box-shadow: 0 4px 10px rgba(73,61,154,.18);
+    }
+    #kgs-{{ section.id }} .kgs__day.is-checked .kgs__num{ display: none; }
+    #kgs-{{ section.id }} .kgs__day.is-checked .kgs__tick{ display: block; }
+    #kgs-{{ section.id }} .kgs__bar{ height: 6px; background: var(--ki-lilac); border-radius: 999px; overflow: hidden; margin-top: 16px; }
+    #kgs-{{ section.id }} .kgs__barfill{ height: 100%; background: linear-gradient(to right, var(--accent), var(--ki-purple)); width: 0%; transition: width 0.3s ease; }
+    #kgs-{{ section.id }} .kgs__done{ display: none; text-align: center; font-size: 13px; font-weight: 700; color: var(--accent); margin-top: 12px; }
+    #kgs-{{ section.id }} .kgs__done.is-visible{ display: block; }
+
+    /* Benefits */
+    #kgs-{{ section.id }} .kgs__benefits{ width: 100%; max-width: 400px; display: flex; flex-direction: column; gap: 12px; }
+    #kgs-{{ section.id }} .kgs__ben{
+      display: flex; align-items: center; gap: 14px; padding: 16px;
+      background: #fff; border: 1px solid rgba(73,61,154,.14); border-radius: 18px;
+      box-shadow: 0 12px 28px rgba(73,61,154,.10);
+      opacity: 0; transform: translateY(16px); transition: all 0.5s ease;
+    }
+    #kgs-{{ section.id }} .kgs__ben.is-visible{ opacity: 1; transform: translateY(0); }
+    #kgs-{{ section.id }} .kgs__benicon{
+      width: 52px; height: 52px; border-radius: 50%;
+      background: var(--ben-bg); color: var(--ben-fg);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px; flex-shrink: 0;
+    }
+    #kgs-{{ section.id }} .kgs__ben h4{ font-size: 15px; font-weight: 700; color: var(--ki-purple-dark); line-height: 1.2; margin: 0; letter-spacing: -0.01em; }
+    #kgs-{{ section.id }} .kgs__ben p{ font-size: 13px; color: var(--muted); margin: 4px 0 0; line-height: 1.45; }
+
+    /* Right text */
+    #kgs-{{ section.id }} .kgs__text{ position: relative; min-height: 280px; }
+    #kgs-{{ section.id }} .kgs__tstage{
+      position: absolute; inset: 0; display: flex; flex-direction: column; gap: 14px;
+      opacity: 0; transform: translateY(8px); transition: opacity 0.3s ease, transform 0.3s ease;
+      pointer-events: none;
+    }
+    #kgs-{{ section.id }} .kgs__tstage.is-active{ opacity: 1; transform: translateY(0); pointer-events: auto; }
+    #kgs-{{ section.id }} .kgs__pill{
+      display: inline-flex; width: fit-content; align-items: center;
+      background: var(--ki-lilac); color: var(--ki-purple-dark);
+      font-size: 11px; font-weight: 700; letter-spacing: 1.4px; text-transform: uppercase;
+      padding: 6px 14px; border-radius: 999px;
+    }
+    #kgs-{{ section.id }} .kgs__tstage h3{
+      font-size: clamp(22px,3vw,32px); font-weight: 650; color: var(--ki-purple-dark);
+      letter-spacing: -0.02em; line-height: 1.2; margin: 0;
+    }
+    #kgs-{{ section.id }} .kgs__tstage p{ font-size: 16px; color: var(--muted); line-height: 1.65; max-width: 36rem; margin: 0; }
+    #kgs-{{ section.id }} .kgs__meta{ font-size: 13px; font-weight: 700; color: var(--accent); }
+    #kgs-{{ section.id }} .kgs__dots{ display: flex; gap: 6px; margin-top: 14px; }
+    #kgs-{{ section.id }} .kgs__dots span{ height: 4px; width: 24px; border-radius: 999px; background: rgba(73,61,154,.18); transition: all 0.3s ease; }
+    #kgs-{{ section.id }} .kgs__dots span.is-active{ width: 44px; background: var(--accent); }
+
+    @media (max-width: 990px){
+      #kgs-{{ section.id }} .kgs__wrap{ padding: 24px 20px; }
+      #kgs-{{ section.id }} .kgs__grid{ grid-template-columns: 1fr; gap: 24px; }
+      #kgs-{{ section.id }} .kgs__scene{ height: 340px; }
+    }
+    @media (max-width: 750px){
+      #kgs-{{ section.id }} .kgs__wrap{ padding: 18px 16px; }
+      #kgs-{{ section.id }} .kgs__scene{ height: 300px; }
+    }
+  </style>
+
+  <div class="kgs__sticky">
+    <div class="kgs__wrap">
+      <div class="kgs__head">
+        {% if section.settings.eyebrow != blank %}<p class="kgs__eyebrow">{{ section.settings.eyebrow }}</p>{% endif %}
+        {% if section.settings.title != blank %}<h2 class="kgs__title">{{ section.settings.title }}</h2>{% endif %}
+      </div>
+
+      <div class="kgs__grid">
+        <div class="kgs__scene">
+          <div class="kgs__stage is-active" data-stage="capsule">
+            <div class="kgs__capwrap">
+              {% for ing in ingredients %}
+                <div class="kgs__ingpill" data-index="{{ forloop.index0 }}" style="--ing-color: {{ ing.settings.color | default: '#493d9a' }};">
+                  <div class="kgs__ingdot">{{ ing.settings.dose }}</div>
+                  <span class="kgs__ingname">{{ ing.settings.name }}</span>
+                </div>
+              {% endfor %}
+              <div class="kgs__cap">
+                <div class="kgs__half kgs__top"></div>
+                <div class="kgs__half kgs__bot"><span class="kgs__brand">{{ section.settings.capsule_brand_text | default: '.ki' }}</span></div>
+              </div>
+              <div class="kgs__hint">↓ {{ section.settings.scroll_hint | default: 'Aşağı kaydır, kapsülü aç' }}</div>
+            </div>
+          </div>
+
+          <div class="kgs__stage" data-stage="calendar">
+            <div class="kgs__calcard">
+              <div class="kgs__calhead">
+                <span class="kgs__caltitle">{{ section.settings.calendar_title | default: '30 Gün · 1 Kutu' }}</span>
+                <span class="kgs__calcounter"><span class="kgs__calcount">0</span>/{{ day_count }}</span>
+              </div>
+              <div class="kgs__calgrid">
+                {% for i in (1..day_count) %}
+                  <div class="kgs__day" data-day="{{ forloop.index0 }}">
+                    <span class="kgs__num">{{ i }}</span>
+                    <svg class="kgs__tick" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                  </div>
+                {% endfor %}
+              </div>
+              <div class="kgs__bar"><div class="kgs__barfill"></div></div>
+              <div class="kgs__done">✓ {{ section.settings.calendar_done_text | default: '30 gün tamamlandı · Dengeyi hisset' }}</div>
+            </div>
+          </div>
+
+          <div class="kgs__stage" data-stage="benefits">
+            <div class="kgs__benefits">
+              {% for b in benefits %}
+                <div class="kgs__ben" data-index="{{ forloop.index0 }}" style="--ben-bg: {{ b.settings.bg_color | default: '#dad2ff' }}; --ben-fg: {{ b.settings.icon_color | default: '#493d9a' }};">
+                  <div class="kgs__benicon">{{ b.settings.icon | default: '✦' }}</div>
+                  <div>
+                    <h4>{{ b.settings.title }}</h4>
+                    <p>{{ b.settings.description }}</p>
+                  </div>
+                </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+
+        <div class="kgs__text">
+          <div class="kgs__tstage is-active" data-stage="capsule">
+            <div class="kgs__pill">{{ section.settings.stage1_eyebrow | default: '01 · Formül' }}</div>
+            <h3>{{ section.settings.stage1_title | default: 'Kapsülün içinde 4 etken madde' }}</h3>
+            <p>{{ section.settings.stage1_body | default: 'Her biri klinik dozajda. Kaydırdıkça kapsül açılır, içerik açığa çıkar.' }}</p>
+            <div class="kgs__meta"><span class="kgs__pct">0</span>% açıldı</div>
+          </div>
+          <div class="kgs__tstage" data-stage="calendar">
+            <div class="kgs__pill">{{ section.settings.stage2_eyebrow | default: '02 · Ritüel' }}</div>
+            <h3>{{ section.settings.stage2_title | default: '30 gün, günde 1 kapsül' }}</h3>
+            <p>{{ section.settings.stage2_body | default: 'Tutarlı sonuç için 30 günlük döngü önerilir. Her gece yatmadan önce 1 kapsül.' }}</p>
+            <div class="kgs__meta"><span class="kgs__calmirror">0</span>/{{ day_count }} gün</div>
+          </div>
+          <div class="kgs__tstage" data-stage="benefits">
+            <div class="kgs__pill">{{ section.settings.stage3_eyebrow | default: '03 · Etki' }}</div>
+            <h3>{{ section.settings.stage3_title | default: 'Kadınların 3 gece probleminde fark' }}</h3>
+            <p>{{ section.settings.stage3_body | default: 'Düzenli kullanımda uyku kalitesi artar, sıcak basmaları azalır ve hormonal denge desteklenir.' }}</p>
+            <div class="kgs__meta">{{ section.settings.stage3_meta | default: '2–4 hafta içinde fark' }}</div>
+          </div>
+          <div class="kgs__dots">
+            <span class="is-active" data-dot="capsule"></span>
+            <span data-dot="calendar"></span>
+            <span data-dot="benefits"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function(){
+      var section = document.getElementById('kgs-{{ section.id }}');
+      if(!section) return;
+      var dayCount = {{ day_count }};
+      var ingPills = section.querySelectorAll('.kgs__ingpill');
+      var capTop = section.querySelector('.kgs__top');
+      var capBot = section.querySelector('.kgs__bot');
+      var calDays = section.querySelectorAll('.kgs__day');
+      var calCount = section.querySelector('.kgs__calcount');
+      var calMirror = section.querySelector('.kgs__calmirror');
+      var barFill = section.querySelector('.kgs__barfill');
+      var calDone = section.querySelector('.kgs__done');
+      var pct = section.querySelector('.kgs__pct');
+      var bens = section.querySelectorAll('.kgs__ben');
+      var stages = section.querySelectorAll('.kgs__stage');
+      var tstages = section.querySelectorAll('.kgs__tstage');
+      var dots = section.querySelectorAll('.kgs__dots span');
+
+      function setActive(name){
+        stages.forEach(function(s){ s.classList.toggle('is-active', s.dataset.stage === name); });
+        tstages.forEach(function(s){ s.classList.toggle('is-active', s.dataset.stage === name); });
+        dots.forEach(function(d){ d.classList.toggle('is-active', d.dataset.dot === name); });
+      }
+
+      function update(){
+        var rect = section.getBoundingClientRect();
+        var vh = window.innerHeight;
+        var total = section.offsetHeight - vh;
+        var scrolled = Math.min(Math.max(-rect.top, 0), total);
+        var p = total > 0 ? scrolled / total : 0;
+        var capP = Math.min(1, Math.max(0, p/0.4));
+        var calP = Math.min(1, Math.max(0, (p-0.4)/0.35));
+        var benP = Math.min(1, Math.max(0, (p-0.75)/0.25));
+
+        var stage = 'capsule';
+        if(benP > 0.05) stage = 'benefits';
+        else if(calP > 0.05) stage = 'calendar';
+        setActive(stage);
+
+        var gap = capP*96, tilt = capP*12;
+        if(capTop) capTop.style.transform = 'translateX(-'+(gap/2)+'px) rotate(-'+tilt+'deg)';
+        if(capBot) capBot.style.transform = 'translateX('+(gap/2)+'px) rotate('+tilt+'deg)';
+        if(pct) pct.textContent = Math.round(capP*100);
+
+        var t = Math.min(1, Math.max(0, (capP-0.3)/0.7));
+        var angles = [-60,-20,20,60];
+        ingPills.forEach(function(pill, i){
+          var idx = parseInt(pill.dataset.index,10);
+          var a = angles[idx%4] || (idx*30 - 60);
+          var d = 120*t;
+          var x = Math.sin(a*Math.PI/180)*d;
+          var y = -Math.cos(a*Math.PI/180)*d - 24;
+          pill.style.transform = 'translate('+x+'px,'+y+'px) scale('+(0.4 + t*0.8)+')';
+          pill.style.opacity = capP > 0.35 ? t : 0;
+        });
+
+        var checked = Math.min(dayCount, Math.floor(calP*(dayCount+1)));
+        calDays.forEach(function(d,i){ d.classList.toggle('is-checked', i < checked); });
+        if(calCount) calCount.textContent = checked;
+        if(calMirror) calMirror.textContent = checked;
+        if(barFill) barFill.style.width = ((checked/dayCount)*100)+'%';
+        if(calDone) calDone.classList.toggle('is-visible', checked >= dayCount);
+
+        bens.forEach(function(b,i){
+          var delay = i*0.25;
+          var bt = Math.min(1, Math.max(0, (benP - delay)/0.4));
+          b.classList.toggle('is-visible', bt > 0.1);
+        });
+      }
+      update();
+      window.addEventListener('scroll', update, { passive: true });
+      window.addEventListener('resize', update);
+    })();
+  </script>
+</section>
+
+{% schema %}
+{
+  "name": ".ki Green Capsule Story",
+  "tag": "section",
+  "settings": [
+    { "type": "header", "content": "Üst başlık" },
+    { "type": "text", "id": "eyebrow", "label": "Üst etiket", "default": ".ki Night · Kapsül" },
+    { "type": "text", "id": "title",   "label": "Başlık",     "default": "Gece dengesi, 30 günde fark" },
+
+    { "type": "header", "content": "Kapsül görseli" },
+    { "type": "color", "id": "capsule_top_color",    "label": "Kapsül üst yarı",     "default": "#b2a5ff" },
+    { "type": "color", "id": "capsule_bottom_color", "label": "Kapsül alt yarı",     "default": "#493d9a" },
+    { "type": "color", "id": "accent_color",         "label": "Aksan rengi",          "default": "#493d9a" },
+    { "type": "text",  "id": "capsule_brand_text",   "label": "Kapsül üzerindeki marka", "default": ".ki" },
+    { "type": "text",  "id": "scroll_hint",          "label": "Kaydırma ipucu",       "default": "Aşağı kaydır, kapsülü aç" },
+
+    { "type": "header", "content": "Stage 1 — Formül" },
+    { "type": "text",     "id": "stage1_eyebrow", "label": "Stage 1 etiketi", "default": "01 · Formül" },
+    { "type": "text",     "id": "stage1_title",   "label": "Stage 1 başlığı", "default": "Kapsülün içinde 4 etken madde" },
+    { "type": "textarea", "id": "stage1_body",    "label": "Stage 1 metni",   "default": "Magnezyum, Hayıt, Çin Meleki Otu ve Bor — her biri klinik dozajda." },
+
+    { "type": "header", "content": "Stage 2 — Takvim" },
+    { "type": "range",    "id": "day_count",          "label": "Takvim gün sayısı", "min": 7, "max": 60, "step": 1, "default": 30 },
+    { "type": "text",     "id": "calendar_title",     "label": "Takvim başlığı",    "default": "30 Gün · 1 Kutu" },
+    { "type": "text",     "id": "calendar_done_text", "label": "Takvim tamamlandı", "default": "30 gün tamamlandı · Dengeyi hisset" },
+    { "type": "text",     "id": "stage2_eyebrow",     "label": "Stage 2 etiketi",   "default": "02 · Ritüel" },
+    { "type": "text",     "id": "stage2_title",       "label": "Stage 2 başlığı",   "default": "30 gün, günde 1 kapsül" },
+    { "type": "textarea", "id": "stage2_body",        "label": "Stage 2 metni",     "default": "Tutarlı sonuç için 30 günlük döngü önerilir." },
+
+    { "type": "header", "content": "Stage 3 — Faydalar" },
+    { "type": "text",     "id": "stage3_eyebrow", "label": "Stage 3 etiketi", "default": "03 · Etki" },
+    { "type": "text",     "id": "stage3_title",   "label": "Stage 3 başlığı", "default": "Kadınların 3 gece probleminde fark" },
+    { "type": "textarea", "id": "stage3_body",    "label": "Stage 3 metni",   "default": "Düzenli kullanımda uyku kalitesi artar, sıcak basmaları azalır." },
+    { "type": "text",     "id": "stage3_meta",    "label": "Stage 3 alt etiket", "default": "2–4 hafta içinde fark" },
+
+    { "type": "header", "content": "Style" },
+    { "type": "color", "id": "bg_top",    "label": "Arka plan üst", "default": "#f8f8f6" },
+    { "type": "color", "id": "bg_bottom", "label": "Arka plan alt", "default": "#ffffff" },
+    { "type": "color", "id": "text",      "label": "Metin",          "default": "#1a1a1a" },
+    { "type": "color", "id": "muted",     "label": "Muted metin",    "default": "#493d9a" },
+    { "type": "range", "id": "max_width", "label": "Max width (px)", "min": 1000, "max": 1600, "step": 10, "default": 1200 },
+    { "type": "range", "id": "section_height", "label": "Section yüksekliği (vh)", "min": 200, "max": 500, "step": 20, "default": 320, "info": "Daha yüksek = animasyon daha yavaş hisseder" }
+  ],
+  "blocks": [
+    {
+      "type": "ingredient",
+      "name": "Etken madde",
+      "limit": 6,
+      "settings": [
+        { "type": "text",  "id": "name",  "label": "İsim",  "default": "Magnezyum" },
+        { "type": "text",  "id": "dose",  "label": "Doz",   "default": "300 mg" },
+        { "type": "color", "id": "color", "label": "Renk",  "default": "#493d9a" }
+      ]
+    },
+    {
+      "type": "benefit",
+      "name": "Fayda",
+      "limit": 5,
+      "settings": [
+        { "type": "text",     "id": "icon",        "label": "İkon (emoji)",   "default": "🌙" },
+        { "type": "text",     "id": "title",       "label": "Başlık",         "default": "Uyku problemlerine iyi gelir" },
+        { "type": "textarea", "id": "description", "label": "Açıklama",       "default": "Magnezyum ve hayıt kombinasyonu derin uykuyu destekler." },
+        { "type": "color",    "id": "bg_color",    "label": "İkon arka plan", "default": "#dad2ff" },
+        { "type": "color",    "id": "icon_color",  "label": "İkon rengi",     "default": "#493d9a" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": ".ki Green Capsule Story",
+      "blocks": [
+        { "type": "ingredient", "settings": { "name": "Magnezyum",      "dose": "300 mg", "color": "#493d9a" } },
+        { "type": "ingredient", "settings": { "name": "Hayıt",          "dose": "200 mg", "color": "#6B4E8C" } },
+        { "type": "ingredient", "settings": { "name": "Çin Meleki Otu", "dose": "150 mg", "color": "#b2a5ff" } },
+        { "type": "ingredient", "settings": { "name": "Bor",            "dose": "3 mg",   "color": "#dad2ff" } },
+        { "type": "benefit", "settings": { "icon": "🌙", "title": "Uyku problemlerine iyi gelir", "description": "Derin uykuyu destekler, gece uyanmaları azaltır." } },
+        { "type": "benefit", "settings": { "icon": "🔥", "title": "Sıcak basmalarını dengeler",   "description": "Vazomotor semptomları hafifletir." } },
+        { "type": "benefit", "settings": { "icon": "✨", "title": "Hormonal dengeyi destekler",   "description": "Östrojen-progesteron dengesini doğal yoldan destekler." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

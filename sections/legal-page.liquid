@@ -1,0 +1,469 @@
+{% comment %}
+  Legal Page Section — Brand Kit
+  Tek içerik bloğu ile tüm yasal metinler için
+  
+  Kullanım:
+  - KVKK Aydınlatma Metni
+  - Gizlilik Politikası
+  - Mesafeli Satış Sözleşmesi
+  - Teslimat ve İade Şartları
+  - Hakkımızda
+  - İletişim
+
+  Brand kit:
+    #493d9a (main)
+    #f8f8f6 (offwhite)
+    #b2a5ff (primary)
+    #dad2ff (lilac)
+{% endcomment %}
+
+<style>
+  /* Import professional font for legal pages */
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+  :root {
+    --ki-purple-dark: #493d9a;
+    --ki-offwhite: #f8f8f6;
+    --ki-purple: #b2a5ff;
+    --ki-lilac: #dad2ff;
+    --font-legal: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  }
+
+  .legal-page {
+    padding: 80px 0;
+    background: var(--ki-offwhite);
+    min-height: 60vh;
+    font-family: var(--font-legal);
+  }
+
+  .legal-page__inner {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  .legal-page__title {
+    font-size: clamp(32px, 5vw, 48px);
+    line-height: 1.15;
+    margin: 0 0 12px 0;
+    color: var(--ki-purple-dark);
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    font-family: var(--font-legal);
+  }
+
+  .legal-page__date {
+    font-size: 13px;
+    color: rgba(73, 61, 154, 0.6);
+    margin-bottom: 28px;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+  }
+
+  .legal-page__divider {
+    border: 0;
+    border-top: 2px solid rgba(73, 61, 154, 0.12);
+    margin: 0 0 36px 0;
+  }
+
+  /* Content Styling - Automatically styles pasted content */
+  .legal-page__content {
+    color: #2a2a2a;
+    font-size: 15.5px;
+    line-height: 1.85;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Headings in content */
+  .legal-page__content h1,
+  .legal-page__content h2,
+  .legal-page__content h3,
+  .legal-page__content h4 {
+    color: var(--ki-purple-dark);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    margin-top: 40px;
+    margin-bottom: 16px;
+    font-family: var(--font-legal);
+  }
+
+  .legal-page__content h1:first-child,
+  .legal-page__content h2:first-child,
+  .legal-page__content h3:first-child {
+    margin-top: 0;
+  }
+
+  .legal-page__content h2 {
+    font-size: 22px;
+    line-height: 1.3;
+    font-weight: 600;
+  }
+
+  .legal-page__content h3 {
+    font-size: 19px;
+    line-height: 1.35;
+    font-weight: 600;
+  }
+
+  .legal-page__content h4 {
+    font-size: 17px;
+    line-height: 1.4;
+    font-weight: 600;
+  }
+
+  /* Paragraphs */
+  .legal-page__content p {
+    margin: 0 0 18px 0;
+  }
+
+  .legal-page__content p:last-child {
+    margin-bottom: 0;
+  }
+
+  /* Strong/Bold text */
+  .legal-page__content strong,
+  .legal-page__content b {
+    font-weight: 600;
+    color: #1a1a1a;
+  }
+
+  /* Links */
+  .legal-page__content a {
+    color: var(--ki-purple-dark);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    transition: color 0.2s ease;
+  }
+
+  .legal-page__content a:hover {
+    color: #3f347f;
+  }
+
+  /* Lists */
+  .legal-page__content ul,
+  .legal-page__content ol {
+    margin: 0 0 18px 0;
+    padding-left: 0;
+    list-style: none;
+  }
+
+  .legal-page__content li {
+    position: relative;
+    padding-left: 28px;
+    margin-bottom: 10px;
+  }
+
+  .legal-page__content ul li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 10px;
+    width: 8px;
+    height: 8px;
+    border-radius: 999px;
+    background: var(--ki-purple);
+  }
+
+  .legal-page__content ol {
+    counter-reset: list-counter;
+  }
+
+  .legal-page__content ol li::before {
+    counter-increment: list-counter;
+    content: counter(list-counter) ".";
+    position: absolute;
+    left: 0;
+    top: 0;
+    color: var(--ki-purple-dark);
+    font-weight: 600;
+    font-size: 14px;
+  }
+
+  /* Blockquote / Note style */
+  .legal-page__content blockquote {
+    background: rgba(218, 210, 255, 0.35);
+    border-left: 4px solid var(--ki-purple-dark);
+    padding: 20px 24px;
+    border-radius: 0 12px 12px 0;
+    margin: 28px 0;
+    font-size: 15px;
+    color: #333;
+  }
+
+  .legal-page__content blockquote p {
+    margin: 0;
+  }
+
+  /* Email links styled differently */
+  .legal-page__content a[href^="mailto:"] {
+    display: inline-block;
+    background: rgba(218, 210, 255, 0.4);
+    padding: 2px 10px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  .legal-page__content a[href^="mailto:"]:hover {
+    background: rgba(218, 210, 255, 0.6);
+  }
+
+  /* Horizontal rule */
+  .legal-page__content hr {
+    border: 0;
+    border-top: 1px solid rgba(73, 61, 154, 0.15);
+    margin: 32px 0;
+  }
+
+  /* Table styling */
+  .legal-page__content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 24px 0;
+    font-size: 15px;
+  }
+
+  .legal-page__content th,
+  .legal-page__content td {
+    padding: 12px 16px;
+    text-align: left;
+    border: 1px solid rgba(73, 61, 154, 0.15);
+  }
+
+  .legal-page__content th {
+    background: rgba(218, 210, 255, 0.35);
+    color: var(--ki-purple-dark);
+    font-weight: 700;
+  }
+
+  .legal-page__content tr:nth-child(even) {
+    background: rgba(248, 248, 246, 0.5);
+  }
+
+  /* Contact info box */
+  .legal-page__contact {
+    background: #fff;
+    border: 1px solid rgba(73, 61, 154, 0.14);
+    border-radius: 16px;
+    padding: 28px 32px;
+    margin: 32px 0;
+    box-shadow: 0 12px 32px rgba(73, 61, 154, 0.08);
+  }
+
+  .legal-page__contact-title {
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--ki-purple-dark);
+    margin: 0 0 16px 0;
+    font-family: var(--font-legal);
+    letter-spacing: -0.01em;
+  }
+
+  .legal-page__contact-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 12px;
+    font-size: 15px;
+    color: #333;
+  }
+
+  .legal-page__contact-item:last-child {
+    margin-bottom: 0;
+  }
+
+  .legal-page__contact-icon {
+    width: 20px;
+    height: 20px;
+    color: var(--ki-purple-dark);
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .legal-page__contact-item a {
+    color: var(--ki-purple-dark);
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .legal-page__contact-item a:hover {
+    text-decoration: underline;
+  }
+
+  /* Responsive */
+  @media (max-width: 749px) {
+    .legal-page {
+      padding: 56px 0;
+    }
+    .legal-page__inner {
+      padding: 0 16px;
+    }
+    .legal-page__title {
+      font-size: clamp(26px, 7vw, 34px);
+    }
+    .legal-page__content {
+      font-size: 14.5px;
+      line-height: 1.8;
+    }
+    .legal-page__content h2 {
+      font-size: 19px;
+      margin-top: 32px;
+    }
+    .legal-page__content h3 {
+      font-size: 17px;
+    }
+    .legal-page__content h4 {
+      font-size: 16px;
+    }
+    .legal-page__content blockquote {
+      padding: 16px 18px;
+      font-size: 14px;
+    }
+    .legal-page__contact {
+      padding: 20px 22px;
+    }
+    .legal-page__contact-item {
+      font-size: 14px;
+    }
+  }
+</style>
+
+<section class="legal-page">
+  <div class="legal-page__inner">
+    {% if section.settings.title != blank %}
+      <h1 class="legal-page__title">{{ section.settings.title | escape }}</h1>
+    {% endif %}
+
+    {% if section.settings.show_date and section.settings.last_updated != blank %}
+      <p class="legal-page__date">Son güncelleme: {{ section.settings.last_updated }}</p>
+    {% endif %}
+
+    {% if section.settings.show_divider %}
+      <hr class="legal-page__divider">
+    {% endif %}
+
+    {% if section.settings.content != blank %}
+      <div class="legal-page__content rte">
+        {{ section.settings.content }}
+      </div>
+    {% endif %}
+
+    {% comment %} Contact box if enabled {% endcomment %}
+    {% if section.settings.show_contact %}
+      <div class="legal-page__contact">
+        <h3 class="legal-page__contact-title">{{ section.settings.contact_title | default: 'İletişim' }}</h3>
+        
+        {% if section.settings.contact_email != blank %}
+          <div class="legal-page__contact-item">
+            <svg class="legal-page__contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+              <polyline points="22,6 12,13 2,6"/>
+            </svg>
+            <span>E-posta: <a href="mailto:{{ section.settings.contact_email }}">{{ section.settings.contact_email }}</a></span>
+          </div>
+        {% endif %}
+
+        {% if section.settings.contact_phone != blank %}
+          <div class="legal-page__contact-item">
+            <svg class="legal-page__contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+            </svg>
+            <span>Telefon: <a href="tel:{{ section.settings.contact_phone | remove: ' ' }}">{{ section.settings.contact_phone }}</a></span>
+          </div>
+        {% endif %}
+
+        {% if section.settings.contact_address != blank %}
+          <div class="legal-page__contact-item">
+            <svg class="legal-page__contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+              <circle cx="12" cy="10" r="3"/>
+            </svg>
+            <span>{{ section.settings.contact_address }}</span>
+          </div>
+        {% endif %}
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Legal Page",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Sayfa Başlığı",
+      "default": "KVKK Aydınlatma Metni"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_date",
+      "label": "Son güncelleme tarihini göster",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "last_updated",
+      "label": "Son güncelleme tarihi",
+      "default": "20 Ocak 2026"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_divider",
+      "label": "Başlık altına çizgi ekle",
+      "default": true
+    },
+    {
+      "type": "richtext",
+      "id": "content",
+      "label": "Sayfa İçeriği",
+      "info": "Tüm yasal metni buraya yapıştırın. Desteklenen etiketler: h1-h6 (başlıklar), p (paragraf), ul/ol (listeler), strong/em (vurgu), a (linkler)."
+    },
+    {
+      "type": "header",
+      "content": "İletişim Kutusu (Opsiyonel)"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_contact",
+      "label": "İletişim kutusunu göster",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "contact_title",
+      "label": "İletişim başlığı",
+      "default": "İletişim"
+    },
+    {
+      "type": "text",
+      "id": "contact_email",
+      "label": "E-posta",
+      "default": "help@carewithki.com"
+    },
+    {
+      "type": "text",
+      "id": "contact_phone",
+      "label": "Telefon"
+    },
+    {
+      "type": "textarea",
+      "id": "contact_address",
+      "label": "Adres"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Legal Page",
+      "settings": {
+        "title": "Sayfa Başlığı",
+        "show_divider": true
+      }
+    }
+  ]
+}
+{% endschema %}

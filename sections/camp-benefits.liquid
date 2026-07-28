@@ -1,0 +1,83 @@
+<style>
+.ckben{
+  --p:#493d9a;--lil:#dad2ff;
+  background:{{ section.settings.bg_color | default: '#fff' }};
+  padding:56px 20px;
+  font-family:system-ui,sans-serif;
+}
+.ckben__head{text-align:center;margin-bottom:32px;}
+.ckben__title{
+  font-size:clamp(22px,5vw,32px);font-weight:800;
+  color:#1a1340;letter-spacing:-.02em;margin:0;
+}
+.ckben__grid{
+  display:grid;grid-template-columns:1fr;
+  gap:12px;max-width:800px;margin:0 auto;
+}
+@media(min-width:560px){.ckben__grid{grid-template-columns:repeat(2,1fr);}}
+.ckben__card{
+  background:#fff;border-radius:14px;
+  border:1px solid rgba(73,61,154,.08);
+  box-shadow:0 2px 10px rgba(73,61,154,.06);
+  padding:20px 18px;
+  display:flex;gap:14px;align-items:flex-start;
+  transition:transform .2s,box-shadow .2s;
+}
+.ckben__card:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(73,61,154,.1);}
+.ckben__icon{
+  width:42px;height:42px;border-radius:11px;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+}
+.ckben__icon svg{width:20px;height:20px;}
+.ckben__body{}
+.ckben__card h3{font-size:14px;font-weight:700;color:#1a1340;margin:0 0 5px;}
+.ckben__desc{font-size:12px;color:#6b6b8a;line-height:1.55;margin:0;}
+</style>
+
+<section class="ckben" id="avantajlar">
+  <div class="ckben__head">
+    <h2 class="ckben__title">{{ section.settings.title }}</h2>
+  </div>
+  {%- if section.blocks.size > 0 -%}
+  <div class="ckben__grid">
+    {%- for block in section.blocks -%}
+    <div class="ckben__card" {{ block.shopify_attributes }}>
+      <div class="ckben__icon" style="background:{{ block.settings.icon_bg }};color:{{ block.settings.icon_color }};">
+        {{ block.settings.icon_svg }}
+      </div>
+      <div class="ckben__body">
+        <h3>{{ block.settings.card_title }}</h3>
+        <div class="ckben__desc">{{ block.settings.card_desc }}</div>
+      </div>
+    </div>
+    {%- endfor -%}
+  </div>
+  {%- endif -%}
+</section>
+
+{% schema %}
+{
+  "name": "Camp: Benefits",
+  "settings": [
+    {"type":"color","id":"bg_color","label":"Arka Plan","default":"#ffffff"},
+    {"type":"text","id":"title","label":"Başlık","default":"Neden .ki Elçisi Olmalısın?"}
+  ],
+  "blocks":[{
+    "type":"benefit","name":"Avantaj",
+    "settings":[
+      {"type":"html","id":"icon_svg","label":"SVG İkon","default":"<svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'><path d='M12 20V10'/><path d='M18 20V4'/><path d='M6 20v-4'/></svg>"},
+      {"type":"color","id":"icon_bg","label":"İkon BG","default":"#ffeaeb"},
+      {"type":"color","id":"icon_color","label":"İkon Rengi","default":"#ff6666"},
+      {"type":"text","id":"card_title","label":"Başlık","default":"Performans Odaklı Kazanç"},
+      {"type":"richtext","id":"card_desc","label":"Açıklama","default":"<p>Her yönlendirme için maddi teşvik kazan.</p>"}
+    ]
+  }],
+  "presets":[{"name":"Camp: Benefits","blocks":[
+    {"type":"benefit","settings":{"card_title":"Performans Odaklı Kazanç","icon_bg":"#ffeaeb","icon_color":"#ff6666"}},
+    {"type":"benefit","settings":{"card_title":"Ücretsiz .ki Ürünleri","icon_bg":"#fffbe1","icon_color":"#f59e0b"}},
+    {"type":"benefit","settings":{"card_title":"Kariyer Gelişimi","icon_bg":"#e6f8f1","icon_color":"#22c55e"}},
+    {"type":"benefit","settings":{"card_title":"Türkiye Çapında Topluluk","icon_bg":"#ede8ff","icon_color":"#493d9a"}}
+  ]}]
+}
+{% endschema %}

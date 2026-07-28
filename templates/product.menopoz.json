@@ -1,0 +1,418 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-product",
+      "blocks": {
+        "vendor": {
+          "type": "text",
+          "settings": {
+            "text": "{{ product.vendor }}",
+            "text_style": "uppercase"
+          }
+        },
+        "title": {
+          "type": "title",
+          "settings": {}
+        },
+        "price": {
+          "type": "price",
+          "settings": {}
+        },
+        "variant_picker": {
+          "type": "variant_picker",
+          "settings": {
+            "picker_type": "button",
+            "swatch_shape": "circle"
+          }
+        },
+        "quantity_selector": {
+          "type": "quantity_selector",
+          "settings": {}
+        },
+        "buy_buttons": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_dynamic_checkout": true,
+            "show_gift_card_recipient": true
+          }
+        },
+        "description": {
+          "type": "description",
+          "settings": {}
+        },
+        "share": {
+          "type": "share",
+          "settings": {
+            "share_label": "Share"
+          }
+        }
+      },
+      "block_order": [
+        "vendor",
+        "title",
+        "price",
+        "variant_picker",
+        "quantity_selector",
+        "buy_buttons",
+        "description",
+        "share"
+      ],
+      "disabled": true,
+      "settings": {
+        "enable_sticky_info": true,
+        "color_scheme": "scheme-1",
+        "media_size": "large",
+        "constrain_to_viewport": true,
+        "media_fit": "contain",
+        "gallery_layout": "stacked",
+        "mobile_thumbnails": "hide",
+        "media_position": "left",
+        "image_zoom": "lightbox",
+        "hide_variants": true,
+        "enable_video_looping": false,
+        "padding_top": 36,
+        "padding_bottom": 12
+      }
+    },
+    "related-products": {
+      "type": "related-products",
+      "disabled": true,
+      "settings": {
+        "heading": "You may also like",
+        "heading_size": "h2",
+        "products_to_show": 4,
+        "columns_desktop": 4,
+        "columns_mobile": "2",
+        "color_scheme": "scheme-1",
+        "image_ratio": "square",
+        "image_shape": "default",
+        "show_secondary_image": true,
+        "show_vendor": false,
+        "show_rating": false,
+        "padding_top": 36,
+        "padding_bottom": 28
+      }
+    },
+    "pdp_hero_ki_dJWqbJ": {
+      "type": "pdp-hero-ki",
+      "name": "PDP Hero Ki",
+      "settings": {
+        "product": "",
+        "max_width": 1300,
+        "pad_y": 60,
+        "pad_x": 32,
+        "bg": "#ffffff",
+        "text": "#1a1a1a",
+        "muted": "#666666",
+        "cta_bg": "#493d9a",
+        "cta_text": "#ffffff",
+        "product_title": ".ki Change | İleri Yaş Takviyesi",
+        "product_subtitle": "İleriki yaş döneminde değişen bedenine uyum sağlayan takviye.",
+        "review_rating": 4.7,
+        "review_text": "90+ doğrulanmış değerlendirme",
+        "star_color": "#f5a623",
+        "offer_headline": "Uzman Doktor & Eczacılar Tarafından Geliştirildi",
+        "sub_product": "triple-ki-change-is-good-uclu-degisim-i̇yidir",
+        "sub_title": "3'lü Paket",
+        "sub_badge": "EN POPÜLER",
+        "sub_subtitle": "30 günlük kullanım",
+        "sub_compare": "4500₺",
+        "sub_price": "3900₺",
+        "sub_per": "Uzman Eczacımız ile Kendine Özel Takviye Rutini Oluştur.",
+        "sub_benefits": "<ul><li>+13 Aktif İçerik & Genistein & Magnezyum.</li><li>Şerbetçi Otu & Çin Melek Otu & Hayıt.</li><li><strong>Matara</strong> ve <strong>Ayna</strong> Hediye.</li><li><strong>3 Adet</strong> Change is Good Gönderilir.</li><li>Eczacımız ile Sana Özel Takviye Rutini Oluştur.</li></ul>",
+        "once_title": "Tekli Paket",
+        "once_badge": "",
+        "once_subtitle": "30 günlük kullanım",
+        "once_compare": "",
+        "once_price": "1500₺",
+        "once_per": "30 Günlük Kullanım / Günde Sadece 50₺",
+        "once_note": "<ul><li>FDA & GMP Standartlarına Uygun Üretildi.</li><li>Vcaps® Teknolojisi ile Üretildi.</li><li>+13 Aktif İçerik & Genistein & Magnezyum .</li><li>Şerbetçi Otu & Çin Melek Otu & Hayıt.</li><li>%100 Vegan Formülasyon.<br/></li></ul>",
+        "cta_label": "Sepete Ekle",
+        "shipping_text": "Ücretsiz Kargo & Hızlı Teslimat",
+        "trust_logos_image": "shopify://shop_images/pms_-_product_page-13_1.png",
+        "disclaimer": "<p><strong>.ki Genistein İçeren Takviye Edici Gıda<br/></strong>Takviye Edici Gıda Onay Numarası: 025458-18.12.2025</p>"
+      }
+    },
+    "ingredients_showcase_ALLmmY": {
+      "type": "ingredients_showcase",
+      "blocks": {
+        "ingredient_rGWWcp": {
+          "type": "ingredient",
+          "settings": {
+            "title": "Genistein",
+            "description": "Bitkisel kaynaklı bir izoflavondur.",
+            "image": "shopify://shop_images/genistein_23732896-a7a9-4689-8b0d-3b391256519c.png",
+            "form_label": "",
+            "form_info": "Hormonal dengeyle ilişkili süreçleri destekler."
+          }
+        },
+        "ingredient_VVM4Cx": {
+          "type": "ingredient",
+          "settings": {
+            "title": "Şerbetçi Otu (Humulus Lupulus)",
+            "description": "Rahatlatıcı etkisiyle bilinen bitkisel bir bileşendir.",
+            "image": "shopify://shop_images/serbetciotu.png",
+            "form_label": "",
+            "form_info": "Duygusal dengeyi destekler. Gevşeme ve sakinlik hissine katkı sağlar."
+          }
+        },
+        "ingredient_PFTy9K": {
+          "type": "ingredient",
+          "settings": {
+            "title": "Magnezyum (Bisglisinat)",
+            "description": "Kas ve sinir sistemi fonksiyonlarının normal çalışmasına katkıda bulunur.",
+            "image": "shopify://shop_images/MG_BISGLISINAT_b96d865a-403e-47a8-9b9d-6aecfacd7c2c.png",
+            "form_label": "",
+            "form_info": "Yorgunluğun ve bitkinliğin azalmasına katkıda bulunur."
+          }
+        },
+        "ingredient_4DLAMV": {
+          "type": "ingredient",
+          "settings": {
+            "title": "Hayıt (Vitex Agnus-Castus)",
+            "description": "Kadın sağlığına yönelik kullanımıyla bilinen bitkisel bir bileşendir.",
+            "image": "shopify://shop_images/hayir.png",
+            "form_label": "",
+            "form_info": "Hormonal dengeyle ilişkili süreçleri destekler. Döngüsel değişimlere uyum sağlamaya yardımcı olur."
+          }
+        },
+        "ingredient_YdNJWW": {
+          "type": "ingredient",
+          "settings": {
+            "title": "Çin Melek Otu (Angelica Sinensis)",
+            "description": "Kadınlara özgü dönemlerde kullanılan bir bitkisel bileşendir.",
+            "image": "shopify://shop_images/cin_melek_otu.png",
+            "form_label": "",
+            "form_info": "Dönemsel konforu destekler. Vücudun geçiş süreçlerine uyumuna katkı sağlar."
+          }
+        },
+        "ingredient_R8zVwq": {
+          "type": "ingredient",
+          "settings": {
+            "title": "Karayılan Otu (Cimicifuga Racemosa)",
+            "description": "Menopoz döneminde sık tercih edilen bitkisel içerikler arasında yer alır.",
+            "image": "shopify://shop_images/karayilan_otu_96f1c5a9-8d15-49f2-8cb8-566d20159216.png",
+            "form_label": "",
+            "form_info": "İlerleyen yaş dönemindeki değişimlere uyum sağlamaya yardımcı olur. Dönemsel rahatlama hissini destekler."
+          }
+        },
+        "ingredient_6K7yLc": {
+          "type": "ingredient",
+          "settings": {
+            "title": "Vitamin E",
+            "description": "Hücreleri oksidatif strese karşı korumaya yardımcı olan bir antioksidandır.",
+            "image": "shopify://shop_images/vitamine.png",
+            "form_label": "",
+            "form_info": "Hücrelerin oksidatif stresten korunmasına katkıda bulunur."
+          }
+        },
+        "ingredient_Jk8UwK": {
+          "type": "ingredient",
+          "settings": {
+            "title": "Bor",
+            "description": "Kemik ve mineral metabolizmasıyla ilişkili bir mineraldir.",
+            "image": "shopify://shop_images/bor_f1d42566-6ade-4c72-aa0f-a16675b776c9.png",
+            "form_label": "NEDEN BU DÖNEM İÇİN İYİ?",
+            "form_info": "Kemik sağlığını destekler. Mineral dengesinin korunmasına yardımcı olur."
+          }
+        },
+        "ingredient_F9GYN8": {
+          "type": "ingredient",
+          "settings": {
+            "title": "Vitamin B6 (Piridoksin)",
+            "description": "Enerji metabolizması ve sinir sistemi fonksiyonlarında rol oynar.",
+            "image": "shopify://shop_images/vitamin6.png",
+            "form_label": "",
+            "form_info": "Normal enerji oluşum mekanizmasına katkıda bulunur."
+          }
+        },
+        "ingredient_VjcFYH": {
+          "type": "ingredient",
+          "settings": {
+            "title": "Folik Asit (Folat)",
+            "description": "Hücre bölünmesi ve kan yapımı için gerekli bir vitamindir.",
+            "image": "shopify://shop_images/folikasit_457cf11d-01ba-4be4-8e54-71d022541c3f.png",
+            "form_label": "",
+            "form_info": "Yorgunluk ve bitkinliğin azalmasına katkıda bulunur."
+          }
+        },
+        "ingredient_qCRyw3": {
+          "type": "ingredient",
+          "settings": {
+            "title": "Selenyum",
+            "description": "Bağışıklık sistemi fonksiyonlarında rol oynayan bir mineraldir.",
+            "image": "shopify://shop_images/selenyum_0ff80497-ae05-4314-9fb6-f1f2d0ca9bf5.png",
+            "form_label": "",
+            "form_info": "Hücrelerin oksidatif strese karşı korunmasına katkıda bulunur."
+          }
+        },
+        "ingredient_VgQrhU": {
+          "type": "ingredient",
+          "settings": {
+            "title": "Vitamin B12 (Kobalamin)",
+            "description": "Sinir sistemi ve enerji metabolizması için gereklidir.",
+            "image": "shopify://shop_images/b12_378435b1-f607-43f7-a2af-c6030ef7af1d.png",
+            "form_label": "",
+            "form_info": "Normal enerji oluşum metabolizmasına katkıda bulunur."
+          }
+        }
+      },
+      "block_order": [
+        "ingredient_rGWWcp",
+        "ingredient_VVM4Cx",
+        "ingredient_PFTy9K",
+        "ingredient_4DLAMV",
+        "ingredient_YdNJWW",
+        "ingredient_R8zVwq",
+        "ingredient_6K7yLc",
+        "ingredient_Jk8UwK",
+        "ingredient_F9GYN8",
+        "ingredient_VjcFYH",
+        "ingredient_qCRyw3",
+        "ingredient_VgQrhU"
+      ],
+      "name": "Ingredients Showcase",
+      "settings": {
+        "max_width": 1300,
+        "pad_y": 64,
+        "pad_x": 32,
+        "bg": "#f8f8f6",
+        "text": "#1a1a1a",
+        "muted": "#666666",
+        "card_bg": "#ffffff",
+        "heading": "Modern Takviyemizin İçeriği",
+        "description": "Formülümüz, uzman eczacı ekibimiz tarafından geliştirildi."
+      }
+    },
+    "truly_healthy_banner_UB3yXJ": {
+      "type": "truly-healthy-banner",
+      "blocks": {
+        "feature_WgKEh9": {
+          "type": "feature",
+          "settings": {
+            "icon": "shopify://shop_images/menopoz_-_product_page.png",
+            "title": "İleriki Yaş Dönemi İçin Tasarlandı",
+            "description": "İleriki Yaş Dönemine özel ihtiyaçları desteklemek üzere geliştirildi."
+          }
+        },
+        "feature_VJckDM": {
+          "type": "feature",
+          "settings": {
+            "icon": "shopify://shop_images/menopoz_-_product_page.png",
+            "title": "Konforu Destekleyen İçerikler",
+            "description": "Bu geçiş döneminde vücudun dengesine katkı sağlar."
+          }
+        },
+        "feature_pUb6wf": {
+          "type": "feature",
+          "settings": {
+            "icon": "shopify://shop_images/menopoz_-_product_page.png",
+            "title": "Bilimsel Yaklaşımla Formüle Edildi",
+            "description": "İçerikler, bilimsel literatürle ilişkilendirilen bileşenlerden oluşur."
+          }
+        }
+      },
+      "block_order": [
+        "feature_WgKEh9",
+        "feature_VJckDM",
+        "feature_pUb6wf"
+      ],
+      "name": "Hero Features Banner",
+      "settings": {
+        "bg_image": "shopify://shop_images/Basliksiz-1.jpg",
+        "overlay_color": "#000000",
+        "overlay_opacity": 20,
+        "min_height": 560,
+        "max_width": 1300,
+        "pad_y": 56,
+        "pad_x": 32,
+        "heading": "İleriki Yaş Dönemine Doğal Destek",
+        "text_color": "#ffffff",
+        "panel_bg": "#5a5546bf",
+        "blur": 16,
+        "panel_text": "#ffffff",
+        "icon_color": "#f8f8f6"
+      }
+    },
+    "pdp_benefits_timeline_xpMUBt": {
+      "type": "pdp-benefits-timeline",
+      "blocks": {
+        "timeline_item_79t6Dt": {
+          "type": "timeline_item",
+          "settings": {
+            "badge": "ilk günler",
+            "title": "Isı Dalgaları ve Huzursuzluk Hissinde Hafif Destek",
+            "benefits": "Bitkisel bileşenler ve vitaminlerle günlük besinsel desteğe katkı sağlar.|\nSinir sistemi fonksiyonlarının desteklenmesine yardımcı olur.|\nGün içinde hissedilen huzursuzluk ve dalgalanmalara karşı dengeyi destekler."
+          }
+        },
+        "timeline_item_XWkyyf": {
+          "type": "timeline_item",
+          "settings": {
+            "badge": "düzenli kullanım",
+            "title": "Hormonal Değişime Uyumun Desteklenmesi",
+            "benefits": "Genistein ve bitkisel ekstrelerle kadınlara özel destek sunar.|\nİlerleyen yaşta değişen hormonal dengeye uyumu destekler.|\nRuh hali dalgalanmalarının dengelenmesine yardımcı olur."
+          }
+        },
+        "timeline_item_Kgg3pL": {
+          "type": "timeline_item",
+          "settings": {
+            "badge": "sürekli kullanım",
+            "title": "Daha Dengeli ve Konforlu Süreç",
+            "benefits": "Günlük yaşam konforunun korunmasına katkı sağlar.|\nDönemsel yorgunluk ve halsizlik hissinin azalmasına yardımcı olur.|\nFiziksel ve duygusal iyi oluşu destekler.|\nGünlük tempoya daha rahat uyum sağlamaya katkı sağlar."
+          }
+        }
+      },
+      "block_order": [
+        "timeline_item_79t6Dt",
+        "timeline_item_XWkyyf",
+        "timeline_item_Kgg3pL"
+      ],
+      "name": "PDP Benefits Timeline",
+      "settings": {
+        "max_width": 1200,
+        "pad_y": 72,
+        "pad_x": 32,
+        "bg": "#f8f8f6",
+        "text": "#1a1a1a",
+        "muted": "#555555",
+        "badge_bg": "#dad2ff",
+        "badge_text": "#493d9a",
+        "line_color": "#b2a5ff",
+        "heading": "Zamanla Hissedilen Fayda",
+        "description": "Günlük kullanım için tasarlanan .ki formülü, ilerleyen yaştaki değişen ihtiyaçlarına uyum sağlayarak vücudu adım adım destekler.",
+        "image_main": "shopify://shop_images/ADC_5031-copy.jpg",
+        "image_main_alt": "Ürün kullanımı",
+        "image_secondary_1_alt": "Ürün",
+        "image_secondary_2_alt": "Kullanıcı",
+        "show_how_to_use": true,
+        "how_icon": "shopify://shop_images/Ekran_Resmi_2026-02-02_01.20.35.png",
+        "how_title": "Nasıl Kullanılır?",
+        "how_description": "Günde 1 kapsül, tercihen yemekle birlikte alınması önerilir."
+      }
+    },
+    "1774336248ec968510": {
+      "type": "apps",
+      "settings": {
+        "include_margins": true
+      }
+    }
+  },
+  "order": [
+    "main",
+    "related-products",
+    "pdp_hero_ki_dJWqbJ",
+    "ingredients_showcase_ALLmmY",
+    "truly_healthy_banner_UB3yXJ",
+    "pdp_benefits_timeline_xpMUBt",
+    "1774336248ec968510"
+  ]
+}

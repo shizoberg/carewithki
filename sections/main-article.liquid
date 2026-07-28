@@ -1,0 +1,602 @@
+{% comment %}
+  Main Article Page — Ki Brand
+  Clean reading experience, brand-kit colors, smaller hero image
+{% endcomment %}
+
+<style>
+  :root {
+    --ki-purple-dark: #493d9a;
+    --ki-offwhite: #f8f8f6;
+    --ki-purple: #b2a5ff;
+    --ki-lilac: #dad2ff;
+  }
+
+  /* ===== Article Wrapper ===== */
+  .ki-article {
+    padding-bottom: 60px;
+    background: #fff;
+  }
+
+  /* ===== Hero Image — Constrained ===== */
+  .ki-article-hero {
+    max-width: 780px;
+    margin: 0 auto 32px;
+    padding: 0 20px;
+  }
+  .ki-article-hero-inner {
+    border-radius: 16px;
+    overflow: hidden;
+    max-height: 400px;
+  }
+  .ki-article-hero-inner img {
+    width: 100%;
+    height: 100%;
+    max-height: 400px;
+    object-fit: cover;
+    display: block;
+  }
+  @media (max-width: 600px) {
+    .ki-article-hero-inner {
+      border-radius: 12px;
+      max-height: 260px;
+    }
+    .ki-article-hero-inner img {
+      max-height: 260px;
+    }
+  }
+
+  /* ===== Article Header ===== */
+  .ki-article-header {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 40px 20px 0;
+    text-align: center;
+  }
+  .ki-article-tags {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+  }
+  .ki-article-tag {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--ki-purple-dark);
+    background: var(--ki-lilac);
+    padding: 4px 12px;
+    border-radius: 6px;
+    text-decoration: none;
+  }
+  .ki-article-title {
+    font-size: clamp(26px, 4.5vw, 42px);
+    font-weight: 750;
+    color: var(--ki-purple-dark);
+    margin: 0 0 16px 0;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+  }
+  .ki-article-meta {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    font-size: 13px;
+    color: #999;
+    margin-bottom: 32px;
+  }
+  .ki-article-meta-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .ki-article-meta svg {
+    width: 14px;
+    height: 14px;
+    color: var(--ki-purple);
+  }
+  .ki-article-author {
+    font-weight: 600;
+    color: #666;
+  }
+  .ki-article-divider {
+    width: 48px;
+    height: 3px;
+    background: var(--ki-lilac);
+    border-radius: 2px;
+    margin: 0 auto 40px;
+  }
+
+  /* ===== Article Content ===== */
+  .ki-article-content {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 0 20px;
+    font-size: 17px;
+    line-height: 1.8;
+    color: #333;
+  }
+  .ki-article-content h2 {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--ki-purple-dark);
+    margin: 40px 0 16px;
+    line-height: 1.25;
+  }
+  .ki-article-content h3 {
+    font-size: 20px;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin: 32px 0 12px;
+    line-height: 1.3;
+  }
+  .ki-article-content p {
+    margin: 0 0 20px;
+  }
+  .ki-article-content img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 12px;
+    margin: 24px 0;
+    display: block;
+  }
+  .ki-article-content ul,
+  .ki-article-content ol {
+    padding-left: 24px;
+    margin: 0 0 20px;
+  }
+  .ki-article-content li {
+    margin-bottom: 8px;
+  }
+  .ki-article-content blockquote {
+    border-left: 3px solid var(--ki-purple);
+    margin: 28px 0;
+    padding: 16px 24px;
+    background: rgba(73, 61, 154, 0.03);
+    border-radius: 0 12px 12px 0;
+    font-style: italic;
+    color: #555;
+  }
+  .ki-article-content a {
+    color: var(--ki-purple-dark);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    transition: color 0.2s ease;
+  }
+  .ki-article-content a:hover {
+    color: var(--ki-purple);
+  }
+  .ki-article-content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 24px 0;
+    font-size: 15px;
+  }
+  .ki-article-content th,
+  .ki-article-content td {
+    padding: 10px 14px;
+    border: 1px solid #eee;
+    text-align: left;
+  }
+  .ki-article-content th {
+    background: var(--ki-lilac);
+    color: var(--ki-purple-dark);
+    font-weight: 700;
+  }
+
+  /* ===== Share / Social ===== */
+  .ki-article-share {
+    max-width: 720px;
+    margin: 40px auto 0;
+    padding: 24px 20px;
+    border-top: 1px solid #eee;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .ki-article-share-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #999;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .ki-share-btn {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    border: 1.5px solid rgba(73, 61, 154, 0.15);
+    background: transparent;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    color: #888;
+  }
+  .ki-share-btn:hover {
+    background: var(--ki-purple-dark);
+    color: #fff;
+    border-color: var(--ki-purple-dark);
+    transform: translateY(-2px);
+  }
+  .ki-share-btn svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  /* ===== Back Link ===== */
+  .ki-article-back {
+    max-width: 720px;
+    margin: 32px auto 0;
+    padding: 0 20px;
+  }
+  .ki-article-back a {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ki-purple-dark);
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 10px;
+    border: 1.5px solid rgba(73, 61, 154, 0.2);
+    transition: all 0.2s ease;
+  }
+  .ki-article-back a:hover {
+    background: var(--ki-purple-dark);
+    color: #fff;
+    border-color: var(--ki-purple-dark);
+    transform: translateY(-2px);
+  }
+  .ki-article-back a svg {
+    width: 16px;
+    height: 16px;
+    transform: rotate(180deg);
+  }
+
+  /* ===== Comments ===== */
+  .ki-comments {
+    max-width: 720px;
+    margin: 48px auto 0;
+    padding: 0 20px;
+  }
+  .ki-comments-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--ki-purple-dark);
+    margin: 0 0 24px 0;
+  }
+  .ki-comment {
+    padding: 20px;
+    background: #fafafa;
+    border-radius: 12px;
+    margin-bottom: 12px;
+    border: 1px solid #f0f0f0;
+  }
+  .ki-comment p {
+    margin: 0 0 8px;
+    font-size: 15px;
+    color: #444;
+    line-height: 1.6;
+  }
+  .ki-comment-meta {
+    font-size: 12px;
+    color: #aaa;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .ki-comment-meta strong {
+    color: #666;
+  }
+
+  /* Comment Form */
+  .ki-comment-form {
+    margin-top: 32px;
+  }
+  .ki-comment-form h2 {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--ki-purple-dark);
+    margin: 0 0 20px 0;
+  }
+  .ki-comment-form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+  @media (max-width: 600px) {
+    .ki-comment-form-row {
+      grid-template-columns: 1fr;
+    }
+  }
+  .ki-form-field {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1.5px solid rgba(73, 61, 154, 0.15);
+    border-radius: 10px;
+    font-size: 14px;
+    color: #333;
+    background: #fff;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    box-sizing: border-box;
+  }
+  .ki-form-field:focus {
+    border-color: var(--ki-purple-dark);
+    box-shadow: 0 0 0 3px rgba(73, 61, 154, 0.08);
+  }
+  .ki-form-field::placeholder {
+    color: #bbb;
+  }
+  textarea.ki-form-field {
+    resize: vertical;
+    min-height: 120px;
+    margin-bottom: 12px;
+  }
+  .ki-form-submit {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 28px;
+    background: var(--ki-purple-dark);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .ki-form-submit:hover {
+    background: #3f347f;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(73, 61, 154, 0.2);
+  }
+  .ki-moderated-note {
+    font-size: 12px;
+    color: #aaa;
+    margin-bottom: 12px;
+  }
+</style>
+
+<article class="ki-article">
+
+  {%- for block in section.blocks -%}
+    {%- case block.type -%}
+
+      {%- when '@app' -%}
+        <div style="max-width: 720px; margin: 0 auto; padding: 0 20px;">
+          {% render block %}
+        </div>
+
+      {%- when 'featured_image' -%}
+        {%- if article.image -%}
+          <!-- Article Header (above image) -->
+          <div class="ki-article-header" {{ block.shopify_attributes }}>
+            {% if article.tags.size > 0 %}
+              <div class="ki-article-tags">
+                {% for tag in article.tags %}
+                  <a href="{{ blog.url }}/tagged/{{ tag | handle }}" class="ki-article-tag">{{ tag }}</a>
+                {% endfor %}
+              </div>
+            {% endif %}
+            <h1 class="ki-article-title">{{ article.title | escape }}</h1>
+            <div class="ki-article-meta">
+              <span class="ki-article-meta-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                {{ article.published_at | date: "%d %B %Y" }}
+              </span>
+              {% if article.author != blank %}
+                <span class="ki-article-meta-item">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                  <span class="ki-article-author">{{ article.author }}</span>
+                </span>
+              {% endif %}
+            </div>
+          </div>
+
+          <!-- Featured Image (smaller, rounded) -->
+          <div class="ki-article-hero">
+            <div class="ki-article-hero-inner">
+              {{ article.image | image_url: width: 1600 | image_tag: loading: 'eager', alt: article.image.alt }}
+            </div>
+          </div>
+
+          <div class="ki-article-divider"></div>
+        {%- endif -%}
+
+      {%- when 'title' -%}
+        {%- unless article.image -%}
+          <!-- Title (only shown if no featured image, since we show it above the image) -->
+          <div class="ki-article-header" {{ block.shopify_attributes }}>
+            {% if article.tags.size > 0 %}
+              <div class="ki-article-tags">
+                {% for tag in article.tags %}
+                  <a href="{{ blog.url }}/tagged/{{ tag | handle }}" class="ki-article-tag">{{ tag }}</a>
+                {% endfor %}
+              </div>
+            {% endif %}
+            <h1 class="ki-article-title">{{ article.title | escape }}</h1>
+            <div class="ki-article-meta">
+              {% if block.settings.blog_show_date %}
+                <span class="ki-article-meta-item">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                  {{ article.published_at | date: "%d %B %Y" }}
+                </span>
+              {% endif %}
+              {% if block.settings.blog_show_author and article.author != blank %}
+                <span class="ki-article-meta-item">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                  <span class="ki-article-author">{{ article.author }}</span>
+                </span>
+              {% endif %}
+            </div>
+            <div class="ki-article-divider"></div>
+          </div>
+        {%- endunless -%}
+
+      {%- when 'content' -%}
+        <div class="ki-article-content" {{ block.shopify_attributes }}>
+          {{ article.content }}
+        </div>
+
+      {%- when 'share' -%}
+        <div class="ki-article-share" {{ block.shopify_attributes }}>
+          <span class="ki-article-share-label">Paylaş</span>
+          <!-- Twitter/X -->
+          <button class="ki-share-btn" onclick="window.open('https://twitter.com/intent/tweet?url='+encodeURIComponent(window.location.href)+'&text='+encodeURIComponent('{{ article.title | escape }}'), '_blank', 'width=550,height=420')" aria-label="X'te Paylaş">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+          </button>
+          <!-- Facebook -->
+          <button class="ki-share-btn" onclick="window.open('https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(window.location.href), '_blank', 'width=550,height=420')" aria-label="Facebook'ta Paylaş">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+          </button>
+          <!-- WhatsApp -->
+          <button class="ki-share-btn" onclick="window.open('https://wa.me/?text='+encodeURIComponent('{{ article.title | escape }} - '+window.location.href), '_blank')" aria-label="WhatsApp'ta Paylaş">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          </button>
+          <!-- Copy Link -->
+          <button class="ki-share-btn" onclick="navigator.clipboard.writeText(window.location.href).then(function(){this.innerHTML='✓'}.bind(this))" aria-label="Linki Kopyala">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+          </button>
+        </div>
+
+    {%- endcase -%}
+  {%- endfor -%}
+
+  <!-- Back to Blog -->
+  <div class="ki-article-back">
+    <a href="{{ blog.url }}">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      ← {{ blog.title | escape }} sayfasına dön
+    </a>
+  </div>
+
+  <!-- Comments -->
+  {%- if blog.comments_enabled? -%}
+    <div class="ki-comments">
+      {%- if article.comments_count > 0 -%}
+        <h2 class="ki-comments-title">Yorumlar ({{ article.comments_count }})</h2>
+        {% paginate article.comments by 10 %}
+          {%- for comment in article.comments -%}
+            <div class="ki-comment">
+              <p>{{ comment.content }}</p>
+              <div class="ki-comment-meta">
+                <strong>{{ comment.author }}</strong>
+                <span>{{ comment.created_at | date: "%d.%m.%Y" }}</span>
+              </div>
+            </div>
+          {%- endfor -%}
+        {% endpaginate %}
+      {%- endif -%}
+
+      {% form 'new_comment', article %}
+        <div class="ki-comment-form">
+          <h2>Yorum Yaz</h2>
+
+          {%- if form.errors -%}
+            <div style="background: #fff5f5; border: 1px solid #fecaca; border-radius: 10px; padding: 12px 16px; margin-bottom: 16px; color: #c53030; font-size: 13px;">
+              Lütfen tüm alanları doğru doldurun.
+            </div>
+          {%- elsif form.posted_successfully? -%}
+            <div style="background: #f0fff4; border: 1px solid #c6f6d5; border-radius: 10px; padding: 12px 16px; margin-bottom: 16px; color: #2f855a; font-size: 13px;">
+              ✓ Yorumunuz gönderildi{% if blog.moderated? %}, onay bekliyor{% endif %}.
+            </div>
+          {%- endif -%}
+
+          <div class="ki-comment-form-row">
+            <input type="text" name="comment[author]" class="ki-form-field" placeholder="Adınız *" value="{{ form.author }}" required>
+            <input type="email" name="comment[email]" class="ki-form-field" placeholder="E-posta *" value="{{ form.email }}" required>
+          </div>
+          <textarea name="comment[body]" class="ki-form-field" placeholder="Yorumunuz *" required>{{ form.body }}</textarea>
+          {%- if blog.moderated? -%}
+            <p class="ki-moderated-note">Yorumlar yayınlanmadan önce onaylanır.</p>
+          {%- endif -%}
+          <button type="submit" class="ki-form-submit">Yorum Gönder</button>
+        </div>
+      {% endform %}
+    </div>
+  {%- endif -%}
+
+</article>
+
+<script type="application/ld+json">
+  {{ article | structured_data }}
+</script>
+
+{% schema %}
+{
+  "name": "Ki Makale Sayfası",
+  "tag": "section",
+  "class": "section",
+  "blocks": [
+    {
+      "type": "@app"
+    },
+    {
+      "type": "featured_image",
+      "name": "Öne Çıkan Görsel",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "select",
+          "id": "image_height",
+          "options": [
+            { "value": "adapt", "label": "Oranı koru" },
+            { "value": "small", "label": "Küçük" },
+            { "value": "medium", "label": "Orta" },
+            { "value": "large", "label": "Büyük" }
+          ],
+          "default": "adapt",
+          "label": "Görsel yüksekliği"
+        }
+      ]
+    },
+    {
+      "type": "title",
+      "name": "Başlık",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "blog_show_date",
+          "default": true,
+          "label": "Tarihi göster"
+        },
+        {
+          "type": "checkbox",
+          "id": "blog_show_author",
+          "default": true,
+          "label": "Yazarı göster"
+        }
+      ]
+    },
+    {
+      "type": "content",
+      "name": "İçerik",
+      "limit": 1
+    },
+    {
+      "type": "share",
+      "name": "Paylaşım Butonları",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "share_label",
+          "label": "Paylaş yazısı",
+          "default": "Paylaş"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

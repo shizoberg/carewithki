@@ -1,0 +1,81 @@
+{% comment %}
+  .ki Menu Preview Hero (scoped) — Brand Kit
+  Eyebrow chip + title + description. Centered.
+
+  Brand kit:
+    #493d9a / #f8f8f6 / #b2a5ff / #dad2ff
+{% endcomment %}
+
+<section id="mbshero-{{ section.id }}" class="section">
+  <style>
+    #mbshero-{{ section.id }}{
+      --ki-purple-dark: #493d9a;
+      --ki-offwhite: #f8f8f6;
+      --ki-purple: #b2a5ff;
+      --ki-lilac: #dad2ff;
+
+      --bg: {{ section.settings.bg | default: '#ffffff' }};
+      --text: {{ section.settings.text | default: '#1a1a1a' }};
+      --muted: {{ section.settings.muted | default: 'rgba(26,26,26,.72)' }};
+
+      --maxw: {{ section.settings.max_width | default: 720 }}px;
+      --py: {{ section.settings.pad_y | default: 88 }}px;
+      --px: {{ section.settings.pad_x | default: 24 }}px;
+
+      background: var(--bg); color: var(--text);
+    }
+    #mbshero-{{ section.id }} .mbshero__wrap{
+      max-width: var(--maxw); margin: 0 auto; padding: var(--py) var(--px); text-align: center;
+    }
+    #mbshero-{{ section.id }} .mbshero__eyebrow{
+      display: inline-block; padding: 6px 16px; border-radius: 999px;
+      background: rgba(178,165,255,.25); color: var(--ki-purple-dark);
+      font-size: 12px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase;
+    }
+    #mbshero-{{ section.id }} .mbshero__title{
+      margin: 24px 0 0; font-size: clamp(36px, 5vw, 56px); font-weight: 650;
+      letter-spacing: -0.02em; line-height: 1.05; color: var(--ki-purple-dark);
+      text-shadow: 0 10px 26px rgba(73,61,154,.10);
+    }
+    #mbshero-{{ section.id }} .mbshero__desc{
+      margin: 18px auto 0; max-width: 620px; color: var(--muted);
+      font-size: clamp(15px, 1.6vw, 18px); line-height: 1.65;
+    }
+    @media (max-width: 750px){
+      #mbshero-{{ section.id }} .mbshero__wrap{ padding: 56px 16px; }
+      #mbshero-{{ section.id }} .mbshero__title{ font-size: clamp(28px, 7vw, 40px); }
+    }
+  </style>
+
+  <div class="mbshero__wrap">
+    {% if section.settings.eyebrow != blank %}
+      <span class="mbshero__eyebrow">{{ section.settings.eyebrow }}</span>
+    {% endif %}
+    {% if section.settings.title != blank %}
+      <h1 class="mbshero__title">{{ section.settings.title }}</h1>
+    {% endif %}
+    {% if section.settings.description != blank %}
+      <p class="mbshero__desc">{{ section.settings.description }}</p>
+    {% endif %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "MBS · Hero",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Menü Tasarım Önizlemesi" },
+    { "type": "text", "id": "title", "label": "Title", "default": ".ki — minimal menü" },
+    { "type": "textarea", "id": "description", "label": "Description", "default": "Üst menüyü desktop'ta navigation menu, mobilde sağdan kayan drawer olarak tasarladık. Ürünler, Anlaşmalı Eczaneler ve Blog dahil tüm bölümler ikonlarla zenginleştirildi." },
+
+    { "type": "header", "content": "Style" },
+    { "type": "color", "id": "bg", "label": "Background", "default": "#ffffff" },
+    { "type": "color", "id": "text", "label": "Text", "default": "#1a1a1a" },
+    { "type": "color", "id": "muted", "label": "Muted", "default": "#493d9a" },
+    { "type": "range", "id": "max_width", "label": "Max width (px)", "min": 600, "max": 1200, "step": 20, "default": 720 },
+    { "type": "range", "id": "pad_y", "label": "Vertical padding (px)", "min": 24, "max": 160, "step": 4, "default": 88 },
+    { "type": "range", "id": "pad_x", "label": "Horizontal padding (px)", "min": 12, "max": 80, "step": 2, "default": 24 }
+  ],
+  "presets": [{ "name": "MBS · Hero" }]
+}
+{% endschema %}
