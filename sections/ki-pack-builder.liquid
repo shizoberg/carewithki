@@ -21,7 +21,7 @@
        sığmayan otomatik alt satıra düşer (flex-wrap: wrap).
        ============================================================ */
     #ki-{{ section.id }} {
-      background: var(--ki-bg, #fffaf3);
+      background: var(--ki-bg, #fff);
       padding: 24px 0 120px;
       width: 100%;
       max-width: 100vw;
@@ -91,7 +91,7 @@
       font-size: 13px; font-weight: 600;
       padding: 9px 14px;
       border-radius: 999px;
-      background: var(--ki-secondary, #f4ede1);
+      background: var(--ki-secondary, #ebe9f5);
       color: var(--ki-primary, #3a2d6e);
       border: 1.5px solid transparent;
       transition: all .2s ease;
@@ -126,7 +126,7 @@
     }
     #ki-{{ section.id }} .ki-pack__cat {
       background: var(--ki-card, #fff);
-      border: 1px solid rgba(0,0,0,.08);
+      border: 1px solid var(--ki-border, #e6e3ee);
       border-radius: 16px;
       overflow: hidden;
     }
@@ -174,7 +174,7 @@
     }
     #ki-{{ section.id }} .ki-pack__cat-body {
       display: none;
-      border-top: 1px solid rgba(0,0,0,.08);
+      border-top: 1px solid var(--ki-border, #e6e3ee);
     }
     #ki-{{ section.id }} .ki-pack__cat[data-open="true"] .ki-pack__cat-body {
       display: block;
@@ -193,22 +193,22 @@
       gap: 6px 14px;
       padding: 14px 18px;
       align-items: start;
-      border-bottom: 1px solid rgba(0,0,0,.06);
+      border-bottom: 1px solid var(--ki-border, #e6e3ee);
       transition: background .15s ease;
       width: 100%;
       max-width: 100%;
     }
     #ki-{{ section.id }} .ki-pack__item:last-child { border-bottom: 0; }
     #ki-{{ section.id }} .ki-pack__item.is-selected {
-      background: rgba(244,237,225,.5);
+      background: rgba(73,61,154,.06);
     }
     #ki-{{ section.id }} .ki-pack__item-img {
       grid-area: img;
       width: 56px; height: 56px;
       border-radius: 12px;
       overflow: hidden;
-      background: var(--ki-secondary, #f4ede1);
-      border: 1px solid rgba(0,0,0,.05);
+      background: var(--ki-secondary, #ebe9f5);
+      border: 1px solid var(--ki-border, #e6e3ee);
       flex-shrink: 0;
       align-self: center;
     }
@@ -216,6 +216,11 @@
       width: 100%; height: 100%;
       object-fit: cover;
       display: block;
+    }
+    #ki-{{ section.id }} .ki-pack__item-img-placeholder {
+      width: 100%; height: 100%;
+      display: grid; place-items: center;
+      color: var(--ki-muted, #6b6360);
     }
     #ki-{{ section.id }} .ki-pack__item-info {
       grid-area: info;
@@ -270,16 +275,19 @@
       grid-area: stepper;
       justify-self: end;
       display: inline-flex;
-      align-items: center; gap: 0;
+      align-items: center; justify-content: space-between; gap: 2px;
+      width: 112px;
+      min-width: 112px;
       padding: 3px;
-      background: var(--ki-bg, #fffaf3);
-      border: 1px solid rgba(0,0,0,.1);
+      background: var(--ki-card, #fff);
+      border: 1px solid var(--ki-border, #e6e3ee);
       border-radius: 999px;
       flex-shrink: 0;
       margin-top: 6px;
+      box-shadow: 0 2px 8px rgba(58,45,110,.06);
     }
     #ki-{{ section.id }} .ki-pack__stepper button {
-      width: 28px; height: 28px;
+      width: 32px; height: 32px;
       border: 0; border-radius: 50%;
       display: grid; place-items: center;
       cursor: pointer;
@@ -291,7 +299,7 @@
       color: var(--ki-primary, #3a2d6e);
     }
     #ki-{{ section.id }} .ki-pack__step-minus:hover:not(:disabled) {
-      background: var(--ki-secondary, #f4ede1);
+      background: var(--ki-secondary, #ebe9f5);
     }
     #ki-{{ section.id }} .ki-pack__step-minus:disabled {
       opacity: .3; cursor: not-allowed;
@@ -304,11 +312,16 @@
       background: var(--ki-primary-medium, #5946b3);
     }
     #ki-{{ section.id }} .ki-pack__step-qty {
-      min-width: 26px; text-align: center;
+      min-width: 32px; height: 32px;
+      display: grid; place-items: center;
+      text-align: center;
       font-size: 13px; font-weight: 700;
+      line-height: 1;
       color: var(--ki-primary, #3a2d6e);
       font-variant-numeric: tabular-nums;
       white-space: nowrap !important;
+      opacity: 1;
+      visibility: visible;
     }
 
     /* ===== Category hint (sage) ===== */
@@ -326,7 +339,7 @@
     #ki-{{ section.id }} .ki-pack__summary-wrap { position: static; }
     #ki-{{ section.id }} .ki-pack__summary {
       background: var(--ki-card, #fff);
-      border: 1px solid rgba(0,0,0,.08);
+      border: 1px solid var(--ki-border, #e6e3ee);
       border-radius: 18px;
       padding: 20px;
       box-shadow: 0 4px 16px -8px rgba(58,45,110,.15);
@@ -372,7 +385,7 @@
       width: 40px; height: 40px;
       border-radius: 10px;
       overflow: hidden;
-      background: var(--ki-secondary, #f4ede1);
+      background: var(--ki-secondary, #ebe9f5);
       flex-shrink: 0;
     }
     #ki-{{ section.id }} .ki-pack__sum-li-img img {
@@ -412,7 +425,7 @@
     #ki-{{ section.id }} .ki-pack__ship {
       margin-top: 16px;
       padding: 12px 14px;
-      background: var(--ki-secondary, #f4ede1);
+      background: var(--ki-secondary, #ebe9f5);
       border-radius: 12px;
       display: flex; align-items: center; gap: 8px;
       font-size: 12px; font-weight: 600;
@@ -448,8 +461,8 @@
       width: 32px; height: 32px;
       border-radius: 8px;
       overflow: hidden;
-      background: var(--ki-secondary, #f4ede1);
-      border: 1px solid rgba(0,0,0,.05);
+      background: var(--ki-secondary, #ebe9f5);
+      border: 1px solid var(--ki-border, #e6e3ee);
       flex-shrink: 0;
     }
     #ki-{{ section.id }} .ki-pack__helper-img img {
@@ -479,7 +492,7 @@
       transition: background .15s ease, color .15s ease;
     }
     #ki-{{ section.id }} .ki-pack__helper-btn:hover {
-      background: var(--ki-secondary, #f4ede1);
+      background: var(--ki-secondary, #ebe9f5);
     }
     #ki-{{ section.id }} .ki-pack__helper--suggested .ki-pack__helper-btn {
       color: var(--ki-sage, #5d7a52);
@@ -518,7 +531,7 @@
       padding: 12px 14px;
       border: 1px solid rgba(0,0,0,.12);
       border-radius: 12px;
-      background: var(--ki-bg, #fffaf3);
+      background: var(--ki-card, #fff);
       color: var(--ki-primary, #3a2d6e);
       font-size: 14px; font-weight: 500;
       outline: none;
@@ -543,7 +556,7 @@
       transition: opacity .15s, background .15s;
     }
     #ki-{{ section.id }} .ki-pack__dialog-cancel {
-      background: var(--ki-secondary, #f4ede1);
+      background: var(--ki-secondary, #ebe9f5);
       color: var(--ki-primary, #3a2d6e);
     }
     #ki-{{ section.id }} .ki-pack__dialog-confirm {
@@ -641,8 +654,8 @@
     #ki-{{ section.id }} .ki-pack__howit {
       margin-top: 16px;
       padding: 18px;
-      background: var(--ki-cream-2, #f7f1e6);
-      border: 1px solid rgba(0,0,0,.06);
+      background: var(--ki-card, #fff);
+      border: 1px solid var(--ki-border, #e6e3ee);
       border-radius: 18px;
     }
     #ki-{{ section.id }} .ki-pack__howit-title {
@@ -818,6 +831,10 @@
                             <div class="ki-pack__item-img">
                               {%- if p.featured_image -%}
                                 {{ p.featured_image | image_url: width: 200 | image_tag: alt: p.title, loading: 'lazy', widths: '120,240' }}
+                              {%- else -%}
+                                <span class="ki-pack__item-img-placeholder" aria-hidden="true">
+                                  {% render 'ki-icon', name: 'sparkles', size: 20 %}
+                                </span>
                               {%- endif -%}
                             </div>
                             <div class="ki-pack__item-info">
@@ -831,7 +848,7 @@
                                 <p class="ki-pack__item-short">{{ itemBlock.settings.short }}</p>
                               {%- endif -%}
                               <p class="ki-pack__item-price">
-                                {{ v.price | money }}
+                                ₺{{ v.price | money_without_currency }}
                                 {%- if itemBlock.settings.step != blank and itemBlock.settings.step > 1 -%}
                                   <small>/ {{ itemBlock.settings.step }} {{ itemBlock.settings.unit }}</small>
                                 {%- endif -%}
@@ -858,8 +875,10 @@
                                data-ki-pack-price="{{ demo_price }}"
                                data-ki-pack-unit="{{ itemBlock.settings.unit | default: 'adet' }}"
                                {{ itemBlock.shopify_attributes }}>
-                            <div class="ki-pack__item-img" style="display:flex;align-items:center;justify-content:center;color:var(--ki-muted);">
-                              {% render 'ki-icon', name: 'sparkles', size: 20 %}
+                            <div class="ki-pack__item-img">
+                              <span class="ki-pack__item-img-placeholder" aria-hidden="true">
+                                {% render 'ki-icon', name: 'sparkles', size: 20 %}
+                              </span>
                             </div>
                             <div class="ki-pack__item-info">
                               <div class="ki-pack__item-name">
@@ -983,9 +1002,11 @@
             <span>{{ section.settings.howit_title | default: 'Nasıl çalışır?' }}</span>
           </h4>
           <ol>
+            {%- assign step_index = 0 -%}
             {%- for block in section.blocks -%}
               {%- if block.type == 'step' -%}
-                <li><span class="ki-pack__howit-num">{{ forloop.index }}</span><span>{{ block.settings.text }}</span></li>
+                {%- assign step_index = step_index | plus: 1 -%}
+                <li><span class="ki-pack__howit-num">{{ step_index }}</span><span>{{ block.settings.text }}</span></li>
               {%- endif -%}
             {%- endfor -%}
           </ol>
