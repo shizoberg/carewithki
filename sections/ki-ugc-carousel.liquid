@@ -228,6 +228,7 @@
   var lbMedia=document.getElementById('UGCLBMedia-'+sid);
   var lbClose=document.getElementById('UGCLBClose-'+sid);
   if(!sec||!track||!lb||!lbMedia) return;
+  document.body.appendChild(lb);
 
   var prev=sec.querySelector('.ugc-control--prev');
   var next=sec.querySelector('.ugc-control--next');
@@ -468,7 +469,12 @@
       video.muted=true;
       video.playsInline=true;
     }
-    card.addEventListener('click',function(){openLightbox(card);});
+  });
+
+  track.addEventListener('click',function(event){
+    var card=event.target.closest&&event.target.closest('.ugc-card');
+    if(!card||!track.contains(card)) return;
+    openLightbox(card);
   });
 
   if('IntersectionObserver' in window){

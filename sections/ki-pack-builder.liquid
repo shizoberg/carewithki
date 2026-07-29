@@ -21,7 +21,15 @@
        sığmayan otomatik alt satıra düşer (flex-wrap: wrap).
        ============================================================ */
     #ki-{{ section.id }} {
-      background: var(--ki-bg, #fff);
+      --ki-primary: #493d9a;
+      --ki-primary-medium: #6254b4;
+      --ki-primary-fg: #ffffff;
+      --ki-secondary: #f0eef9;
+      --ki-card: #ffffff;
+      --ki-border: #e1ddf0;
+      --ki-muted: #6f6978;
+      --ki-bg: #ffffff;
+      background: var(--ki-bg);
       padding: 24px 0 120px;
       width: 100%;
       max-width: 100vw;
@@ -93,7 +101,7 @@
       border-radius: 999px;
       background: var(--ki-secondary, #ebe9f5);
       color: var(--ki-primary, #3a2d6e);
-      border: 1.5px solid transparent;
+      border: 1.5px solid rgba(73,61,154,.08);
       transition: all .2s ease;
       white-space: nowrap !important;
       word-break: normal !important;
@@ -129,6 +137,7 @@
       border: 1px solid var(--ki-border, #e6e3ee);
       border-radius: 16px;
       overflow: hidden;
+      box-shadow: 0 8px 28px -24px rgba(73,61,154,.45);
     }
     #ki-{{ section.id }} .ki-pack__cat-head {
       width: 100%;
@@ -284,7 +293,7 @@
       border-radius: 999px;
       flex-shrink: 0;
       margin-top: 6px;
-      box-shadow: 0 2px 8px rgba(58,45,110,.06);
+      box-shadow: 0 4px 14px rgba(73,61,154,.08);
     }
     #ki-{{ section.id }} .ki-pack__stepper button {
       width: 32px; height: 32px;
@@ -315,9 +324,9 @@
       min-width: 32px; height: 32px;
       display: grid; place-items: center;
       text-align: center;
-      font-size: 13px; font-weight: 700;
+      font-size: 14px; font-weight: 800;
       line-height: 1;
-      color: var(--ki-primary, #3a2d6e);
+      color: #493d9a;
       font-variant-numeric: tabular-nums;
       white-space: nowrap !important;
       opacity: 1;
@@ -342,7 +351,7 @@
       border: 1px solid var(--ki-border, #e6e3ee);
       border-radius: 18px;
       padding: 20px;
-      box-shadow: 0 4px 16px -8px rgba(58,45,110,.15);
+      box-shadow: 0 18px 48px -34px rgba(73,61,154,.55);
     }
     #ki-{{ section.id }} .ki-pack__sum-head {
       display: flex; justify-content: space-between; align-items: center;
@@ -684,6 +693,182 @@
       display: grid; place-items: center;
     }
 
+    /* ===== Dedicated subscription guide ===== */
+    #ki-{{ section.id }} .ki-pack__guide {
+      max-width: 1240px;
+      margin: 72px auto 0;
+      padding: 0 20px;
+    }
+    #ki-{{ section.id }} .ki-pack__guide-head {
+      max-width: 720px;
+      margin: 0 auto 34px;
+      text-align: center;
+    }
+    #ki-{{ section.id }} .ki-pack__guide-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin: 0 0 10px;
+      color: #493d9a;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+    }
+    #ki-{{ section.id }} .ki-pack__guide-eyebrow::before,
+    #ki-{{ section.id }} .ki-pack__guide-eyebrow::after {
+      content: '';
+      width: 22px;
+      height: 1px;
+      background: rgba(73,61,154,.35);
+    }
+    #ki-{{ section.id }} .ki-pack__guide-title {
+      margin: 0;
+      color: #493d9a;
+      font-family: var(--ki-font-primary, 'Raleway', sans-serif);
+      font-size: clamp(28px, 4vw, 46px);
+      font-weight: 800;
+      line-height: 1.08;
+      letter-spacing: -.025em;
+    }
+    #ki-{{ section.id }} .ki-pack__guide-subtitle {
+      max-width: 620px;
+      margin: 12px auto 0;
+      color: #6f6978;
+      font-size: 14px;
+      line-height: 1.65;
+    }
+    #ki-{{ section.id }} .ki-pack__guide-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      counter-reset: subscription-step;
+    }
+    #ki-{{ section.id }} .ki-pack__guide-card {
+      position: relative;
+      min-height: 220px;
+      padding: 22px;
+      border: 1px solid #e1ddf0;
+      border-radius: 20px;
+      background: #fff;
+      box-shadow: 0 18px 45px -36px rgba(73,61,154,.7);
+      counter-increment: subscription-step;
+    }
+    #ki-{{ section.id }} .ki-pack__guide-card::after {
+      content: '0' counter(subscription-step);
+      position: absolute;
+      top: 18px;
+      right: 18px;
+      color: rgba(73,61,154,.28);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: .08em;
+    }
+    #ki-{{ section.id }} .ki-pack__guide-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 16px;
+      display: grid;
+      place-items: center;
+      margin-bottom: 28px;
+      color: #493d9a;
+      background: #f0eef9;
+    }
+    #ki-{{ section.id }} .ki-pack__guide-icon svg {
+      width: 25px;
+      height: 25px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    #ki-{{ section.id }} .ki-pack__guide-card h3 {
+      margin: 0 0 8px;
+      color: #493d9a;
+      font-size: 17px;
+      font-weight: 800;
+      line-height: 1.25;
+    }
+    #ki-{{ section.id }} .ki-pack__guide-card p {
+      margin: 0;
+      color: #6f6978;
+      font-size: 13px;
+      line-height: 1.55;
+    }
+    #ki-{{ section.id }} .ki-pack__support {
+      margin-top: 18px;
+      padding: 22px 24px;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      color: #fff;
+      background: linear-gradient(135deg, #493d9a 0%, #30266f 100%);
+    }
+    #ki-{{ section.id }} .ki-pack__support-copy {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    #ki-{{ section.id }} .ki-pack__support-icon {
+      width: 44px;
+      height: 44px;
+      flex: 0 0 auto;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      background: rgba(255,255,255,.13);
+    }
+    #ki-{{ section.id }} .ki-pack__support-icon svg {
+      width: 22px;
+      height: 22px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+    }
+    #ki-{{ section.id }} .ki-pack__support strong {
+      display: block;
+      margin-bottom: 3px;
+      font-size: 16px;
+    }
+    #ki-{{ section.id }} .ki-pack__support p {
+      margin: 0;
+      color: rgba(255,255,255,.72);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+    #ki-{{ section.id }} .ki-pack__support-link {
+      min-height: 46px;
+      padding: 0 20px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      flex: 0 0 auto;
+      color: #fff;
+      background: #25d366;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 800;
+      transition: transform .2s, background .2s;
+    }
+    #ki-{{ section.id }} .ki-pack__support-link:hover {
+      color: #fff;
+      background: #20bd5a;
+      transform: translateY(-1px);
+    }
+    #ki-{{ section.id }} .ki-pack__support-link svg {
+      width: 18px;
+      height: 18px;
+      fill: currentColor;
+    }
+
     /* ============================================================
        DESKTOP (≥ 1024px) — 2 sütun, summary sağda sticky
        ============================================================ */
@@ -718,6 +903,20 @@
       #ki-{{ section.id }} .ki-pack__sum-title { font-size: 24px; }
       #ki-{{ section.id }} .ki-pack__howit { padding: 22px; }
       #ki-{{ section.id }} .ki-pack__howit-title { font-size: 18px; }
+      #ki-{{ section.id }} .ki-pack__guide { padding: 0 32px; }
+    }
+
+    @media (max-width: 899px) {
+      #ki-{{ section.id }} .ki-pack__guide-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 599px) {
+      #ki-{{ section.id }} .ki-pack__guide { margin-top: 52px; }
+      #ki-{{ section.id }} .ki-pack__guide-head { margin-bottom: 24px; }
+      #ki-{{ section.id }} .ki-pack__guide-grid { grid-template-columns: 1fr; gap: 10px; }
+      #ki-{{ section.id }} .ki-pack__guide-card { min-height: 0; padding: 18px; }
+      #ki-{{ section.id }} .ki-pack__guide-icon { width: 46px; height: 46px; margin-bottom: 18px; }
+      #ki-{{ section.id }} .ki-pack__support { align-items: stretch; flex-direction: column; padding: 20px; }
+      #ki-{{ section.id }} .ki-pack__support-link { width: 100%; }
     }
 
     /* Çok dar mobile fallback (≤ 380px) */
@@ -974,6 +1173,59 @@
       </div>
     </div>
   </div>
+
+  <section class="ki-pack__guide" aria-labelledby="ki-pack-guide-title-{{ section.id }}">
+    <div class="ki-pack__guide-head">
+      <p class="ki-pack__guide-eyebrow">Nasıl abone olunur?</p>
+      <h2 class="ki-pack__guide-title" id="ki-pack-guide-title-{{ section.id }}">Dört adımda bakım paketin hazır.</h2>
+      <p class="ki-pack__guide-subtitle">İhtiyacına göre oluştur, düzenli teslim al. Taahhüt yok; aboneliğini hesabından kolayca atlayabilir, duraklatabilir veya iptal edebilirsin.</p>
+    </div>
+    <ol class="ki-pack__guide-grid">
+      <li class="ki-pack__guide-card">
+        <span class="ki-pack__guide-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M4 5h16v14H4z"/><path d="M8 9h8M8 13h5"/><path d="m16 16 2 2 3-4"/></svg>
+        </span>
+        <h3>Ürünlerini seç</h3>
+        <p>Bakım rutinine uygun ürünleri ve ihtiyacın olan adetleri paketine ekle.</p>
+      </li>
+      <li class="ki-pack__guide-card">
+        <span class="ki-pack__guide-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/><path d="m9 15 2 2 4-4"/></svg>
+        </span>
+        <h3>Planını onayla</h3>
+        <p>Paket içeriğini, teslimat düzenini ve toplam tutarı kontrol ederek aboneliğini başlat.</p>
+      </li>
+      <li class="ki-pack__guide-card">
+        <span class="ki-pack__guide-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M3 7h11v10H3z"/><path d="M14 10h4l3 3v4h-7"/><circle cx="7" cy="18" r="2"/><circle cx="18" cy="18" r="2"/></svg>
+        </span>
+        <h3>Kapına gelsin</h3>
+        <p>Seçtiğin ürünler özenle hazırlanır ve planlanan zamanda adresine gönderilir.</p>
+      </li>
+      <li class="ki-pack__guide-card">
+        <span class="ki-pack__guide-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M4 12a8 8 0 1 0 2.3-5.7L4 8"/><path d="M4 4v4h4"/><path d="M9 10v4M15 10v4"/></svg>
+        </span>
+        <h3>İstediğin zaman yönet</h3>
+        <p>Taahhüt yok. Gönderimi atla, planı duraklat veya aboneliğini kolayca iptal et.</p>
+      </li>
+    </ol>
+    <div class="ki-pack__support">
+      <div class="ki-pack__support-copy">
+        <span class="ki-pack__support-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M21 11.5a8.5 8.5 0 0 1-12.3 7.6L3 21l1.9-5.7A8.5 8.5 0 1 1 21 11.5Z"/></svg>
+        </span>
+        <div>
+          <strong>Bir yerde takıldın mı?</strong>
+          <p>Abonelik ve paket oluşturma konusunda WhatsApp danışma hattımız sana yardımcı olur.</p>
+        </div>
+      </div>
+      <a class="ki-pack__support-link" href="https://wa.me/905335745535?text=Merhaba%2C%20abonelik%20hakk%C4%B1nda%20destek%20almak%20istiyorum." target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.5 14.4c-.3-.2-1.8-.9-2-.9-.3-.1-.5-.2-.7.1-.2.3-.8 1-.9 1.2-.2.2-.4.2-.7.1-2.1-1-3.5-1.9-4.9-4.3-.4-.7.4-.7 1.1-1.5.1-.2.1-.4 0-.6-.1-.2-.7-1.7-.9-2.3-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.6.1-.9.4-.3.3-1.1 1.1-1.1 2.6s1.1 3 1.2 3.2c.2.2 2.1 3.2 5.1 4.5.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 1.8-.7 2-1.4.3-.7.3-1.3.2-1.4 0-.1-.2-.2-.5-.4Z"/><path d="M20.5 3.5A11.8 11.8 0 0 0 1.9 17.7L.2 24l6.4-1.7A11.8 11.8 0 0 0 20.5 3.5Zm-8.4 18.3c-1.7 0-3.3-.5-4.7-1.3l-.3-.2-3.8 1 1-3.7-.2-.4A9.8 9.8 0 1 1 12.1 21.8Z"/></svg>
+        WhatsApp'tan destek al
+      </a>
+    </div>
+  </section>
 
   <div class="ki-pack__dialog" data-ki-pack-dialog role="dialog" aria-modal="true" aria-labelledby="ki-pack-dialog-title-{{ section.id }}" aria-hidden="true">
     <div class="ki-pack__dialog-panel">

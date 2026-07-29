@@ -14,10 +14,11 @@
 .kcat-{{ section.id }} .kcat-heading em{font-style:italic;color:var(--p);}
 .kcat-{{ section.id }} .kcat-layout{display:grid;grid-template-columns:minmax(0,1fr);gap:14px;}
 .kcat-{{ section.id }} .kcat-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))!important;grid-template-rows:repeat(2,minmax(0,1fr));gap:12px;}
-.kcat-{{ section.id }} .kcat-card{position:relative;border-radius:14px;overflow:hidden;background:#1a1060;display:flex;flex-direction:column;justify-content:flex-end;text-decoration:none;transition:transform .3s,box-shadow .3s;min-height:170px;}
+.kcat-{{ section.id }} .kcat-card{position:relative;border-radius:14px;overflow:hidden;background:#1a1060;display:flex;flex-direction:column;justify-content:flex-end;text-decoration:none;transition:transform .3s,box-shadow .3s;min-height:170px;cursor:pointer;isolation:isolate;touch-action:manipulation;}
 .kcat-{{ section.id }} .kcat-card:hover{transform:translateY(-4px);box-shadow:0 16px 40px rgba(73,61,154,.28);}
 .kcat-{{ section.id }} .kcat-card--big{min-height:210px;}
 .kcat-{{ section.id }} .kcat-card-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s;}
+.kcat-{{ section.id }} .kcat-card-img,.kcat-{{ section.id }} .kcat-card-ov{pointer-events:none;}
 .kcat-{{ section.id }} .kcat-card:hover .kcat-card-img{transform:scale(1.04);}
 .kcat-{{ section.id }} .kcat-card-ov{position:relative;z-index:2;padding:16px 16px 14px;background:linear-gradient(to top,rgba(10,5,40,.88) 0%,rgba(26,16,96,.55) 50%,transparent 100%);display:flex;align-items:flex-end;justify-content:space-between;gap:10px;}
 .kcat-{{ section.id }} .kcat-card-text{flex:1;min-width:0;}
@@ -65,7 +66,7 @@
     </div>
     <div class="kcat-layout">
       {%- if big != blank -%}
-      <a href="{{ big.settings.link | default: '#' }}" class="kcat-card kcat-card--big kcat-card--c1" {{ big.shopify_attributes }}>
+      <a href="{{ big.settings.link | default: '#' }}" class="kcat-card kcat-card--big kcat-card--c1" aria-label="{{ big.settings.title | escape }}" {{ big.shopify_attributes }}>
         {%- if big.settings.image != blank -%}{{ big.settings.image | image_url: width: 900 | image_tag: widths: '420, 600, 750, 900', sizes: '(max-width: 749px) calc(100vw - 36px), 60vw', class: 'kcat-card-img', loading: 'lazy', decoding: 'async', alt: big.settings.title }}{%- endif -%}
         <div class="kcat-card-ov">
           <div class="kcat-card-text">
@@ -82,7 +83,7 @@
         {%- for block in small_cards limit: 4 -%}
           {%- assign ci = forloop.index0 | modulo: 4 -%}
           {%- assign c = colors[ci] -%}
-          <a href="{{ block.settings.link | default: '#' }}" class="kcat-card kcat-card--{{ c }}" {{ block.shopify_attributes }}>
+          <a href="{{ block.settings.link | default: '#' }}" class="kcat-card kcat-card--{{ c }}" aria-label="{{ block.settings.title | escape }}" {{ block.shopify_attributes }}>
             {%- if block.settings.image != blank -%}{{ block.settings.image | image_url: width: 600 | image_tag: widths: '280, 420, 600', sizes: '(max-width: 749px) calc(100vw - 36px), 30vw', class: 'kcat-card-img', loading: 'lazy', decoding: 'async', alt: block.settings.title }}{%- endif -%}
             <div class="kcat-card-ov">
               <div class="kcat-card-text">

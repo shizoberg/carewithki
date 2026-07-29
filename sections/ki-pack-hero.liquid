@@ -6,10 +6,10 @@
   <style>
     #paket-hero-{{ section.id }} {
       --ph-bg: {{ section.settings.bg | default: '#ffffff' }};
-      --ph-primary: var(--ki-primary, #493d9a);
-      --ph-muted: var(--ki-muted, #6b6360);
+      --ph-primary: #493d9a;
+      --ph-muted: #6f6978;
       --ph-sage: var(--ki-sage, #2e6e51);
-      --ph-border: var(--ki-border, rgba(73,61,154,.12));
+      --ph-border: rgba(73,61,154,.14);
       background: var(--ph-bg);
       border-bottom: 1px solid var(--ph-border);
       font-family: var(--ki-font-body, 'Raleway', system-ui, sans-serif);
@@ -18,7 +18,7 @@
     #paket-hero-{{ section.id }} .ph-eyebrow { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: var(--ph-primary); background: rgba(73,61,154,.08); padding: 6px 12px; border-radius: 999px; margin: 0 0 14px; }
     #paket-hero-{{ section.id }} .ph-row { display: flex; flex-direction: column; gap: 20px; }
     #paket-hero-{{ section.id }} .ph-title { font-family: var(--ki-font-primary, 'Raleway', sans-serif); font-size: 34px; line-height: 1.05; letter-spacing: -.02em; font-weight: 800; color: var(--ph-primary); margin: 0; max-width: 640px; }
-    #paket-hero-{{ section.id }} .ph-title em { font-style: italic; color: var(--ki-primary-medium, #5946b3); }
+    #paket-hero-{{ section.id }} .ph-title em { font-style: italic; color: #6558b8; }
     #paket-hero-{{ section.id }} .ph-text { font-size: 15px; line-height: 1.6; font-weight: 500; color: var(--ph-muted); margin: 16px 0 0; max-width: 640px; }
     #paket-hero-{{ section.id }} .ph-trust { display: flex; flex-wrap: wrap; gap: 8px 24px; list-style: none; padding: 0; margin: 0; }
     #paket-hero-{{ section.id }} .ph-trust li { display: flex; align-items: center; gap: 6px; font-size: 12.5px; font-weight: 600; color: rgba(73,61,154,.82); }
