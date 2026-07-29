@@ -136,6 +136,7 @@
     var rootPath = window.Shopify && window.Shopify.routes ? window.Shopify.routes.root : '/';
     var originalLabel = button.textContent;
     var discountWarning = '';
+    var itemAdded = false;
     var sectionIds = isCartPage
       ? ['cart-items', 'cart-footer', 'cart-icon-bubble']
       : ['cart-drawer', 'cart-icon-bubble'];
@@ -162,6 +163,7 @@
         return response.json();
       })
       .then(function(addState) {
+        itemAdded = true;
         button.textContent = 'Eklendi ✓';
         button.classList.add('is-added');
         if (!discountCode) return addState;
@@ -191,7 +193,12 @@
           });
           if (!applied) discountWarning = 'Ürün eklendi. İndirim kodunun Shopify koşullarını kontrol edin.';
         }
-        if (cartState && cartState.sections) return cartState.sections;
+        var hasCompleteSections = cartState
+          && cartState.sections
+          && sectionIds.every(function(sectionId) {
+            return typeof cartState.sections[sectionId] === 'string' && cartState.sections[sectionId].length > 0;
+          });
+        if (hasCompleteSections) return cartState.sections;
         return fetch(rootPath + '?sections=' + sectionIds.join(',')).then(function(response) {
           if (!response.ok) throw new Error('refresh');
           return response.json();
@@ -199,9 +206,13 @@
       })
       .then(function(sections) {
         if (isCartPage) {
-          replaceCartPageSection(sections['cart-items'], 'cart-items');
-          replaceCartPageSection(sections['cart-footer'], '#main-cart-footer');
+          var itemsReplaced = replaceCartPageSection(sections['cart-items'], 'cart-items');
+          var footerReplaced = replaceCartPageSection(sections['cart-footer'], '#main-cart-footer');
           replaceCartPageSection(sections['cart-icon-bubble'], '#cart-icon-bubble');
+          if (!itemsReplaced || !footerReplaced) {
+            window.location.assign(rootPath + 'cart');
+            return;
+          }
         } else {
           var drawer = document.querySelector('cart-drawer');
           if (drawer && typeof drawer.renderContents === 'function') {
@@ -216,6 +227,10 @@
         }
       })
       .catch(function() {
+        if (itemAdded) {
+          window.location.assign(rootPath + 'cart');
+          return;
+        }
         button.disabled = false;
         button.textContent = originalLabel;
         if (status) status.textContent = 'Eklenemedi. Lütfen tekrar dene.';
@@ -223,14 +238,15 @@
   });
 
   function replaceCartPageSection(html, selector) {
-    if (!html) return;
+    if (!html) return false;
     var parsed = new DOMParser().parseFromString(html, 'text/html');
     var next = parsed.querySelector(selector);
     var current = document.querySelector(selector);
     if (next && current) {
-      current.innerHTML = next.innerHTML;
-      current.className = next.className;
+      current.replaceWith(next);
+      return true;
     }
+    return false;
   }
 })();
 </script>
