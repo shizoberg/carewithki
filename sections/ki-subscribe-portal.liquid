@@ -10,11 +10,11 @@
     Misafir guard — CSP-safe: meta refresh (HTML-only, JS gerektirmez).
     Shopify storefront strict CSP'sinde inline script bloke olur; meta refresh hep çalışır.
   {%- endcomment -%}
-  <meta http-equiv="refresh" content="0; url=/account/login?checkout_url=%2Fpages%2Fabonelik-portalim&return_url=%2Fpages%2Fabonelik-portalim&return_to=%2Fpages%2Fabonelik-portalim">
+  <meta http-equiv="refresh" content="0; url={{ routes.account_login_url }}?checkout_url=%2Fpages%2Fabonelik-portalim&return_url=%2Fpages%2Fabonelik-portalim&return_to=%2Fpages%2Fabonelik-portalim">
   <div style="padding:40px 16px;text-align:center;font-family:system-ui;">
     <h1 style="font-size:20px;color:#3a2d6e;margin:0 0 8px;">Giriş ekranına yönlendiriliyorsun…</h1>
     <p style="margin:12px 0 24px;color:#5a5a5a;">Otomatik yönlendirilmezse aşağıdaki butona tıkla.</p>
-    <a href="/account/login?checkout_url=%2Fpages%2Fabonelik-portalim&return_url=%2Fpages%2Fabonelik-portalim&return_to=%2Fpages%2Fabonelik-portalim" style="display:inline-block;padding:14px 28px;background:#3a2d6e;color:#fff;border-radius:999px;font-weight:700;text-decoration:none;">Giriş Yap</a>
+    <a href="{{ routes.account_login_url }}?checkout_url=%2Fpages%2Fabonelik-portalim&return_url=%2Fpages%2Fabonelik-portalim&return_to=%2Fpages%2Fabonelik-portalim" style="display:inline-block;padding:14px 28px;background:#3a2d6e;color:#fff;border-radius:999px;font-weight:700;text-decoration:none;">Giriş Yap</a>
   </div>
 {%- endunless -%}
 
@@ -508,7 +508,7 @@
               <div class="ki-pr__list-empty">
                 <h3 class="ki-pr__list-empty-title">Henüz tek seferlik siparişin yok</h3>
                 <p>Mağazadan ürün satın aldığında siparişlerin burada görünür.</p>
-                <p style="margin-top:14px;"><a href="/collections/all">Ürünleri keşfet →</a></p>
+                <p style="margin-top:14px;"><a href="{{ routes.all_products_collection_url }}">Ürünleri keşfet →</a></p>
               </div>
             {%- endif -%}
           {%- endpaginate -%}

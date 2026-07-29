@@ -2,6 +2,7 @@
   Minimal media renderer (Liquid side).
   JS will re-render on thumb click anyway; this is for initial paint.
 {% endcomment %}
+{% comment %}theme-check-disable UndefinedObject{% endcomment %}
 
 {% case media.media_type %}
   {% when 'image' %}
@@ -16,3 +17,4 @@
   {% else %}
     {{ 'image' | placeholder_svg_tag }}
 {% endcase %}
+{% comment %}theme-check-enable UndefinedObject{% endcomment %}

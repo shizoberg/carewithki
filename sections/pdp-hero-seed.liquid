@@ -562,9 +562,9 @@
               {% when 'image' %}
                 {{ m | image_url: width: 1200 | image_tag: loading: 'lazy', alt: m.alt }}
               {% when 'video' %}
-                {{ m | video_tag: controls: true, autoplay: true, loop: true, muted: true, playsinline: true }}
+                {{ m | video_tag: controls: true, autoplay: false, loop: false, muted: false, playsinline: true, preload: 'none' }}
               {% when 'external_video' %}
-                {{ m | external_video_tag }}
+                {{ m | external_video_tag: loading: 'lazy' }}
               {% else %}
                 {{ 'image' | placeholder_svg_tag }}
             {% endcase %}

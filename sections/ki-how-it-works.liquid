@@ -1,6 +1,5 @@
 {% comment %}.ki Nasil Calisir — 4 adim grid{% endcomment %}
 
-<link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;600;700;800&display=swap" rel="stylesheet">
 
 <style>
 .kinc-{{ section.id }} {
@@ -162,7 +161,7 @@
         <span class="kinc-num">{{ forloop.index }}</span>
         <div class="kinc-icon-box">
           {%- if block.settings.icon_image != blank -%}
-            <img src="{{ block.settings.icon_image | image_url: width: 52 }}" alt="">
+            {{ block.settings.icon_image | image_url: width: 52 | image_tag: loading: 'lazy', alt: '' }}
           {%- else -%}
             {%- case forloop.index -%}
             {%- when 1 -%}

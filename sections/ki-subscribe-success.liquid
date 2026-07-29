@@ -62,7 +62,7 @@
     </p>
     <div class="ki-ss__actions">
       <a href="{{ section.settings.portal_link | default: '/pages/abonelik-portalim' }}" class="ki-ss__btn ki-ss__btn--primary">{{ section.settings.portal_label | default: 'Aboneliğimi yönet' }}</a>
-      <a href="/" class="ki-ss__btn ki-ss__btn--secondary">{{ section.settings.home_label | default: 'Anasayfaya dön' }}</a>
+      <a href="{{ routes.root_url }}" class="ki-ss__btn ki-ss__btn--secondary">{{ section.settings.home_label | default: 'Anasayfaya dön' }}</a>
     </div>
   </div>
 </section>

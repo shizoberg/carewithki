@@ -1,7 +1,6 @@
 {% comment %}.ki PDP Hero v21 — AJAX cart add, cross-product variant destegi{% endcomment %}
 
 {{ 'ki-pdp.css' | asset_url | stylesheet_tag }}
-<link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
 <style>
 *,*::before,*::after{box-sizing:border-box;}
@@ -99,7 +98,6 @@
 </style>
 
 {%- assign cv         = product.selected_or_first_available_variant -%}
-{%- assign form_id    = 'kipdp-' | append: section.id -%}
 {%- assign opt_blocks   = section.blocks | where: 'type', 'option_card' -%}
 {%- assign feat_blocks  = section.blocks | where: 'type', 'feature_item' -%}
 {%- assign btag_blocks  = section.blocks | where: 'type', 'bundle_tag' -%}
@@ -124,12 +122,26 @@
     <div class="kipdp-gallery">
       <div class="kipdp-main-img" id="KiMainImg-{{ section.id }}">
         <div class="kipdp-swipe-track" id="KiTrack-{{ section.id }}">
-          {%- if images.size > 0 -%}{%- for img in images -%}<div class="kipdp-swipe-slide"><img src="{{ img | image_url: width: 1000 }}" alt="{{ img.alt | escape }}" loading="{% if forloop.first %}eager{% else %}lazy{% endif %}" width="1000" height="1000"></div>{%- endfor -%}{%- else -%}<div class="kipdp-swipe-slide">{{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}</div>{%- endif -%}
+          {%- if images.size > 0 -%}
+            {%- for img in images -%}
+              {%- assign image_loading = 'lazy' -%}
+              {%- assign image_priority = 'auto' -%}
+              {%- if forloop.first -%}
+                {%- assign image_loading = 'eager' -%}
+                {%- assign image_priority = 'high' -%}
+              {%- endif -%}
+              <div class="kipdp-swipe-slide">
+                {{ img | image_url: width: 1000 | image_tag: widths: '360, 540, 720, 1000', sizes: '(max-width: 749px) 100vw, 50vw', loading: image_loading, fetchpriority: image_priority, decoding: 'async', alt: img.alt }}
+              </div>
+            {%- endfor -%}
+          {%- else -%}
+            <div class="kipdp-swipe-slide">{{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}</div>
+          {%- endif -%}
         </div>
         {%- if images.size > 1 -%}<div class="ki-dots" id="KiDots-{{ section.id }}">{%- for img in images -%}<span class="ki-dot{% if forloop.first %} is-active{% endif %}"></span>{%- endfor -%}</div>{%- endif -%}
       </div>
       {%- if images.size > 1 -%}
-      <div class="kipdp-thumbs" id="KiThumbs-{{ section.id }}">{%- for img in images -%}<div class="kipdp-thumb{% if forloop.first %} is-active{% endif %}" data-idx="{{ forloop.index0 }}"><img src="{{ img | image_url: width: 160 }}" alt="{{ img.alt | escape }}" loading="lazy"></div>{%- endfor -%}</div>
+      <div class="kipdp-thumbs" id="KiThumbs-{{ section.id }}">{%- for img in images -%}<div class="kipdp-thumb{% if forloop.first %} is-active{% endif %}" data-idx="{{ forloop.index0 }}"><img src="{{ img | image_url: width: 160 }}" alt="{{ img.alt | escape }}" width="{{ img.width }}" height="{{ img.height }}" loading="lazy"></div>{%- endfor -%}</div>
       {%- endif -%}
     </div>
 
@@ -182,7 +194,7 @@
         {%- for block in badge_blocks -%}
         <div class="kipdp-badge-item" {{ block.shopify_attributes }}>
           <span class="ki-badge-ico">
-            {%- if block.settings.badge_image != blank -%}<img src="{{ block.settings.badge_image | image_url: width: 80 }}" alt="{{ block.settings.badge_label | escape }}" loading="lazy">
+            {%- if block.settings.badge_image != blank -%}<img src="{{ block.settings.badge_image | image_url: width: 80 }}" alt="{{ block.settings.badge_label | escape }}" width="{{ block.settings.badge_image.width }}" height="{{ block.settings.badge_image.height }}" loading="lazy">
             {%- else -%}{%- case block.settings.badge_icon -%}{%- when 'fda' -%}<svg viewBox="0 0 24 24"><use href="#ki-ico-fda"/></svg>{%- when 'gmp' -%}<svg viewBox="0 0 24 24"><use href="#ki-ico-gmp"/></svg>{%- when 'vegan' -%}<svg viewBox="0 0 24 24"><use href="#ki-ico-vegan"/></svg>{%- when 'shipping' -%}<svg viewBox="0 0 24 24"><use href="#ki-ico-shipping"/></svg>{%- when 'quality' -%}<svg viewBox="0 0 24 24"><use href="#ki-ico-quality"/></svg>{%- when 'natural' -%}<svg viewBox="0 0 24 24"><use href="#ki-ico-natural"/></svg>{%- when 'clinical' -%}<svg viewBox="0 0 24 24"><use href="#ki-ico-clinical"/></svg>{%- when 'pharma' -%}<svg viewBox="0 0 24 24"><use href="#ki-ico-pharma"/></svg>{%- when 'verified' -%}<svg viewBox="0 0 24 24"><use href="#ki-ico-verified"/></svg>{%- when 'eco' -%}<svg viewBox="0 0 24 24"><use href="#ki-ico-eco"/></svg>{%- else -%}<svg viewBox="0 0 24 24"><use href="#ki-ico-gmp"/></svg>{%- endcase -%}{%- endif -%}
           </span>
           {%- if block.settings.badge_label != blank -%}<span class="ki-badge-label">{{ block.settings.badge_label | escape }}</span>{%- endif -%}

@@ -74,10 +74,10 @@
   }
 </style>
 
-{%- assign _align = align | default: 'left' -%}
-{%- assign _color = color | default: 'dark' -%}
+{%- assign header_align = align | default: 'left' -%}
+{%- assign header_color = color | default: 'dark' -%}
 
-<div class="ki-sh ki-sh--{{ _align }} ki-sh--{{ _color }}">
+<div class="ki-sh ki-sh--{{ header_align }} ki-sh--{{ header_color }}">
   {%- if eyebrow != blank -%}
     <p class="ki-sh__eyebrow">{{ eyebrow | escape }}</p>
   {%- endif -%}

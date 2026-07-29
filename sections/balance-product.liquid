@@ -411,7 +411,7 @@
           {% if current_product != blank and current_product.images.size > 0 %}
             {% for image in current_product.images limit: 4 %}
               <div class="balance-pdp__media-item">
-                <img src="{{ image | img_url: '600x' }}" alt="{{ image.alt | escape }}">
+                <img src="{{ image | image_url: width: 600 }}" alt="{{ image.alt | escape }}" width="{{ image.width }}" height="{{ image.height }}" loading="lazy" decoding="async">
               </div>
             {% endfor %}
           {% else %}

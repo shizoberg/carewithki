@@ -1,5 +1,4 @@
 {% comment %}Kategori Grid — mobil font fix{% endcomment %}
-<link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,700;0,800;1,700;1,800&display=swap" rel="stylesheet">
 <style>
 .kcat-{{ section.id }}{
   --p:#493d9a;--lil:#dad2ff;
@@ -67,7 +66,7 @@
     <div class="kcat-layout">
       {%- if big != blank -%}
       <a href="{{ big.settings.link | default: '#' }}" class="kcat-card kcat-card--big kcat-card--c1" {{ big.shopify_attributes }}>
-        {%- if big.settings.image != blank -%}{{ big.settings.image | image_url: width: 900 | image_tag: class: 'kcat-card-img', loading: 'eager', alt: big.settings.title }}{%- endif -%}
+        {%- if big.settings.image != blank -%}{{ big.settings.image | image_url: width: 900 | image_tag: widths: '420, 600, 750, 900', sizes: '(max-width: 749px) calc(100vw - 36px), 60vw', class: 'kcat-card-img', loading: 'lazy', decoding: 'async', alt: big.settings.title }}{%- endif -%}
         <div class="kcat-card-ov">
           <div class="kcat-card-text">
             {%- if big.settings.title != blank -%}<h3 class="kcat-card-title">{{ big.settings.title | escape }}</h3>{%- endif -%}
@@ -84,7 +83,7 @@
           {%- assign ci = forloop.index0 | modulo: 4 -%}
           {%- assign c = colors[ci] -%}
           <a href="{{ block.settings.link | default: '#' }}" class="kcat-card kcat-card--{{ c }}" {{ block.shopify_attributes }}>
-            {%- if block.settings.image != blank -%}{{ block.settings.image | image_url: width: 600 | image_tag: class: 'kcat-card-img', loading: 'lazy', alt: block.settings.title }}{%- endif -%}
+            {%- if block.settings.image != blank -%}{{ block.settings.image | image_url: width: 600 | image_tag: widths: '280, 420, 600', sizes: '(max-width: 749px) calc(100vw - 36px), 30vw', class: 'kcat-card-img', loading: 'lazy', decoding: 'async', alt: block.settings.title }}{%- endif -%}
             <div class="kcat-card-ov">
               <div class="kcat-card-text">
                 {%- if block.settings.title != blank -%}<h3 class="kcat-card-title">{{ block.settings.title | escape }}</h3>{%- endif -%}

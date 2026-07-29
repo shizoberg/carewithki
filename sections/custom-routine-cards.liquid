@@ -1,6 +1,5 @@
 {% comment %}Routine Cards — .ki v4 — unified typography{% endcomment %}
 
-<link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,700;0,800;1,700;1,800&display=swap" rel="stylesheet">
 
 <style>
 .rcs-{{ section.id }} {
@@ -131,7 +130,7 @@
           {%- else -%}<div class="rcs-card">
           {%- endif -%}
             {%- if block.settings.image != blank -%}
-              {{ block.settings.image | image_url: width: 700 | image_tag: loading: 'lazy', alt: block.settings.title }}
+              {{ block.settings.image | image_url: width: 700 | image_tag: widths: '280, 420, 560, 700', sizes: '(max-width: 749px) 82vw, 32vw', loading: 'lazy', decoding: 'async', alt: block.settings.title }}
             {%- else -%}{{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}{%- endif -%}
             <div class="rcs-ov">
               {%- if block.settings.title != blank -%}<h3 class="rcs-card-title">{{ block.settings.title | escape }}</h3>{%- endif -%}

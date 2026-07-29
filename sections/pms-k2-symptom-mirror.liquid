@@ -1,6 +1,3 @@
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600;1,700&display=swap" rel="stylesheet">
 
 {%- style -%}
 /* ── ROOT ── */
@@ -249,13 +246,13 @@
     <div class="k2-hero-media">
       {%- if section.settings.hero_video != blank -%}
         {%- assign video = section.settings.hero_video -%}
-        {{ video | video_tag: autoplay: true, muted: true, loop: true, playsinline: true, image_size: '1920x' }}
+        {{ video | video_tag: autoplay: true, muted: true, loop: true, playsinline: true, preload: 'metadata', image_size: '1600x' }}
       {%- elsif section.settings.hero_video_url != blank -%}
-        <video autoplay muted loop playsinline>
+        <video autoplay muted loop playsinline preload="metadata">
           <source src="{{ section.settings.hero_video_url }}" type="video/mp4">
         </video>
       {%- elsif section.settings.hero_image != blank -%}
-        <img src="{{ section.settings.hero_image | image_url: width: 1920 }}" alt="{{ section.settings.hero_title_1 | escape }}">
+        <img src="{{ section.settings.hero_image | image_url: width: 1600 }}" alt="{{ section.settings.hero_title_1 | escape }}" width="{{ section.settings.hero_image.width }}" height="{{ section.settings.hero_image.height }}" loading="eager" fetchpriority="high">
       {%- endif -%}
     </div>
     <div class="k2-hero-overlay"></div>
@@ -310,7 +307,7 @@
                     {%- if block.type == 'testimonial' -%}
                       <div class="k2-cs" {{ block.shopify_attributes }}>
                         {%- if block.settings.image != blank -%}
-                          <img src="{{ block.settings.image | image_url: width: 400 }}" alt="{{ block.settings.name | escape }}" loading="lazy">
+                          <img src="{{ block.settings.image | image_url: width: 400 }}" alt="{{ block.settings.name | escape }}" width="{{ block.settings.image.width }}" height="{{ block.settings.image.height }}" loading="lazy">
                         {%- endif -%}
                         <div class="k2-cs-ov">
                           {%- if block.settings.video_url != blank -%}
@@ -382,7 +379,7 @@
             <div class="k2-ir k2-r" {{ block.shopify_attributes }}>
               <div class="k2-ii" style="background:{{ block.settings.bg_color }};">
                 {%- if block.settings.icon_image != blank -%}
-                  <img src="{{ block.settings.icon_image | image_url: width: 64 }}" alt="" style="width:24px;height:24px;object-fit:contain;">
+                  <img src="{{ block.settings.icon_image | image_url: width: 64 }}" alt="" width="24" height="24" loading="lazy" style="width:24px;height:24px;object-fit:contain;">
                 {%- else -%}
                   {{ block.settings.icon_emoji }}
                 {%- endif -%}
@@ -415,12 +412,12 @@
           {%- assign gal_idx = 0 -%}
           {%- for block in section.blocks -%}
             {%- if block.type == 'gallery_image' and block.settings.image != blank -%}
-              <img src="{{ block.settings.image | image_url: width: 600 }}" alt="{{ block.settings.alt | default: product.title | escape }}" {% if gal_idx == 0 %}class="on"{% endif %} data-idx="{{ gal_idx }}" loading="{% if gal_idx == 0 %}eager{% else %}lazy{% endif %}" {{ block.shopify_attributes }}>
+              <img src="{{ block.settings.image | image_url: width: 600 }}" alt="{{ block.settings.alt | default: product.title | escape }}" width="{{ block.settings.image.width }}" height="{{ block.settings.image.height }}" {% if gal_idx == 0 %}class="on"{% endif %} data-idx="{{ gal_idx }}" loading="{% if gal_idx == 0 %}eager{% else %}lazy{% endif %}" {{ block.shopify_attributes }}>
               {%- assign gal_idx = gal_idx | plus: 1 -%}
             {%- endif -%}
           {%- endfor -%}
           {%- if gal_idx == 0 and product.featured_image -%}
-            <img src="{{ product.featured_image | image_url: width: 600 }}" alt="{{ product.title | escape }}" class="on" data-idx="0">
+            <img src="{{ product.featured_image | image_url: width: 600 }}" alt="{{ product.title | escape }}" width="{{ product.featured_image.width }}" height="{{ product.featured_image.height }}" class="on" data-idx="0" loading="lazy">
           {%- endif -%}
         </div>
         {%- if gal_idx > 1 -%}
@@ -429,7 +426,7 @@
             {%- for block in section.blocks -%}
               {%- if block.type == 'gallery_image' and block.settings.image != blank -%}
                 <div class="k2-th {% if th_idx == 0 %}on{% endif %}" data-idx="{{ th_idx }}">
-                  <img src="{{ block.settings.image | image_url: width: 120 }}" alt="{{ block.settings.alt | escape }}" loading="lazy">
+                  <img src="{{ block.settings.image | image_url: width: 120 }}" alt="{{ block.settings.alt | escape }}" width="{{ block.settings.image.width }}" height="{{ block.settings.image.height }}" loading="lazy">
                 </div>
                 {%- assign th_idx = th_idx | plus: 1 -%}
               {%- endif -%}
@@ -478,7 +475,7 @@
     <div class="k2-atc" id="k2Atc">
       <div class="k2-atc-img">
         {%- if product.featured_image -%}
-          <img src="{{ product.featured_image | image_url: width: 100 }}" alt="{{ product.title | escape }}" loading="lazy">
+          <img src="{{ product.featured_image | image_url: width: 100 }}" alt="{{ product.title | escape }}" width="{{ product.featured_image.width }}" height="{{ product.featured_image.height }}" loading="lazy">
         {%- endif -%}
       </div>
       <div class="k2-atc-info">

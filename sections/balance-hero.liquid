@@ -243,7 +243,7 @@
       {%- if section.settings.product_gif != blank -%}
         {{ section.settings.product_gif | image_url: width: 800 | image_tag: alt: 'Product', loading: 'lazy' }}
       {%- else -%}
-        <img src="https://cdn.shopify.com/s/files/1/0818/8860/8549/files/sachet-360.gif?v=1738096280" alt="Product" />
+        <img src="https://cdn.shopify.com/s/files/1/0818/8860/8549/files/sachet-360.gif?v=1738096280" alt="Product" width="360" height="360" loading="lazy">
       {%- endif -%}
     </div>
 

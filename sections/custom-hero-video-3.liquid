@@ -174,7 +174,7 @@
             {%- assign image_loading = 'eager' -%}
             {%- assign fetch_priority = 'high' -%}
           {%- endif -%}
-          {{ block.settings.image | image_url: width: 1400 | image_tag: loading: image_loading, fetchpriority: fetch_priority, decoding: 'async', alt: block.settings.title | strip_html }}
+          {{ block.settings.image | image_url: width: 1400 | image_tag: widths: '480, 720, 960, 1200, 1400', sizes: '(max-width: 749px) 100vw, 50vw', loading: image_loading, fetchpriority: fetch_priority, decoding: 'async', alt: block.settings.title | strip_html }}
         {%- else -%}
           {{ 'hero-apparel-1' | placeholder_svg_tag: 'placeholder-svg' }}
         {%- endif -%}
