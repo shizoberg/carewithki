@@ -61,7 +61,7 @@
       {{ section.settings.description | default: 'Ödemen başarıyla alındı. Paketinin ilk teslimatı 2-3 iş günü içinde kargoya verilecek; e-posta adresine onay maili gönderdik.' }}
     </p>
     <div class="ki-ss__actions">
-      <a href="{{ section.settings.portal_link | default: '/pages/abonelik-portalim' }}" class="ki-ss__btn ki-ss__btn--primary">{{ section.settings.portal_label | default: 'Aboneliğimi yönet' }}</a>
+      <a href="{{ section.settings.portal_link | default: '/pages/abonelik-portalim?view=abonelik-portalim' }}" class="ki-ss__btn ki-ss__btn--primary">{{ section.settings.portal_label | default: 'Aboneliğimi yönet' }}</a>
       <a href="{{ routes.root_url }}" class="ki-ss__btn ki-ss__btn--secondary">{{ section.settings.home_label | default: 'Anasayfaya dön' }}</a>
     </div>
   </div>
@@ -104,7 +104,7 @@
   "settings": [
     { "type": "text", "id": "heading", "label": "Başlık", "default": "Aboneliğin başladı! 🎉" },
     { "type": "textarea", "id": "description", "label": "Açıklama", "default": "Ödemen başarıyla alındı. Paketinin ilk teslimatı 2-3 iş günü içinde kargoya verilecek; e-posta adresine onay maili gönderdik." },
-    { "type": "text", "id": "portal_link",  "label": "Portal link",  "default": "/pages/abonelik-portalim", "info": "URL veya path (örn: /pages/abonelik-portalim)" },
+    { "type": "text", "id": "portal_link",  "label": "Portal link",  "default": "/pages/abonelik-portalim?view=abonelik-portalim", "info": "URL veya path (örn: /pages/abonelik-portalim?view=abonelik-portalim)" },
     { "type": "text", "id": "portal_label", "label": "Portal buton metni", "default": "Aboneliğimi yönet" },
     { "type": "text", "id": "home_label",   "label": "Anasayfa buton metni", "default": "Anasayfaya dön" }
   ],
