@@ -1,4 +1,4 @@
-{% comment %}Anlaşmalı Eczaneler — Harita + Liste v2{% endcomment %}
+{% comment %}Anlaşmalı Eczaneler — Harita + Liste v3{% endcomment %}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js" defer></script>
 
@@ -51,6 +51,9 @@
 }
 .ki-popup-addr{
   font-size:11px;color:#6b6b8a;margin:0 0 8px;line-height:1.4;
+}
+.ki-popup-note{
+  font-size:9px;color:#8b86a0;margin:0 0 8px;line-height:1.35;
 }
 .ki-popup-btn{
   display:inline-flex;align-items:center;gap:4px;
@@ -297,6 +300,108 @@
   }
   function esc(s){var d=document.createElement('div');d.textContent=s;return d.innerHTML;}
 
+  var DISTRICT_CENTERS={
+    'antalya|finike':[36.296,30.146],
+    'aydin|efeler':[37.845,27.839],
+    'balikesir|altieylul':[39.617,27.886],
+    'balikesir|edremit':[39.596,26.931],
+    'balikesir|karesi':[39.650,27.885],
+    'balikesir|merkez':[39.643,27.885],
+    'bursa|kestel':[40.198,29.212],
+    'bursa|nilufer':[40.219,28.967],
+    'bursa|osmangazi':[40.195,29.060],
+    'cankiri|merkez':[40.601,33.613],
+    'elazig|merkez':[38.674,39.223],
+    'istanbul|fatih':[41.019,28.949],
+    'istanbul|kadikoy':[40.991,29.027],
+    'istanbul|kartal':[40.891,29.190],
+    'istanbul|kurtkoy':[40.914,29.300],
+    'istanbul|maltepe':[40.935,29.132],
+    'istanbul|pendik':[40.878,29.235],
+    'istanbul|uskudar':[41.025,29.015],
+    'izmir|balcova':[38.392,27.051],
+    'izmir|bayrakli':[38.461,27.167],
+    'izmir|bornova':[38.469,27.221],
+    'izmir|buca':[38.389,27.174],
+    'izmir|cigli':[38.493,27.063],
+    'izmir|karabaglar':[38.370,27.125],
+    'izmir|karsiyaka':[38.458,27.111],
+    'izmir|konak':[38.419,27.128],
+    'izmir|menemen':[38.607,27.069],
+    'izmir|torbali':[38.160,27.359],
+    'manisa|merkez':[38.614,27.429],
+    'manisa|salihli':[38.482,28.139],
+    'manisa|sehzadeler':[38.612,27.438],
+    'manisa|turgutlu':[38.500,27.705],
+    'manisa|yunusemre':[38.630,27.402],
+    'rize|merkez':[41.025,40.518]
+  };
+  var CITY_CENTERS={
+    'antalya':[36.887,30.704],
+    'aydin':[37.845,27.839],
+    'balikesir':[39.643,27.885],
+    'bursa':[40.195,29.060],
+    'cankiri':[40.601,33.613],
+    'elazig':[38.674,39.223],
+    'istanbul':[41.008,28.978],
+    'izmir':[38.423,27.143],
+    'manisa':[38.614,27.429],
+    'rize':[41.025,40.518]
+  };
+
+  function hashText(value){
+    var hash=2166136261;
+    for(var i=0;i<value.length;i++){
+      hash^=value.charCodeAt(i);
+      hash=Math.imul(hash,16777619);
+    }
+    return hash>>>0;
+  }
+
+  function coordsFromUrl(url){
+    if(!url) return null;
+    var decoded=url;
+    try{decoded=decodeURIComponent(url);}catch(error){}
+    var match=decoded.match(/@(-?\d{1,3}\.\d+),(-?\d{1,3}\.\d+)/)||decoded.match(/[?&](?:q|query)=(-?\d{1,3}\.\d+),(-?\d{1,3}\.\d+)/i);
+    if(!match) return null;
+    var lat=parseFloat(match[1]),lng=parseFloat(match[2]);
+    return isNaN(lat)||isNaN(lng)?null:[lat,lng];
+  }
+
+  function resolvePosition(row){
+    var lat=parseFloat(gv(row,['lat','enlem']));
+    var lng=parseFloat(gv(row,['lng','lon','boylem']));
+    if(!isNaN(lat)&&!isNaN(lng)) return {lat:lat,lng:lng,approximate:false};
+
+    var linked=coordsFromUrl(gv(row,['maps','harita','link','url','konum']));
+    if(linked) return {lat:linked[0],lng:linked[1],approximate:false};
+
+    var city=nk(gv(row,['il','sehir','city']));
+    var district=nk(gv(row,['ilce','district']));
+    var center=DISTRICT_CENTERS[city+'|'+district]||CITY_CENTERS[city];
+    if(!center) return null;
+
+    var identity=[
+      gv(row,['eczane','ad','name','isim']),
+      gv(row,['adres','address']),
+      city,
+      district
+    ].join('|');
+    var seed=hashText(identity);
+    var angle=(seed%360)*(Math.PI/180);
+    var districtKnown=Boolean(DISTRICT_CENTERS[city+'|'+district]);
+    var radius=(districtKnown ? .004 : .012)+(((seed>>>8)%100)/100)*(districtKnown ? .014 : .032);
+    return {
+      lat:center[0]+Math.sin(angle)*radius,
+      lng:center[1]+Math.cos(angle)*radius,
+      approximate:true
+    };
+  }
+
+  function prepareLocations(data){
+    data.forEach(function(row){row.__position=resolvePosition(row);});
+  }
+
   function mapsUrl(row){
     var lnk=gv(row,['maps','harita','link','url','konum']);
     if(lnk&&(lnk.indexOf('maps.google')!==-1||lnk.indexOf('goo.gl')!==-1||lnk.indexOf('maps.app')!==-1)) return lnk;
@@ -315,12 +420,11 @@
       maxZoom:19
     }).addTo(map);
     markersLayer = L.layerGroup().addTo(map);
-    if(allData.length>0) addMarkersToMap(allData);
   }
 
   /* Mor pin SVG — Leaflet DivIcon */
   function makePinIcon(active){
-    var color = active ? '#ff6666' : '#493d9a';
+    var color = active ? '#7567d8' : '#493d9a';
     var size  = active ? 38 : 30;
     var svg = '<svg width="'+size+'" height="'+Math.round(size*1.35)+'" viewBox="0 0 30 40" xmlns="http://www.w3.org/2000/svg">';
     svg += '<path d="M15 0C6.7 0 0 6.7 0 15c0 10.4 15 25 15 25s15-14.6 15-25C30 6.7 23.3 0 15 0z" fill="'+color+'" stroke="#fff" stroke-width="2"/>';
@@ -335,7 +439,7 @@
     });
   }
 
-  /* ─ Geocode ile haritaya ekle ─ */
+  /* ─ Hazırlanmış yaklaşık konumları haritaya ekle ─ */
   function addMarkersToMap(data){
     if(!map||!markersLayer) return;
     markersLayer.clearLayers();
@@ -343,37 +447,13 @@
     var bounds = [];
     var added = 0;
 
-    data.forEach(function(row,idx){
-      var lat=parseFloat(gv(row,['lat','enlem']));
-      var lng=parseFloat(gv(row,['lng','lon','boylem']));
-      var name=gv(row,['eczane','ad','name','isim']);
-      var addr=gv(row,['adres','address']);
-      var city=gv(row,['il','sehir','city']);
+    data.forEach(function(row){
+      var position=row.__position||resolvePosition(row);
+      if(!position) return;
       var url=mapsUrl(row);
-
-      /* Eğer lat/lng yoksa Nominatim geocoding */
-      if(isNaN(lat)||isNaN(lng)){
-        var q=encodeURIComponent([name,addr,city,'Türkiye'].filter(Boolean).join(', '));
-        (function(r,i,n,a,u){
-          setTimeout(function(){
-            fetch('https://nominatim.openstreetmap.org/search?format=json&limit=1&q='+q+'&countrycodes=tr',{
-              headers:{'Accept-Language':'tr'}
-            })
-            .then(function(res){return res.json();})
-            .then(function(results){
-              if(results&&results[0]){
-                var lt=parseFloat(results[0].lat),ln=parseFloat(results[0].lon);
-                addPin(lt,ln,r,u);
-              }
-            }).catch(function(){});
-          },i*350);
-        })(row,idx,name,addr,url);
-        added++;
-      } else {
-        addPin(lat,lng,row,url);
-        bounds.push([lat,lng]);
-        added++;
-      }
+      addPin(position.lat,position.lng,row,url,position.approximate);
+      bounds.push([position.lat,position.lng]);
+      added++;
     });
 
     if(bounds.length>1) map.fitBounds(bounds,{padding:[40,40]});
@@ -384,7 +464,7 @@
     if(badge){badge.textContent=added+' eczane';badge.style.display='';}
   }
 
-  function addPin(lat,lng,row,url){
+  function addPin(lat,lng,row,url,approximate){
     var name=gv(row,['eczane','ad','name','isim']);
     var addr=gv(row,['adres','address']);
     var city=gv(row,['il','sehir','city']);
@@ -392,10 +472,13 @@
     var popupHtml='<div class="ki-popup-inner">'+
       '<p class="ki-popup-name">'+esc(name||'Eczane')+'</p>'+
       (addr?'<p class="ki-popup-addr">'+esc(addr)+(city?' — '+esc(city):'')+'</p>':'')+
+      (approximate?'<p class="ki-popup-note">Pin, eczanenin ilçe içindeki yaklaşık konumunu gösterir.</p>':'')+
       '<a href="'+esc(url)+'" target="_blank" rel="noopener" class="ki-popup-btn">'+
       '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>'+
       'Haritada Aç</a></div>';
     marker.bindPopup(popupHtml,{className:'ki-popup',maxWidth:220});
+    marker.on('popupopen',function(){marker.setIcon(makePinIcon(true));});
+    marker.on('popupclose',function(){marker.setIcon(makePinIcon(false));});
     marker.addTo(markersLayer);
     markers.push({marker:marker,row:row});
   }
@@ -421,11 +504,10 @@
       var dist=gv(row,['ilce','district']);
       var addr=gv(row,['adres','address']);
       var phone=gv(row,['telefon','tel','phone']);
-      var url=mapsUrl(row);
 
       var card=document.createElement('div');
       card.className='phsec__card';
-      card.setAttribute('data-url',url);
+      card.__pharmacyRow=row;
 
       var h='';
       h+='<span class="phsec__card-hint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>Haritada Gör</span>';
@@ -436,20 +518,17 @@
 
       card.innerHTML=h;
       card.addEventListener('click',function(){
-        var u=this.getAttribute('data-url');
         /* Haritada scroll + popup aç */
         var mapWrap=document.querySelector('.phsec__map-wrap');
         if(mapWrap) mapWrap.scrollIntoView({behavior:'smooth',block:'center'});
         /* Pin bul ve popup aç */
-        var cardName=this.querySelector('.phsec__card-name');
-        if(cardName){
-          var n=cardName.textContent;
-          for(var mi=0;mi<markers.length;mi++){
-            var mn=gv(markers[mi].row,['eczane','ad','name','isim']);
-            if(mn===n){ markers[mi].marker.openPopup(); break; }
+        for(var mi=0;mi<markers.length;mi++){
+          if(markers[mi].row===this.__pharmacyRow){
+            markers[mi].marker.openPopup();
+            map.panTo(markers[mi].marker.getLatLng());
+            break;
           }
         }
-        if(u) window.open(u,'_blank','noopener');
       });
       grid.appendChild(card);
     });
@@ -514,6 +593,7 @@
     .then(function(r){if(!r.ok)throw new Error(r.status);return r.text();})
     .then(function(csv){
       allData=parseCSV(csv);
+      prepareLocations(allData);
       populateCities();
       render(allData);
       waitForLeaflet(function(){ initMap(); addMarkersToMap(allData); });
