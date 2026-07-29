@@ -69,6 +69,9 @@
 {%- comment -%} ===== URUN SAYFASI: "Abone Ol" butonu enjeksiyonu ===== {%- endcomment -%}
 {%- if request.page_type == 'product' -%}
   {%- assign ki_pdp_variant = product.selected_or_first_available_variant -%}
+  {%- assign ki_pack_handles = '|ki-hijyenik-gunduz-ped|ki-normal-ped|ki-hijyenik-gece-ped|balance-your-cycle|change-is-good|ki-daily-care-intim-bakim-jeli|ki-sens-care-intim-bakim-jeli|ki-flow-care-intim-bakim-jeli|ki-50-care-intim-bakim-jeli|ki-intimate-intim-bakim-spreyi|' -%}
+  {%- assign ki_product_handle_token = '|' | append: product.handle | append: '|' -%}
+  {%- if ki_pack_handles contains ki_product_handle_token and ki_pdp_variant.available -%}
   <style>
     .ki-pdp-subscribe-btn{
       display:flex;align-items:center;justify-content:center;gap:9px;
@@ -84,16 +87,27 @@
   </style>
   <script>
   (function(){
-    var variantId = {{ ki_pdp_variant.id | json }};
-    var baseUrl = '/pages/paket-olustur?abone=' + variantId;
+    var initialVariantId = {{ ki_pdp_variant.id | json }};
+    var productHandle = {{ product.handle | json }};
     var label = 'Abone Ol · Ayda bir gönderim';
+    function selectedVariantId(){
+      var input = document.querySelector('product-form input[name="id"], form[action*="/cart/add"] input[name="id"]');
+      return input && input.value ? input.value : initialVariantId;
+    }
+    function builderUrl(){
+      return '/pages/paket-olustur?abone=' + encodeURIComponent(selectedVariantId()) + '&product=' + encodeURIComponent(productHandle);
+    }
     function buildBtn(){
       var a = document.createElement('a');
       a.id = 'ki-pdp-subscribe-btn';
       a.className = 'ki-pdp-subscribe-btn';
-      a.href = baseUrl;
+      a.href = builderUrl();
       a.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 2l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="M7 22l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg><span>' + label + '</span>';
       return a;
+    }
+    function syncHref(){
+      var btn = document.getElementById('ki-pdp-subscribe-btn');
+      if (btn) btn.href = builderUrl();
     }
     function inject(){
       if (document.getElementById('ki-pdp-subscribe-btn')) return true;
@@ -101,6 +115,12 @@
       if (atc) { atc.insertAdjacentElement('afterend', buildBtn()); return true; }
       return false;
     }
+    document.addEventListener('change', function(e){
+      if (e.target && (e.target.matches('input[name="id"]') || e.target.closest('variant-selects, variant-radios'))) {
+        setTimeout(syncHref, 0);
+      }
+    });
+    document.addEventListener('variant:changed', syncHref);
     function boot(){
       if (inject()) return;
       var t = 0;
@@ -110,4 +130,5 @@
     else boot();
   })();
   </script>
+  {%- endif -%}
 {%- endif -%}

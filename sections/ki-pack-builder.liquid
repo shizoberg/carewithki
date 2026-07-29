@@ -211,6 +211,9 @@
     #ki-{{ section.id }} .ki-pack__item.is-selected {
       background: rgba(73,61,154,.06);
     }
+    #ki-{{ section.id }} .ki-pack__item.is-unavailable {
+      opacity: .62;
+    }
     #ki-{{ section.id }} .ki-pack__item-img {
       grid-area: img;
       width: 56px; height: 56px;
@@ -277,6 +280,19 @@
       font-size: 10.5px; font-weight: 500;
       color: var(--ki-muted, #5a5a5a);
       margin-left: 3px;
+    }
+    #ki-{{ section.id }} .ki-pack__item-price s {
+      color: var(--ki-muted, #5a5a5a);
+      font-size: 11px;
+      font-weight: 500;
+      margin-left: 4px;
+    }
+    #ki-{{ section.id }} .ki-pack__item-discount {
+      display: inline-block;
+      margin-top: 3px;
+      color: #287457;
+      font-size: 10px;
+      font-weight: 700;
     }
 
     /* ===== Stepper — 2-row layout'ta alt satır, sağa hizalı ===== */
@@ -393,13 +409,14 @@
       position: relative;
       width: 40px; height: 40px;
       border-radius: 10px;
-      overflow: hidden;
+      overflow: visible;
       background: var(--ki-secondary, #ebe9f5);
       flex-shrink: 0;
     }
     #ki-{{ section.id }} .ki-pack__sum-li-img img {
       width: 100%; height: 100%;
       object-fit: cover; display: block;
+      border-radius: 10px;
     }
     #ki-{{ section.id }} .ki-pack__sum-li-badge {
       position: absolute; top: -4px; right: -4px;
@@ -428,6 +445,28 @@
       font-variant-numeric: tabular-nums;
       white-space: nowrap;
       margin: 0;
+    }
+    #ki-{{ section.id }} .ki-pack__sum-li-remove {
+      width: 28px;
+      height: 28px;
+      flex: 0 0 28px;
+      display: grid;
+      place-items: center;
+      border: 1px solid var(--ki-border, #e6e3ee);
+      border-radius: 50%;
+      background: #fff;
+      color: var(--ki-primary, #493d9a);
+      cursor: pointer;
+      transition: background .15s ease, color .15s ease;
+    }
+    #ki-{{ section.id }} .ki-pack__sum-li-remove:hover {
+      background: var(--ki-primary, #493d9a);
+      color: #fff;
+    }
+    #ki-{{ section.id }} .ki-pack__sum-li-remove svg {
+      width: 13px;
+      height: 13px;
+      pointer-events: none;
     }
 
     /* Shipping badge (static) */
@@ -977,14 +1016,30 @@
                     {%- for itemBlock in section.blocks -%}
                       {%- if itemBlock.type == 'product' and itemBlock.settings.category_key == catBlock.settings.key -%}
                         {%- assign p = itemBlock.settings.product -%}
+                        {%- if itemBlock.id == 'p-gunluk' -%}
+                          {%- if p == blank or p.handle == 'ki-hijyenik-gece-ped' -%}
+                            {%- assign p = all_products['ki-hijyenik-gunduz-ped'] -%}
+                          {%- endif -%}
+                        {%- endif -%}
                         {%- if p != blank -%}
                           {%- assign v = p.selected_or_first_available_variant -%}
-                          <div class="ki-pack__item"
+                          {%- assign subscription_discount = 0 -%}
+                          {%- if settings.subscription_enabled -%}
+                            {%- if catBlock.settings.key == 'supplement' or catBlock.settings.key == 'gel' or p.handle == 'ki-intimate-intim-bakim-spreyi' -%}
+                              {%- assign subscription_discount = section.settings.subscription_discount_percent | default: 10 -%}
+                            {%- endif -%}
+                          {%- endif -%}
+                          {%- assign subscription_discount_amount = v.price | times: subscription_discount | divided_by: 100 -%}
+                          {%- assign subscription_price = v.price | minus: subscription_discount_amount -%}
+                          <div class="ki-pack__item{% unless v.available %} is-unavailable{% endunless %}"
                                data-ki-pack-item="{{ itemBlock.id }}"
                                data-ki-pack-cat-key="{{ catBlock.settings.key }}"
+                               data-ki-pack-product-handle="{{ p.handle }}"
                                data-ki-pack-variant-id="{{ v.id }}"
                                data-ki-pack-step="{{ itemBlock.settings.step | default: 1 }}"
                                data-ki-pack-price="{{ v.price | divided_by: 100.0 }}"
+                               data-ki-pack-discount="{{ subscription_discount }}"
+                               data-ki-pack-available="{{ v.available }}"
                                data-ki-pack-unit="{{ itemBlock.settings.unit | default: 'adet' }}"
                                {{ itemBlock.shopify_attributes }}>
                             <div class="ki-pack__item-img">
@@ -1007,10 +1062,19 @@
                                 <p class="ki-pack__item-short">{{ itemBlock.settings.short }}</p>
                               {%- endif -%}
                               <p class="ki-pack__item-price">
-                                ₺{{ v.price | money_without_currency }}
+                                {%- if subscription_discount > 0 -%}
+                                  ₺{{ subscription_price | money_without_currency }}
+                                  <s>₺{{ v.price | money_without_currency }}</s>
+                                  <br><span class="ki-pack__item-discount">Abonelikte %{{ subscription_discount }} indirim</span>
+                                {%- else -%}
+                                  ₺{{ v.price | money_without_currency }}
+                                {%- endif -%}
                                 {%- if itemBlock.settings.step != blank and itemBlock.settings.step > 1 -%}
                                   <small>/ {{ itemBlock.settings.step }} {{ itemBlock.settings.unit }}</small>
                                 {%- endif -%}
+                                {%- unless v.available -%}
+                                  <br><span class="ki-pack__item-discount">Şu anda stokta yok</span>
+                                {%- endunless -%}
                               </p>
                             </div>
                             <div class="ki-pack__stepper">
@@ -1018,7 +1082,7 @@
                                 {% render 'ki-icon', name: 'minus', size: 14 %}
                               </button>
                               <span class="ki-pack__step-qty" data-ki-pack-qty>0</span>
-                              <button type="button" class="ki-pack__step-plus" data-ki-pack-plus aria-label="Arttır">
+                              <button type="button" class="ki-pack__step-plus" data-ki-pack-plus aria-label="Arttır"{% unless v.available %} disabled{% endunless %}>
                                 {% render 'ki-icon', name: 'plus', size: 14 %}
                               </button>
                             </div>
@@ -1029,9 +1093,12 @@
                           <div class="ki-pack__item ki-pack__item--demo"
                                data-ki-pack-item="{{ itemBlock.id }}"
                                data-ki-pack-cat-key="{{ catBlock.settings.key }}"
+                               data-ki-pack-product-handle=""
                                data-ki-pack-variant-id=""
                                data-ki-pack-step="{{ itemBlock.settings.step | default: 1 }}"
                                data-ki-pack-price="{{ demo_price }}"
+                               data-ki-pack-discount="0"
+                               data-ki-pack-available="false"
                                data-ki-pack-unit="{{ itemBlock.settings.unit | default: 'adet' }}"
                                {{ itemBlock.shopify_attributes }}>
                             <div class="ki-pack__item-img">
@@ -1050,10 +1117,7 @@
                                 <p class="ki-pack__item-short">{{ itemBlock.settings.short }}</p>
                               {%- endif -%}
                               <p class="ki-pack__item-price">
-                                {%- if demo_price > 0 -%}₺{{ demo_price }}{%- else -%}Yakında{%- endif -%}
-                                {%- if itemBlock.settings.step != blank and itemBlock.settings.step > 1 -%}
-                                  <small>/ {{ itemBlock.settings.step }} {{ itemBlock.settings.unit }}</small>
-                                {%- endif -%}
+                                Yakında
                               </p>
                             </div>
                             <div class="ki-pack__stepper">
@@ -1061,7 +1125,7 @@
                                 {% render 'ki-icon', name: 'minus', size: 14 %}
                               </button>
                               <span class="ki-pack__step-qty" data-ki-pack-qty>0</span>
-                              <button type="button" class="ki-pack__step-plus" data-ki-pack-plus aria-label="Arttır">
+                              <button type="button" class="ki-pack__step-plus" data-ki-pack-plus aria-label="Arttır" disabled>
                                 {% render 'ki-icon', name: 'plus', size: 14 %}
                               </button>
                             </div>
@@ -1091,7 +1155,7 @@
             <h3 class="ki-pack__sum-title">{{ section.settings.summary_title | default: 'Paketin' }}</h3>
             <span class="ki-pack__sum-pill" data-ki-pack-pill>
               <span style="width:6px;height:6px;border-radius:50%;background:var(--ki-sage,#5d7a52);"></span>
-              {{ section.settings.frequency_label | default: '2 ayda bir kapında' }}
+              <span data-ki-pack-frequency-label>{{ section.settings.frequency_label | default: '2 ayda bir kapında' }}</span>
             </span>
           </div>
           <p class="ki-pack__sum-meta" data-ki-pack-sum-meta>{{ section.settings.empty_message | default: 'Üst taraftan ürün ekleyerek paketini oluştur.' }}</p>
@@ -1118,6 +1182,10 @@
             <div class="ki-pack__tot-row">
               <dt>Ara toplam</dt>
               <dd data-ki-pack-subtotal>₺0</dd>
+            </div>
+            <div class="ki-pack__tot-row" data-ki-pack-discount-row hidden>
+              <dt>Abonelik indirimi</dt>
+              <dd data-ki-pack-discount-total>−₺0</dd>
             </div>
             <div class="ki-pack__tot-row ki-pack__tot-grand">
               <dt>Toplam</dt>
@@ -1234,7 +1302,7 @@
       <input type="text" class="ki-pack__dialog-input" data-ki-pack-dialog-input placeholder="Örn: Aylık Bakım Paketim" value="Kendi Bakım Paketim" maxlength="48">
       <div class="ki-pack__dialog-actions">
         <button type="button" class="ki-pack__dialog-cancel" data-ki-pack-dialog-cancel>Vazgeç</button>
-        <button type="button" class="ki-pack__dialog-confirm" data-ki-pack-dialog-confirm>Onayla ve Sepete Ekle</button>
+        <button type="button" class="ki-pack__dialog-confirm" data-ki-pack-dialog-confirm>Onayla ve Devam Et</button>
       </div>
     </div>
   </div>
@@ -1249,6 +1317,11 @@
     var idleText = {{ section.settings.cta_idle | default: 'Önce ürün ekle' | json }};
     var emptyText = {{ section.settings.empty_message | default: 'Üst taraftan ürün ekleyerek paketini oluştur.' | json }};
     var subscriptionEnabled = {{ settings.subscription_enabled | default: false | json }};
+    var frequencyEl = root.querySelector('[data-ki-pack-freq]');
+    var frequencyLabelEl = root.querySelector('[data-ki-pack-frequency-label]');
+    if (frequencyEl && frequencyLabelEl && frequencyEl.options.length) {
+      frequencyLabelEl.textContent = frequencyEl.options[frequencyEl.selectedIndex].text + ' kapında';
+    }
 
     var tabs = root.querySelectorAll('[data-ki-pack-tab]');
     var cats = root.querySelectorAll('[data-ki-pack-cat]');
@@ -1288,8 +1361,13 @@
       return {
         id: el.getAttribute('data-ki-pack-item'),
         name: nameEl ? nameEl.textContent.trim() : '',
-        price: parseFloat(el.getAttribute('data-ki-pack-price')) || 0,
+        price: (function () {
+          var price = parseFloat(el.getAttribute('data-ki-pack-price')) || 0;
+          var discount = subscriptionEnabled ? (parseFloat(el.getAttribute('data-ki-pack-discount')) || 0) : 0;
+          return Math.round(price * (100 - Math.max(0, Math.min(100, discount)))) / 100;
+        })(),
         step: parseInt(el.getAttribute('data-ki-pack-step'), 10) || 1,
+        available: el.getAttribute('data-ki-pack-available') === 'true',
         img: img ? img.src : ''
       };
     }
@@ -1300,7 +1378,7 @@
       if (!ids.length) { block.classList.remove('is-visible'); list.innerHTML = ''; return; }
       list.innerHTML = ids.map(function (id) {
         var el = root.querySelector('[data-ki-pack-item="' + id + '"]');
-        if (!el) return '';
+        if (!el || el.getAttribute('data-ki-pack-available') !== 'true') return '';
         var m = itemMeta(el);
         return '<li class="ki-pack__helper-li" data-ki-pack-helper-id="' + escapeHtml(id) + '">' +
           '<div class="ki-pack__helper-img">' + (m.img ? '<img src="' + escapeHtml(m.img) + '" alt="">' : '') + '</div>' +
@@ -1315,15 +1393,23 @@
     }
 
     function recalc() {
-      var subtotal = 0, count = 0, lines = [], perCat = {};
+      var subtotal = 0, originalSubtotal = 0, count = 0, lines = [], perCat = {};
       items.forEach(function (it) {
         var id = it.getAttribute('data-ki-pack-item');
         var qty = qtyMap[id] || 0;
         var step = parseInt(it.getAttribute('data-ki-pack-step'), 10) || 1;
         var price = parseFloat(it.getAttribute('data-ki-pack-price')) || 0;
+        var discountRate = subscriptionEnabled ? (parseFloat(it.getAttribute('data-ki-pack-discount')) || 0) : 0;
+        discountRate = Math.max(0, Math.min(100, discountRate));
+        var salePrice = Math.round(price * (100 - discountRate)) / 100;
         var cat = it.getAttribute('data-ki-pack-cat-key');
         var unit = it.getAttribute('data-ki-pack-unit') || '';
         var variantId = it.getAttribute('data-ki-pack-variant-id');
+        var available = it.getAttribute('data-ki-pack-available') === 'true';
+        if (!available && qty > 0) {
+          qty = 0;
+          qtyMap[id] = 0;
+        }
         var qtyEl = it.querySelector('[data-ki-pack-qty]');
         if (qtyEl) qtyEl.textContent = qty;
         it.classList.toggle('is-selected', qty > 0);
@@ -1331,14 +1417,17 @@
         if (minus) minus.disabled = qty === 0;
         if (qty > 0) {
           var units = qty / step;
-          var lineTotal = units * price;
+          var lineTotal = units * salePrice;
+          var originalLineTotal = units * price;
           subtotal += lineTotal;
-          count += qty;
-          perCat[cat] = (perCat[cat] || 0) + qty;
+          originalSubtotal += originalLineTotal;
+          count += units;
+          perCat[cat] = (perCat[cat] || 0) + units;
           var img = it.querySelector('.ki-pack__item-img img');
           var nameEl = it.querySelector('.ki-pack__item-name > span');
           lines.push({
-            id: id, variantId: variantId, qty: qty, units: units, unit: unit, price: price, total: lineTotal,
+            id: id, variantId: variantId, qty: qty, units: units, unit: unit,
+            price: salePrice, originalPrice: price, discountRate: discountRate, total: lineTotal,
             name: nameEl ? nameEl.textContent : '', img: img ? img.src : ''
           });
         }
@@ -1367,9 +1456,13 @@
             '</div>' +
             '<div class="ki-pack__sum-li-info">' +
               '<div class="ki-pack__sum-li-name">' + escapeHtml(l.name) + '</div>' +
-              '<div class="ki-pack__sum-li-meta">' + escapeHtml(l.qty) + ' ' + escapeHtml(l.unit) + ' × ' + fmt(l.price) + '</div>' +
+              '<div class="ki-pack__sum-li-meta">' + escapeHtml(l.units) + ' ' + escapeHtml(l.unit) + ' × ' + fmt(l.price) +
+                (l.discountRate > 0 ? ' · %' + escapeHtml(l.discountRate) + ' indirim' : '') + '</div>' +
             '</div>' +
             '<p class="ki-pack__sum-li-total">' + fmt(l.total) + '</p>' +
+            '<button type="button" class="ki-pack__sum-li-remove" data-ki-pack-remove="' + escapeHtml(l.id) + '" aria-label="' + escapeHtml(l.name) + ' ürününü paketten çıkar">' +
+              '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>' +
+            '</button>' +
           '</li>';
         }).join('');
       }
@@ -1381,16 +1474,25 @@
           : 'Ücretsiz kargoya ' + fmt(threshold - subtotal) + ' kaldı';
       }
 
-      root.querySelector('[data-ki-pack-subtotal]').textContent = fmt(subtotal);
+      root.querySelector('[data-ki-pack-subtotal]').textContent = fmt(originalSubtotal);
+      var discountTotal = Math.max(0, originalSubtotal - subtotal);
+      var discountRow = root.querySelector('[data-ki-pack-discount-row]');
+      var discountTotalEl = root.querySelector('[data-ki-pack-discount-total]');
+      if (discountRow) discountRow.hidden = discountTotal <= 0;
+      if (discountTotalEl) discountTotalEl.textContent = '−' + fmt(discountTotal);
       root.querySelector('[data-ki-pack-total]').textContent = fmt(subtotal);
 
       var cta = root.querySelector('[data-ki-pack-cta]');
       var ctaTxt = root.querySelector('[data-ki-pack-cta-text]');
       cta.disabled = count === 0;
-      var ctaLabel = count === 0 ? idleText : 'Sepete ekle';
+      var ctaLabel = count === 0 ? idleText : (subscriptionEnabled ? 'Aboneliğe devam et' : 'Sepete ekle');
       ctaTxt.textContent = ctaLabel;
 
       var allIds = Array.prototype.map.call(items, function (it) { return it.getAttribute('data-ki-pack-item'); });
+      allIds = allIds.filter(function (id) {
+        var item = root.querySelector('[data-ki-pack-item="' + id + '"]');
+        return item && item.getAttribute('data-ki-pack-available') === 'true';
+      });
       var activeIds = lines.map(function (l) { return l.id; });
       removedIds = removedIds.filter(function (id) { return activeIds.indexOf(id) === -1; });
       var suggestedIds = allIds.filter(function (id) {
@@ -1403,6 +1505,8 @@
     }
 
     function addQty(id, step) {
+      var item = root.querySelector('[data-ki-pack-item="' + id + '"]');
+      if (!item || item.getAttribute('data-ki-pack-available') !== 'true') return;
       qtyMap[id] = Math.min(200, (qtyMap[id] || 0) + step);
       var ri = removedIds.indexOf(id);
       if (ri !== -1) removedIds.splice(ri, 1);
@@ -1428,6 +1532,14 @@
     });
 
     root.addEventListener('click', function (e) {
+      var removeBtn = e.target.closest && e.target.closest('[data-ki-pack-remove]');
+      if (removeBtn) {
+        var removeId = removeBtn.getAttribute('data-ki-pack-remove');
+        var removeItem = root.querySelector('[data-ki-pack-item="' + removeId + '"]');
+        if (!removeItem) return;
+        subQty(removeId, qtyMap[removeId] || 0);
+        return;
+      }
       var btn = e.target.closest && e.target.closest('[data-ki-pack-helper-add]');
       if (!btn) return;
       var id = btn.getAttribute('data-ki-pack-helper-add');
@@ -1495,7 +1607,9 @@
               shopifyVariantGid: l.variantId ? ('gid://shopify/ProductVariant/' + l.variantId) : '',
               title: l.name,
               price: String(l.price),
-              quantity: l.qty
+              originalPrice: String(l.originalPrice),
+              discountRate: l.discountRate,
+              quantity: l.units
             };
           });
           var payload = {
@@ -1511,7 +1625,7 @@
           return;
         } else {
           var addItems = lines.filter(function (l) { return l.variantId; }).map(function (l) {
-            return { id: parseInt(l.variantId, 10), quantity: l.qty, properties: { '_PackName': packName } };
+            return { id: parseInt(l.variantId, 10), quantity: l.units, properties: { '_PackName': packName } };
           });
           if (!addItems.length) throw new Error('Geçerli ürün bulunamadı.');
           var routes = (window.kiConfig && window.kiConfig.routes) || {};
@@ -1554,7 +1668,8 @@
     { "type": "text", "id": "empty_message", "label": "Boş durum mesajı", "default": "Üst taraftan ürün ekleyerek paketini oluştur." },
     { "type": "text", "id": "cta_idle", "label": "CTA boş durumda", "default": "Önce ürün ekle" },
     { "type": "text", "id": "howit_title", "label": "Nasıl çalışır başlığı", "default": "Nasıl çalışır?" },
-    { "type": "number", "id": "shipping_threshold", "label": "Ücretsiz kargo eşiği (₺)", "default": 750 }
+    { "type": "number", "id": "shipping_threshold", "label": "Ücretsiz kargo eşiği (₺)", "default": 750 },
+    { "type": "range", "id": "subscription_discount_percent", "label": "Takviye, jel ve sprey abonelik indirimi", "min": 0, "max": 30, "step": 1, "unit": "%", "default": 10 }
   ],
   "blocks": [
     {

@@ -277,6 +277,7 @@
   (function () {
     var root = document.getElementById('ki-{{ section.id }}');
     if (!root) return;
+    var storefrontLoginUrl = {{ routes.storefront_login_url | default: routes.account_login_url | json }};
 
     var summaryEl = root.querySelector('[data-ki-sc-summary]');
     var summaryItemsEl = root.querySelector('[data-ki-sc-items]');
@@ -425,13 +426,9 @@
 
       /* Login şart — kişisel bilgiler ve adresler Shopify hesabından gelir */
       if (!isLoggedIn) {
-        var returnUrl = window.location.pathname + window.location.search;
-        var loginUrl = '/account/login?checkout_url=' + encodeURIComponent(returnUrl)
-                     + '&return_url=' + encodeURIComponent(returnUrl)
-                     + '&return_to=' + encodeURIComponent(returnUrl);
         ctaEl.disabled = true;
         ctaEl.textContent = 'Giriş yap...';
-        window.location.href = loginUrl;
+        window.location.href = storefrontLoginUrl;
         return;
       }
 

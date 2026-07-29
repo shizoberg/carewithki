@@ -74,11 +74,15 @@
 (function(){
   function getParam(n){ try { return new URLSearchParams(window.location.search).get(n); } catch(e){ return null; } }
   var abone = getParam('abone');
-  if (!abone) return;
+  var productHandle = getParam('product');
+  if (!abone && !productHandle) return;
   var tries = 0;
   function tryPrefill(){
     tries++;
-    var item = document.querySelector('[data-ki-pack-variant-id="' + abone + '"]');
+    var item = abone ? document.querySelector('[data-ki-pack-variant-id="' + CSS.escape(abone) + '"]') : null;
+    if (!item && productHandle) {
+      item = document.querySelector('[data-ki-pack-product-handle="' + CSS.escape(productHandle) + '"]');
+    }
     if (item) {
       var cat = item.closest('[data-ki-pack-cat]');
       if (cat) {
