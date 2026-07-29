@@ -17,6 +17,36 @@
   }
 
   /* ===== Ki Brand Overrides ===== */
+  #main-cart-footer {
+    background:#f8f8f6 !important;
+  }
+
+  #main-cart-footer .page-width {
+    max-width:1200px;
+  }
+
+  #main-cart-footer .cart__footer {
+    gap:24px;
+    padding-top:0 !important;
+  }
+
+  #main-cart-footer .cart__note,
+  #main-cart-footer .cart__blocks {
+    box-sizing:border-box;
+    padding:24px !important;
+    border:1px solid rgba(73,61,154,.10);
+    border-radius:24px;
+    background:#fff;
+    box-shadow:0 14px 42px rgba(73,61,154,.07);
+  }
+
+  #main-cart-footer .cart__footer > * {
+    width:100%;
+  }
+
+  #main-cart-footer .cart__footer > * + * {
+    margin-left:0 !important;
+  }
 
   /* Totals row */
   #main-cart-footer .totals__total {
@@ -29,6 +59,13 @@
     color: #493d9a !important;
     font-weight: 800 !important;
     font-size: 22px !important;
+  }
+
+  #main-cart-footer .totals {
+    justify-content:space-between !important;
+    padding:18px 20px;
+    border-radius:16px;
+    background:#f5f3ff;
   }
 
   /* Discount badges */
@@ -52,15 +89,26 @@
   #main-cart-footer .cart__note label {
     color: #493d9a !important;
     font-weight: 600 !important;
+    position:static !important;
+    height:auto !important;
+    margin:0 0 12px !important;
+  }
+  #main-cart-footer .cart__note {
+    top:0 !important;
+    display:block !important;
   }
   #main-cart-footer .cart__note .field__input {
     border-color: rgba(73, 61, 154, 0.2) !important;
-    border-radius: 12px !important;
+    border-radius: 16px !important;
     color: #1a1a1a !important;
   }
   #main-cart-footer .cart__note .field__input:focus {
     border-color: #493d9a !important;
     box-shadow: 0 0 0 2px rgba(73, 61, 154, 0.15) !important;
+  }
+  #main-cart-footer .cart__note::before,
+  #main-cart-footer .cart__note::after {
+    display:none !important;
   }
 
   /* Checkout button */
@@ -112,6 +160,25 @@
   #main-cart-footer #cart-errors {
     color: #e53e3e !important;
     font-weight: 500 !important;
+  }
+
+  @media screen and (max-width:749px) {
+    #main-cart-footer .page-width {
+      padding-left:14px;
+      padding-right:14px;
+    }
+    #main-cart-footer .cart__footer {
+      gap:16px;
+    }
+    #main-cart-footer .cart__note,
+    #main-cart-footer .cart__blocks {
+      padding:18px !important;
+      border-radius:18px;
+    }
+    #main-cart-footer .totals {
+      padding:15px;
+      border-radius:14px;
+    }
   }
 {%- endstyle -%}
 
