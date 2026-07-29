@@ -684,45 +684,6 @@
       display: grid; place-items: center;
     }
 
-    /* ===== Mobile sticky bottom CTA bar ===== */
-    #ki-{{ section.id }} .ki-pack__sticky-bottom {
-      position: fixed;
-      left: 0; right: 0;
-      bottom: calc(64px + env(safe-area-inset-bottom, 0px));
-      z-index: 70;
-      background: var(--ki-card, #fff);
-      border-top: 1px solid rgba(0,0,0,.1);
-      box-shadow: 0 -8px 24px rgba(58,45,110,.12);
-      padding: 10px 16px;
-      display: flex; align-items: center; gap: 12px;
-      transform: translateY(120%);
-      transition: transform .25s ease;
-    }
-    #ki-{{ section.id }} .ki-pack__sticky-bottom.is-visible { transform: translateY(0); }
-    #ki-{{ section.id }} .ki-pack__sticky-info { flex: 1; min-width: 0; }
-    #ki-{{ section.id }} .ki-pack__sticky-label {
-      font-size: 10.5px; font-weight: 700;
-      color: var(--ki-muted, #5a5a5a);
-      text-transform: uppercase; letter-spacing: .08em;
-    }
-    #ki-{{ section.id }} .ki-pack__sticky-total {
-      font-size: 16px; font-weight: 700;
-      color: var(--ki-primary, #3a2d6e);
-      font-variant-numeric: tabular-nums;
-      white-space: nowrap;
-    }
-    #ki-{{ section.id }} .ki-pack__sticky-btn {
-      padding: 12px 20px;
-      border: 0; border-radius: 999px;
-      background: var(--ki-primary, #3a2d6e);
-      color: var(--ki-primary-fg, #fff);
-      font-size: 13px; font-weight: 700;
-      white-space: nowrap !important;
-      flex-shrink: 0;
-      cursor: pointer;
-    }
-    #ki-{{ section.id }} .ki-pack__sticky-btn:disabled { opacity: .4; }
-
     /* ============================================================
        DESKTOP (≥ 1024px) — 2 sütun, summary sağda sticky
        ============================================================ */
@@ -757,7 +718,6 @@
       #ki-{{ section.id }} .ki-pack__sum-title { font-size: 24px; }
       #ki-{{ section.id }} .ki-pack__howit { padding: 22px; }
       #ki-{{ section.id }} .ki-pack__howit-title { font-size: 18px; }
-      #ki-{{ section.id }} .ki-pack__sticky-bottom { display: none !important; }
     }
 
     /* Çok dar mobile fallback (≤ 380px) */
@@ -1015,18 +975,6 @@
     </div>
   </div>
 
-  {%- comment -%}
-    Mobile sticky bottom — viewport'ta sabit, tabbar üstüne yapışır.
-    Asıl CTA'ya proxy click yapar; subscription/cart payload mantığı korunur.
-  {%- endcomment -%}
-  <div class="ki-pack__sticky-bottom" data-ki-pack-sticky aria-hidden="true">
-    <div class="ki-pack__sticky-info">
-      <div class="ki-pack__sticky-label" data-ki-pack-sticky-label>Toplam</div>
-      <div class="ki-pack__sticky-total" data-ki-pack-sticky-total>₺0</div>
-    </div>
-    <button type="button" class="ki-pack__sticky-btn" data-ki-pack-sticky-cta>Sepete ekle</button>
-  </div>
-
   <div class="ki-pack__dialog" data-ki-pack-dialog role="dialog" aria-modal="true" aria-labelledby="ki-pack-dialog-title-{{ section.id }}" aria-hidden="true">
     <div class="ki-pack__dialog-panel">
       <h3 id="ki-pack-dialog-title-{{ section.id }}" class="ki-pack__dialog-title">Paketine İsim Ver</h3>
@@ -1199,30 +1147,7 @@
       renderHelper('[data-ki-pack-removed-block]', '[data-ki-pack-removed-list]', removedIds, 'Geri Ekle');
       renderHelper('[data-ki-pack-suggested-block]', '[data-ki-pack-suggested-list]', count > 0 ? suggestedIds : [], '+ Ekle');
 
-      var sticky = root.querySelector('[data-ki-pack-sticky]');
-      if (sticky) {
-        var stickyTotal = root.querySelector('[data-ki-pack-sticky-total]');
-        var stickyCta = root.querySelector('[data-ki-pack-sticky-cta]');
-        if (stickyTotal) stickyTotal.textContent = fmt(subtotal);
-        if (stickyCta) {
-          stickyCta.textContent = ctaLabel;
-          stickyCta.disabled = count === 0;
-        }
-        sticky.classList.toggle('is-visible', count > 0);
-        sticky.setAttribute('aria-hidden', count > 0 ? 'false' : 'true');
-      }
-
       root.dataset.kiPackLines = JSON.stringify(lines);
-    }
-
-    var stickyCtaProxy = root.querySelector('[data-ki-pack-sticky-cta]');
-    if (stickyCtaProxy) {
-      stickyCtaProxy.addEventListener('click', function () {
-        var summary = root.querySelector('.ki-pack__summary');
-        if (summary && typeof summary.scrollIntoView === 'function') {
-          summary.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-      });
     }
 
     function addQty(id, step) {
