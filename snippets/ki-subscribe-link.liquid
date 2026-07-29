@@ -1,0 +1,19 @@
+{%- liquid
+  assign ki_subscription_product = product | default: card_product
+  assign ki_subscription_variant = ki_subscription_product.selected_or_first_available_variant
+  assign ki_pack_handles = '|ki-hijyenik-gunduz-ped|ki-normal-ped|ki-hijyenik-gece-ped|balance-your-cycle|change-is-good|ki-daily-care-intim-bakim-jeli|ki-sens-care-intim-bakim-jeli|ki-flow-care-intim-bakim-jeli|ki-50-care-intim-bakim-jeli|ki-intimate-intim-bakim-spreyi|'
+  assign ki_handle_token = '|' | append: ki_subscription_product.handle | append: '|'
+-%}
+{%- if settings.subscription_enabled and ki_subscription_variant.available and ki_pack_handles contains ki_handle_token -%}
+  <a
+    class="{{ class | default: 'ki-card-subscribe' }}"
+    href="{{ routes.root_url }}pages/paket-olustur?abone={{ ki_subscription_variant.id }}&product={{ ki_subscription_product.handle | url_encode }}"
+    aria-label="{{ ki_subscription_product.title | escape }} ürününe abone ol"
+  >
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+      <path d="M20 12a8 8 0 1 1-2.34-5.66"/>
+      <path d="M20 4v6h-6"/>
+    </svg>
+    Abone Ol
+  </a>
+{%- endif -%}

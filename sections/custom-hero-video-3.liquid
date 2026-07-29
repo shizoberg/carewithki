@@ -14,28 +14,25 @@
   position: relative; width: 100%; overflow: hidden; background: var(--bg);
 }
 .kh3-{{ section.id }} .kh3-track {
-  display: flex; width: 100%;
-  transform: translate3d(0,0,0);
-  transition: transform 0.65s cubic-bezier(0.4,0,0.2,1);
-  will-change: transform;
-  backface-visibility: hidden;
+  position: relative; width: 100%;
 }
 .kh3-{{ section.id }} .kh3-slide {
-  flex: 0 0 100%; width: 100%;
+  width: 100%;
   display: grid; grid-template-columns: 1fr 1fr;
   min-height: 88vh;
+  opacity: 0; visibility: hidden; pointer-events: none;
+  position: absolute; inset: 0;
+  transition: opacity .25s ease;
+}
+.kh3-{{ section.id }} .kh3-slide.is-active {
+  opacity: 1; visibility: visible; pointer-events: auto;
+  position: relative;
 }
 .kh3-{{ section.id }} .kh3-media { position: relative; overflow: hidden; background: #111; }
 .kh3-{{ section.id }} .kh3-media video,
 .kh3-{{ section.id }} .kh3-media img {
   position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block;
-  transform: translateZ(0);
-  backface-visibility: hidden;
 }
-.kh3-{{ section.id }} .kh3-slide.is-active .kh3-media img {
-  animation: kh3kb-{{ section.id }} 9s ease-out forwards;
-}
-@keyframes kh3kb-{{ section.id }} { from { transform: scale(1.07); } to { transform: scale(1.00); } }
 .kh3-{{ section.id }} .kh3-media::after {
   content: ''; position: absolute; inset: 0;
   background: linear-gradient(to right, transparent 70%, rgba({{ section.settings.panel_bg_rgb | default: '240,238,248' }}, 0.35) 100%);
@@ -134,12 +131,10 @@
 }
 @media (prefers-reduced-motion: reduce) {
   .kh3-{{ section.id }} .kh3-track,
+  .kh3-{{ section.id }} .kh3-slide,
   .kh3-{{ section.id }} .kh3-text-wrap,
   .kh3-{{ section.id }} .kh3-progress-fill {
     transition: none !important;
-  }
-  .kh3-{{ section.id }} .kh3-slide.is-active .kh3-media img {
-    animation: none !important;
   }
 }
 </style>
@@ -159,12 +154,11 @@
             loop
             playsinline
             preload="{% if forloop.first %}metadata{% else %}none{% endif %}"
-            {% if forloop.first %}autoplay{% endif %}
             {% if poster_image != blank %}poster="{{ poster_image | image_url: width: 1600 }}"{% endif %}
             aria-hidden="true"
           >
             {%- for source in block.settings.video.sources -%}
-              <source src="{{ source.url }}" type="{{ source.mime_type }}">
+              <source {% if forloop.parentloop.first %}src="{{ source.url }}"{% else %}data-src="{{ source.url }}"{% endif %} type="{{ source.mime_type }}">
             {%- endfor -%}
           </video>
         {%- elsif block.settings.image != blank -%}
@@ -250,6 +244,7 @@
   var touchX = 0;
   var touchY = 0;
   var progressRun = 0;
+  var preloadTimer = null;
 
   if (!track || total === 0) return;
 
@@ -267,15 +262,26 @@
     video.pause();
   }
 
+  function hydrateVideo(video) {
+    if (!video || video.dataset.hydrated === 'true') return;
+    var sources = Array.from(video.querySelectorAll('source[data-src]'));
+    sources.forEach(function(source) {
+      source.src = source.dataset.src;
+      source.removeAttribute('data-src');
+    });
+    video.dataset.hydrated = 'true';
+    if (sources.length) video.load();
+  }
+
   function playVideo(video, restart) {
     if (!video) return;
+    hydrateVideo(video);
     video.muted = true;
     video.playsInline = true;
     video.setAttribute('muted', '');
     video.setAttribute('playsinline', '');
     if (video.preload === 'none') {
       video.preload = 'metadata';
-      video.load();
     }
     if (restart && video.readyState > 0) {
       try { video.currentTime = 0; } catch (error) {}
@@ -297,9 +303,15 @@
       }
     });
 
-    if (total > 1) {
-      var nextVideo = slides[(current + 1) % total].querySelector('video');
-      if (nextVideo && nextVideo.preload === 'none') nextVideo.preload = 'metadata';
+    if (preloadTimer) window.clearTimeout(preloadTimer);
+    if (total > 1 && isVisible && !document.hidden) {
+      preloadTimer = window.setTimeout(function() {
+        if (destroyed) return;
+        var nextVideo = slides[(current + 1) % total].querySelector('video');
+        if (!nextVideo) return;
+        hydrateVideo(nextVideo);
+        nextVideo.preload = 'metadata';
+      }, 1200);
     }
   }
 
@@ -356,7 +368,6 @@
     var changed = next !== current;
     current = next;
     updateAccessibility();
-    track.style.transform = 'translate3d(-' + (current * 100) + '%,0,0)';
     counters.forEach(function(counter) {
       counter.textContent = (current + 1) + ' / ' + total;
     });
@@ -397,6 +408,7 @@
     if (!event.detail || event.detail.sectionId !== sid) return;
     destroyed = true;
     stopAuto();
+    if (preloadTimer) window.clearTimeout(preloadTimer);
     if (observer) observer.disconnect();
     document.removeEventListener('visibilitychange', onVisibilityChange);
     document.removeEventListener('shopify:section:select', onSectionSelect);

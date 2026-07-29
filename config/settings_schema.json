@@ -1445,6 +1445,53 @@
         "info": "t:settings_schema.cart.settings.cart_drawer.collection.info"
       },
       {
+        "type": "header",
+        "content": "Sepet cross-sell"
+      },
+      {
+        "type": "checkbox",
+        "id": "cart_cross_sell_enabled",
+        "label": "Sepette ürün önerilerini göster",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "cart_cross_sell_heading",
+        "label": "Başlık",
+        "default": "Bunu da sevebilirsin"
+      },
+      {
+        "type": "product_list",
+        "id": "cart_cross_sell_products",
+        "label": "Önerilecek ürünler",
+        "limit": 12
+      },
+      {
+        "type": "range",
+        "id": "cart_cross_sell_limit",
+        "label": "Gösterilecek ürün sayısı",
+        "min": 1,
+        "max": 6,
+        "step": 1,
+        "default": 4
+      },
+      {
+        "type": "range",
+        "id": "cart_cross_sell_discount_percent",
+        "label": "Gösterilecek indirim oranı",
+        "min": 5,
+        "max": 30,
+        "step": 5,
+        "unit": "%",
+        "default": 10
+      },
+      {
+        "type": "text",
+        "id": "cart_cross_sell_discount_code",
+        "label": "Shopify indirim kodu",
+        "info": "Shopify İndirimler bölümünde aynı oranda oluşturduğun kodu yaz. Kod boşsa indirim vaadi ve indirimli fiyat gösterilmez."
+      },
+      {
         "type": "color_scheme",
         "id": "cart_color_scheme",
         "label": "t:sections.all.colors.label",

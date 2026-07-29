@@ -207,6 +207,38 @@ body:has(.section-header .drawer-menu) .announcement-bar-section .page-width {
   word-wrap: normal !important;
 }
 
+.ki-card-subscribe {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .7rem;
+  width: 100%;
+  min-height: 4.2rem;
+  margin-top: .8rem;
+  padding: .9rem 1.4rem;
+  border: .1rem solid #493d9a;
+  border-radius: 1rem;
+  color: #493d9a;
+  background: #fff;
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1;
+  text-decoration: none;
+  transition: background .18s ease, color .18s ease, transform .18s ease;
+}
+
+.ki-card-subscribe:hover {
+  color: #fff;
+  background: #493d9a;
+  transform: translateY(-1px);
+}
+
+.ki-card-subscribe svg {
+  width: 1.5rem;
+  height: 1.5rem;
+  flex: 0 0 auto;
+}
+
 .visually-hidden--inline {
   margin: 0;
   height: 1em;
