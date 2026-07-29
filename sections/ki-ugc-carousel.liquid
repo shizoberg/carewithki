@@ -1,4 +1,4 @@
-{% comment %}UGC Carousel v6 — lightweight native slider + creator popup{% endcomment %}
+{% comment %}UGC Carousel v7 — lightweight infinite native slider + creator popup{% endcomment %}
 
 <style>
 .ugc-{{ section.id }}{
@@ -231,15 +231,84 @@
 
   var prev=sec.querySelector('.ugc-control--prev');
   var next=sec.querySelector('.ugc-control--next');
-  var cards=Array.prototype.slice.call(track.querySelectorAll('.ugc-card'));
+  var originalCards=Array.prototype.slice.call(track.querySelectorAll('.ugc-card'));
+  var cards=originalCards;
   var reduceMotion=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var autoplayDelay=(parseFloat(track.getAttribute('data-autoplay-delay'))||30)*1000;
   var autoplayTimer;
+  var loopNormalizeTimer;
+  var loopPeriod=0;
+  var loopAnchor=0;
   var dragStartX=0;
   var dragScrollStart=0;
   var dragging=false;
   var suppressClickUntil=0;
   var previousBodyOverflow='';
+
+  function cloneLoopCard(card){
+    var clone=card.cloneNode(true);
+    clone.setAttribute('data-loop-clone','true');
+    clone.setAttribute('aria-hidden','true');
+    clone.setAttribute('tabindex','-1');
+    clone.removeAttribute('id');
+    clone.removeAttribute('data-shopify-editor-block');
+    Array.prototype.forEach.call(clone.querySelectorAll('[id]'),function(element){
+      element.removeAttribute('id');
+    });
+    var video=clone.querySelector('video');
+    if(video){
+      video.autoplay=false;
+      video.preload='none';
+      video.removeAttribute('autoplay');
+      video.setAttribute('preload','none');
+      video.pause();
+    }
+    return clone;
+  }
+
+  function setupInfiniteLoop(){
+    if(!originalCards.length) return;
+    var gap=parseFloat(window.getComputedStyle(track).gap)||12;
+    var step=originalCards[0].getBoundingClientRect().width+gap;
+    loopPeriod=step*originalCards.length;
+    if(!loopPeriod) return;
+
+    var fillWidth=Math.max(track.clientWidth,1280);
+    var repeatCount=Math.max(2,Math.ceil(fillWidth/loopPeriod)+1);
+    var before=document.createDocumentFragment();
+    var after=document.createDocumentFragment();
+    var repeatIndex;
+
+    for(repeatIndex=0;repeatIndex<repeatCount;repeatIndex+=1){
+      originalCards.forEach(function(card){before.appendChild(cloneLoopCard(card));});
+      originalCards.forEach(function(card){after.appendChild(cloneLoopCard(card));});
+    }
+
+    track.insertBefore(before,originalCards[0]);
+    track.appendChild(after);
+    cards=Array.prototype.slice.call(track.querySelectorAll('.ugc-card'));
+
+    var trackLeft=track.getBoundingClientRect().left;
+    var originalLeft=originalCards[0].getBoundingClientRect().left-trackLeft+track.scrollLeft;
+    var paddingLeft=parseFloat(window.getComputedStyle(track).paddingLeft)||0;
+    loopAnchor=originalLeft-paddingLeft;
+    track.scrollLeft=loopAnchor;
+  }
+
+  function normalizeInfiniteLoop(){
+    window.clearTimeout(loopNormalizeTimer);
+    if(!loopPeriod||dragging) return;
+    var distance=track.scrollLeft-loopAnchor;
+    if(Math.abs(distance)<loopPeriod/2) return;
+    track.scrollLeft-=Math.round(distance/loopPeriod)*loopPeriod;
+  }
+
+  function queueLoopNormalization(){
+    window.clearTimeout(loopNormalizeTimer);
+    loopNormalizeTimer=window.setTimeout(normalizeInfiniteLoop,100);
+  }
+
+  setupInfiniteLoop();
 
   function cardStep(){
     if(!cards.length) return 180;
@@ -248,14 +317,7 @@
   }
 
   function scrollSlider(direction){
-    var maxScroll=track.scrollWidth-track.clientWidth;
-    if(direction>0&&track.scrollLeft>=maxScroll-cardStep()/2){
-      track.scrollTo({left:0,behavior:'smooth'});
-    }else if(direction<0&&track.scrollLeft<=cardStep()/2){
-      track.scrollTo({left:maxScroll,behavior:'smooth'});
-    }else{
-      track.scrollBy({left:direction*cardStep(),behavior:'smooth'});
-    }
+    track.scrollBy({left:direction*cardStep(),behavior:'smooth'});
     restartAutoplay();
   }
 
@@ -299,12 +361,17 @@
     dragging=false;
     track.classList.remove('is-dragging');
     if(event&&track.hasPointerCapture&&track.hasPointerCapture(event.pointerId)) track.releasePointerCapture(event.pointerId);
+    queueLoopNormalization();
     restartAutoplay();
   }
   track.addEventListener('pointerup',endDrag);
   track.addEventListener('pointercancel',endDrag);
+  track.addEventListener('scroll',queueLoopNormalization,{passive:true});
   track.addEventListener('touchstart',stopAutoplay,{passive:true});
-  track.addEventListener('touchend',restartAutoplay,{passive:true});
+  track.addEventListener('touchend',function(){
+    queueLoopNormalization();
+    restartAutoplay();
+  },{passive:true});
   track.addEventListener('mouseenter',stopAutoplay);
   track.addEventListener('mouseleave',startAutoplay);
 
