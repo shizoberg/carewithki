@@ -96,7 +96,7 @@
         subscriptionApiBase: {{ settings.subscription_api_base | default: 'https://api.carewithki.com' | json }},
         subscriptionApiToken: {{ settings.subscription_api_public_token | default: '' | json }},
         subscriptionCheckoutUrl: {{ settings.subscription_checkout_url | default: '/pages/paket-checkout' | json }},
-        subscriptionPortalUrl: {{ settings.subscription_portal_url | default: '/pages/abonelik-portalim?view=abonelik-portalim' | json }},
+        subscriptionPortalUrl: {{ settings.subscription_portal_url | default: '/pages/abonelik-portalim' | json }},
         defaultSellingPlanId: {{ settings.subscription_default_selling_plan_id | default: '' | json }},
         defaultInterval: {{ settings.subscription_default_interval | default: 'month' | json }},
         defaultIntervalCount: {{ settings.subscription_default_interval_count | default: 2 | json }},
@@ -117,7 +117,7 @@
       (function () {
         var cfg = window.kiConfig;
         if (!cfg || !cfg.customer || !cfg.customer.id || !cfg.subscriptionApiBase) return;
-        var portal = cfg.subscriptionPortalUrl || '/pages/abonelik-portalim?view=abonelik-portalim';
+        var portal = cfg.subscriptionPortalUrl || '/pages/abonelik-portalim';
         var url = cfg.subscriptionApiBase + '/api/subscribe/status?shopifyCustomerId='
                 + encodeURIComponent(cfg.customer.id)
                 + '&email=' + encodeURIComponent(cfg.customer.email || '');

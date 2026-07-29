@@ -6,16 +6,15 @@
 
 {%- comment -%} ===== Misafir guard: server-side redirect, hiç render etmeden ===== {%- endcomment -%}
 {%- unless customer -%}
-  {%- assign portal_login_url = routes.storefront_login_url | default: routes.account_login_url -%}
   {%- comment -%}
     Misafir guard — CSP-safe: meta refresh (HTML-only, JS gerektirmez).
     Shopify storefront strict CSP'sinde inline script bloke olur; meta refresh hep çalışır.
   {%- endcomment -%}
-  <meta http-equiv="refresh" content="0; url={{ portal_login_url }}">
+  <meta http-equiv="refresh" content="0; url={{ routes.account_login_url }}?checkout_url=%2Fpages%2Fabonelik-portalim&return_url=%2Fpages%2Fabonelik-portalim&return_to=%2Fpages%2Fabonelik-portalim">
   <div style="padding:40px 16px;text-align:center;font-family:system-ui;">
     <h1 style="font-size:20px;color:#3a2d6e;margin:0 0 8px;">Giriş ekranına yönlendiriliyorsun…</h1>
     <p style="margin:12px 0 24px;color:#5a5a5a;">Otomatik yönlendirilmezse aşağıdaki butona tıkla.</p>
-    <a href="{{ portal_login_url }}" style="display:inline-block;padding:14px 28px;background:#493d9a;color:#fff;border-radius:999px;font-weight:700;text-decoration:none;">Giriş Yap</a>
+    <a href="{{ routes.account_login_url }}?checkout_url=%2Fpages%2Fabonelik-portalim&return_url=%2Fpages%2Fabonelik-portalim&return_to=%2Fpages%2Fabonelik-portalim" style="display:inline-block;padding:14px 28px;background:#3a2d6e;color:#fff;border-radius:999px;font-weight:700;text-decoration:none;">Giriş Yap</a>
   </div>
 {%- endunless -%}
 
@@ -532,14 +531,14 @@
               <div class="ki-pr__profile-label">Ad Soyad</div>
               <div class="ki-pr__profile-value">{{ customer.name | default: '—' }}</div>
             </div>
-            <a href="{{ routes.account_url }}" class="ki-pr__profile-edit">Düzenle</a>
+            <a href="/pages/abonelik-portalim" class="ki-pr__profile-edit">Düzenle</a>
           </div>
           <div class="ki-pr__profile-row">
             <div>
               <div class="ki-pr__profile-label">E-posta</div>
               <div class="ki-pr__profile-value">{{ customer.email }}</div>
             </div>
-            <a href="{{ routes.account_url }}" class="ki-pr__profile-edit">Düzenle</a>
+            <a href="/pages/abonelik-portalim" class="ki-pr__profile-edit">Düzenle</a>
           </div>
           {%- if customer.phone != blank -%}
           <div class="ki-pr__profile-row">
@@ -547,7 +546,7 @@
               <div class="ki-pr__profile-label">Telefon</div>
               <div class="ki-pr__profile-value">{{ customer.phone }}</div>
             </div>
-            <a href="{{ routes.account_url }}" class="ki-pr__profile-edit">Düzenle</a>
+            <a href="/pages/abonelik-portalim" class="ki-pr__profile-edit">Düzenle</a>
           </div>
           {%- endif -%}
         </div>
@@ -566,14 +565,14 @@
                     <span style="font-weight:500;color:var(--ki-muted);">{{ address.city }}{%- if address.province != blank -%} / {{ address.province }}{%- endif -%}, {{ address.country }}</span>
                   </div>
                 </div>
-                <a href="{{ routes.account_addresses_url }}" class="ki-pr__profile-edit">Düzenle</a>
+                <a href="/pages/abonelik-portalim" class="ki-pr__profile-edit">Düzenle</a>
               </div>
             {%- endfor -%}
           {%- else -%}
             <p style="font-size:13px;color:var(--ki-muted);margin:0 0 12px;">Henüz kayıtlı adresin yok.</p>
           {%- endif -%}
           <div style="margin-top:12px;">
-            <a href="{{ routes.account_addresses_url }}" class="ki-pr__btn ki-pr__btn--ghost">+ Yeni adres ekle</a>
+            <a href="/pages/abonelik-portalim" class="ki-pr__btn ki-pr__btn--ghost">+ Yeni adres ekle</a>
           </div>
         </div>
       </div>
@@ -598,10 +597,8 @@
     tabBtns.forEach(function (b) {
       b.addEventListener('click', function () { activateTab(b.getAttribute('data-ki-pr-tab')); });
     });
-    // URL sorgusu veya hash'ten initial tab seç
-    var initialTab = '';
-    try { initialTab = new URLSearchParams(window.location.search).get('tab') || ''; } catch (e) {}
-    if (!initialTab) initialTab = (window.location.hash || '').replace('#', '');
+    // URL hash'ten initial tab seç
+    var initialTab = (window.location.hash || '').replace('#', '');
     if (['subscriptions', 'orders', 'profile'].indexOf(initialTab) >= 0) activateTab(initialTab);
 
     /* iyzico card update callback dönüşü — URL'de ?card_updated=1 varsa success flash */

@@ -1,1 +1,369 @@
-{"sections":{"hero":{"type":"ki-pack-hero","blocks":{"t1":{"type":"trust","settings":{"icon":"check","label":"İptal yok, esnek abonelik"}},"t2":{"type":"trust","settings":{"icon":"truck","label":"750₺ üzeri ücretsiz kargo"}},"t3":{"type":"trust","settings":{"icon":"shield","label":"Dermatolojik test edilmiş"}}},"block_order":["t1","t2","t3"],"settings":{"eyebrow":"Abonelik · Sana özel","heading":"Paketini Oluştur","description":"<p>İhtiyacına göre Balance, Change, Ped ve ritüel ürünlerini birleştir. Ayda bir kapına gelsin — istediğin zaman değiştir veya durdur.<\/p>","bg":"#ffffff"}},"builder":{"type":"ki-pack-builder","blocks":{"cat-ped":{"type":"category","settings":{"key":"ped","label":"Pedler","description":"Soft Cotton & Bamboo Fiber üst yüzey · Pelin Otu infüzeli","hint":"Çoğu kullanıcı 1 paket Günlük, 1 Gündüz, 1 Gece tercih ediyor."}},"p-gunluk":{"type":"product","settings":{"product":"ki-hijyenik-gece-ped","category_key":"ped","name_override":".ki Günlük Ped","short":"155 mm · ultra ince panty liner","badge":"","step":1,"unit":"paket","demo_price":149}},"p-gunduz":{"type":"product","settings":{"product":"shopify:\/\/products\/ki-normal-ped","category_key":"ped","name_override":".ki Gündüz Pedi","short":"245 mm · orta yoğun akış","badge":"","step":1,"unit":"paket","demo_price":169}},"p-gece":{"type":"product","settings":{"product":"shopify:\/\/products\/ki-hijyenik-gece-ped","category_key":"ped","name_override":".ki Gece Pedi","short":"335 mm · yoğun gece koruması","badge":"","step":1,"unit":"paket","demo_price":189}},"cat-supp":{"type":"category","settings":{"key":"supplement","label":"Takviyeler","description":".ki Balance ve .ki Change — döngü ve menopoz için günlük destek","hint":"Çoğunluk 1 kutu Balance ile başlıyor."}},"p-balance":{"type":"product","settings":{"product":"shopify:\/\/products\/balance-your-cycle","category_key":"supplement","name_override":".ki Balance · Saşe","short":"Regl döngüsü desteği · 30 saşe","badge":"EN POPÜLER","step":1,"unit":"kutu","demo_price":395}},"p-change":{"type":"product","settings":{"product":"shopify:\/\/products\/change-is-good","category_key":"supplement","name_override":".ki Change · Kapsül","short":"Peri-menopoz & menopoz desteği · 60 kapsül","badge":"","step":1,"unit":"kutu","demo_price":449}},"cat-gel":{"type":"category","settings":{"key":"gel","label":"Bakım Jelleri","description":"Daily · Sens · Flow · 50+ — döngünün ihtiyacına göre intim bakım","hint":"Günlük için Daily, regl için Flow, hassas ciltler için Sens öneriyoruz."}},"p-jel-daily":{"type":"product","settings":{"product":"shopify:\/\/products\/ki-daily-care-intim-bakim-jeli","category_key":"gel","name_override":"Bakım Jeli · Daily","short":"Günlük pH dengeli · 200 ml","badge":"","step":1,"unit":"şişe","demo_price":145}},"p-jel-sens":{"type":"product","settings":{"product":"shopify:\/\/products\/ki-sens-care-intim-bakim-jeli","category_key":"gel","name_override":"Bakım Jeli · Sens","short":"Hassas ciltler için yatıştırıcı · 200 ml","badge":"","step":1,"unit":"şişe","demo_price":155}},"p-jel-flow":{"type":"product","settings":{"product":"shopify:\/\/products\/ki-flow-care-intim-bakim-jeli","category_key":"gel","name_override":"Bakım Jeli · Flow","short":"Regl döneminde rahatlatıcı · 200 ml","badge":"","step":1,"unit":"şişe","demo_price":165}},"p-jel-50":{"type":"product","settings":{"product":"shopify:\/\/products\/ki-50-care-intim-bakim-jeli","category_key":"gel","name_override":"Bakım Jeli · 50+","short":"Menopoz dönemi nemlendirici · 200 ml","badge":"","step":1,"unit":"şişe","demo_price":175}},"cat-ritual":{"type":"category","settings":{"key":"ritual","label":"Yağ & Sprey","description":"Cycle Care Yağı ve İntim Bakım Spreyi ile rahatlama ritüelín","hint":"Karın bölgene 2-3 damla yağ ile masaj yapabilirsin."}},"p-yag":{"type":"product","settings":{"product":"","category_key":"ritual","name_override":"Cycle Care Yağı","short":"Karın masaj yağı · 10 ml","badge":"","step":1,"unit":"şişe","demo_price":189}},"p-sprey":{"type":"product","settings":{"product":"shopify:\/\/products\/ki-intimate-intim-bakim-spreyi","category_key":"ritual","name_override":"İntim Bakım Spreyi","short":"Anlık ferahlama · 100 ml","badge":"","step":1,"unit":"şişe","demo_price":139}},"freq-1":{"type":"frequency","settings":{"label":"Ayda bir","selling_plan_id":"","is_default":true}},"freq-2":{"type":"frequency","settings":{"label":"2 ayda bir","selling_plan_id":"","is_default":false}},"freq-3":{"type":"frequency","settings":{"label":"3 ayda bir","selling_plan_id":"","is_default":false}},"g1":{"type":"guarantee","settings":{"label":"İstediğin an iptal et \/ atla"}},"g2":{"type":"guarantee","settings":{"label":"Ücretsiz iade ve değişim"}},"g3":{"type":"guarantee","settings":{"label":"2 iş günü içinde kargoda"}},"s1":{"type":"step","settings":{"text":"İhtiyacın olan ürünleri ve adetleri seç."}},"s2":{"type":"step","settings":{"text":"Ayda bir, ücretsiz olarak kapına gelsin."}},"s3":{"type":"step","settings":{"text":"İçeriğini istediğin zaman güncelle, atla veya durdur."}}},"block_order":["cat-ped","p-gunluk","p-gunduz","p-gece","cat-supp","p-balance","p-change","cat-gel","p-jel-daily","p-jel-sens","p-jel-flow","p-jel-50","cat-ritual","p-yag","p-sprey","freq-1","freq-2","freq-3","g1","g2","g3","s1","s2","s3"],"settings":{"summary_title":"Paketin","frequency_label":"İki Ayda bir kapında","empty_message":"Abonelik ödemesi aylık alınır. Gönderim iki ayda bir sağlanır.","cta_idle":"Önce ürün ekle","howit_title":"Nasıl çalışır?","shipping_threshold":750}},"faq":{"type":"ki-home-faq","blocks":{"q1":{"type":"qa","settings":{"question":"Paketimi nasıl değiştirebilirim?","answer":"Hesabından her an aboneliğine giriş yapabilir; içerik, sıklık ve adres bilgilerini güncelleyebilirsin."}},"q2":{"type":"qa","settings":{"question":"Bir sonraki gönderimi atlayabilir miyim?","answer":"Evet. Hesabından 'sonraki siparişi atla' diyebilir veya aboneliği duraklatabilirsin."}},"q3":{"type":"qa","settings":{"question":"Aboneliği iptal edebilir miyim?","answer":"İstediğin an tek tıkla iptal edebilirsin. Kalan ürünlerin kargolanır, sonraki gönderim olmaz."}},"q4":{"type":"qa","settings":{"question":"Kargo ne kadar sürer?","answer":"Hafta içi 16:00'a kadar verilen siparişler aynı gün kargolanır. 1–3 iş günü içinde kapına teslim."}}},"block_order":["q1","q2","q3","q4"],"settings":{"eyebrow":"Paket SSS","heading":"<p>Paketlerle ilgili <em>sorular.<\/em><\/p>","cta_text":"Aklındaki başka bir soru mu var?","cta_label":"Eczacımıza soru sor","cta_link":"","bg":"#ffffff","primary_color":"#493d9a","text_color":"#1b1411","line_color":"#e6e3ee"}}},"order":["hero","builder","faq"]}
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "hero": {
+      "type": "ki-pack-hero",
+      "blocks": {
+        "t1": {
+          "type": "trust",
+          "settings": {
+            "icon": "check",
+            "label": "Dilediğin zaman iptal et"
+          }
+        },
+        "t2": {
+          "type": "trust",
+          "settings": {
+            "icon": "truck",
+            "label": "Ücretsiz kargo"
+          }
+        },
+        "t3": {
+          "type": "trust",
+          "settings": {
+            "icon": "shield",
+            "label": "Eczacılar tarafından geliştirilmiş"
+          }
+        }
+      },
+      "block_order": [
+        "t1",
+        "t2",
+        "t3"
+      ],
+      "settings": {
+        "eyebrow": "Abonelik · Sana özel",
+        "heading": "Paketini Oluştur",
+        "description": "<p>İhtiyacına göre Balance, Change, Ped ve ritüel ürünlerini birleştir. Ayda bir kapına gelsin — istediğin zaman değiştir veya durdur.</p>",
+        "bg": "#ffffff"
+      }
+    },
+    "builder": {
+      "type": "ki-pack-builder",
+      "blocks": {
+        "cat-ped": {
+          "type": "category",
+          "settings": {
+            "key": "ped",
+            "label": "Pedler",
+            "description": "Soft Cotton & Bamboo Fiber üst yüzey · Pelin Otu infüzeli",
+            "hint": "Çoğu kullanıcı 1 paket Günlük, 1 Gündüz, 1 Gece tercih ediyor."
+          }
+        },
+        "p-gunluk": {
+          "type": "product",
+          "settings": {
+            "product": "ki-hijyenik-gece-ped",
+            "category_key": "ped",
+            "name_override": ".ki Günlük Ped",
+            "short": "155 mm · ultra ince panty liner",
+            "badge": "",
+            "step": 1,
+            "unit": "paket",
+            "demo_price": 149
+          }
+        },
+        "p-gunduz": {
+          "type": "product",
+          "settings": {
+            "product": "shopify://products/ki-normal-ped",
+            "category_key": "ped",
+            "name_override": ".ki Gündüz Pedi",
+            "short": "245 mm · orta yoğun akış",
+            "badge": "",
+            "step": 1,
+            "unit": "paket",
+            "demo_price": 169
+          }
+        },
+        "p-gece": {
+          "type": "product",
+          "settings": {
+            "product": "shopify://products/ki-hijyenik-gece-ped",
+            "category_key": "ped",
+            "name_override": ".ki Gece Pedi",
+            "short": "335 mm · yoğun gece koruması",
+            "badge": "",
+            "step": 1,
+            "unit": "paket",
+            "demo_price": 189
+          }
+        },
+        "cat-supp": {
+          "type": "category",
+          "settings": {
+            "key": "supplement",
+            "label": "Takviyeler",
+            "description": ".ki Balance ve .ki Change — döngü ve menopoz için günlük destek",
+            "hint": "Çoğunluk 1 kutu Balance ile başlıyor."
+          }
+        },
+        "p-balance": {
+          "type": "product",
+          "settings": {
+            "product": "balance-your-cycle",
+            "category_key": "supplement",
+            "name_override": ".ki Balance · Saşe",
+            "short": "Regl döngüsü desteği · 30 saşe",
+            "badge": "EN POPÜLER",
+            "step": 1,
+            "unit": "kutu",
+            "demo_price": 395
+          }
+        },
+        "p-change": {
+          "type": "product",
+          "settings": {
+            "product": "change-is-good",
+            "category_key": "supplement",
+            "name_override": ".ki Change · Kapsül",
+            "short": "Peri-menopoz & menopoz desteği · 60 kapsül",
+            "badge": "",
+            "step": 1,
+            "unit": "kutu",
+            "demo_price": 449
+          }
+        },
+        "cat-gel": {
+          "type": "category",
+          "settings": {
+            "key": "gel",
+            "label": "Bakım Jelleri",
+            "description": "Daily · Sens · Flow · 50+ — döngünün ihtiyacına göre intim bakım",
+            "hint": "Günlük için Daily, regl için Flow, hassas ciltler için Sens öneriyoruz."
+          }
+        },
+        "p-jel-daily": {
+          "type": "product",
+          "settings": {
+            "product": "ki-daily-care-intim-bakim-jeli",
+            "category_key": "gel",
+            "name_override": "Bakım Jeli · Daily",
+            "short": "Günlük pH dengeli · 200 ml",
+            "badge": "",
+            "step": 1,
+            "unit": "şişe",
+            "demo_price": 145
+          }
+        },
+        "p-jel-sens": {
+          "type": "product",
+          "settings": {
+            "product": "ki-sens-care-intim-bakim-jeli",
+            "category_key": "gel",
+            "name_override": "Bakım Jeli · Sens",
+            "short": "Hassas ciltler için yatıştırıcı · 200 ml",
+            "badge": "",
+            "step": 1,
+            "unit": "şişe",
+            "demo_price": 155
+          }
+        },
+        "p-jel-flow": {
+          "type": "product",
+          "settings": {
+            "product": "shopify://products/ki-flow-care-intim-bakim-jeli",
+            "category_key": "gel",
+            "name_override": "Bakım Jeli · Flow",
+            "short": "Regl döneminde rahatlatıcı · 200 ml",
+            "badge": "",
+            "step": 1,
+            "unit": "şişe",
+            "demo_price": 165
+          }
+        },
+        "p-jel-50": {
+          "type": "product",
+          "settings": {
+            "product": "ki-50-care-intim-bakim-jeli",
+            "category_key": "gel",
+            "name_override": "Bakım Jeli · 50+",
+            "short": "Menopoz dönemi nemlendirici · 200 ml",
+            "badge": "",
+            "step": 1,
+            "unit": "şişe",
+            "demo_price": 175
+          }
+        },
+        "cat-ritual": {
+          "type": "category",
+          "settings": {
+            "key": "ritual",
+            "label": "Yağ & Sprey",
+            "description": "Cycle Care Yağı ve İntim Bakım Spreyi ile rahatlama ritüelín",
+            "hint": "Karın bölgene 2-3 damla yağ ile masaj yapabilirsin."
+          }
+        },
+        "p-sprey": {
+          "type": "product",
+          "settings": {
+            "product": "ki-intimate-intim-bakim-spreyi",
+            "category_key": "ritual",
+            "name_override": "İntim Bakım Spreyi",
+            "short": "Anlık ferahlama · 100 ml",
+            "badge": "",
+            "step": 1,
+            "unit": "şişe",
+            "demo_price": 139
+          }
+        },
+        "freq-1": {
+          "type": "frequency",
+          "settings": {
+            "label": "Ayda bir",
+            "selling_plan_id": "",
+            "is_default": true
+          }
+        },
+        "freq-2": {
+          "type": "frequency",
+          "settings": {
+            "label": "2 ayda bir",
+            "selling_plan_id": "",
+            "is_default": false
+          }
+        },
+        "freq-3": {
+          "type": "frequency",
+          "settings": {
+            "label": "3 ayda bir",
+            "selling_plan_id": "",
+            "is_default": false
+          }
+        },
+        "g1": {
+          "type": "guarantee",
+          "settings": {
+            "label": "İstediğin an iptal et / atla"
+          }
+        },
+        "g2": {
+          "type": "guarantee",
+          "settings": {
+            "label": "Ücretsiz iade ve değişim"
+          }
+        },
+        "g3": {
+          "type": "guarantee",
+          "settings": {
+            "label": "2 iş günü içinde kargoda"
+          }
+        },
+        "s1": {
+          "type": "step",
+          "settings": {
+            "text": "İhtiyacın olan ürünleri ve adetleri seç."
+          }
+        },
+        "s2": {
+          "type": "step",
+          "settings": {
+            "text": "Ayda bir, ücretsiz olarak kapına gelsin."
+          }
+        },
+        "s3": {
+          "type": "step",
+          "settings": {
+            "text": "İçeriğini istediğin zaman güncelle, atla veya durdur."
+          }
+        }
+      },
+      "block_order": [
+        "cat-ped",
+        "p-gunluk",
+        "p-gunduz",
+        "p-gece",
+        "cat-supp",
+        "p-balance",
+        "p-change",
+        "cat-gel",
+        "p-jel-daily",
+        "p-jel-sens",
+        "p-jel-flow",
+        "p-jel-50",
+        "cat-ritual",
+        "p-sprey",
+        "freq-1",
+        "freq-2",
+        "freq-3",
+        "g1",
+        "g2",
+        "g3",
+        "s1",
+        "s2",
+        "s3"
+      ],
+      "settings": {
+        "summary_title": "Paketin",
+        "frequency_label": "İki Ayda bir kapında",
+        "empty_message": "Abonelik ödemesi aylık alınır. Gönderim iki ayda bir sağlanır.",
+        "cta_idle": "Önce ürün ekle",
+        "howit_title": "Nasıl çalışır?",
+        "shipping_threshold": 750
+      }
+    },
+    "faq": {
+      "type": "ki-home-faq",
+      "blocks": {
+        "q1": {
+          "type": "qa",
+          "settings": {
+            "question": "Paketimi nasıl değiştirebilirim?",
+            "answer": "Hesabından her an aboneliğine giriş yapabilir; içerik, sıklık ve adres bilgilerini güncelleyebilirsin."
+          }
+        },
+        "q2": {
+          "type": "qa",
+          "settings": {
+            "question": "Bir sonraki gönderimi atlayabilir miyim?",
+            "answer": "Evet. Hesabından 'sonraki siparişi atla' diyebilir veya aboneliği duraklatabilirsin."
+          }
+        },
+        "q3": {
+          "type": "qa",
+          "settings": {
+            "question": "Aboneliği iptal edebilir miyim?",
+            "answer": "İstediğin an tek tıkla iptal edebilirsin. Kalan ürünlerin kargolanır, sonraki gönderim olmaz."
+          }
+        },
+        "q4": {
+          "type": "qa",
+          "settings": {
+            "question": "Kargo ne kadar sürer?",
+            "answer": "Hafta içi 16:00'a kadar verilen siparişler aynı gün kargolanır. 1–3 iş günü içinde kapına teslim."
+          }
+        }
+      },
+      "block_order": [
+        "q1",
+        "q2",
+        "q3",
+        "q4"
+      ],
+      "settings": {
+        "eyebrow": "Paket SSS",
+        "heading": "<p>Paketlerle ilgili <em>sorular.</em></p>",
+        "cta_text": "Aklındaki başka bir soru mu var?",
+        "cta_label": "Eczacımıza soru sor",
+        "cta_link": "",
+        "bg": "#ffffff",
+        "primary_color": "#493d9a",
+        "text_color": "#1b1411",
+        "line_color": "#e6e3ee"
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "builder",
+    "faq"
+  ]
+}
