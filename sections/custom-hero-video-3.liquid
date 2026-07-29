@@ -14,18 +14,14 @@
   position: relative; width: 100%; overflow: hidden; background: var(--bg);
 }
 .kh3-{{ section.id }} .kh3-track {
-  position: relative; width: 100%;
+  display: flex; width: 100%;
+  transform: translate3d(0,0,0);
+  transition: transform .38s cubic-bezier(.22,.61,.36,1);
 }
 .kh3-{{ section.id }} .kh3-slide {
-  width: 100%;
+  flex: 0 0 100%; width: 100%;
   display: grid; grid-template-columns: 1fr 1fr;
   min-height: 88vh;
-  opacity: 0; visibility: hidden; pointer-events: none;
-  position: absolute; inset: 0;
-  transition: opacity .25s ease;
-}
-.kh3-{{ section.id }} .kh3-slide.is-active {
-  opacity: 1; visibility: visible; pointer-events: auto;
   position: relative;
 }
 .kh3-{{ section.id }} .kh3-media { position: relative; overflow: hidden; background: #111; }
@@ -368,6 +364,7 @@
     var changed = next !== current;
     current = next;
     updateAccessibility();
+    track.style.transform = 'translate3d(-' + (current * 100) + '%,0,0)';
     counters.forEach(function(counter) {
       counter.textContent = (current + 1) + ' / ' + total;
     });
