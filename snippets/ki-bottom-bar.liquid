@@ -5,11 +5,7 @@
 {%- assign ki_trendyol_url = 'https://www.trendyol.com/magaza/ki-shop-m-1205638?sst=0&channelId=1' -%}
 {%- assign cur_path = request.path -%}
 {%- assign ki_all_products = '/collections/ki-urunler' -%}
-{%- if customer -%}
-  {%- assign ki_profile_url = '/pages/abonelik-portalim' -%}
-{%- else -%}
-  {%- assign ki_profile_url = 'https://shopify.com/75936596219/account' -%}
-{%- endif -%}
+{%- assign ki_profile_url = '/pages/abonelik-portalim?view=abonelik-portalim&tab=profile' -%}
 
 <style>
 .ki-bottom-bar{display:none;}
