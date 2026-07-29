@@ -156,8 +156,8 @@
               WhatsApp Danışma Hattımız
             </a>
 
-            {%- if section.settings.cta_label != blank -%}
-            <a href="{{ section.settings.cta_link | default: routes.all_products_collection_url }}" class="ki-bilimi">{{ section.settings.cta_label }}</a>
+            {%- if section.settings.drawer_cta_label != blank -%}
+            <a href="{{ section.settings.drawer_cta_link | default: '/collections/ki-bilimi' }}" class="ki-bilimi">{{ section.settings.drawer_cta_label }}</a>
             {%- endif -%}
           </nav>
         </div>
