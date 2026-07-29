@@ -99,6 +99,7 @@
 .ki-cart-offer__prices strong{color:var(--ki-p,#493d9a);font-size:12px}
 .ki-cart-offer__add{margin-top:auto;width:100%;min-height:29px;padding:5px 8px;border:0;border-radius:8px;background:var(--ki-p,#493d9a);color:#fff;font:inherit;font-size:9.5px;font-weight:800;cursor:pointer}
 .ki-cart-offer__add:disabled{opacity:.6;cursor:wait}
+.ki-cart-offer__add.is-added{background:#16834b;opacity:1}
 .ki-cart-offer__status{min-height:0;margin:7px 0 0;color:var(--ki-mut,#6b6b8a);font-size:10px}
 .ki-cart-offer__status:empty{display:none}
 .ki-cart-offer--page{margin:30px 0 0;padding:24px;border-radius:24px;box-shadow:0 12px 38px rgba(73,61,154,.08)}
@@ -135,6 +136,9 @@
     var rootPath = window.Shopify && window.Shopify.routes ? window.Shopify.routes.root : '/';
     var originalLabel = button.textContent;
     var discountWarning = '';
+    var sectionIds = isCartPage
+      ? ['cart-items', 'cart-footer', 'cart-icon-bubble']
+      : ['cart-drawer', 'cart-icon-bubble'];
 
     button.disabled = true;
     button.textContent = 'Ekleniyor…';
@@ -148,16 +152,27 @@
           id: variantId,
           quantity: 1,
           properties: { '_ki_cross_sell': discountCode ? '%' + discountPercent + ' teklif' : 'öneri' }
-        }]
+        }],
+        sections: sectionIds,
+        sections_url: window.location.pathname
       })
     })
       .then(function(response) {
         if (!response.ok) throw new Error('add');
-        if (!discountCode) return null;
+        return response.json();
+      })
+      .then(function(addState) {
+        button.textContent = 'Eklendi ✓';
+        button.classList.add('is-added');
+        if (!discountCode) return addState;
         return fetch(rootPath + 'cart/update.js', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-          body: JSON.stringify({ discount: discountCode })
+          body: JSON.stringify({
+            discount: discountCode,
+            sections: sectionIds,
+            sections_url: window.location.pathname
+          })
         }).then(function(discountResponse) {
           if (!discountResponse.ok) throw new Error('discount');
           return discountResponse.json();
@@ -176,12 +191,11 @@
           });
           if (!applied) discountWarning = 'Ürün eklendi. İndirim kodunun Shopify koşullarını kontrol edin.';
         }
-        var sectionIds = isCartPage ? 'cart-items,cart-footer,cart-icon-bubble' : 'cart-drawer,cart-icon-bubble';
-        return fetch(rootPath + '?sections=' + sectionIds);
-      })
-      .then(function(response) {
-        if (!response.ok) throw new Error('refresh');
-        return response.json();
+        if (cartState && cartState.sections) return cartState.sections;
+        return fetch(rootPath + '?sections=' + sectionIds.join(',')).then(function(response) {
+          if (!response.ok) throw new Error('refresh');
+          return response.json();
+        });
       })
       .then(function(sections) {
         if (isCartPage) {
