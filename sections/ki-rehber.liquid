@@ -181,7 +181,32 @@
 (function(){
   var tabs=document.querySelectorAll('.kir__tab');
   var panels={regl:document.getElementById('panel-regl'),intim:document.getElementById('panel-intim'),menopoz:document.getElementById('panel-menopoz')};
-  tabs.forEach(function(tab){tab.addEventListener('click',function(){var t=this.getAttribute('data-panel');tabs.forEach(function(x){x.classList.remove('is-active');x.setAttribute('aria-selected','false');});this.classList.add('is-active');this.setAttribute('aria-selected','true');Object.keys(panels).forEach(function(k){panels[k].classList.remove('is-active');});if(panels[t]){panels[t].classList.add('is-active');window.scrollTo({top:document.querySelector('.kir__tabs-wrap').offsetTop-8,behavior:'smooth'});}});});
+  function activatePanel(target,shouldScroll){
+    if(!panels[target]) return;
+    tabs.forEach(function(tab){
+      var active=tab.getAttribute('data-panel')===target;
+      tab.classList.toggle('is-active',active);
+      tab.setAttribute('aria-selected',active ? 'true' : 'false');
+    });
+    Object.keys(panels).forEach(function(key){panels[key].classList.toggle('is-active',key===target);});
+    if(shouldScroll){
+      var tabsWrap=document.querySelector('.kir__tabs-wrap');
+      if(tabsWrap) window.scrollTo({top:tabsWrap.offsetTop-8,behavior:'smooth'});
+    }
+  }
+  tabs.forEach(function(tab){
+    tab.addEventListener('click',function(){
+      var target=this.getAttribute('data-panel');
+      activatePanel(target,true);
+      if(window.history && window.history.replaceState) window.history.replaceState(null,'','#'+target);
+    });
+  });
+  var initialPanel=window.location.hash.replace('#','');
+  if(panels[initialPanel]) activatePanel(initialPanel,false);
+  window.addEventListener('hashchange',function(){
+    var target=window.location.hash.replace('#','');
+    if(panels[target]) activatePanel(target,true);
+  });
   document.querySelectorAll('.kir__acc-btn').forEach(function(btn){btn.addEventListener('click',function(){var id=this.getAttribute('aria-controls');var body=document.getElementById(id);var exp=this.getAttribute('aria-expanded')==='true';this.setAttribute('aria-expanded',!exp);if(body) body.classList.toggle('is-open',!exp);});});
   document.querySelectorAll('.kir__atc').forEach(function(btn){
     btn.addEventListener('click',function(){

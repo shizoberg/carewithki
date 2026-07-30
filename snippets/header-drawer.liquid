@@ -46,6 +46,13 @@
 .ki-other a{display:flex;align-items:center;gap:12px;padding:12px 4px;border-bottom:1px solid rgba(0,0,0,.04);text-decoration:none;color:#333;font-size:15px;font-weight:500}
 .ki-other a:last-child{border-bottom:none}
 .ki-other .ki-ico{background:rgba(73,61,154,.06)}
+.ki-guides{margin:0 16px 12px;padding:12px;border-radius:14px;background:linear-gradient(135deg,#f4f1ff,#fbfaff);border:1px solid rgba(73,61,154,.1)}
+.ki-guides__title{margin:0 0 8px;color:#493d9a;font-size:10px;font-weight:800;letter-spacing:.09em;text-transform:uppercase}
+.ki-guides__list{display:grid;gap:6px}
+.ki-guide{display:flex;align-items:center;gap:9px;min-height:42px;padding:8px 10px;border-radius:10px;background:#fff;color:#333;text-decoration:none;font-size:13px;font-weight:650}
+.ki-guide__ico{display:flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:9px;background:rgba(73,61,154,.08);color:#493d9a;flex-shrink:0}
+.ki-guide__ico svg{width:15px;height:15px}
+.ki-guide .ki-chv{margin-left:auto}
 .ki-trendyol{display:flex;align-items:center;gap:12px;margin:0 16px 4px;padding:12px 14px;border-radius:12px;background:rgba(255,110,0,.06);border:1px solid rgba(255,110,0,.18);text-decoration:none;color:#d94f00;font-size:14px;font-weight:700;transition:background .15s}
 .ki-trendyol:hover{background:rgba(255,110,0,.12)}
 .ki-trendyol__ico{width:34px;height:34px;border-radius:50%;background:rgba(255,110,0,.12);display:flex;align-items:center;justify-content:center;flex-shrink:0}
@@ -143,6 +150,27 @@
             <div class="ki-other">
               <a href="/pages/anlasmali-ezcaneler"><span class="ki-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 9l1-4h16l1 4"/><path d="M3 9v11a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1V9"/><path d="M3 9h18"/><rect x="9" y="14" width="6" height="6"/></svg></span><span class="ki-lbl">Anlaşmalı Eczanelerimiz</span></a>
               <a href="/blogs/ki-blog"><span class="ki-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></span><span class="ki-lbl">Blog</span></a>
+            </div>
+
+            <div class="ki-guides">
+              <p class="ki-guides__title">Kadın Sağlığı Rehberleri</p>
+              <div class="ki-guides__list">
+                <a href="{{ routes.root_url }}pages/ki-rehberi#regl" class="ki-guide">
+                  <span class="ki-guide__ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3s5 5.5 5 10a5 5 0 0 1-10 0c0-4.5 5-10 5-10z"/></svg></span>
+                  <span>Regl Rehberi</span>
+                  <span class="ki-chv"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></span>
+                </a>
+                <a href="{{ routes.root_url }}pages/ki-rehberi#intim" class="ki-guide">
+                  <span class="ki-guide__ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3l7 3v5c0 4.5-2.8 8.2-7 10-4.2-1.8-7-5.5-7-10V6z"/><path d="M9 12l2 2 4-4"/></svg></span>
+                  <span>İntim Bakım Rehberi</span>
+                  <span class="ki-chv"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></span>
+                </a>
+                <a href="{{ routes.root_url }}pages/ki-rehberi#menopoz" class="ki-guide">
+                  <span class="ki-guide__ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M8 14a4 4 0 1 1 8 0c0 3-2 4-2 7h-4c0-3-2-4-2-7z"/><path d="M12 3v3M4.2 7.2l2.1 2.1M19.8 7.2l-2.1 2.1"/></svg></span>
+                  <span>Menopoz Rehberi</span>
+                  <span class="ki-chv"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></span>
+                </a>
+              </div>
             </div>
 
             <a href="https://www.trendyol.com/magaza/ki-shop-m-1205638" target="_blank" rel="noopener" class="ki-trendyol">

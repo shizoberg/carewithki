@@ -164,20 +164,46 @@
 
   @media screen and (max-width:749px) {
     #main-cart-footer .page-width {
-      padding-left:14px;
-      padding-right:14px;
+      padding-left:12px;
+      padding-right:12px;
     }
     #main-cart-footer .cart__footer {
-      gap:16px;
+      gap:12px;
     }
     #main-cart-footer .cart__note,
     #main-cart-footer .cart__blocks {
-      padding:18px !important;
+      padding:15px !important;
       border-radius:18px;
+      box-shadow:0 8px 24px rgba(73,61,154,.06);
     }
     #main-cart-footer .totals {
-      padding:15px;
+      padding:13px 14px;
       border-radius:14px;
+    }
+    #main-cart-footer .totals__total {
+      font-size:15px !important;
+    }
+    #main-cart-footer .totals__total-value {
+      font-size:19px !important;
+    }
+    #main-cart-footer .tax-note {
+      display:block;
+      margin-top:9px;
+      font-size:10.5px;
+      line-height:1.4;
+    }
+    #main-cart-footer .cart__checkout-button,
+    #main-cart-footer button.cart__checkout-button {
+      min-height:48px;
+      padding:13px 24px !important;
+      font-size:15px !important;
+    }
+    #main-cart-footer .cart__note label {
+      margin-bottom:8px !important;
+      font-size:13px;
+    }
+    #main-cart-footer .cart__note .field__input {
+      min-height:96px;
     }
   }
 {%- endstyle -%}
