@@ -16,13 +16,17 @@
 .kh3-{{ section.id }} .kh3-track {
   display: flex; width: 100%;
   transform: translate3d(0,0,0);
-  transition: transform .2s ease;
+  transition: transform .16s linear;
+  will-change: transform;
+  backface-visibility: hidden;
 }
 .kh3-{{ section.id }} .kh3-slide {
   flex: 0 0 100%; width: 100%;
   display: grid; grid-template-columns: 1fr 1fr;
   min-height: 88vh;
   position: relative;
+  background: var(--bg);
+  backface-visibility: hidden;
 }
 .kh3-{{ section.id }} .kh3-media { position: relative; overflow: hidden; background: #111; }
 .kh3-{{ section.id }} .kh3-media video,
@@ -38,7 +42,17 @@
   background: var(--bg); display: flex; flex-direction: column; justify-content: center;
   padding: 60px 56px 60px 52px; position: relative; z-index: 2;
 }
-.kh3-{{ section.id }} .kh3-text-wrap { opacity: 1; transform: none; transition: none; }
+.kh3-{{ section.id }} .kh3-text-wrap {
+  opacity: 1;
+  visibility: visible;
+  transform: translateZ(0);
+  transition: none;
+  backface-visibility: hidden;
+}
+.kh3-{{ section.id }} .kh3-slide:not(.is-active) .kh3-text-wrap {
+  opacity: 0;
+  visibility: hidden;
+}
 .kh3-{{ section.id }} .kh3-badge { font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--p); margin-bottom: 16px; opacity: 0.75; }
 .kh3-{{ section.id }} .kh3-title {
   font-family: 'Raleway', system-ui, sans-serif;
