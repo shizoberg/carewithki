@@ -16,7 +16,7 @@
 .kh3-{{ section.id }} .kh3-track {
   display: flex; width: 100%;
   transform: translate3d(0,0,0);
-  transition: transform .38s cubic-bezier(.22,.61,.36,1);
+  transition: transform .2s ease;
 }
 .kh3-{{ section.id }} .kh3-slide {
   flex: 0 0 100%; width: 100%;
@@ -38,8 +38,7 @@
   background: var(--bg); display: flex; flex-direction: column; justify-content: center;
   padding: 60px 56px 60px 52px; position: relative; z-index: 2;
 }
-.kh3-{{ section.id }} .kh3-text-wrap { opacity: 0; transform: translateY(20px); transition: opacity 0.65s ease, transform 0.65s ease; }
-.kh3-{{ section.id }} .kh3-slide.is-active .kh3-text-wrap { opacity: 1; transform: translateY(0); }
+.kh3-{{ section.id }} .kh3-text-wrap { opacity: 1; transform: none; transition: none; }
 .kh3-{{ section.id }} .kh3-badge { font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--p); margin-bottom: 16px; opacity: 0.75; }
 .kh3-{{ section.id }} .kh3-title {
   font-family: 'Raleway', system-ui, sans-serif;
@@ -58,9 +57,8 @@
   text-decoration: none; transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
   box-shadow: 0 6px 22px rgba(73,61,154,0.28); border: none; cursor: pointer; width: fit-content;
 }
-.kh3-{{ section.id }} .kh3-btn:hover { background: #3b3280; transform: translateY(-2px); box-shadow: 0 10px 28px rgba(73,61,154,0.35); }
-.kh3-{{ section.id }} .kh3-btn svg { width: 15px; height: 15px; transition: transform 0.2s; }
-.kh3-{{ section.id }} .kh3-btn:hover svg { transform: translateX(3px); }
+.kh3-{{ section.id }} .kh3-btn:hover { background: #3b3280; box-shadow: 0 7px 22px rgba(73,61,154,0.30); }
+.kh3-{{ section.id }} .kh3-btn svg { width: 15px; height: 15px; }
 .kh3-{{ section.id }} .kh3-proof { display: flex; align-items: center; gap: 16px; margin-top: 24px; flex-wrap: wrap; }
 .kh3-{{ section.id }} .kh3-stars { display: flex; align-items: center; gap: 4px; font-size: 13px; font-weight: 600; color: #333; }
 .kh3-{{ section.id }} .kh3-stars svg { width: 15px; height: 15px; fill: #f5a623; stroke: none; }
@@ -71,10 +69,10 @@
   width: 40px; height: 40px; border-radius: 50%;
   border: 1.5px solid rgba(73,61,154,0.25); background: transparent; color: var(--p);
   display: flex; align-items: center; justify-content: center;
-  cursor: pointer; transition: all 0.2s; flex-shrink: 0;
+  cursor: pointer; transition: background .15s ease, color .15s ease, border-color .15s ease; flex-shrink: 0;
 }
 .kh3-{{ section.id }} .kh3-nav-btn svg { width: 16px; height: 16px; }
-.kh3-{{ section.id }} .kh3-nav-btn:hover { background: var(--p); color: #fff; border-color: var(--p); box-shadow: 0 4px 14px rgba(73,61,154,0.28); }
+.kh3-{{ section.id }} .kh3-nav-btn:hover { background: var(--p); color: #fff; border-color: var(--p); }
 .kh3-{{ section.id }} .kh3-counter { font-size: 13px; font-weight: 600; color: var(--muted); min-width: 32px; text-align: center; }
 .kh3-{{ section.id }} .kh3-progress-wrap { display: flex; gap: 6px; align-items: center; flex: 1; }
 .kh3-{{ section.id }} .kh3-progress-item { height: 2px; border-radius: 2px; background: rgba(73,61,154,0.18); overflow: hidden; cursor: pointer; flex: 1; }
