@@ -152,7 +152,7 @@ cart-items .cart__warnings a.button::after { display:none !important; }
   cart-items .cart-items thead{display:none}
   cart-items .cart-item{
     position:relative;
-    grid-template-columns:84px minmax(0,1fr);
+    grid-template-columns:100px minmax(0,1fr);
     grid-template-rows:auto auto auto;
     padding:12px;
     margin-bottom:9px;
@@ -214,14 +214,18 @@ cart-items .cart__warnings a.button::after { display:none !important; }
   }
   cart-items .quantity.cart-quantity{width:122px;min-height:38px}
   cart-items .quantity__button{width:38px}
-  cart-items cart-remove-button{margin:0 0 0 auto}
+  cart-items cart-remove-button{
+    flex:0 0 76px;
+    width:76px;
+    margin:0 0 0 auto;
+  }
   cart-items cart-remove-button a{
     display:flex;
     align-items:center;
     justify-content:center;
     gap:5px;
-    width:auto;
-    min-width:62px !important;
+    width:76px !important;
+    min-width:76px !important;
     min-height:38px !important;
     padding:0 11px !important;
     border:1px solid rgba(197,61,54,.12) !important;
@@ -230,9 +234,11 @@ cart-items .cart__warnings a.button::after { display:none !important; }
     color:#bd3d37 !important;
     font-size:11px;
     font-weight:700;
+    line-height:1;
+    white-space:nowrap;
   }
   cart-items cart-remove-button a:hover{background:#ffe5e1 !important;color:#a82e29 !important}
-  cart-items cart-remove-button .svg-wrapper{width:15px;height:15px}
+  cart-items cart-remove-button .svg-wrapper{display:none}
   cart-items .cart-remove-label{display:inline}
   cart-items .cart-item__error{margin-top:6px}
 }
