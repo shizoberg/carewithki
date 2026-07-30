@@ -351,7 +351,7 @@
 
     /* ===== Category hint (sage) ===== */
     #ki-{{ section.id }} .ki-pack__cat-hint {
-      display: flex; gap: 8px; align-items: flex-start;
+      display: flex; gap: 10px; align-items: flex-start;
       padding: 12px 18px;
       background: var(--ki-sage-light, #dde8d4);
       border-top: 1px solid rgba(0,0,0,.06);
@@ -359,15 +359,39 @@
       color: var(--ki-sage, #5d7a52);
     }
     #ki-{{ section.id }} .ki-pack__cat-hint > span:first-child { flex-shrink: 0; }
+    #ki-{{ section.id }} .ki-pack__cat-hint-copy { display: grid; gap: 2px; }
+    #ki-{{ section.id }} .ki-pack__cat-hint-title {
+      color: #347154;
+      font-size: 9px;
+      line-height: 1.2;
+      font-weight: 800;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
 
     /* ===== Summary card ===== */
-    #ki-{{ section.id }} .ki-pack__summary-wrap { position: static; }
+    #ki-{{ section.id }} .ki-pack__summary-wrap {
+      position: relative;
+      isolation: isolate;
+    }
+    #ki-{{ section.id }} .ki-pack__summary-wrap::before {
+      content: "";
+      position: absolute;
+      z-index: -1;
+      inset: -16px;
+      border-radius: 32px;
+      background: radial-gradient(circle at 50% 18%, rgba(112,91,231,.34), rgba(73,61,154,.13) 48%, transparent 76%);
+      filter: blur(24px);
+      pointer-events: none;
+    }
     #ki-{{ section.id }} .ki-pack__summary {
+      position: relative;
+      z-index: 1;
       background: var(--ki-card, #fff);
       border: 1px solid var(--ki-border, #e6e3ee);
       border-radius: 18px;
       padding: 20px;
-      box-shadow: 0 18px 48px -34px rgba(73,61,154,.55);
+      box-shadow: 0 20px 58px -34px rgba(73,61,154,.62);
     }
     #ki-{{ section.id }} .ki-pack__sum-head {
       display: flex; justify-content: space-between; align-items: center;
@@ -1162,7 +1186,10 @@
                   {%- if catBlock.settings.hint != blank -%}
                     <div class="ki-pack__cat-hint">
                       <span>💡</span>
-                      <span>{{ catBlock.settings.hint }}</span>
+                      <span class="ki-pack__cat-hint-copy">
+                        <strong class="ki-pack__cat-hint-title">Eczacı yorumu</strong>
+                        <span>{{ catBlock.settings.hint }}</span>
+                      </span>
                     </div>
                   {%- endif -%}
                 </div>
@@ -1796,19 +1823,18 @@
         { "type": "product",  "settings": { "category_key": "ped",  "step": 12, "unit": "adet", "name_override": ".ki Gündüz Pedi", "short": "245 mm · 12 adet · orta yoğun akış", "demo_price": 169 } },
         { "type": "product",  "settings": { "category_key": "ped",  "step": 8,  "unit": "adet", "name_override": ".ki Gece Pedi",   "short": "335 mm · 8 adet · yoğun gece koruması", "demo_price": 189 } },
 
-        { "type": "category", "settings": { "key": "supplement", "label": "Takviyeler", "description": ".ki Balance ve .ki Change — döngü ve menopoz için günlük destek", "hint": "Çoğunluk 1 kutu Balance ile başlıyor." } },
-        { "type": "product",  "settings": { "category_key": "supplement", "step": 1, "unit": "kutu", "badge": "EN POPÜLER", "name_override": ".ki Balance · Saşe", "short": "Regl döngüsü desteği · 30 saşe", "demo_price": 395 } },
-        { "type": "product",  "settings": { "category_key": "supplement", "step": 1, "unit": "kutu", "name_override": ".ki Change · Kapsül", "short": "Peri-menopoz & menopoz desteği · 60 kapsül", "demo_price": 449 } },
+        { "type": "category", "settings": { "key": "supplement", "label": "Takviyeler", "description": ".ki Balance ve .ki Change — döngü ve menopoz dönemlerine özel destek", "hint": "Balance döngü dönemini, Change menopoz dönemini desteklemek için geliştirilmiştir." } },
+        { "type": "product",  "settings": { "category_key": "supplement", "step": 1, "unit": "kutu", "badge": "EN POPÜLER", "name_override": ".ki Balance · Saşe", "short": "Döngü dönemini destekler · 10 saşe", "demo_price": 395 } },
+        { "type": "product",  "settings": { "category_key": "supplement", "step": 1, "unit": "kutu", "name_override": ".ki Change · Kapsül", "short": "Menopoz dönemini destekler · 30 kapsül", "demo_price": 449 } },
 
-        { "type": "category", "settings": { "key": "gel", "label": "Bakım Jelleri", "description": "Daily · Sens · Flow · 50+ — döngünün ihtiyacına göre intim bakım", "hint": "Günlük için Daily, regl için Flow, hassas ciltler için Sens öneriyoruz." } },
+        { "type": "category", "settings": { "key": "gel", "label": "Bakım Jelleri", "description": "Daily · Sens · Flow · 50+ — ihtiyacına göre intim bakım desteği", "hint": "Flow üriner sistem desteği için, 50+ menopoz dönemine özel bakım için tercih edilebilir." } },
         { "type": "product",  "settings": { "category_key": "gel", "step": 1, "unit": "şişe", "name_override": "Bakım Jeli · Daily", "short": "Günlük pH dengeli · 200 ml", "demo_price": 145 } },
         { "type": "product",  "settings": { "category_key": "gel", "step": 1, "unit": "şişe", "name_override": "Bakım Jeli · Sens",  "short": "Hassas ciltler için yatıştırıcı · 200 ml", "demo_price": 155 } },
-        { "type": "product",  "settings": { "category_key": "gel", "step": 1, "unit": "şişe", "name_override": "Bakım Jeli · Flow",  "short": "Regl döneminde rahatlatıcı · 200 ml", "demo_price": 165 } },
-        { "type": "product",  "settings": { "category_key": "gel", "step": 1, "unit": "şişe", "name_override": "Bakım Jeli · 50+",   "short": "Menopoz dönemi nemlendirici · 200 ml", "demo_price": 175 } },
+        { "type": "product",  "settings": { "category_key": "gel", "step": 1, "unit": "şişe", "name_override": "Bakım Jeli · Flow",  "short": "Üriner sistem desteği için · 200 ml", "demo_price": 165 } },
+        { "type": "product",  "settings": { "category_key": "gel", "step": 1, "unit": "şişe", "name_override": "Bakım Jeli · 50+",   "short": "Menopoz dönemine özel bakım · 200 ml", "demo_price": 175 } },
 
-        { "type": "category", "settings": { "key": "ritual", "label": "Yağ & Sprey", "description": "Cycle Care Yağı ve İntim Bakım Spreyi ile rahatlama ritüelin", "hint": "Karın bölgene 2-3 damla yağ ile masaj yapabilirsin." } },
-        { "type": "product",  "settings": { "category_key": "ritual", "step": 1, "unit": "şişe", "name_override": "Cycle Care Yağı",    "short": "Karın masaj yağı · 10 ml", "demo_price": 189 } },
-        { "type": "product",  "settings": { "category_key": "ritual", "step": 1, "unit": "şişe", "name_override": "İntim Bakım Spreyi", "short": "Anlık ferahlama · 100 ml", "demo_price": 139 } },
+        { "type": "category", "settings": { "key": "ritual", "label": "Sprey", "description": "İntim bölge için pratik bakım ve ferahlık desteği", "hint": "İntim Bakım Spreyi, intim bölge bakım rutinini gün içinde pratik şekilde destekler." } },
+        { "type": "product",  "settings": { "category_key": "ritual", "step": 1, "unit": "şişe", "name_override": "İntim Bakım Spreyi", "short": "İntim bölge bakım desteği · 100 ml", "demo_price": 139 } },
 
         { "type": "frequency", "settings": { "label": "2 ayda bir", "is_default": true } },
         { "type": "frequency", "settings": { "label": "Aylık" } },

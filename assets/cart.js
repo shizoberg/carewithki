@@ -5,7 +5,17 @@ class CartRemoveButton extends HTMLElement {
     this.addEventListener('click', (event) => {
       event.preventDefault();
       const cartItems = this.closest('cart-items') || this.closest('cart-drawer-items');
-      cartItems.updateQuantity(this.dataset.index, 0, event);
+      const line = this.dataset.index;
+      const quantityInput =
+        document.getElementById(`Quantity-${line}`) || document.getElementById(`Drawer-quantity-${line}`);
+      const currentQuantity = Math.max(1, parseInt(quantityInput?.value, 10) || 1);
+      cartItems.updateQuantity(
+        line,
+        Math.max(0, currentQuantity - 1),
+        event,
+        'minus',
+        quantityInput?.dataset.quantityVariantId
+      );
     });
   }
 }

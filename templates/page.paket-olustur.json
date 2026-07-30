@@ -42,7 +42,7 @@
       "settings": {
         "eyebrow": "Abonelik · Sana özel",
         "heading": "Paketini Oluştur",
-        "description": "<p>İhtiyacına göre Balance, Change, Ped ve ritüel ürünlerini birleştir. Ayda bir kapına gelsin — istediğin zaman değiştir veya durdur.</p>",
+        "description": "<p>İhtiyacına göre Balance, Change, Ped, jel ve sprey ürünlerini birleştir. Ayda bir kapına gelsin — istediğin zaman değiştir veya durdur.</p>",
         "bg": "#ffffff"
       }
     },
@@ -160,8 +160,8 @@
           "settings": {
             "key": "supplement",
             "label": "Takviyeler",
-            "description": ".ki Balance ve .ki Change — döngü ve menopoz için günlük destek",
-            "hint": "Çoğunluk 1 kutu Balance ile başlıyor."
+            "description": ".ki Balance ve .ki Change — döngü ve menopoz dönemlerine özel destek",
+            "hint": "Balance döngü dönemini, Change menopoz dönemini desteklemek için geliştirilmiştir."
           }
         },
         "p-balance": {
@@ -170,7 +170,7 @@
             "product": "balance-your-cycle",
             "category_key": "supplement",
             "name_override": ".ki Balance · Saşe",
-            "short": "Regl döngüsü desteği · 30 saşe",
+            "short": "Döngü dönemini destekler · 10 saşe",
             "badge": "EN POPÜLER",
             "step": 1,
             "unit": "kutu",
@@ -183,7 +183,7 @@
             "product": "change-is-good",
             "category_key": "supplement",
             "name_override": ".ki Change · Kapsül",
-            "short": "Peri-menopoz & menopoz desteği · 60 kapsül",
+            "short": "Menopoz dönemini destekler · 30 kapsül",
             "badge": "",
             "step": 1,
             "unit": "kutu",
@@ -195,8 +195,8 @@
           "settings": {
             "key": "gel",
             "label": "Bakım Jelleri",
-            "description": "Daily · Sens · Flow · 50+ — döngünün ihtiyacına göre intim bakım",
-            "hint": "Günlük için Daily, regl için Flow, hassas ciltler için Sens öneriyoruz."
+            "description": "Daily · Sens · Flow · 50+ — ihtiyacına göre intim bakım desteği",
+            "hint": "Flow üriner sistem desteği için, 50+ menopoz dönemine özel bakım için tercih edilebilir."
           }
         },
         "p-jel-daily": {
@@ -231,7 +231,7 @@
             "product": "shopify://products/ki-flow-care-intim-bakim-jeli",
             "category_key": "gel",
             "name_override": "Bakım Jeli · Flow",
-            "short": "Regl döneminde rahatlatıcı · 200 ml",
+            "short": "Üriner sistem desteği için · 200 ml",
             "badge": "",
             "step": 1,
             "unit": "şişe",
@@ -244,7 +244,7 @@
             "product": "ki-50-care-intim-bakim-jeli",
             "category_key": "gel",
             "name_override": "Bakım Jeli · 50+",
-            "short": "Menopoz dönemi nemlendirici · 200 ml",
+            "short": "Menopoz dönemine özel bakım · 200 ml",
             "badge": "",
             "step": 1,
             "unit": "şişe",
@@ -255,9 +255,9 @@
           "type": "category",
           "settings": {
             "key": "ritual",
-            "label": "Yağ & Sprey",
-            "description": "Cycle Care Yağı ve İntim Bakım Spreyi ile rahatlama ritüelín",
-            "hint": "Karın bölgene 2-3 damla yağ ile masaj yapabilirsin."
+            "label": "Sprey",
+            "description": "İntim bölge için pratik bakım ve ferahlık desteği",
+            "hint": "İntim Bakım Spreyi, intim bölge bakım rutinini gün içinde pratik şekilde destekler."
           }
         },
         "p-sprey": {
@@ -266,7 +266,7 @@
             "product": "ki-intimate-intim-bakim-spreyi",
             "category_key": "ritual",
             "name_override": "İntim Bakım Spreyi",
-            "short": "Anlık ferahlama · 100 ml",
+            "short": "İntim bölge bakım desteği · 100 ml",
             "badge": "",
             "step": 1,
             "unit": "şişe",
