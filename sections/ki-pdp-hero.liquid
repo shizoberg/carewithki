@@ -65,7 +65,11 @@
 .kipdp-{{ section.id }} .kipdp-atc svg{width:17px;height:17px;flex-shrink:0;pointer-events:none;}
 .kipdp-{{ section.id }} .kipdp-trust{text-align:center;font-size:12px;color:var(--mut);margin:10px 0 0;}
 .kipdp-{{ section.id }} .kipdp-divider{height:1px;background:rgba(73,61,154,.08);margin:14px 0;}
+.kipdp-{{ section.id }} .kipdp-certifications{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:14px 0 0;}
+.kipdp-{{ section.id }} .kipdp-certification{display:flex;align-items:center;justify-content:center;gap:7px;min-height:42px;padding:8px 9px;border:1px solid rgba(73,61,154,.12);border-radius:12px;background:#fff;color:var(--p);font-size:10px;font-weight:800;line-height:1.2;text-align:center;}
+.kipdp-{{ section.id }} .kipdp-certification svg{width:20px;height:20px;flex:0 0 auto;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;}
 .kipdp-{{ section.id }} .kipdp-badges{display:grid;grid-template-columns:repeat(auto-fit,minmax(104px,1fr));gap:8px;margin:16px 0 0;}
+.kipdp-{{ section.id }} .kipdp-badges:empty{display:none;}
 .kipdp-{{ section.id }} .kipdp-badge-item{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;min-height:112px;background:linear-gradient(145deg,rgba(73,61,154,.035),rgba(218,210,255,.18));border:1px solid rgba(73,61,154,.11);border-radius:14px;padding:14px 9px 12px;text-align:center;}
 .kipdp-{{ section.id }} .ki-badge-ico{width:42px;height:42px;display:flex;align-items:center;justify-content:center;flex-shrink:0;border-radius:14px;background:#fff;border:1px solid rgba(73,61,154,.1);color:var(--p);}
 .kipdp-{{ section.id }} .ki-badge-ico svg{width:25px;height:25px;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;fill:none;display:block;}
@@ -85,6 +89,9 @@
   .kipdp-{{ section.id }} .kipdp-info{padding:20px 16px 40px;width:100%;}
   .kipdp-{{ section.id }} .kipdp-title{font-size:clamp(20px,5.5vw,28px);word-break:break-word;}
   .kipdp-{{ section.id }} .kipdp-main{font-size:17px;}
+  .kipdp-{{ section.id }} .kipdp-certifications{gap:6px;margin-top:12px;}
+  .kipdp-{{ section.id }} .kipdp-certification{min-height:40px;padding:7px 5px;gap:5px;border-radius:10px;font-size:9px;}
+  .kipdp-{{ section.id }} .kipdp-certification svg{width:18px;height:18px;}
   .kipdp-{{ section.id }} .kipdp-badges{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;}
   .kipdp-{{ section.id }} .kipdp-badge-item{min-height:70px;display:grid;grid-template-columns:36px minmax(0,1fr);align-items:center;justify-items:start;gap:9px;padding:10px 12px;border-radius:12px;text-align:left;}
   .kipdp-{{ section.id }} .ki-badge-ico{width:36px;height:36px;border-radius:11px;}
@@ -201,12 +208,31 @@
 
       {%- if section.settings.trust_note != blank -%}<p class="kipdp-trust">{{ section.settings.trust_note | escape }}</p>{%- endif -%}
 
+      <div class="kipdp-certifications" role="list" aria-label="Ürün sertifikaları">
+        <div class="kipdp-certification" role="listitem">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#ki-ico-fda"/></svg>
+          <span>FDA Onaylı</span>
+        </div>
+        <div class="kipdp-certification" role="listitem">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#ki-ico-gmp"/></svg>
+          <span>GMP Sertifikalı</span>
+        </div>
+        <div class="kipdp-certification" role="listitem">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#ki-ico-vegan"/></svg>
+          <span>Vegan</span>
+        </div>
+      </div>
+
       {%- if badge_blocks.size > 0 -%}
       <div class="kipdp-badges" role="list" aria-label="Ürün özellikleri">
         {%- for block in badge_blocks -%}
         {%- liquid
           assign badge_icon_key = block.settings.badge_icon
           assign badge_label_key = block.settings.badge_label | downcase
+          assign hide_certification_duplicate = false
+          if badge_label_key contains 'fda' or badge_label_key contains 'gmp' or badge_label_key contains 'vegan'
+            assign hide_certification_duplicate = true
+          endif
           if badge_label_key contains 'paraben' or badge_label_key contains 'sles' or badge_label_key contains 'sls' or badge_label_key contains 'kimyasal'
             assign badge_icon_key = 'formula_free'
           elsif badge_label_key contains 'ph '
@@ -237,6 +263,7 @@
             assign badge_icon_key = 'daily'
           endif
         -%}
+        {%- unless hide_certification_duplicate -%}
         <div class="kipdp-badge-item" role="listitem" {{ block.shopify_attributes }}>
           <span class="ki-badge-ico">
             {%- if block.settings.badge_image != blank -%}<img src="{{ block.settings.badge_image | image_url: width: 80 }}" alt="{{ block.settings.badge_label | escape }}" width="{{ block.settings.badge_image.width }}" height="{{ block.settings.badge_image.height }}" loading="lazy">
@@ -244,6 +271,7 @@
           </span>
           {%- if block.settings.badge_label != blank -%}<span class="ki-badge-label">{{ block.settings.badge_label | escape }}</span>{%- endif -%}
         </div>
+        {%- endunless -%}
         {%- endfor -%}
       </div>
       {%- endif -%}
