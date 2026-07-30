@@ -377,10 +377,61 @@
             "bundle_cta": "Seti İncele",
             "bundle_note": "Kargo dahil"
           }
+        },
+        "bundle_dongu_destek": {
+          "type": "bundle",
+          "settings": {
+            "bundle_hero_image": "shopify://shop_images/pms_-_product_page_b88e49fd-d469-4585-9fe4-c63379926631.jpg",
+            "bundle_label": "Döngü desteği",
+            "bundle_title": "<p>Döngü Bakım Paketi</p>",
+            "bundle_subtitle": "Balance + ihtiyacına uygun ped seçimi",
+            "original_price": "",
+            "bundle_price": "",
+            "save_text": "",
+            "bundle_product": "",
+            "bundle_link": "/pages/paket-olustur",
+            "bundle_cta": "Paketi Oluştur",
+            "bundle_note": "İçeriğini dilediğin zaman değiştirebilirsin"
+          }
+        },
+        "bundle_intim_bakim": {
+          "type": "bundle",
+          "settings": {
+            "bundle_hero_image": "shopify://shop_images/jeller_Gemini_3_Nano_Banana_Pro__2026-05-30_00-19-53.png",
+            "bundle_label": "İntim bakım",
+            "bundle_title": "<p>İntim Bakım Rutini</p>",
+            "bundle_subtitle": "İntim yıkama jeli + İntim Bakım Spreyi",
+            "original_price": "",
+            "bundle_price": "",
+            "save_text": "",
+            "bundle_product": "",
+            "bundle_link": "/pages/paket-olustur",
+            "bundle_cta": "Paketi Oluştur",
+            "bundle_note": "İhtiyacına uygun ürünleri birlikte seç"
+          }
+        },
+        "bundle_menopoz_destek": {
+          "type": "bundle",
+          "settings": {
+            "bundle_hero_image": "shopify://shop_images/jeller_Gemini_3_Nano_Banana_Pro__2026-05-31_10-33-53.png",
+            "bundle_label": "Menopoz desteği",
+            "bundle_title": "<p>Menopoz Bakım Paketi</p>",
+            "bundle_subtitle": "Change + 50+ intim yıkama jeli",
+            "original_price": "",
+            "bundle_price": "",
+            "save_text": "",
+            "bundle_product": "",
+            "bundle_link": "/pages/paket-olustur",
+            "bundle_cta": "Paketi Oluştur",
+            "bundle_note": "Aboneliğini dilediğin zaman yönet"
+          }
         }
       },
       "block_order": [
-        "bundle_mqRUna"
+        "bundle_mqRUna",
+        "bundle_dongu_destek",
+        "bundle_intim_bakim",
+        "bundle_menopoz_destek"
       ],
       "name": "Product Showcase",
       "settings": {

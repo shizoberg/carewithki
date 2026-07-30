@@ -378,7 +378,6 @@
     dragStartX=event.clientX;
     dragScrollStart=track.scrollLeft;
     track.classList.add('is-dragging');
-    track.setPointerCapture(event.pointerId);
     stopAutoplay();
   });
   track.addEventListener('pointermove',function(event){
@@ -391,7 +390,6 @@
     if(!dragging) return;
     dragging=false;
     track.classList.remove('is-dragging');
-    if(event&&track.hasPointerCapture&&track.hasPointerCapture(event.pointerId)) track.releasePointerCapture(event.pointerId);
     queueLoopNormalization();
     restartAutoplay();
   }
@@ -536,10 +534,10 @@
     }
   });
 
-  cards.forEach(function(card){
-    card.addEventListener('click',function(){
-      openLightbox(card);
-    });
+  track.addEventListener('click',function(event){
+    var card=event.target.closest&&event.target.closest('.ugc-card');
+    if(!card||!track.contains(card)) return;
+    openLightbox(card);
   });
 
   if('IntersectionObserver' in window){
