@@ -403,13 +403,13 @@
       display: flex; flex-direction: column; gap: 10px;
     }
     #ki-{{ section.id }} .ki-pack__sum-li {
-      display: flex; align-items: center; gap: 10px;
+      display: flex; align-items: center; gap: 12px;
     }
     #ki-{{ section.id }} .ki-pack__sum-li-img {
       position: relative;
       width: 40px; height: 40px;
       border-radius: 10px;
-      overflow: visible;
+      overflow: hidden;
       background: var(--ki-secondary, #ebe9f5);
       flex-shrink: 0;
     }
@@ -419,12 +419,14 @@
       border-radius: 10px;
     }
     #ki-{{ section.id }} .ki-pack__sum-li-badge {
-      position: absolute; top: -4px; right: -4px;
-      min-width: 18px; height: 18px; padding: 0 4px;
+      position: absolute; z-index: 2; top: 3px; right: 3px;
+      min-width: 19px; height: 19px; padding: 0 4px;
       border-radius: 999px;
       background: var(--ki-primary, #3a2d6e);
       color: var(--ki-primary-fg, #fff);
-      font-size: 10px; font-weight: 700;
+      border: 1.5px solid rgba(255,255,255,.92);
+      box-shadow: 0 2px 6px rgba(32,24,76,.25);
+      font-size: 9px; line-height: 1; font-weight: 800;
       display: inline-flex; align-items: center; justify-content: center;
     }
     #ki-{{ section.id }} .ki-pack__sum-li-info { flex: 1; min-width: 0; }
