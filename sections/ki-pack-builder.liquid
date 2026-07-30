@@ -1531,6 +1531,40 @@
       if (minus) minus.addEventListener('click', function () { subQty(id, step); });
     });
 
+    document.addEventListener('ki:apply-pack-preset', function (event) {
+      var presetItems = event.detail && Array.isArray(event.detail.items) ? event.detail.items : [];
+      if (!presetItems.length) return;
+      Object.keys(qtyMap).forEach(function (id) { qtyMap[id] = 0; });
+      removedIds = [];
+      var appliedCount = 0;
+      presetItems.forEach(function (presetItem) {
+        var handle = String(presetItem.handle || '');
+        var units = Math.max(1, parseInt(presetItem.quantity, 10) || 1);
+        var matchedItem = Array.prototype.find.call(items, function (item) {
+          return item.getAttribute('data-ki-pack-product-handle') === handle
+            && item.getAttribute('data-ki-pack-available') === 'true';
+        });
+        if (!matchedItem) return;
+        var id = matchedItem.getAttribute('data-ki-pack-item');
+        var step = parseInt(matchedItem.getAttribute('data-ki-pack-step'), 10) || 1;
+        qtyMap[id] = Math.min(200, units * step);
+        appliedCount += units;
+        var category = matchedItem.closest('[data-ki-pack-cat]');
+        if (category) {
+          category.setAttribute('data-open', 'true');
+          var categoryToggle = category.querySelector('[data-ki-pack-cat-toggle]');
+          if (categoryToggle) categoryToggle.setAttribute('aria-expanded', 'true');
+        }
+      });
+      activeTab = '';
+      tabs.forEach(function (tab) {
+        tab.classList.toggle('is-active', tab.getAttribute('data-ki-pack-tab') === '');
+      });
+      cats.forEach(function (category) { category.style.display = ''; });
+      recalc();
+      document.dispatchEvent(new CustomEvent('ki:pack-preset-applied', { detail: { count: appliedCount } }));
+    });
+
     root.addEventListener('click', function (e) {
       var removeBtn = e.target.closest && e.target.closest('[data-ki-pack-remove]');
       if (removeBtn) {

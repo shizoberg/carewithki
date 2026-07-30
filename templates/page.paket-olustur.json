@@ -46,6 +46,64 @@
         "bg": "#ffffff"
       }
     },
+    "ready-packs": {
+      "type": "ki-ready-subscription-packs",
+      "blocks": {
+        "ready-cycle": {
+          "type": "ready_pack",
+          "settings": {
+            "badge": "En popüler",
+            "title": "Döngü Destek Paketi",
+            "description": "Döngü desteği, regl dönemi bakımı ve gün boyu ferahlık bir arada.",
+            "product_1": "balance-your-cycle",
+            "qty_1": 1,
+            "product_2": "ki-flow-care-intim-bakim-jeli",
+            "qty_2": 1,
+            "product_3": "ki-intimate-intim-bakim-spreyi",
+            "qty_3": 1
+          }
+        },
+        "ready-sensitive": {
+          "type": "ready_pack",
+          "settings": {
+            "badge": "Nazik bakım",
+            "title": "Hassas Bakım Paketi",
+            "description": "Hassas ciltlere uygun intim bakım ve pratik ferahlık rutini.",
+            "product_1": "ki-sens-care-intim-bakim-jeli",
+            "qty_1": 1,
+            "product_2": "ki-intimate-intim-bakim-spreyi",
+            "qty_2": 1,
+            "product_3": "",
+            "qty_3": 1
+          }
+        },
+        "ready-menopause": {
+          "type": "ready_pack",
+          "settings": {
+            "badge": "50+ rutin",
+            "title": "Menopoz Bakım Paketi",
+            "description": "Menopoz dönemine özel takviye, yoğun nem ve ferahlık desteği.",
+            "product_1": "change-is-good",
+            "qty_1": 1,
+            "product_2": "ki-50-care-intim-bakim-jeli",
+            "qty_2": 1,
+            "product_3": "ki-intimate-intim-bakim-spreyi",
+            "qty_3": 1
+          }
+        }
+      },
+      "block_order": [
+        "ready-cycle",
+        "ready-sensitive",
+        "ready-menopause"
+      ],
+      "settings": {
+        "eyebrow": "Hızlı başlangıç",
+        "heading": "Hazır paketler",
+        "description": "En çok tercih edilen bakım rutinlerinden birini seç; ürünler paketine otomatik eklensin ve dilediğin gibi düzenle.",
+        "button_label": "Bu paketi seç"
+      }
+    },
     "builder": {
       "type": "ki-pack-builder",
       "blocks": {
@@ -363,6 +421,7 @@
   },
   "order": [
     "hero",
+    "ready-packs",
     "builder",
     "faq"
   ]
