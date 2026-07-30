@@ -112,8 +112,8 @@
           "settings": {
             "key": "ped",
             "label": "Pedler",
-            "description": "Soft Cotton & Bamboo Fiber üst yüzey · Pelin Otu infüzeli",
-            "hint": "Çoğu kullanıcı 1 paket Günlük, 1 Gündüz, 1 Gece tercih ediyor."
+            "description": "5’li seçim oluştur veya ped kutusuna abone ol",
+            "hint": "İhtiyacına göre pedlerini 5’er adet artırabilir ya da kutu aboneliği oluşturabilirsin."
           }
         },
         "p-gunluk": {
@@ -122,10 +122,12 @@
             "product": "ki-hijyenik-gece-ped",
             "category_key": "ped",
             "name_override": ".ki Günlük Ped",
-            "short": "155 mm · ultra ince panty liner",
+            "short": "155 mm · 5’li seçim veya kutu aboneliği",
             "badge": "",
-            "step": 1,
-            "unit": "paket",
+            "step": 5,
+            "unit": "ped",
+            "box_step": 1,
+            "box_unit": "kutu",
             "demo_price": 149
           }
         },
@@ -135,10 +137,12 @@
             "product": "shopify://products/ki-normal-ped",
             "category_key": "ped",
             "name_override": ".ki Gündüz Pedi",
-            "short": "245 mm · orta yoğun akış",
+            "short": "245 mm · 5’li seçim veya kutu aboneliği",
             "badge": "",
-            "step": 1,
-            "unit": "paket",
+            "step": 5,
+            "unit": "ped",
+            "box_step": 1,
+            "box_unit": "kutu",
             "demo_price": 169
           }
         },
@@ -148,10 +152,12 @@
             "product": "shopify://products/ki-hijyenik-gece-ped",
             "category_key": "ped",
             "name_override": ".ki Gece Pedi",
-            "short": "335 mm · yoğun gece koruması",
+            "short": "335 mm · 5’li seçim veya kutu aboneliği",
             "badge": "",
-            "step": 1,
-            "unit": "paket",
+            "step": 5,
+            "unit": "ped",
+            "box_step": 1,
+            "box_unit": "kutu",
             "demo_price": 189
           }
         },
@@ -194,7 +200,7 @@
           "type": "category",
           "settings": {
             "key": "gel",
-            "label": "Bakım Jelleri",
+            "label": "İntim Yıkama Jelleri",
             "description": "Daily · Sens · Flow · 50+ — ihtiyacına göre intim bakım desteği",
             "hint": "Flow üriner sistem desteği için, 50+ menopoz dönemine özel bakım için tercih edilebilir."
           }
@@ -204,7 +210,7 @@
           "settings": {
             "product": "ki-daily-care-intim-bakim-jeli",
             "category_key": "gel",
-            "name_override": "Bakım Jeli · Daily",
+            "name_override": "İntim Yıkama Jeli · Daily",
             "short": "Günlük pH dengeli · 200 ml",
             "badge": "",
             "step": 1,
@@ -217,7 +223,7 @@
           "settings": {
             "product": "ki-sens-care-intim-bakim-jeli",
             "category_key": "gel",
-            "name_override": "Bakım Jeli · Sens",
+            "name_override": "İntim Yıkama Jeli · Sens",
             "short": "Hassas ciltler için yatıştırıcı · 200 ml",
             "badge": "",
             "step": 1,
@@ -230,7 +236,7 @@
           "settings": {
             "product": "shopify://products/ki-flow-care-intim-bakim-jeli",
             "category_key": "gel",
-            "name_override": "Bakım Jeli · Flow",
+            "name_override": "İntim Yıkama Jeli · Flow",
             "short": "Üriner sistem desteği için · 200 ml",
             "badge": "",
             "step": 1,
@@ -243,7 +249,7 @@
           "settings": {
             "product": "ki-50-care-intim-bakim-jeli",
             "category_key": "gel",
-            "name_override": "Bakım Jeli · 50+",
+            "name_override": "İntim Yıkama Jeli · 50+",
             "short": "Menopoz dönemine özel bakım · 200 ml",
             "badge": "",
             "step": 1,
@@ -255,7 +261,7 @@
           "type": "category",
           "settings": {
             "key": "ritual",
-            "label": "Sprey",
+            "label": "İntim Bakım Spreyi",
             "description": "İntim bölge için pratik bakım ve ferahlık desteği",
             "hint": "İntim Bakım Spreyi, intim bölge bakım rutinini gün içinde pratik şekilde destekler."
           }

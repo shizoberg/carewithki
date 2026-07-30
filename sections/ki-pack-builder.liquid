@@ -368,6 +368,41 @@
       letter-spacing: .08em;
       text-transform: uppercase;
     }
+    #ki-{{ section.id }} .ki-pack__ped-modes {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+      padding: 14px 18px 8px;
+      border-top: 1px solid var(--ki-border, #e6e3ee);
+      background: #faf9ff;
+    }
+    #ki-{{ section.id }} .ki-pack__ped-mode {
+      min-height: 42px;
+      padding: 9px 12px;
+      border: 1px solid rgba(73,61,154,.18);
+      border-radius: 12px;
+      background: #fff;
+      color: var(--ki-primary, #493d9a);
+      font: inherit;
+      font-size: 11px;
+      line-height: 1.25;
+      font-weight: 750;
+      cursor: pointer;
+      transition: background .16s ease, border-color .16s ease, color .16s ease;
+    }
+    #ki-{{ section.id }} .ki-pack__ped-mode.is-active {
+      border-color: var(--ki-primary, #493d9a);
+      background: var(--ki-primary, #493d9a);
+      color: #fff;
+    }
+    #ki-{{ section.id }} .ki-pack__ped-mode-note {
+      margin: 0;
+      padding: 0 18px 12px;
+      background: #faf9ff;
+      color: var(--ki-muted, #5a5a5a);
+      font-size: 10.5px;
+      line-height: 1.4;
+    }
 
     /* ===== Summary card ===== */
     #ki-{{ section.id }} .ki-pack__summary-wrap {
@@ -1061,6 +1096,13 @@
                   {% render 'ki-icon', name: 'chevron-down', size: 20, class: 'ki-pack__chev' %}
                 </button>
                 <div class="ki-pack__cat-body">
+                  {%- if catBlock.settings.key == 'ped' -%}
+                    <div class="ki-pack__ped-modes" role="group" aria-label="Ped paketleme seçeneği">
+                      <button type="button" class="ki-pack__ped-mode is-active" data-ki-pack-ped-mode="loose" aria-pressed="true">5’li Ped Seç</button>
+                      <button type="button" class="ki-pack__ped-mode" data-ki-pack-ped-mode="box" aria-pressed="false">Ped Kutusuna Abone Ol</button>
+                    </div>
+                    <p class="ki-pack__ped-mode-note" data-ki-pack-ped-mode-note>Her + dokunuşunda 5 adet ped paketine eklenir.</p>
+                  {%- endif -%}
                   <div class="ki-pack__items">
                     {%- for itemBlock in section.blocks -%}
                       {%- if itemBlock.type == 'product' and itemBlock.settings.category_key == catBlock.settings.key -%}
@@ -1086,10 +1128,15 @@
                                data-ki-pack-product-handle="{{ p.handle }}"
                                data-ki-pack-variant-id="{{ v.id }}"
                                data-ki-pack-step="{{ itemBlock.settings.step | default: 1 }}"
+                               data-ki-pack-loose-step="{{ itemBlock.settings.step | default: 1 }}"
+                               data-ki-pack-box-step="{{ itemBlock.settings.box_step | default: 1 }}"
                                data-ki-pack-price="{{ v.price | divided_by: 100.0 }}"
                                data-ki-pack-discount="{{ subscription_discount }}"
                                data-ki-pack-available="{{ v.available }}"
                                data-ki-pack-unit="{{ itemBlock.settings.unit | default: 'adet' }}"
+                               data-ki-pack-loose-unit="{{ itemBlock.settings.unit | default: 'adet' }}"
+                               data-ki-pack-box-unit="{{ itemBlock.settings.box_unit | default: 'kutu' }}"
+                               data-ki-pack-selection-mode="{% if catBlock.settings.key == 'ped' %}loose_pads{% else %}standard{% endif %}"
                                {{ itemBlock.shopify_attributes }}>
                             <div class="ki-pack__item-img">
                               {%- if p.featured_image -%}
@@ -1119,7 +1166,7 @@
                                   ₺{{ v.price | money_without_currency }}
                                 {%- endif -%}
                                 {%- if itemBlock.settings.step != blank and itemBlock.settings.step > 1 -%}
-                                  <small>/ {{ itemBlock.settings.step }} {{ itemBlock.settings.unit }}</small>
+                                  <small data-ki-pack-price-unit>/ {{ itemBlock.settings.step }} {{ itemBlock.settings.unit }}</small>
                                 {%- endif -%}
                                 {%- unless v.available -%}
                                   <br><span class="ki-pack__item-discount">Şu anda stokta yok</span>
@@ -1145,10 +1192,15 @@
                                data-ki-pack-product-handle=""
                                data-ki-pack-variant-id=""
                                data-ki-pack-step="{{ itemBlock.settings.step | default: 1 }}"
+                               data-ki-pack-loose-step="{{ itemBlock.settings.step | default: 1 }}"
+                               data-ki-pack-box-step="{{ itemBlock.settings.box_step | default: 1 }}"
                                data-ki-pack-price="{{ demo_price }}"
                                data-ki-pack-discount="0"
                                data-ki-pack-available="false"
                                data-ki-pack-unit="{{ itemBlock.settings.unit | default: 'adet' }}"
+                               data-ki-pack-loose-unit="{{ itemBlock.settings.unit | default: 'adet' }}"
+                               data-ki-pack-box-unit="{{ itemBlock.settings.box_unit | default: 'kutu' }}"
+                               data-ki-pack-selection-mode="{% if catBlock.settings.key == 'ped' %}loose_pads{% else %}standard{% endif %}"
                                {{ itemBlock.shopify_attributes }}>
                             <div class="ki-pack__item-img">
                               <span class="ki-pack__item-img-placeholder" aria-hidden="true">
@@ -1456,6 +1508,7 @@
         var salePrice = Math.round(price * (100 - discountRate)) / 100;
         var cat = it.getAttribute('data-ki-pack-cat-key');
         var unit = it.getAttribute('data-ki-pack-unit') || '';
+        var selectionMode = it.getAttribute('data-ki-pack-selection-mode') || 'standard';
         var variantId = it.getAttribute('data-ki-pack-variant-id');
         var available = it.getAttribute('data-ki-pack-available') === 'true';
         if (!available && qty > 0) {
@@ -1479,6 +1532,7 @@
           var nameEl = it.querySelector('.ki-pack__item-name > span');
           lines.push({
             id: id, variantId: variantId, qty: qty, units: units, unit: unit,
+            selectionMode: selectionMode,
             price: salePrice, originalPrice: price, discountRate: discountRate, total: lineTotal,
             name: nameEl ? nameEl.textContent : '', img: img ? img.src : ''
           });
@@ -1501,19 +1555,25 @@
       } else {
         metaEl.textContent = count + ' ürün seçildi.';
         listEl.innerHTML = lines.map(function (l) {
+          var quantityLabel = l.selectionMode === 'loose_pads'
+            ? l.qty + ' adet'
+            : l.units + ' ' + l.unit;
+          var lineMeta = l.selectionMode === 'loose_pads'
+            ? l.qty + ' adet ped · ' + l.units + ' seçim × ' + fmt(l.price)
+            : l.units + ' ' + l.unit + ' × ' + fmt(l.price);
           // XSS: merchant/ürün kaynaklı name/img innerHTML'e basılıyor — kaçışla.
           return '<li class="ki-pack__sum-li">' +
             '<div class="ki-pack__sum-li-img">' + (l.img ? '<img src="' + escapeHtml(l.img) + '" alt="">' : '') +
             '</div>' +
-            '<span class="ki-pack__sum-li-qty">' + escapeHtml(l.units) + ' adet</span>' +
+            '<span class="ki-pack__sum-li-qty">' + escapeHtml(quantityLabel) + '</span>' +
             '<div class="ki-pack__sum-li-info">' +
               '<div class="ki-pack__sum-li-name">' + escapeHtml(l.name) + '</div>' +
-              '<div class="ki-pack__sum-li-meta">' + escapeHtml(l.units) + ' ' + escapeHtml(l.unit) + ' × ' + fmt(l.price) +
+              '<div class="ki-pack__sum-li-meta">' + escapeHtml(lineMeta) +
                 (l.discountRate > 0 ? ' · %' + escapeHtml(l.discountRate) + ' indirim' : '') + '</div>' +
             '</div>' +
             '<p class="ki-pack__sum-li-total">' + fmt(l.total) + '</p>' +
-            '<button type="button" class="ki-pack__sum-li-remove" data-ki-pack-remove="' + escapeHtml(l.id) + '" aria-label="' + escapeHtml(l.name) + ' ürününü paketten çıkar">' +
-              '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>' +
+            '<button type="button" class="ki-pack__sum-li-remove" data-ki-pack-decrease="' + escapeHtml(l.id) + '" aria-label="' + escapeHtml(l.name) + ' adedini azalt">' +
+              '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/></svg>' +
             '</button>' +
           '</li>';
         }).join('');
@@ -1575,12 +1635,50 @@
 
     items.forEach(function (it) {
       var id = it.getAttribute('data-ki-pack-item');
-      var step = parseInt(it.getAttribute('data-ki-pack-step'), 10) || 1;
       qtyMap[id] = 0;
       var plus = it.querySelector('[data-ki-pack-plus]');
       var minus = it.querySelector('[data-ki-pack-minus]');
-      if (plus) plus.addEventListener('click', function () { addQty(id, step); });
-      if (minus) minus.addEventListener('click', function () { subQty(id, step); });
+      if (plus) plus.addEventListener('click', function () {
+        addQty(id, parseInt(it.getAttribute('data-ki-pack-step'), 10) || 1);
+      });
+      if (minus) minus.addEventListener('click', function () {
+        subQty(id, parseInt(it.getAttribute('data-ki-pack-step'), 10) || 1);
+      });
+    });
+
+    root.querySelectorAll('[data-ki-pack-ped-mode]').forEach(function (button) {
+      button.addEventListener('click', function () {
+        var mode = button.getAttribute('data-ki-pack-ped-mode') === 'box' ? 'box' : 'loose';
+        root.querySelectorAll('[data-ki-pack-ped-mode]').forEach(function (modeButton) {
+          var isActive = modeButton === button;
+          modeButton.classList.toggle('is-active', isActive);
+          modeButton.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+        });
+        items.forEach(function (item) {
+          if (item.getAttribute('data-ki-pack-cat-key') !== 'ped') return;
+          var id = item.getAttribute('data-ki-pack-item');
+          var step = mode === 'box'
+            ? parseInt(item.getAttribute('data-ki-pack-box-step'), 10) || 1
+            : parseInt(item.getAttribute('data-ki-pack-loose-step'), 10) || 5;
+          var unit = mode === 'box'
+            ? item.getAttribute('data-ki-pack-box-unit') || 'kutu'
+            : item.getAttribute('data-ki-pack-loose-unit') || 'ped';
+          item.setAttribute('data-ki-pack-step', step);
+          item.setAttribute('data-ki-pack-unit', unit);
+          item.setAttribute('data-ki-pack-selection-mode', mode === 'box' ? 'pad_box' : 'loose_pads');
+          var priceUnit = item.querySelector('[data-ki-pack-price-unit]');
+          if (priceUnit) priceUnit.textContent = '/ ' + step + ' ' + unit;
+          qtyMap[id] = 0;
+          removedIds = removedIds.filter(function (removedId) { return removedId !== id; });
+        });
+        var note = root.querySelector('[data-ki-pack-ped-mode-note]');
+        if (note) {
+          note.textContent = mode === 'box'
+            ? 'Seçtiğin ped kutusu abonelik paketine 1 kutu olarak eklenir.'
+            : 'Her + dokunuşunda 5 adet ped paketine eklenir.';
+        }
+        recalc();
+      });
     });
 
     document.addEventListener('ki:apply-pack-preset', function (event) {
@@ -1618,12 +1716,13 @@
     });
 
     root.addEventListener('click', function (e) {
-      var removeBtn = e.target.closest && e.target.closest('[data-ki-pack-remove]');
-      if (removeBtn) {
-        var removeId = removeBtn.getAttribute('data-ki-pack-remove');
-        var removeItem = root.querySelector('[data-ki-pack-item="' + removeId + '"]');
-        if (!removeItem) return;
-        subQty(removeId, qtyMap[removeId] || 0);
+      var decreaseBtn = e.target.closest && e.target.closest('[data-ki-pack-decrease]');
+      if (decreaseBtn) {
+        var decreaseId = decreaseBtn.getAttribute('data-ki-pack-decrease');
+        var decreaseItem = root.querySelector('[data-ki-pack-item="' + decreaseId + '"]');
+        if (!decreaseItem) return;
+        var decreaseStep = parseInt(decreaseItem.getAttribute('data-ki-pack-step'), 10) || 1;
+        subQty(decreaseId, decreaseStep);
         return;
       }
       var btn = e.target.closest && e.target.closest('[data-ki-pack-helper-add]');
@@ -1695,7 +1794,10 @@
               price: String(l.price),
               originalPrice: String(l.originalPrice),
               discountRate: l.discountRate,
-              quantity: l.units
+              quantity: l.units,
+              selectionMode: l.selectionMode,
+              physicalQuantity: l.qty,
+              unit: l.unit
             };
           });
           var payload = {
@@ -1711,7 +1813,15 @@
           return;
         } else {
           var addItems = lines.filter(function (l) { return l.variantId; }).map(function (l) {
-            return { id: parseInt(l.variantId, 10), quantity: l.units, properties: { '_PackName': packName } };
+            var properties = { '_PackName': packName };
+            if (l.selectionMode === 'loose_pads') {
+              properties._PackOption = '5’li ped seçimi';
+              properties._PackQuantity = l.qty + ' adet ped';
+            } else if (l.selectionMode === 'pad_box') {
+              properties._PackOption = 'Ped kutusu aboneliği';
+              properties._PackQuantity = l.units + ' kutu';
+            }
+            return { id: parseInt(l.variantId, 10), quantity: l.units, properties: properties };
           });
           if (!addItems.length) throw new Error('Geçerli ürün bulunamadı.');
           var routes = (window.kiConfig && window.kiConfig.routes) || {};
@@ -1779,6 +1889,8 @@
         { "type": "text", "id": "badge", "label": "Rozet (opsiyonel)" },
         { "type": "number", "id": "step", "label": "Adım miktarı", "default": 1 },
         { "type": "text", "id": "unit", "label": "Birim", "default": "adet" },
+        { "type": "number", "id": "box_step", "label": "Ped kutusu adım miktarı", "default": 1, "info": "Yalnızca ped kategorisindeki kutu aboneliği seçeneğinde kullanılır." },
+        { "type": "text", "id": "box_unit", "label": "Ped kutusu birimi", "default": "kutu" },
         { "type": "number", "id": "demo_price", "label": "Demo fiyat (Shopify ürünü yokken)", "default": 0 }
       ]
     },
@@ -1818,22 +1930,22 @@
         "shipping_threshold": 750
       },
       "blocks": [
-        { "type": "category", "settings": { "key": "ped",        "label": "Pedler",         "description": "Soft Cotton & Bamboo Fiber üst yüzey · Pelin Otu infüzeli", "hint": "Çoğu kullanıcı 1 paket Günlük (30), 1 Gündüz (12), 1 Gece (8) tercih ediyor." } },
-        { "type": "product",  "settings": { "category_key": "ped",  "step": 30, "unit": "adet", "name_override": ".ki Günlük Ped",  "short": "155 mm · 30 adet · ultra ince panty liner", "demo_price": 149 } },
-        { "type": "product",  "settings": { "category_key": "ped",  "step": 12, "unit": "adet", "name_override": ".ki Gündüz Pedi", "short": "245 mm · 12 adet · orta yoğun akış", "demo_price": 169 } },
-        { "type": "product",  "settings": { "category_key": "ped",  "step": 8,  "unit": "adet", "name_override": ".ki Gece Pedi",   "short": "335 mm · 8 adet · yoğun gece koruması", "demo_price": 189 } },
+        { "type": "category", "settings": { "key": "ped",        "label": "Pedler",         "description": "5’li seçim oluştur veya ped kutusuna abone ol", "hint": "İhtiyacına göre pedlerini 5’er adet artırabilir ya da kutu aboneliği oluşturabilirsin." } },
+        { "type": "product",  "settings": { "category_key": "ped",  "step": 5, "unit": "ped", "box_step": 1, "box_unit": "kutu", "name_override": ".ki Günlük Ped",  "short": "155 mm · 5’li seçim veya kutu aboneliği", "demo_price": 149 } },
+        { "type": "product",  "settings": { "category_key": "ped",  "step": 5, "unit": "ped", "box_step": 1, "box_unit": "kutu", "name_override": ".ki Gündüz Pedi", "short": "245 mm · 5’li seçim veya kutu aboneliği", "demo_price": 169 } },
+        { "type": "product",  "settings": { "category_key": "ped",  "step": 5, "unit": "ped", "box_step": 1, "box_unit": "kutu", "name_override": ".ki Gece Pedi",   "short": "335 mm · 5’li seçim veya kutu aboneliği", "demo_price": 189 } },
 
         { "type": "category", "settings": { "key": "supplement", "label": "Takviyeler", "description": ".ki Balance ve .ki Change — döngü ve menopoz dönemlerine özel destek", "hint": "Balance döngü dönemini, Change menopoz dönemini desteklemek için geliştirilmiştir." } },
         { "type": "product",  "settings": { "category_key": "supplement", "step": 1, "unit": "kutu", "badge": "EN POPÜLER", "name_override": ".ki Balance · Saşe", "short": "Döngü dönemini destekler · 10 saşe", "demo_price": 395 } },
         { "type": "product",  "settings": { "category_key": "supplement", "step": 1, "unit": "kutu", "name_override": ".ki Change · Kapsül", "short": "Menopoz dönemini destekler · 30 kapsül", "demo_price": 449 } },
 
-        { "type": "category", "settings": { "key": "gel", "label": "Bakım Jelleri", "description": "Daily · Sens · Flow · 50+ — ihtiyacına göre intim bakım desteği", "hint": "Flow üriner sistem desteği için, 50+ menopoz dönemine özel bakım için tercih edilebilir." } },
-        { "type": "product",  "settings": { "category_key": "gel", "step": 1, "unit": "şişe", "name_override": "Bakım Jeli · Daily", "short": "Günlük pH dengeli · 200 ml", "demo_price": 145 } },
-        { "type": "product",  "settings": { "category_key": "gel", "step": 1, "unit": "şişe", "name_override": "Bakım Jeli · Sens",  "short": "Hassas ciltler için yatıştırıcı · 200 ml", "demo_price": 155 } },
-        { "type": "product",  "settings": { "category_key": "gel", "step": 1, "unit": "şişe", "name_override": "Bakım Jeli · Flow",  "short": "Üriner sistem desteği için · 200 ml", "demo_price": 165 } },
-        { "type": "product",  "settings": { "category_key": "gel", "step": 1, "unit": "şişe", "name_override": "Bakım Jeli · 50+",   "short": "Menopoz dönemine özel bakım · 200 ml", "demo_price": 175 } },
+        { "type": "category", "settings": { "key": "gel", "label": "İntim Yıkama Jelleri", "description": "Daily · Sens · Flow · 50+ — ihtiyacına göre intim bakım desteği", "hint": "Flow üriner sistem desteği için, 50+ menopoz dönemine özel bakım için tercih edilebilir." } },
+        { "type": "product",  "settings": { "category_key": "gel", "step": 1, "unit": "şişe", "name_override": "İntim Yıkama Jeli · Daily", "short": "Günlük pH dengeli · 200 ml", "demo_price": 145 } },
+        { "type": "product",  "settings": { "category_key": "gel", "step": 1, "unit": "şişe", "name_override": "İntim Yıkama Jeli · Sens",  "short": "Hassas ciltler için yatıştırıcı · 200 ml", "demo_price": 155 } },
+        { "type": "product",  "settings": { "category_key": "gel", "step": 1, "unit": "şişe", "name_override": "İntim Yıkama Jeli · Flow",  "short": "Üriner sistem desteği için · 200 ml", "demo_price": 165 } },
+        { "type": "product",  "settings": { "category_key": "gel", "step": 1, "unit": "şişe", "name_override": "İntim Yıkama Jeli · 50+",   "short": "Menopoz dönemine özel bakım · 200 ml", "demo_price": 175 } },
 
-        { "type": "category", "settings": { "key": "ritual", "label": "Sprey", "description": "İntim bölge için pratik bakım ve ferahlık desteği", "hint": "İntim Bakım Spreyi, intim bölge bakım rutinini gün içinde pratik şekilde destekler." } },
+        { "type": "category", "settings": { "key": "ritual", "label": "İntim Bakım Spreyi", "description": "İntim bölge için pratik bakım ve ferahlık desteği", "hint": "İntim Bakım Spreyi, intim bölge bakım rutinini gün içinde pratik şekilde destekler." } },
         { "type": "product",  "settings": { "category_key": "ritual", "step": 1, "unit": "şişe", "name_override": "İntim Bakım Spreyi", "short": "İntim bölge bakım desteği · 100 ml", "demo_price": 139 } },
 
         { "type": "frequency", "settings": { "label": "2 ayda bir", "is_default": true } },
