@@ -449,6 +449,70 @@
       border-radius: 999px;
       white-space: nowrap !important;
     }
+    #ki-{{ section.id }} .ki-pack__frequency {
+      margin: 12px 0 0;
+      padding: 10px;
+      border: 1px solid #cfe5d8;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #f4fbf7, #edf8f1);
+    }
+    #ki-{{ section.id }} .ki-pack__frequency-label {
+      display: block;
+      margin: 0 0 7px;
+      color: #2f765b;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: .08em;
+      line-height: 1.2;
+      text-transform: uppercase;
+    }
+    #ki-{{ section.id }} .ki-pack__frequency-options {
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      padding: 1px 1px 4px;
+      scroll-snap-type: x proximity;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+    }
+    #ki-{{ section.id }} .ki-pack__frequency-options::-webkit-scrollbar { display: none; }
+    #ki-{{ section.id }} .ki-pack__frequency-option {
+      min-width: 58px;
+      min-height: 36px;
+      flex: 1 0 auto;
+      scroll-snap-align: start;
+      border: 1px solid #c7dfd0;
+      border-radius: 999px;
+      background: rgba(255,255,255,.9);
+      color: #34775e;
+      padding: 7px 10px;
+      font: inherit;
+      font-size: 11px;
+      font-weight: 750;
+      line-height: 1;
+      white-space: nowrap !important;
+      cursor: pointer;
+      transition: background .15s ease, border-color .15s ease, color .15s ease, transform .15s ease;
+    }
+    #ki-{{ section.id }} .ki-pack__frequency-option:hover:not(:disabled) { transform: translateY(-1px); }
+    #ki-{{ section.id }} .ki-pack__frequency-option.is-active {
+      border-color: #34775e;
+      background: #34775e;
+      color: #fff;
+      box-shadow: 0 5px 14px -8px rgba(32,97,71,.9);
+    }
+    #ki-{{ section.id }} .ki-pack__frequency-option:disabled {
+      opacity: .38;
+      cursor: not-allowed;
+      text-decoration: line-through;
+    }
+    #ki-{{ section.id }} .ki-pack__frequency-note {
+      margin: 5px 1px 0;
+      color: #557065;
+      font-size: 9.5px;
+      line-height: 1.35;
+    }
+    #ki-{{ section.id }} .ki-pack__frequency-note.is-warning { color: #8a6232; }
     #ki-{{ section.id }} .ki-pack__sum-meta {
       font-size: 12px;
       color: var(--ki-muted, #5a5a5a);
@@ -1040,6 +1104,8 @@
       #ki-{{ section.id }} .ki-pack__guide-icon { width: 46px; height: 46px; margin-bottom: 18px; }
       #ki-{{ section.id }} .ki-pack__support { align-items: stretch; flex-direction: column; padding: 20px; }
       #ki-{{ section.id }} .ki-pack__support-link { width: 100%; }
+      #ki-{{ section.id }} .ki-pack__frequency { margin-top: 10px; padding: 9px; }
+      #ki-{{ section.id }} .ki-pack__frequency-option { min-width: 62px; min-height: 38px; }
     }
 
     /* Çok dar mobile fallback (≤ 380px) */
@@ -1264,14 +1330,34 @@
           </div>
           <p class="ki-pack__sum-meta" data-ki-pack-sum-meta>{{ section.settings.empty_message | default: 'Üst taraftan ürün ekleyerek paketini oluştur.' }}</p>
 
+          {%- if settings.subscription_enabled -%}
+            <div class="ki-pack__frequency" data-ki-pack-frequency>
+              <span class="ki-pack__frequency-label">Gönderim sıklığı</span>
+              <div class="ki-pack__frequency-options" role="radiogroup" aria-label="Gönderim sıklığı">
+                {%- for block in section.blocks -%}
+                  {%- if block.type == 'frequency' -%}
+                    <button
+                      type="button"
+                      class="ki-pack__frequency-option{% if block.settings.is_default %} is-active{% endif %}"
+                      data-ki-pack-frequency-option
+                      data-ki-pack-frequency-months="{{ block.settings.months | default: 2 }}"
+                      aria-pressed="{% if block.settings.is_default %}true{% else %}false{% endif %}"
+                    >{{ block.settings.months | default: 2 }} ay</button>
+                  {%- endif -%}
+                {%- endfor -%}
+              </div>
+              <p class="ki-pack__frequency-note" data-ki-pack-frequency-note aria-live="polite"></p>
+            </div>
+          {%- endif -%}
+
           <ul class="ki-pack__sum-list" data-ki-pack-sum-list></ul>
 
-          {%- comment -%} Hidden frequency (subscription default kept for cart payload) {%- endcomment -%}
+          {%- comment -%} Existing selling-plan contract remains the checkout source of truth. {%- endcomment -%}
           {%- if settings.subscription_enabled -%}
             <select hidden data-ki-pack-freq aria-hidden="true">
               {%- for block in section.blocks -%}
                 {%- if block.type == 'frequency' -%}
-                  <option value="{{ block.settings.selling_plan_id }}" {% if block.settings.is_default %}selected{% endif %}>{{ block.settings.label }}</option>
+                  <option value="{{ block.settings.selling_plan_id }}" data-months="{{ block.settings.months | default: 2 }}" {% if block.settings.is_default %}selected{% endif %}>{{ block.settings.label }}</option>
                 {%- endif -%}
               {%- endfor -%}
             </select>
@@ -1421,10 +1507,78 @@
     var idleText = {{ section.settings.cta_idle | default: 'Önce ürün ekle' | json }};
     var emptyText = {{ section.settings.empty_message | default: 'Üst taraftan ürün ekleyerek paketini oluştur.' | json }};
     var subscriptionEnabled = {{ settings.subscription_enabled | default: false | json }};
+    var pedMonthlyThreshold = {{ section.settings.ped_monthly_threshold | default: 500 }};
     var frequencyEl = root.querySelector('[data-ki-pack-freq]');
     var frequencyLabelEl = root.querySelector('[data-ki-pack-frequency-label]');
-    if (frequencyEl && frequencyLabelEl && frequencyEl.options.length) {
-      frequencyLabelEl.textContent = frequencyEl.options[frequencyEl.selectedIndex].text + ' kapında';
+    var frequencyButtons = root.querySelectorAll('[data-ki-pack-frequency-option]');
+    var frequencyNoteEl = root.querySelector('[data-ki-pack-frequency-note]');
+
+    function optionMonths(option) {
+      return option ? (parseInt(option.getAttribute('data-months'), 10) || 2) : 2;
+    }
+    function syncFrequencyUi() {
+      if (!frequencyEl || !frequencyEl.options.length) return;
+      var selectedOption = frequencyEl.options[frequencyEl.selectedIndex];
+      var selectedMonths = optionMonths(selectedOption);
+      if (frequencyLabelEl) frequencyLabelEl.textContent = selectedOption.text + ' kapında';
+      frequencyButtons.forEach(function (button) {
+        var active = parseInt(button.getAttribute('data-ki-pack-frequency-months'), 10) === selectedMonths;
+        button.classList.toggle('is-active', active);
+        button.setAttribute('aria-pressed', active ? 'true' : 'false');
+      });
+    }
+    function selectFrequency(months) {
+      if (!frequencyEl) return;
+      var nextIndex = -1;
+      Array.prototype.some.call(frequencyEl.options, function (option, index) {
+        if (optionMonths(option) !== months || option.disabled) return false;
+        nextIndex = index;
+        return true;
+      });
+      if (nextIndex === -1) return;
+      frequencyEl.selectedIndex = nextIndex;
+      syncFrequencyUi();
+    }
+    function updateFrequencyAvailability(lines, subtotal) {
+      if (!frequencyEl) return;
+      var hasItems = lines.length > 0;
+      var hasNonPedItem = lines.some(function (line) { return line.cat !== 'ped'; });
+      var monthlyAllowed = hasNonPedItem || (hasItems && subtotal >= pedMonthlyThreshold);
+
+      Array.prototype.forEach.call(frequencyEl.options, function (option) {
+        if (optionMonths(option) === 1) option.disabled = !monthlyAllowed;
+      });
+      frequencyButtons.forEach(function (button) {
+        if (parseInt(button.getAttribute('data-ki-pack-frequency-months'), 10) === 1) {
+          button.disabled = !monthlyAllowed;
+        }
+      });
+
+      var selectedOption = frequencyEl.options[frequencyEl.selectedIndex];
+      if (selectedOption && selectedOption.disabled) selectFrequency(2);
+      syncFrequencyUi();
+
+      if (!frequencyNoteEl) return;
+      frequencyNoteEl.classList.toggle('is-warning', !monthlyAllowed);
+      if (!hasItems) {
+        frequencyNoteEl.textContent = 'Ürünlerini eklediğinde uygun gönderim sıklıkları otomatik açılır.';
+      } else if (!hasNonPedItem && !monthlyAllowed) {
+        frequencyNoteEl.textContent = 'Sadece ped içeren pakette aylık gönderim için ' + fmt(Math.max(0, pedMonthlyThreshold - subtotal)) + ' daha ekle.';
+      } else if (!hasNonPedItem) {
+        frequencyNoteEl.textContent = 'Ped paketin aylık gönderim sınırına ulaştı; 1 ay seçeneği açıldı.';
+      } else {
+        frequencyNoteEl.textContent = 'Bakım veya takviye ürünü bulunduğu için 1 ay seçeneği açık.';
+      }
+    }
+
+    if (frequencyEl && frequencyEl.options.length) {
+      syncFrequencyUi();
+      frequencyButtons.forEach(function (button) {
+        button.addEventListener('click', function () {
+          if (button.disabled) return;
+          selectFrequency(parseInt(button.getAttribute('data-ki-pack-frequency-months'), 10) || 2);
+        });
+      });
     }
 
     var tabs = root.querySelectorAll('[data-ki-pack-tab]');
@@ -1532,6 +1686,7 @@
           var nameEl = it.querySelector('.ki-pack__item-name > span');
           lines.push({
             id: id, variantId: variantId, qty: qty, units: units, unit: unit,
+            cat: cat,
             selectionMode: selectionMode,
             price: salePrice, originalPrice: price, discountRate: discountRate, total: lineTotal,
             name: nameEl ? nameEl.textContent : '', img: img ? img.src : ''
@@ -1585,6 +1740,8 @@
           ? 'Ücretsiz kargo 🎉'
           : 'Ücretsiz kargoya ' + fmt(threshold - subtotal) + ' kaldı';
       }
+
+      updateFrequencyAvailability(lines, subtotal);
 
       root.querySelector('[data-ki-pack-subtotal]').textContent = fmt(originalSubtotal);
       var discountTotal = Math.max(0, originalSubtotal - subtotal);
@@ -1784,7 +1941,7 @@
         if (mode === 'subscription' && subscriptionEnabled) {
           var checkoutUrl = (window.kiConfig && window.kiConfig.subscriptionCheckoutUrl) || '/pages/paket-checkout';
           var freqEl = root.querySelector('[data-ki-pack-freq]');
-          var sellingPlanId = freqEl ? freqEl.value : (window.kiConfig && window.kiConfig.defaultSellingPlanId);
+          var sellingPlanId = (freqEl && freqEl.value) || (window.kiConfig && window.kiConfig.defaultSellingPlanId);
           var total = 0;
           var boxItems = lines.map(function (l) {
             total += l.total;
@@ -1865,6 +2022,7 @@
     { "type": "text", "id": "cta_idle", "label": "CTA boş durumda", "default": "Önce ürün ekle" },
     { "type": "text", "id": "howit_title", "label": "Nasıl çalışır başlığı", "default": "Nasıl çalışır?" },
     { "type": "number", "id": "shipping_threshold", "label": "Ücretsiz kargo eşiği (₺)", "default": 750 },
+    { "type": "number", "id": "ped_monthly_threshold", "label": "Yalnızca ped içeren pakette aylık gönderim eşiği (₺)", "default": 500 },
     { "type": "range", "id": "subscription_discount_percent", "label": "Takviye, jel ve sprey abonelik indirimi", "min": 0, "max": 30, "step": 1, "unit": "%", "default": 10 }
   ],
   "blocks": [
@@ -1899,7 +2057,20 @@
       "name": "Frequency seçeneği",
       "settings": [
         { "type": "text", "id": "label", "label": "Görünen ad", "default": "2 ayda bir" },
-        { "type": "text", "id": "selling_plan_id", "label": "Shopify Selling Plan ID" },
+        {
+          "type": "select",
+          "id": "months",
+          "label": "Ay aralığı",
+          "options": [
+            { "value": "1", "label": "1 ay" },
+            { "value": "2", "label": "2 ay" },
+            { "value": "3", "label": "3 ay" },
+            { "value": "4", "label": "4 ay" },
+            { "value": "6", "label": "6 ay" }
+          ],
+          "default": "2"
+        },
+        { "type": "text", "id": "selling_plan_id", "label": "Shopify Selling Plan ID", "info": "Bu ay aralığına ait plan ID. Boş bırakılırsa global varsayılan plan kullanılır." },
         { "type": "checkbox", "id": "is_default", "label": "Default seçenek mi?", "default": false }
       ]
     },
@@ -1927,7 +2098,8 @@
         "empty_message": "Üst taraftan ürün ekleyerek paketini oluştur.",
         "cta_idle": "Önce ürün ekle",
         "howit_title": "Nasıl çalışır?",
-        "shipping_threshold": 750
+        "shipping_threshold": 750,
+        "ped_monthly_threshold": 500
       },
       "blocks": [
         { "type": "category", "settings": { "key": "ped",        "label": "Pedler",         "description": "5’li seçim oluştur veya ped kutusuna abone ol", "hint": "İhtiyacına göre pedlerini 5’er adet artırabilir ya da kutu aboneliği oluşturabilirsin." } },
@@ -1948,16 +2120,18 @@
         { "type": "category", "settings": { "key": "ritual", "label": "İntim Bakım Spreyi", "description": "İntim bölge için pratik bakım ve ferahlık desteği", "hint": "İntim Bakım Spreyi, intim bölge bakım rutinini gün içinde pratik şekilde destekler." } },
         { "type": "product",  "settings": { "category_key": "ritual", "step": 1, "unit": "şişe", "name_override": "İntim Bakım Spreyi", "short": "İntim bölge bakım desteği · 100 ml", "demo_price": 139 } },
 
-        { "type": "frequency", "settings": { "label": "2 ayda bir", "is_default": true } },
-        { "type": "frequency", "settings": { "label": "Aylık" } },
-        { "type": "frequency", "settings": { "label": "3 ayda bir" } },
+        { "type": "frequency", "settings": { "label": "Ayda bir", "months": "1" } },
+        { "type": "frequency", "settings": { "label": "2 ayda bir", "months": "2", "is_default": true } },
+        { "type": "frequency", "settings": { "label": "3 ayda bir", "months": "3" } },
+        { "type": "frequency", "settings": { "label": "4 ayda bir", "months": "4" } },
+        { "type": "frequency", "settings": { "label": "6 ayda bir", "months": "6" } },
 
         { "type": "guarantee", "settings": { "label": "İstediğin an iptal et / atla" } },
         { "type": "guarantee", "settings": { "label": "Ücretsiz iade ve değişim" } },
         { "type": "guarantee", "settings": { "label": "2 iş günü içinde kargoda" } },
 
         { "type": "step", "settings": { "text": "İhtiyacın olan ürünleri ve adetleri seç." } },
-        { "type": "step", "settings": { "text": "2 ayda bir, ücretsiz olarak kapına gelsin." } },
+        { "type": "step", "settings": { "text": "Seçtiğin sıklıkta kapına gelsin." } },
         { "type": "step", "settings": { "text": "İçeriğini istediğin zaman güncelle, atla veya durdur." } }
       ]
     }

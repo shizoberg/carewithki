@@ -42,7 +42,7 @@
       "settings": {
         "eyebrow": "Abonelik · Sana özel",
         "heading": "Paketini Oluştur",
-        "description": "<p>İhtiyacına göre Balance, Change, Ped, jel ve sprey ürünlerini birleştir. Ayda bir kapına gelsin — istediğin zaman değiştir veya durdur.</p>",
+        "description": "<p>İhtiyacına göre Balance, Change, Ped, jel ve sprey ürünlerini birleştir. Gönderim sıklığını seç — istediğin zaman değiştir veya durdur.</p>",
         "bg": "#ffffff"
       }
     },
@@ -283,22 +283,43 @@
           "type": "frequency",
           "settings": {
             "label": "Ayda bir",
+            "months": "1",
             "selling_plan_id": "",
-            "is_default": true
+            "is_default": false
           }
         },
         "freq-2": {
           "type": "frequency",
           "settings": {
             "label": "2 ayda bir",
+            "months": "2",
             "selling_plan_id": "",
-            "is_default": false
+            "is_default": true
           }
         },
         "freq-3": {
           "type": "frequency",
           "settings": {
             "label": "3 ayda bir",
+            "months": "3",
+            "selling_plan_id": "",
+            "is_default": false
+          }
+        },
+        "freq-4": {
+          "type": "frequency",
+          "settings": {
+            "label": "4 ayda bir",
+            "months": "4",
+            "selling_plan_id": "",
+            "is_default": false
+          }
+        },
+        "freq-6": {
+          "type": "frequency",
+          "settings": {
+            "label": "6 ayda bir",
+            "months": "6",
             "selling_plan_id": "",
             "is_default": false
           }
@@ -330,7 +351,7 @@
         "s2": {
           "type": "step",
           "settings": {
-            "text": "Ayda bir, ücretsiz olarak kapına gelsin."
+            "text": "Seçtiğin sıklıkta kapına gelsin."
           }
         },
         "s3": {
@@ -358,6 +379,8 @@
         "freq-1",
         "freq-2",
         "freq-3",
+        "freq-4",
+        "freq-6",
         "g1",
         "g2",
         "g3",
@@ -367,11 +390,12 @@
       ],
       "settings": {
         "summary_title": "Paketin",
-        "frequency_label": "İki Ayda bir kapında",
-        "empty_message": "Abonelik ödemesi aylık alınır. Gönderim iki ayda bir sağlanır.",
+        "frequency_label": "2 ayda bir kapında",
+        "empty_message": "Ürünlerini seç, gönderim sıklığını paketine göre belirle.",
         "cta_idle": "Önce ürün ekle",
         "howit_title": "Nasıl çalışır?",
-        "shipping_threshold": 750
+        "shipping_threshold": 750,
+        "ped_monthly_threshold": 500
       }
     },
     "faq": {
