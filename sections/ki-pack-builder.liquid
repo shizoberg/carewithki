@@ -468,12 +468,9 @@
     }
     #ki-{{ section.id }} .ki-pack__frequency-options {
       display: flex;
+      flex-wrap: wrap;
       gap: 6px;
-      overflow-x: auto;
       padding: 1px 1px 4px;
-      scroll-snap-type: x proximity;
-      scrollbar-width: none;
-      -webkit-overflow-scrolling: touch;
     }
     #ki-{{ section.id }} .ki-pack__frequency-options::-webkit-scrollbar { display: none; }
     #ki-{{ section.id }} .ki-pack__frequency-option {
