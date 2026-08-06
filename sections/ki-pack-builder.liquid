@@ -1942,6 +1942,9 @@
           var checkoutUrl = (window.kiConfig && window.kiConfig.subscriptionCheckoutUrl) || '/pages/paket-checkout';
           var freqEl = root.querySelector('[data-ki-pack-freq]');
           var sellingPlanId = (freqEl && freqEl.value) || (window.kiConfig && window.kiConfig.defaultSellingPlanId);
+          // Seçilen gönderim sıklığı (ay) → backend intervalCount olarak checkout'a taşınır
+          var selectedFreqOpt = (freqEl && freqEl.options.length) ? freqEl.options[freqEl.selectedIndex] : null;
+          var intervalMonths = selectedFreqOpt ? (parseInt(selectedFreqOpt.getAttribute('data-months'), 10) || 2) : 2;
           var total = 0;
           var boxItems = lines.map(function (l) {
             total += l.total;
@@ -1961,6 +1964,7 @@
             boxItems: boxItems,
             totalPrice: total.toFixed(2),
             sellingPlanId: sellingPlanId || '',
+            intervalCount: intervalMonths,
             packName: packName,
             source: 'ki-pack-builder'
           };

@@ -469,7 +469,9 @@
         shopifyCustomerId: (customerId ? String(customerId) : ''),
         boxItems: pack.boxItems,
         totalPrice: String(pack.totalPrice || '0'),
-        sellingPlanId: pack.sellingPlanId || ''
+        sellingPlanId: pack.sellingPlanId || '',
+        // Gönderim sıklığı (ay) — builder'da seçilir, backend iyzico plan aralığı olarak kullanır
+        intervalCount: (pack.intervalCount ? Number(pack.intervalCount) : 2)
       };
 
       ctaEl.disabled = true;
@@ -512,6 +514,7 @@
         addInput('shopifyCustomerId', payload.shopifyCustomerId || '');
         addInput('totalPrice', payload.totalPrice || '');
         addInput('sellingPlanId', payload.sellingPlanId || '');
+        addInput('intervalCount', String(payload.intervalCount || 2));
         addInput('boxItemsJson', JSON.stringify(payload.boxItems || []));
         addInput('returnUrl', window.location.href);
 
