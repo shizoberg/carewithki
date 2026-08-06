@@ -1342,7 +1342,7 @@
                       data-ki-pack-frequency-option
                       data-ki-pack-frequency-months="{{ block.settings.months | default: 2 }}"
                       aria-pressed="{% if block.settings.is_default %}true{% else %}false{% endif %}"
-                    >{{ block.settings.months | default: 2 }} ay</button>
+                    >{% if block.settings.months == '0' or block.settings.months == 0 %}Günlük{% else %}{{ block.settings.months | default: 2 }} ay{% endif %}</button>
                   {%- endif -%}
                 {%- endfor -%}
               </div>
@@ -1514,7 +1514,9 @@
     var frequencyNoteEl = root.querySelector('[data-ki-pack-frequency-note]');
 
     function optionMonths(option) {
-      return option ? (parseInt(option.getAttribute('data-months'), 10) || 2) : 2;
+      if (!option) return 2;
+      var m = parseInt(option.getAttribute('data-months'), 10);
+      return isNaN(m) ? 2 : m;   // 0 = günlük (test) geçerli değer
     }
     function syncFrequencyUi() {
       if (!frequencyEl || !frequencyEl.options.length) return;
@@ -1576,7 +1578,8 @@
       frequencyButtons.forEach(function (button) {
         button.addEventListener('click', function () {
           if (button.disabled) return;
-          selectFrequency(parseInt(button.getAttribute('data-ki-pack-frequency-months'), 10) || 2);
+          var _bm = parseInt(button.getAttribute('data-ki-pack-frequency-months'), 10);
+          selectFrequency(isNaN(_bm) ? 2 : _bm);
         });
       });
     }
@@ -1944,7 +1947,8 @@
           var sellingPlanId = (freqEl && freqEl.value) || (window.kiConfig && window.kiConfig.defaultSellingPlanId);
           // Seçilen gönderim sıklığı (ay) → backend intervalCount olarak checkout'a taşınır
           var selectedFreqOpt = (freqEl && freqEl.options.length) ? freqEl.options[freqEl.selectedIndex] : null;
-          var intervalMonths = selectedFreqOpt ? (parseInt(selectedFreqOpt.getAttribute('data-months'), 10) || 2) : 2;
+          var intervalMonths = 2;
+          if (selectedFreqOpt) { var _im = parseInt(selectedFreqOpt.getAttribute('data-months'), 10); intervalMonths = isNaN(_im) ? 2 : _im; }
           var total = 0;
           var boxItems = lines.map(function (l) {
             total += l.total;

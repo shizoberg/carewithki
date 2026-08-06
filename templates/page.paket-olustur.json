@@ -346,6 +346,15 @@
             "is_default": false
           }
         },
+        "freq-daily": {
+          "type": "frequency",
+          "settings": {
+            "label": "Günlük (test)",
+            "months": "0",
+            "selling_plan_id": "",
+            "is_default": false
+          }
+        },
         "g1": {
           "type": "guarantee",
           "settings": {
@@ -405,6 +414,7 @@
         "freq-3",
         "freq-4",
         "freq-6",
+        "freq-daily",
         "g1",
         "g2",
         "g3",

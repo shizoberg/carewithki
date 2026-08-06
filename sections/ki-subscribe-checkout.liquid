@@ -470,8 +470,9 @@
         boxItems: pack.boxItems,
         totalPrice: String(pack.totalPrice || '0'),
         sellingPlanId: pack.sellingPlanId || '',
-        // Gönderim sıklığı (ay) — builder'da seçilir, backend iyzico plan aralığı olarak kullanır
-        intervalCount: (pack.intervalCount ? Number(pack.intervalCount) : 2)
+        // Gönderim sıklığı (ay) — builder'da seçilir, backend iyzico plan aralığı olarak kullanır.
+        // 0 = günlük (test). isNaN kontrolü: 0 geçerli değer, || tuzağına düşmesin.
+        intervalCount: (function () { var v = Number(pack.intervalCount); return isNaN(v) ? 2 : v; })()
       };
 
       ctaEl.disabled = true;
@@ -514,7 +515,7 @@
         addInput('shopifyCustomerId', payload.shopifyCustomerId || '');
         addInput('totalPrice', payload.totalPrice || '');
         addInput('sellingPlanId', payload.sellingPlanId || '');
-        addInput('intervalCount', String(payload.intervalCount || 2));
+        addInput('intervalCount', String(payload.intervalCount == null ? 2 : payload.intervalCount));
         addInput('boxItemsJson', JSON.stringify(payload.boxItems || []));
         addInput('returnUrl', window.location.href);
 
