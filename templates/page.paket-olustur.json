@@ -279,6 +279,28 @@
             "demo_price": 139
           }
         },
+        "cat-test": {
+          "type": "category",
+          "settings": {
+            "key": "test",
+            "label": "Test",
+            "description": "Test amaçlı ürün — gerçek satın alma testi için",
+            "hint": ""
+          }
+        },
+        "p-test": {
+          "type": "product",
+          "settings": {
+            "product": "ki-test-urun",
+            "category_key": "test",
+            "name_override": "Test Ürün (10₺)",
+            "short": "Abonelik satın alma testi",
+            "badge": "",
+            "step": 1,
+            "unit": "adet",
+            "demo_price": 10
+          }
+        },
         "freq-1": {
           "type": "frequency",
           "settings": {
@@ -376,6 +398,8 @@
         "p-jel-50",
         "cat-ritual",
         "p-sprey",
+        "cat-test",
+        "p-test",
         "freq-1",
         "freq-2",
         "freq-3",
