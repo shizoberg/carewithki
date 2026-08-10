@@ -510,6 +510,134 @@
     #ki-{{ section.id }} .ki-pr__modal-label { display: block; margin-bottom: 7px; color: var(--ki-muted, #5a5a5a); font-size: 11px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }
     #ki-{{ section.id }} .ki-pr__modal-select { width: 100%; min-height: 48px; padding: 10px 12px; border: 1px solid #ddd8ec; border-radius: 12px; background: #fff; color: var(--ki-primary, #3a2d6e); font: inherit; font-size: 14px; }
     #ki-{{ section.id }} .ki-pr__modal-actions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-top: 18px; }
+    #ki-{{ section.id }} .ki-pr__editor-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 260px;
+      gap: 20px;
+      align-items: start;
+    }
+    #ki-{{ section.id }} .ki-pr__editor-field { margin-bottom: 16px; }
+    #ki-{{ section.id }} .ki-pr__editor-input {
+      width: 100%;
+      min-height: 48px;
+      padding: 11px 13px;
+      border: 1px solid #ddd8ec;
+      border-radius: 13px;
+      background: #fff;
+      color: var(--ki-primary, #3a2d6e);
+      font: inherit;
+      font-size: 14px;
+      outline: 0;
+    }
+    #ki-{{ section.id }} .ki-pr__editor-input:focus {
+      border-color: #7568c5;
+      box-shadow: 0 0 0 3px rgba(117,104,197,.13);
+    }
+    #ki-{{ section.id }} .ki-pr__editor-frequency {
+      display: flex;
+      gap: 7px;
+      overflow-x: auto;
+      padding: 2px 1px 5px;
+      scrollbar-width: none;
+    }
+    #ki-{{ section.id }} .ki-pr__editor-frequency::-webkit-scrollbar { display: none; }
+    #ki-{{ section.id }} .ki-pr__editor-frequency-btn {
+      flex: 0 0 auto;
+      min-width: 55px;
+      min-height: 38px;
+      padding: 7px 12px;
+      border: 1px solid #ddd8ec;
+      border-radius: 999px;
+      background: #fff;
+      color: var(--ki-primary, #3a2d6e);
+      font: inherit;
+      font-size: 12px;
+      font-weight: 750;
+      cursor: pointer;
+    }
+    #ki-{{ section.id }} .ki-pr__editor-frequency-btn.is-active {
+      border-color: #493d9a;
+      background: #493d9a;
+      color: #fff;
+    }
+    #ki-{{ section.id }} .ki-pr__editor-frequency-btn:disabled { opacity: .38; cursor: not-allowed; }
+    #ki-{{ section.id }} .ki-pr__editor-products {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 9px;
+      max-height: 470px;
+      overflow: auto;
+      padding: 2px 4px 2px 1px;
+      overscroll-behavior: contain;
+    }
+    #ki-{{ section.id }} .ki-pr__editor-product {
+      min-width: 0;
+      display: grid;
+      grid-template-columns: 54px minmax(0, 1fr);
+      gap: 10px;
+      padding: 10px;
+      border: 1px solid #e8e4f3;
+      border-radius: 16px;
+      background: #fff;
+    }
+    #ki-{{ section.id }} .ki-pr__editor-product.is-selected {
+      border-color: #bcb3e7;
+      background: #faf9ff;
+      box-shadow: 0 12px 28px -25px rgba(73,61,154,.8);
+    }
+    #ki-{{ section.id }} .ki-pr__editor-product-image {
+      width: 54px;
+      height: 54px;
+      overflow: hidden;
+      border: 1px solid #e5e0f2;
+      border-radius: 13px;
+      background: #f1eef9;
+    }
+    #ki-{{ section.id }} .ki-pr__editor-product-image img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    #ki-{{ section.id }} .ki-pr__editor-product-title {
+      margin: 0;
+      color: var(--ki-primary, #3a2d6e);
+      font-size: 12.5px;
+      font-weight: 750;
+      line-height: 1.3;
+      overflow-wrap: anywhere;
+    }
+    #ki-{{ section.id }} .ki-pr__editor-product-price { margin: 3px 0 8px; color: var(--ki-muted, #6f6a75); font-size: 11.5px; }
+    #ki-{{ section.id }} .ki-pr__editor-stepper {
+      display: grid;
+      grid-template-columns: 30px minmax(26px, 1fr) 30px;
+      align-items: center;
+      width: 100%;
+      min-height: 32px;
+      overflow: hidden;
+      border: 1px solid #ddd8ec;
+      border-radius: 999px;
+      background: #fff;
+    }
+    #ki-{{ section.id }} .ki-pr__editor-stepper button {
+      height: 30px;
+      border: 0;
+      background: transparent;
+      color: #493d9a;
+      font: inherit;
+      font-size: 17px;
+      cursor: pointer;
+    }
+    #ki-{{ section.id }} .ki-pr__editor-stepper button:disabled { opacity: .32; cursor: default; }
+    #ki-{{ section.id }} .ki-pr__editor-qty { text-align: center; color: #493d9a; font-size: 12px; font-weight: 800; }
+    #ki-{{ section.id }} .ki-pr__editor-summary {
+      position: sticky;
+      top: 0;
+      padding: 16px;
+      border: 1px solid #e3def1;
+      border-radius: 18px;
+      background: linear-gradient(155deg, #f7f5ff, #fff);
+    }
+    #ki-{{ section.id }} .ki-pr__editor-summary-title { margin: 0 0 12px; color: #493d9a; font-size: 16px; font-weight: 750; }
+    #ki-{{ section.id }} .ki-pr__editor-summary-row { display: flex; justify-content: space-between; gap: 12px; padding: 8px 0; border-top: 1px solid #e9e5f3; color: var(--ki-muted, #6f6a75); font-size: 12px; }
+    #ki-{{ section.id }} .ki-pr__editor-summary-row strong { color: #493d9a; font-size: 13px; }
+    #ki-{{ section.id }} .ki-pr__editor-save { width: 100%; margin-top: 13px; }
+    #ki-{{ section.id }} .ki-pr__editor-error { margin: 10px 0 0; color: #bd4f6d; font-size: 12px; line-height: 1.4; }
     body.ki-pr-modal-open { overflow: hidden; }
 
     @media (max-width: 720px) {
@@ -527,6 +655,9 @@
       #ki-{{ section.id }} .ki-pr__modal-panel--small { width: 100%; max-height: 92vh; border-radius: 24px 24px 0 0; }
       #ki-{{ section.id }} .ki-pr__modal-body { padding: 14px; }
       #ki-{{ section.id }} .ki-pr__iyzico-target { min-height: 600px; }
+      #ki-{{ section.id }} .ki-pr__editor-grid { grid-template-columns: 1fr; gap: 14px; }
+      #ki-{{ section.id }} .ki-pr__editor-products { grid-template-columns: 1fr; max-height: none; overflow: visible; }
+      #ki-{{ section.id }} .ki-pr__editor-summary { position: static; }
     }
 
     /* Profile view */
@@ -785,7 +916,9 @@
     var root = document.getElementById('ki-{{ section.id }}');
     if (!root) return;
     var apiBase = (window.kiConfig && window.kiConfig.subscriptionApiBase) || '';
+    var updatePath = {{ section.settings.update_endpoint | default: '/api/portal/subscription/update' | json }};
     var shopifyProductImages = {};
+    var shopifyProductCatalog = [];
     {% for portal_product in collections.all.products limit: 50 %}
       {% if portal_product.featured_image %}
         shopifyProductImages[{{ portal_product.id | prepend: 'product:' | json }}] = {{ portal_product.featured_image | image_url: width: 160 | json }};
@@ -796,6 +929,18 @@
         {% assign portal_variant_image = portal_variant.image | default: portal_product.featured_image %}
         {% if portal_variant_image %}
           shopifyProductImages[{{ portal_variant.id | prepend: 'variant:' | json }}] = {{ portal_variant_image | image_url: width: 160 | json }};
+        {% endif %}
+        {% if portal_variant.available %}
+          shopifyProductCatalog.push({
+            variantId: {{ portal_variant.id | json }},
+            variantGid: {{ portal_variant.id | prepend: 'gid://shopify/ProductVariant/' | json }},
+            productId: {{ portal_product.id | json }},
+            handle: {{ portal_product.handle | json }},
+            title: {% if portal_variant.title == 'Default Title' %}{{ portal_product.title | json }}{% else %}{{ portal_product.title | append: ' · ' | append: portal_variant.title | json }}{% endif %},
+            price: {{ portal_variant.price | divided_by: 100.0 | json }},
+            image: {% if portal_variant_image %}{{ portal_variant_image | image_url: width: 160 | json }}{% else %}''{% endif %},
+            isPed: {% if portal_product.handle contains 'ped' %}true{% else %}false{% endif %}
+          });
         {% endif %}
       {% endfor %}
     {% endfor %}
@@ -936,6 +1081,7 @@
     }
 
     var STATUS_LABEL = { ACTIVE: 'Aktif', PAUSED: 'Duraklatıldı', PENDING: 'Beklemede', PAST_DUE: 'Ödeme Gecikti', CANCELLED: 'İptal Edildi' };
+    var currentPortalData = null;
 
     async function api(path, opts) {
       opts = opts || {};
@@ -1033,7 +1179,7 @@
         +   '</div>'
         +   '<ul class="ki-pr__sub-items">' + itemsHtml + '</ul>'
         +   '<div class="ki-pr__sub-actions">'
-        +     '<a href="/pages/paket-olustur?edit=current" class="ki-pr__btn ki-pr__btn--ghost" aria-label="Mevcut paketimi düzenle">📦 Paketimi düzenle</a>'
+        +     '<button type="button" class="ki-pr__btn ki-pr__btn--ghost" data-ki-pr-edit aria-label="Mevcut paketimi sayfadan ayrılmadan düzenle">📦 Paketimi düzenle</button>'
         +     '<button type="button" class="ki-pr__btn ki-pr__btn--ghost" data-ki-pr-card>💳 Kartımı güncelle</button>'
         +     (canPause ? '<button type="button" class="ki-pr__btn ki-pr__btn--pause" data-ki-pr-pause data-paused="' + (me.paused ? 'true' : 'false') + '">' + pauseLabel + '</button>' : '')
         +     (statusKey !== 'CANCELLED' ? '<button type="button" class="ki-pr__btn ki-pr__btn--danger" data-ki-pr-cancel>✕ İptal et</button>' : '')
@@ -1055,6 +1201,7 @@
       try {
         console.log('[KI Portal] /api/portal/me çağrılıyor…');
         var me = await api('/api/portal/me');
+        currentPortalData = me;
         console.log('[KI Portal] /me yanıt:', me);
         renderSubs(me);
         console.log('[KI Portal] renderSubs tamamlandı');
@@ -1077,6 +1224,252 @@
       if (activePortalModal === modal) activePortalModal = null;
       document.body.classList.remove('ki-pr-modal-open');
       if (restoreFocus && typeof restoreFocus.focus === 'function') restoreFocus.focus();
+    }
+
+    function itemVariantId(item) {
+      var variant = item.variant || {};
+      var raw = item.variantId || item.shopifyVariantId || item.shopifyVariantGid || variant.id || '';
+      var match = String(raw).match(/(\d+)$/);
+      return match ? match[1] : '';
+    }
+
+    function normalizedTitle(value) {
+      return String(value || '').toLocaleLowerCase('tr-TR').replace(/\s+/g, ' ').trim();
+    }
+
+    function buildEditorProducts(box) {
+      var existingItems = box.items || [];
+      var result = shopifyProductCatalog.map(function (catalogItem) {
+        return {
+          variantId: String(catalogItem.variantId || ''),
+          variantGid: catalogItem.variantGid || '',
+          title: catalogItem.title || 'Ürün',
+          price: Number(catalogItem.price || 0),
+          image: catalogItem.image || '',
+          isPed: catalogItem.isPed === true,
+          quantity: 0
+        };
+      });
+
+      existingItems.forEach(function (existingItem) {
+        var existingVariantId = itemVariantId(existingItem);
+        var existingTitle = normalizedTitle(existingItem.title);
+        var match = null;
+        for (var i = 0; i < result.length; i += 1) {
+          if ((existingVariantId && result[i].variantId === existingVariantId) || (!existingVariantId && normalizedTitle(result[i].title) === existingTitle)) {
+            match = result[i];
+            break;
+          }
+        }
+        if (!match) {
+          match = {
+            variantId: existingVariantId,
+            variantGid: existingItem.shopifyVariantGid || (existingVariantId ? 'gid://shopify/ProductVariant/' + existingVariantId : ''),
+            title: existingItem.title || 'Paket ürünü',
+            price: Number(existingItem.price || 0),
+            image: itemImageUrl(existingItem),
+            isPed: /ped/i.test(existingItem.title || ''),
+            quantity: 0
+          };
+          result.unshift(match);
+        }
+        match.quantity = Math.max(0, Number(existingItem.quantity || existingItem.physicalQuantity || 0));
+        if (!match.image) match.image = itemImageUrl(existingItem);
+        if (!match.price) match.price = Number(existingItem.price || 0);
+      });
+      return result;
+    }
+
+    function handleEditPackage(btn) {
+      var me = currentPortalData || {};
+      var box = me.activeBox || {};
+      if (!box.id && !(box.items && box.items.length)) {
+        setFlash('err', 'Düzenlenecek aktif paket bulunamadı.');
+        return;
+      }
+      if (activePortalModal) closePortalModal(activePortalModal);
+
+      var products = buildEditorProducts(box);
+      var selectedMonths = Number(box.frequencyMonths || me.frequencyMonths || box.intervalCount || me.intervalCount || 2);
+      if ([1, 2, 3, 4, 6].indexOf(selectedMonths) === -1) selectedMonths = 2;
+      var overlay = document.createElement('div');
+      overlay.className = 'ki-pr__modal';
+      overlay.setAttribute('role', 'dialog');
+      overlay.setAttribute('aria-modal', 'true');
+      overlay.setAttribute('aria-labelledby', 'ki-editor-title-{{ section.id }}');
+      overlay.innerHTML = ''
+        + '<div class="ki-pr__modal-panel">'
+        +   '<div class="ki-pr__modal-head">'
+        +     '<h3 class="ki-pr__modal-title" id="ki-editor-title-{{ section.id }}">Paketini düzenle</h3>'
+        +     '<button type="button" class="ki-pr__modal-close" data-editor-close aria-label="Paket düzenleyiciyi kapat"><span class="ki-pr__modal-close-icon" aria-hidden="true">×</span><span>Kapat</span></button>'
+        +   '</div>'
+        +   '<div class="ki-pr__modal-body">'
+        +     '<div class="ki-pr__editor-field">'
+        +       '<label class="ki-pr__modal-label" for="ki-editor-name-{{ section.id }}">Paket adı</label>'
+        +       '<input class="ki-pr__editor-input" id="ki-editor-name-{{ section.id }}" data-editor-name maxlength="60" value="' + escapeHtml(packageName(me, box)) + '">'
+        +     '</div>'
+        +     '<div class="ki-pr__editor-field">'
+        +       '<span class="ki-pr__modal-label">Gönderim sıklığı</span>'
+        +       '<div class="ki-pr__editor-frequency" data-editor-frequency>'
+        +         [1, 2, 3, 4, 6].map(function (month) { return '<button type="button" class="ki-pr__editor-frequency-btn' + (month === selectedMonths ? ' is-active' : '') + '" data-editor-month="' + month + '" aria-pressed="' + (month === selectedMonths ? 'true' : 'false') + '">' + month + ' ay</button>'; }).join('')
+        +       '</div>'
+        +     '</div>'
+        +     '<div class="ki-pr__editor-grid">'
+        +       '<div><span class="ki-pr__modal-label">Paket ürünleri</span><div class="ki-pr__editor-products" data-editor-products></div></div>'
+        +       '<aside class="ki-pr__editor-summary">'
+        +         '<h4 class="ki-pr__editor-summary-title">Yeni paketin</h4>'
+        +         '<div class="ki-pr__editor-summary-row"><span>Ürün adedi</span><strong data-editor-count>0</strong></div>'
+        +         '<div class="ki-pr__editor-summary-row"><span>Gönderim</span><strong data-editor-frequency-label>' + selectedMonths + ' ayda bir</strong></div>'
+        +         '<div class="ki-pr__editor-summary-row"><span>Tahmini toplam</span><strong data-editor-total>₺0,00</strong></div>'
+        +         '<button type="button" class="ki-pr__btn ki-pr__btn--primary ki-pr__editor-save" data-editor-save>Değişiklikleri kaydet</button>'
+        +         '<p class="ki-pr__editor-error" data-editor-error hidden></p>'
+        +       '</aside>'
+        +     '</div>'
+        +   '</div>'
+        + '</div>';
+      root.appendChild(overlay);
+      activePortalModal = overlay;
+      document.body.classList.add('ki-pr-modal-open');
+
+      var productList = overlay.querySelector('[data-editor-products]');
+      var countEl = overlay.querySelector('[data-editor-count]');
+      var totalEl = overlay.querySelector('[data-editor-total]');
+      var frequencyLabelEl = overlay.querySelector('[data-editor-frequency-label]');
+      var errorEl = overlay.querySelector('[data-editor-error]');
+      var saveButton = overlay.querySelector('[data-editor-save]');
+
+      function renderEditor() {
+        productList.innerHTML = products.map(function (product, index) {
+          var imageHtml = product.image
+            ? '<img src="' + escapeHtml(product.image) + '" alt="' + escapeHtml(product.title) + '" loading="lazy" width="54" height="54">'
+            : '<svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path d="m4 7 8-4 8 4-8 4-8-4Z" fill="none" stroke="#766bb6" stroke-width="1.6"></path><path d="M4 7v10l8 4 8-4V7M12 11v10" fill="none" stroke="#766bb6" stroke-width="1.6"></path></svg>';
+          return '<article class="ki-pr__editor-product' + (product.quantity > 0 ? ' is-selected' : '') + '">'
+            + '<div class="ki-pr__editor-product-image">' + imageHtml + '</div>'
+            + '<div>'
+            +   '<h5 class="ki-pr__editor-product-title">' + escapeHtml(product.title) + '</h5>'
+            +   '<p class="ki-pr__editor-product-price">' + fmtMoney(product.price) + '</p>'
+            +   '<div class="ki-pr__editor-stepper">'
+            +     '<button type="button" data-editor-minus="' + index + '" aria-label="' + escapeHtml(product.title) + ' ürününü azalt"' + (product.quantity <= 0 ? ' disabled' : '') + '>−</button>'
+            +     '<span class="ki-pr__editor-qty">' + product.quantity + '</span>'
+            +     '<button type="button" data-editor-plus="' + index + '" aria-label="' + escapeHtml(product.title) + ' ürününü artır">+</button>'
+            +   '</div>'
+            + '</div>'
+            + '</article>';
+        }).join('');
+        var count = 0;
+        var total = 0;
+        products.forEach(function (product) {
+          count += product.quantity;
+          total += product.quantity * product.price;
+        });
+        var selectedProducts = products.filter(function (product) { return product.quantity > 0; });
+        var monthlyAllowed = selectedProducts.some(function (product) { return !product.isPed; }) || total >= 500;
+        if (!monthlyAllowed && selectedMonths === 1) selectedMonths = 2;
+        overlay.querySelectorAll('[data-editor-month]').forEach(function (monthButton) {
+          var month = Number(monthButton.getAttribute('data-editor-month'));
+          var isDisabled = month === 1 && !monthlyAllowed;
+          var isActive = month === selectedMonths;
+          monthButton.disabled = isDisabled;
+          monthButton.classList.toggle('is-active', isActive);
+          monthButton.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+          if (isDisabled) monthButton.setAttribute('title', 'Sadece ped içeren 500 TL altı paketlerde aylık gönderim kullanılamaz.');
+          else monthButton.removeAttribute('title');
+        });
+        countEl.textContent = count;
+        totalEl.textContent = fmtMoney(total);
+        frequencyLabelEl.textContent = selectedMonths + ' ayda bir';
+        saveButton.disabled = count === 0;
+      }
+
+      function closeEditor() {
+        document.removeEventListener('keydown', onEditorKeydown);
+        closePortalModal(overlay, btn);
+      }
+      function onEditorKeydown(event) {
+        if (event.key === 'Escape') closeEditor();
+      }
+      overlay._kiKeydown = onEditorKeydown;
+      overlay.querySelector('[data-editor-close]').addEventListener('click', closeEditor);
+      overlay.addEventListener('click', function (event) {
+        if (event.target === overlay) { closeEditor(); return; }
+        var minusButton = event.target.closest('[data-editor-minus]');
+        var plusButton = event.target.closest('[data-editor-plus]');
+        var frequencyButton = event.target.closest('[data-editor-month]');
+        if (minusButton) {
+          var minusIndex = Number(minusButton.getAttribute('data-editor-minus'));
+          products[minusIndex].quantity = Math.max(0, products[minusIndex].quantity - 1);
+          renderEditor();
+        }
+        if (plusButton) {
+          var plusIndex = Number(plusButton.getAttribute('data-editor-plus'));
+          products[plusIndex].quantity += 1;
+          renderEditor();
+        }
+        if (frequencyButton) {
+          selectedMonths = Number(frequencyButton.getAttribute('data-editor-month')) || 2;
+          overlay.querySelectorAll('[data-editor-month]').forEach(function (monthButton) {
+            var isActive = Number(monthButton.getAttribute('data-editor-month')) === selectedMonths;
+            monthButton.classList.toggle('is-active', isActive);
+            monthButton.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+          });
+          renderEditor();
+        }
+      });
+      document.addEventListener('keydown', onEditorKeydown);
+      saveButton.addEventListener('click', async function () {
+        var selectedProducts = products.filter(function (product) { return product.quantity > 0; });
+        var nameInput = overlay.querySelector('[data-editor-name]');
+        var newPackName = nameInput.value.trim();
+        if (!newPackName) {
+          errorEl.textContent = 'Paket adı boş bırakılamaz.';
+          errorEl.hidden = false;
+          nameInput.focus();
+          return;
+        }
+        var total = selectedProducts.reduce(function (sum, product) { return sum + product.quantity * product.price; }, 0);
+        var boxItems = selectedProducts.map(function (product) {
+          return {
+            shopifyVariantGid: product.variantGid || (product.variantId ? 'gid://shopify/ProductVariant/' + product.variantId : ''),
+            title: product.title,
+            price: String(product.price),
+            quantity: product.quantity
+          };
+        });
+        saveButton.disabled = true;
+        saveButton.textContent = 'Kaydediliyor…';
+        errorEl.hidden = true;
+        try {
+          var data = await api(updatePath, {
+            method: 'POST',
+            body: {
+              subscriptionId: me.id || me.subscriptionId || box.subscriptionId || '',
+              boxId: box.id || '',
+              packName: newPackName,
+              intervalCount: selectedMonths,
+              sellingPlanId: box.sellingPlanId || me.sellingPlanId || '',
+              boxItems: boxItems,
+              totalPrice: total.toFixed(2)
+            }
+          });
+          if (data && data.requiresCheckout && data.htmlContent) {
+            closeEditor();
+            renderIyzicoInline(data.htmlContent, 'Paket değişikliğini onayla', 'iyzipay-subscription-update-form');
+            return;
+          }
+          closeEditor();
+          setFlash('ok', 'Paketin güncellendi.');
+          subsLoading.hidden = false;
+          subsContent.hidden = true;
+          await loadSubs();
+        } catch (error) {
+          errorEl.textContent = (error && error.message) || 'Paket güncellenemedi.';
+          errorEl.hidden = false;
+          saveButton.disabled = false;
+          saveButton.textContent = 'Değişiklikleri kaydet';
+        }
+      });
+      renderEditor();
+      setTimeout(function () { overlay.querySelector('[data-editor-name]').focus(); }, 20);
     }
 
     /* Ortak: iyzico htmlContent'ini erişilebilir modal içinde render eder (CSP nonce ile
@@ -1312,10 +1705,12 @@
       var pauseEl = t.closest('[data-ki-pr-pause]');
       var cardEl = t.closest('[data-ki-pr-card]');
       var restartEl = t.closest('[data-ki-pr-restart]');
+      var editEl = t.closest('[data-ki-pr-edit]');
       if (canEl) { e.preventDefault(); handleCancel(canEl); return; }
       if (pauseEl) { e.preventDefault(); handlePauseToggle(pauseEl); return; }
       if (cardEl) { e.preventDefault(); handleCardUpdate(cardEl); return; }
       if (restartEl) { e.preventDefault(); handleRestart(restartEl); return; }
+      if (editEl) { e.preventDefault(); handleEditPackage(editEl); return; }
     });
   })();
 </script>
@@ -1327,7 +1722,8 @@
   "tag": "section",
   "class": "ki-section",
   "settings": [
-    { "type": "text", "id": "subscribe_link", "label": "Abone ol linki (fallback)", "default": "/pages/paket-olustur", "info": "URL veya path (örn: /pages/paket-olustur)." }
+    { "type": "text", "id": "subscribe_link", "label": "Abone ol linki (fallback)", "default": "/pages/paket-olustur", "info": "URL veya path (örn: /pages/paket-olustur)." },
+    { "type": "text", "id": "update_endpoint", "label": "Paket güncelleme endpoint'i", "default": "/api/portal/subscription/update", "info": "Abonelik backend'indeki paket güncelleme path'i." }
   ],
   "presets": [{ "name": "Subscribe portal" }]
 }
