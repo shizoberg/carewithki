@@ -270,11 +270,21 @@
       flex-wrap: wrap;
       margin-bottom: 18px;
     }
+    #ki-{{ section.id }} .ki-pr__sub-heading { min-width: 0; }
+    #ki-{{ section.id }} .ki-pr__sub-kicker {
+      margin: 0 0 5px;
+      color: #756ab5;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+    }
     #ki-{{ section.id }} .ki-pr__sub-title {
       font-family: var(--ki-font-primary);
       font-size: clamp(20px, 3vw, 27px); font-weight: 600;
       color: var(--ki-primary, #3a2d6e);
       margin: 0;
+      overflow-wrap: anywhere;
     }
     #ki-{{ section.id }} .ki-pr__sub-badge {
       display: inline-block;
@@ -303,28 +313,103 @@
       border: 1px solid #ebe8f5;
       border-radius: 14px;
       background: #faf9ff;
+      display: flex;
+      align-items: center;
+      gap: 12px;
     }
-    #ki-{{ section.id }} .ki-pr__sub-meta dt {
+    #ki-{{ section.id }} .ki-pr__sub-meta-icon {
+      width: 40px;
+      height: 40px;
+      flex: 0 0 40px;
+      display: inline-grid;
+      place-items: center;
+      border: 1px solid #ded8f4;
+      border-radius: 13px;
+      background: linear-gradient(145deg, #f2efff, #fff);
+      color: #493d9a;
+      box-shadow: 0 8px 18px -15px rgba(73,61,154,.8);
+    }
+    #ki-{{ section.id }} .ki-pr__sub-meta-icon svg {
+      width: 20px;
+      height: 20px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    #ki-{{ section.id }} .ki-pr__sub-meta-copy { min-width: 0; }
+    #ki-{{ section.id }} .ki-pr__sub-meta-label {
+      display: block;
       font-size: 11px; font-weight: 700;
       letter-spacing: .1em; text-transform: uppercase;
       color: var(--ki-muted, #5a5a5a);
     }
-    #ki-{{ section.id }} .ki-pr__sub-meta dd { font-weight: 750; color: var(--ki-primary, #3a2d6e); margin: 4px 0 0; }
+    #ki-{{ section.id }} .ki-pr__sub-meta-value { display: block; font-weight: 750; color: var(--ki-primary, #3a2d6e); margin: 4px 0 0; }
 
     #ki-{{ section.id }} .ki-pr__sub-items {
-      list-style: none; padding: 4px 0; margin: 0;
-      border-top: 1px solid #ece9f4;
-      border-bottom: 1px solid #ece9f4;
+      list-style: none; padding: 4px 14px; margin: 0;
+      border: 1px solid #ece9f4;
+      border-radius: 18px;
+      background: linear-gradient(180deg, #fff, #fcfbff);
       font-size: 13px;
     }
     #ki-{{ section.id }} .ki-pr__sub-items li {
-      display: flex; justify-content: space-between; gap: 16px; padding: 11px 2px;
+      display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 12px 0;
       color: var(--ki-primary, #3a2d6e);
       border-top: 1px solid #f1eff7;
     }
     #ki-{{ section.id }} .ki-pr__sub-items li:first-child { border-top: 0; }
-    #ki-{{ section.id }} .ki-pr__sub-items li span:first-child { min-width: 0; overflow-wrap: anywhere; }
-    #ki-{{ section.id }} .ki-pr__sub-items li span:last-child { font-weight: 700; }
+    #ki-{{ section.id }} .ki-pr__sub-item-main {
+      min-width: 0;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    #ki-{{ section.id }} .ki-pr__sub-item-image {
+      width: 58px;
+      height: 58px;
+      flex: 0 0 58px;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      border: 1px solid #e4dff4;
+      border-radius: 15px;
+      background: #f2effb;
+    }
+    #ki-{{ section.id }} .ki-pr__sub-item-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    #ki-{{ section.id }} .ki-pr__sub-item-image svg {
+      width: 25px;
+      height: 25px;
+      fill: none;
+      stroke: #766bb6;
+      stroke-width: 1.6;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    #ki-{{ section.id }} .ki-pr__sub-item-copy { min-width: 0; }
+    #ki-{{ section.id }} .ki-pr__sub-item-name {
+      display: block;
+      font-weight: 700;
+      line-height: 1.35;
+      overflow-wrap: anywhere;
+    }
+    #ki-{{ section.id }} .ki-pr__sub-item-qty {
+      display: block;
+      margin-top: 3px;
+      color: var(--ki-muted, #6f6a75);
+      font-size: 11.5px;
+    }
+    #ki-{{ section.id }} .ki-pr__sub-item-price {
+      flex: 0 0 auto;
+      font-weight: 800;
+      font-variant-numeric: tabular-nums;
+    }
 
     #ki-{{ section.id }} .ki-pr__sub-actions {
       display: grid;
@@ -429,6 +514,13 @@
 
     @media (max-width: 720px) {
       #ki-{{ section.id }} .ki-pr__sub { padding: 18px; border-radius: 19px; }
+      #ki-{{ section.id }} .ki-pr__sub-head { align-items: flex-start; }
+      #ki-{{ section.id }} .ki-pr__sub-meta > div { padding: 11px; gap: 9px; }
+      #ki-{{ section.id }} .ki-pr__sub-meta-icon { width: 34px; height: 34px; flex-basis: 34px; border-radius: 11px; }
+      #ki-{{ section.id }} .ki-pr__sub-meta-icon svg { width: 18px; height: 18px; }
+      #ki-{{ section.id }} .ki-pr__sub-items { padding-inline: 11px; }
+      #ki-{{ section.id }} .ki-pr__sub-item-image { width: 52px; height: 52px; flex-basis: 52px; border-radius: 13px; }
+      #ki-{{ section.id }} .ki-pr__sub-item-price { font-size: 12px; }
       #ki-{{ section.id }} .ki-pr__sub-actions { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       #ki-{{ section.id }} .ki-pr__modal { align-items: end; padding: 0; }
       #ki-{{ section.id }} .ki-pr__modal-panel,
@@ -693,6 +785,20 @@
     var root = document.getElementById('ki-{{ section.id }}');
     if (!root) return;
     var apiBase = (window.kiConfig && window.kiConfig.subscriptionApiBase) || '';
+    var shopifyProductImages = {};
+    {% for portal_product in collections.all.products limit: 50 %}
+      {% if portal_product.featured_image %}
+        shopifyProductImages[{{ portal_product.id | prepend: 'product:' | json }}] = {{ portal_product.featured_image | image_url: width: 160 | json }};
+        shopifyProductImages[{{ portal_product.handle | prepend: 'handle:' | json }}] = {{ portal_product.featured_image | image_url: width: 160 | json }};
+        shopifyProductImages[{{ portal_product.title | downcase | prepend: 'title:' | json }}] = {{ portal_product.featured_image | image_url: width: 160 | json }};
+      {% endif %}
+      {% for portal_variant in portal_product.variants %}
+        {% assign portal_variant_image = portal_variant.image | default: portal_product.featured_image %}
+        {% if portal_variant_image %}
+          shopifyProductImages[{{ portal_variant.id | prepend: 'variant:' | json }}] = {{ portal_variant_image | image_url: width: 160 | json }};
+        {% endif %}
+      {% endfor %}
+    {% endfor %}
 
     /* ============ Tab switching ============ */
     var tabBtns = root.querySelectorAll('[data-ki-pr-tab]');
@@ -764,6 +870,71 @@
       return 'Gönderim planına göre';
     }
 
+    function packageName(me, box) {
+      var boxMeta = box.metadata || {};
+      var meMeta = me.metadata || {};
+      var boxProps = box.properties || {};
+      var boxAttrs = box.attributes || {};
+      var firstItem = box.items && box.items.length ? box.items[0] : {};
+      var itemProps = firstItem.properties || {};
+      var candidates = [
+        box.packName,
+        box.packageName,
+        box.customName,
+        box.subscriptionName,
+        boxMeta.packName,
+        boxMeta.packageName,
+        boxProps._PackName,
+        boxProps.packName,
+        boxAttrs._PackName,
+        boxAttrs.packName,
+        firstItem.packName,
+        firstItem.packageName,
+        itemProps._PackName,
+        itemProps.packName,
+        me.packName,
+        me.packageName,
+        me.subscriptionName,
+        meMeta.packName,
+        meMeta.packageName,
+        box.name,
+        box.displayName
+      ];
+      for (var i = 0; i < candidates.length; i += 1) {
+        if (typeof candidates[i] === 'string' && candidates[i].trim() && !/^test ürün\b/i.test(candidates[i].trim())) return candidates[i].trim();
+      }
+      return 'Bakım Paketim';
+    }
+
+    function itemImageUrl(item) {
+      var product = item.product || {};
+      var variant = item.variant || {};
+      var image = item.imageUrl || item.image || item.productImage || item.featuredImage || item.shopifyImageUrl || item.thumbnailUrl || product.featuredImage || product.image || variant.image || '';
+      if (image && typeof image === 'object') image = image.url || image.src || image.originalSrc || image.original_url || '';
+      if (!image) {
+        var variantId = item.variantId || item.shopifyVariantId || variant.id || '';
+        var productId = item.productId || item.shopifyProductId || product.id || '';
+        var handle = item.handle || item.productHandle || product.handle || '';
+        var title = String(item.title || product.title || '').toLocaleLowerCase('tr-TR');
+        image = shopifyProductImages['variant:' + variantId]
+          || shopifyProductImages['product:' + productId]
+          || shopifyProductImages['handle:' + handle]
+          || shopifyProductImages['title:' + title]
+          || '';
+      }
+      return typeof image === 'string' ? image.trim() : '';
+    }
+
+    function portalIcon(type) {
+      if (type === 'calendar') {
+        return '<span class="ki-pr__sub-meta-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3.5" y="5.5" width="17" height="15" rx="3"></rect><path d="M8 3.5v4M16 3.5v4M3.5 10h17"></path><path d="m9.2 15 1.8 1.8 4-4"></path></svg></span>';
+      }
+      if (type === 'wallet') {
+        return '<span class="ki-pr__sub-meta-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 7.5h14.5a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5.5a2 2 0 0 1-2-2V6.8a2.3 2.3 0 0 1 1.7-2.2L16 2.5"></path><path d="M15.5 12h5v4h-5a2 2 0 0 1 0-4Z"></path></svg></span>';
+      }
+      return '<span class="ki-pr__sub-item-image" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m4 7 8-4 8 4-8 4-8-4Z"></path><path d="M4 7v10l8 4 8-4V7M12 11v10"></path></svg></span>';
+    }
+
     var STATUS_LABEL = { ACTIVE: 'Aktif', PAUSED: 'Duraklatıldı', PENDING: 'Beklemede', PAST_DUE: 'Ödeme Gecikti', CANCELLED: 'İptal Edildi' };
 
     async function api(path, opts) {
@@ -822,7 +993,20 @@
       var itemsHtml = items.map(function (it) {
         var qty = Number(it.quantity || 0);
         var price = Number(it.price || 0);
-        return '<li><span>🛍️ ' + escapeHtml(it.title || 'Ürün') + ' × ' + qty + '</span><span>' + fmtMoney(qty * price) + '</span></li>';
+        var imageUrl = itemImageUrl(it);
+        var imageHtml = imageUrl
+          ? '<span class="ki-pr__sub-item-image"><img src="' + escapeHtml(imageUrl) + '" alt="' + escapeHtml(it.title || 'Paket ürünü') + '" loading="lazy" width="58" height="58"></span>'
+          : portalIcon('product');
+        return '<li>'
+          + '<div class="ki-pr__sub-item-main">'
+          +   imageHtml
+          +   '<span class="ki-pr__sub-item-copy">'
+          +     '<span class="ki-pr__sub-item-name">' + escapeHtml(it.title || 'Ürün') + '</span>'
+          +     '<span class="ki-pr__sub-item-qty">' + qty + ' adet</span>'
+          +   '</span>'
+          + '</div>'
+          + '<span class="ki-pr__sub-item-price">' + fmtMoney(qty * price) + '</span>'
+          + '</li>';
       }).join('');
 
       var canPause = statusKey !== 'CANCELLED';
@@ -836,14 +1020,17 @@
       subsContent.innerHTML = ''
         + '<div class="ki-pr__sub">'
         +   '<div class="ki-pr__sub-head">'
-        +     '<h3 class="ki-pr__sub-title">' + escapeHtml(box.displayName || 'Aktif Paketim') + '</h3>'
+        +     '<div class="ki-pr__sub-heading">'
+        +       '<p class="ki-pr__sub-kicker">Abonelik paketi</p>'
+        +       '<h3 class="ki-pr__sub-title">' + escapeHtml(packageName(me, box)) + '</h3>'
+        +     '</div>'
         +     '<span class="ki-pr__sub-badge ki-pr__sub-badge--' + statusKey + '">' + (STATUS_LABEL[statusKey] || statusKey) + '</span>'
         +   '</div>'
         +   (pausedNote ? '<p style="font-size:12.5px;color:var(--ki-amber,#b08526);margin:0 0 12px;font-weight:600;">⏸ ' + escapeHtml(pausedNote) + '</p>' : '')
-        +   '<dl class="ki-pr__sub-meta">'
-        +     '<div><dt>📅 Sıklık</dt><dd>' + escapeHtml(frequencyText(me, box)) + '</dd></div>'
-        +     '<div><dt>✨ Paket toplamı</dt><dd>' + fmtMoney(Number(box.totalPrice || 0)) + '</dd></div>'
-        +   '</dl>'
+        +   '<div class="ki-pr__sub-meta">'
+        +     '<div>' + portalIcon('calendar') + '<span class="ki-pr__sub-meta-copy"><span class="ki-pr__sub-meta-label">Sıklık</span><span class="ki-pr__sub-meta-value">' + escapeHtml(frequencyText(me, box)) + '</span></span></div>'
+        +     '<div>' + portalIcon('wallet') + '<span class="ki-pr__sub-meta-copy"><span class="ki-pr__sub-meta-label">Paket toplamı</span><span class="ki-pr__sub-meta-value">' + fmtMoney(Number(box.totalPrice || 0)) + '</span></span></div>'
+        +   '</div>'
         +   '<ul class="ki-pr__sub-items">' + itemsHtml + '</ul>'
         +   '<div class="ki-pr__sub-actions">'
         +     '<a href="/pages/paket-olustur?edit=current" class="ki-pr__btn ki-pr__btn--ghost" aria-label="Mevcut paketimi düzenle">📦 Paketimi düzenle</a>'
