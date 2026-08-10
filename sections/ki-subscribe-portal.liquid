@@ -250,27 +250,38 @@
 
     /* Subscription card */
     #ki-{{ section.id }} .ki-pr__sub {
-      padding: 18px;
+      position: relative;
+      overflow: hidden;
+      padding: 24px;
       background: var(--ki-card, #fff);
-      border: 1px solid rgba(0,0,0,.08);
-      border-radius: 16px;
+      border: 1px solid #e3dff1;
+      border-radius: 24px;
+      box-shadow: 0 24px 60px -44px rgba(73,61,154,.75);
+    }
+    #ki-{{ section.id }} .ki-pr__sub::before {
+      content: '';
+      position: absolute;
+      inset: 0 0 auto;
+      height: 4px;
+      background: linear-gradient(90deg, #493d9a, #7868db 55%, #b8afea);
     }
     #ki-{{ section.id }} .ki-pr__sub-head {
       display: flex; align-items: center; justify-content: space-between; gap: 12px;
       flex-wrap: wrap;
-      margin-bottom: 14px;
+      margin-bottom: 18px;
     }
     #ki-{{ section.id }} .ki-pr__sub-title {
       font-family: var(--ki-font-primary);
-      font-size: 19px; font-weight: 500;
+      font-size: clamp(20px, 3vw, 27px); font-weight: 600;
       color: var(--ki-primary, #3a2d6e);
       margin: 0;
     }
     #ki-{{ section.id }} .ki-pr__sub-badge {
       display: inline-block;
-      padding: 3px 10px;
+      padding: 7px 13px;
       border-radius: 999px;
-      font-size: 11px; font-weight: 700;
+      font-size: 11px; font-weight: 800;
+      letter-spacing: .02em;
     }
     #ki-{{ section.id }} .ki-pr__sub-badge--ACTIVE { background: var(--ki-sage-light, #dde8d4); color: var(--ki-sage, #5d7a52); }
     #ki-{{ section.id }} .ki-pr__sub-badge--PAUSED { background: rgba(176,133,38,.15); color: var(--ki-amber, #b08526); }
@@ -280,55 +291,151 @@
 
     #ki-{{ section.id }} .ki-pr__sub-meta {
       display: grid;
-      grid-template-columns: 1fr;
-      gap: 8px;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
       font-size: 13px;
       color: var(--ki-muted, #5a5a5a);
-      margin-bottom: 14px;
+      margin: 0 0 16px;
     }
-    @media (min-width: 640px) {
-      #ki-{{ section.id }} .ki-pr__sub-meta { grid-template-columns: 1fr 1fr; }
+    #ki-{{ section.id }} .ki-pr__sub-meta > div {
+      min-width: 0;
+      padding: 13px 15px;
+      border: 1px solid #ebe8f5;
+      border-radius: 14px;
+      background: #faf9ff;
     }
     #ki-{{ section.id }} .ki-pr__sub-meta dt {
       font-size: 11px; font-weight: 700;
       letter-spacing: .1em; text-transform: uppercase;
       color: var(--ki-muted, #5a5a5a);
     }
-    #ki-{{ section.id }} .ki-pr__sub-meta dd { font-weight: 600; color: var(--ki-primary, #3a2d6e); margin: 2px 0 0; }
+    #ki-{{ section.id }} .ki-pr__sub-meta dd { font-weight: 750; color: var(--ki-primary, #3a2d6e); margin: 4px 0 0; }
 
     #ki-{{ section.id }} .ki-pr__sub-items {
-      list-style: none; padding: 12px 0; margin: 0;
-      border-top: 1px solid rgba(0,0,0,.06);
-      border-bottom: 1px solid rgba(0,0,0,.06);
+      list-style: none; padding: 4px 0; margin: 0;
+      border-top: 1px solid #ece9f4;
+      border-bottom: 1px solid #ece9f4;
       font-size: 13px;
     }
     #ki-{{ section.id }} .ki-pr__sub-items li {
-      display: flex; justify-content: space-between; padding: 4px 0;
+      display: flex; justify-content: space-between; gap: 16px; padding: 11px 2px;
       color: var(--ki-primary, #3a2d6e);
+      border-top: 1px solid #f1eff7;
     }
+    #ki-{{ section.id }} .ki-pr__sub-items li:first-child { border-top: 0; }
+    #ki-{{ section.id }} .ki-pr__sub-items li span:first-child { min-width: 0; overflow-wrap: anywhere; }
     #ki-{{ section.id }} .ki-pr__sub-items li span:last-child { font-weight: 700; }
 
     #ki-{{ section.id }} .ki-pr__sub-actions {
-      display: flex; gap: 8px; flex-wrap: wrap;
-      margin-top: 14px;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 9px;
+      margin-top: 18px;
     }
     #ki-{{ section.id }} .ki-pr__btn {
-      padding: 10px 16px;
-      border: 0;
-      border-radius: 999px;
+      min-height: 46px;
+      padding: 10px 14px;
+      border: 1px solid transparent;
+      border-radius: 14px;
       font-size: 12.5px; font-weight: 700;
       cursor: pointer;
       text-align: center;
       text-decoration: none;
       display: inline-flex; align-items: center; justify-content: center;
       gap: 6px;
-      transition: opacity .15s, background .15s;
+      line-height: 1.25;
+      transition: opacity .15s, background .15s, border-color .15s, transform .15s;
     }
+    #ki-{{ section.id }} .ki-pr__btn:hover:not(:disabled) { transform: translateY(-1px); }
     #ki-{{ section.id }} .ki-pr__btn--primary { background: var(--ki-primary, #3a2d6e); color: var(--ki-primary-fg, #fff); }
-    #ki-{{ section.id }} .ki-pr__btn--ghost { background: var(--ki-secondary, #f4ede1); color: var(--ki-primary, #3a2d6e); }
-    #ki-{{ section.id }} .ki-pr__btn--pause { background: rgba(176,133,38,.15); color: var(--ki-amber, #b08526); }
-    #ki-{{ section.id }} .ki-pr__btn--danger { background: var(--ki-rose-light, #f6dce4); color: var(--ki-rose, #d96d8a); }
+    #ki-{{ section.id }} .ki-pr__btn--ghost { border-color: #ddd8ef; background: #f2effb; color: var(--ki-primary, #3a2d6e); }
+    #ki-{{ section.id }} .ki-pr__btn--pause { border-color: rgba(176,133,38,.22); background: #fbf6e9; color: #8d6718; }
+    #ki-{{ section.id }} .ki-pr__btn--danger { border-color: rgba(217,109,138,.2); background: #fff3f6; color: #bd4f6d; }
     #ki-{{ section.id }} .ki-pr__btn:disabled { opacity: .5; cursor: not-allowed; }
+
+    /* Portal modals */
+    #ki-{{ section.id }} .ki-pr__modal {
+      position: fixed;
+      z-index: 10020;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      padding: 20px;
+      background: rgba(25,18,62,.62);
+      backdrop-filter: blur(7px);
+      -webkit-backdrop-filter: blur(7px);
+    }
+    #ki-{{ section.id }} .ki-pr__modal-panel {
+      width: min(100%, 680px);
+      max-height: min(90vh, 860px);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      border: 1px solid rgba(255,255,255,.7);
+      border-radius: 24px;
+      background: #fff;
+      box-shadow: 0 36px 100px -30px rgba(20,13,55,.75);
+    }
+    #ki-{{ section.id }} .ki-pr__modal-panel--small { width: min(100%, 460px); }
+    #ki-{{ section.id }} .ki-pr__modal-head {
+      position: sticky;
+      z-index: 3;
+      top: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 16px 18px;
+      border-bottom: 1px solid #ebe8f4;
+      background: rgba(255,255,255,.97);
+    }
+    #ki-{{ section.id }} .ki-pr__modal-title {
+      margin: 0;
+      color: var(--ki-primary, #3a2d6e);
+      font-family: var(--ki-font-primary);
+      font-size: 18px;
+      font-weight: 700;
+    }
+    #ki-{{ section.id }} .ki-pr__modal-close {
+      min-width: 92px;
+      min-height: 40px;
+      padding: 8px 12px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      border: 1px solid #ddd8ec;
+      border-radius: 999px;
+      background: #f5f3fb;
+      color: var(--ki-primary, #3a2d6e);
+      font: inherit;
+      font-size: 12px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+    #ki-{{ section.id }} .ki-pr__modal-close-icon { font-size: 20px; line-height: .8; }
+    #ki-{{ section.id }} .ki-pr__modal-body {
+      overflow: auto;
+      overscroll-behavior: contain;
+      padding: 18px;
+      -webkit-overflow-scrolling: touch;
+    }
+    #ki-{{ section.id }} .ki-pr__iyzico-target { min-height: 560px; }
+    #ki-{{ section.id }} .ki-pr__modal-copy { margin: 0 0 18px; color: var(--ki-muted, #5a5a5a); font-size: 13px; line-height: 1.55; }
+    #ki-{{ section.id }} .ki-pr__modal-label { display: block; margin-bottom: 7px; color: var(--ki-muted, #5a5a5a); font-size: 11px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }
+    #ki-{{ section.id }} .ki-pr__modal-select { width: 100%; min-height: 48px; padding: 10px 12px; border: 1px solid #ddd8ec; border-radius: 12px; background: #fff; color: var(--ki-primary, #3a2d6e); font: inherit; font-size: 14px; }
+    #ki-{{ section.id }} .ki-pr__modal-actions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-top: 18px; }
+    body.ki-pr-modal-open { overflow: hidden; }
+
+    @media (max-width: 720px) {
+      #ki-{{ section.id }} .ki-pr__sub { padding: 18px; border-radius: 19px; }
+      #ki-{{ section.id }} .ki-pr__sub-actions { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      #ki-{{ section.id }} .ki-pr__modal { align-items: end; padding: 0; }
+      #ki-{{ section.id }} .ki-pr__modal-panel,
+      #ki-{{ section.id }} .ki-pr__modal-panel--small { width: 100%; max-height: 92vh; border-radius: 24px 24px 0 0; }
+      #ki-{{ section.id }} .ki-pr__modal-body { padding: 14px; }
+      #ki-{{ section.id }} .ki-pr__iyzico-target { min-height: 600px; }
+    }
 
     /* Profile view */
     #ki-{{ section.id }} .ki-pr__profile-row {
@@ -645,6 +752,18 @@
       catch (e) { return iso; }
     }
 
+    function frequencyText(me, box) {
+      var directLabel = box.intervalLabel || me.intervalLabel || box.frequencyLabel || me.frequencyLabel || box.sellingPlanName || me.sellingPlanName;
+      if (directLabel) {
+        var normalizedLabel = String(directLabel);
+        return /kapında/i.test(normalizedLabel) ? normalizedLabel : normalizedLabel + ' kapında';
+      }
+      var monthCount = Number(box.frequencyMonths || me.frequencyMonths || box.intervalCount || me.intervalCount || 0);
+      if (monthCount === 1) return 'Ayda bir kapında';
+      if (monthCount > 1) return monthCount + ' ayda bir kapında';
+      return 'Gönderim planına göre';
+    }
+
     var STATUS_LABEL = { ACTIVE: 'Aktif', PAUSED: 'Duraklatıldı', PENDING: 'Beklemede', PAST_DUE: 'Ödeme Gecikti', CANCELLED: 'İptal Edildi' };
 
     async function api(path, opts) {
@@ -703,7 +822,7 @@
       var itemsHtml = items.map(function (it) {
         var qty = Number(it.quantity || 0);
         var price = Number(it.price || 0);
-        return '<li><span>' + escapeHtml(it.title || 'Ürün') + ' × ' + qty + '</span><span>' + fmtMoney(qty * price) + '</span></li>';
+        return '<li><span>🛍️ ' + escapeHtml(it.title || 'Ürün') + ' × ' + qty + '</span><span>' + fmtMoney(qty * price) + '</span></li>';
       }).join('');
 
       var canPause = statusKey !== 'CANCELLED';
@@ -722,12 +841,12 @@
         +   '</div>'
         +   (pausedNote ? '<p style="font-size:12.5px;color:var(--ki-amber,#b08526);margin:0 0 12px;font-weight:600;">⏸ ' + escapeHtml(pausedNote) + '</p>' : '')
         +   '<dl class="ki-pr__sub-meta">'
-        +     '<div><dt>Sıklık</dt><dd>' + escapeHtml(box.intervalLabel || ((box.intervalCount || 2) + ' ayda bir')) + ' kapında</dd></div>'
-        +     '<div><dt>Toplam</dt><dd>' + fmtMoney(Number(box.totalPrice || 0)) + '</dd></div>'
+        +     '<div><dt>📅 Sıklık</dt><dd>' + escapeHtml(frequencyText(me, box)) + '</dd></div>'
+        +     '<div><dt>✨ Paket toplamı</dt><dd>' + fmtMoney(Number(box.totalPrice || 0)) + '</dd></div>'
         +   '</dl>'
         +   '<ul class="ki-pr__sub-items">' + itemsHtml + '</ul>'
         +   '<div class="ki-pr__sub-actions">'
-        +     '<a href="/pages/paket-olustur?edit=current" class="ki-pr__btn ki-pr__btn--ghost">📦 Paketimi düzenle</a>'
+        +     '<a href="/pages/paket-olustur?edit=current" class="ki-pr__btn ki-pr__btn--ghost" aria-label="Mevcut paketimi düzenle">📦 Paketimi düzenle</a>'
         +     '<button type="button" class="ki-pr__btn ki-pr__btn--ghost" data-ki-pr-card>💳 Kartımı güncelle</button>'
         +     (canPause ? '<button type="button" class="ki-pr__btn ki-pr__btn--pause" data-ki-pr-pause data-paused="' + (me.paused ? 'true' : 'false') + '">' + pauseLabel + '</button>' : '')
         +     (statusKey !== 'CANCELLED' ? '<button type="button" class="ki-pr__btn ki-pr__btn--danger" data-ki-pr-cancel>✕ İptal et</button>' : '')
@@ -763,20 +882,45 @@
     }
     loadSubs();
 
-    /* Ortak: iyzico htmlContent'ini sayfa içinde inline render eder (CSP nonce ile script
-       inject). Kart güncelleme, resume ve restart akışları bunu paylaşır. */
+    var activePortalModal = null;
+    function closePortalModal(modal, restoreFocus) {
+      if (!modal || !modal.isConnected) return;
+      if (modal._kiKeydown) document.removeEventListener('keydown', modal._kiKeydown);
+      modal.remove();
+      if (activePortalModal === modal) activePortalModal = null;
+      document.body.classList.remove('ki-pr-modal-open');
+      if (restoreFocus && typeof restoreFocus.focus === 'function') restoreFocus.focus();
+    }
+
+    /* Ortak: iyzico htmlContent'ini erişilebilir modal içinde render eder (CSP nonce ile
+       script inject). Kart güncelleme, resume ve restart akışları bunu paylaşır. */
     function renderIyzicoInline(html, title, targetDivId) {
       if (!html || String(html).trim().length < 20) {
         throw new Error('iyzico formu alınamadı.');
       }
+      if (activePortalModal) closePortalModal(activePortalModal);
+      var restoreFocus = document.activeElement;
       var hostArea = document.createElement('div');
-      hostArea.style.cssText = 'background:#fff;border-radius:16px;padding:20px;margin-bottom:20px;box-shadow:0 4px 16px -8px rgba(0,0,0,.18);';
-      hostArea.innerHTML = '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">'
-        + '<h3 style="margin:0;color:var(--ki-primary,#3a2d6e);font-size:18px;font-weight:600;">' + escapeHtml(title) + '</h3>'
-        + '<button type="button" data-iyzi-close style="font-size:24px;line-height:1;background:none;border:0;cursor:pointer;color:#5a5a5a;padding:4px 10px;">×</button>'
-        + '</div>'
-        + '<div id="' + targetDivId + '" class="responsive" style="min-height:560px;"></div>';
-      subsContent.insertBefore(hostArea, subsContent.firstChild);
+      var titleId = targetDivId + '-title';
+      hostArea.className = 'ki-pr__modal';
+      hostArea.setAttribute('role', 'dialog');
+      hostArea.setAttribute('aria-modal', 'true');
+      hostArea.setAttribute('aria-labelledby', titleId);
+      hostArea.innerHTML = ''
+        + '<div class="ki-pr__modal-panel">'
+        +   '<div class="ki-pr__modal-head">'
+        +     '<h3 class="ki-pr__modal-title" id="' + titleId + '">' + escapeHtml(title) + '</h3>'
+        +     '<button type="button" class="ki-pr__modal-close" data-iyzi-close aria-label="Ödeme panelini kapat">'
+        +       '<span class="ki-pr__modal-close-icon" aria-hidden="true">×</span><span>Kapat</span>'
+        +     '</button>'
+        +   '</div>'
+        +   '<div class="ki-pr__modal-body">'
+        +     '<div id="' + targetDivId + '" class="responsive ki-pr__iyzico-target"></div>'
+        +   '</div>'
+        + '</div>';
+      root.appendChild(hostArea);
+      activePortalModal = hostArea;
+      document.body.classList.add('ki-pr-modal-open');
 
       var pageNonce = '';
       var anyNonceScript = document.querySelector('script[nonce]');
@@ -792,23 +936,82 @@
         }
         if (pageNonce) { s.setAttribute('nonce', pageNonce); s.nonce = pageNonce; }
         s.text = oldScript.textContent;
-        hostArea.appendChild(s);
+        hostArea.querySelector('.ki-pr__modal-body').appendChild(s);
       });
-      hostArea.querySelector('[data-iyzi-close]').addEventListener('click', function () {
-        hostArea.remove();
+      function close() {
+        document.removeEventListener('keydown', onKeydown);
+        closePortalModal(hostArea, restoreFocus);
+      }
+      function onKeydown(event) {
+        if (event.key === 'Escape') close();
+      }
+      hostArea._kiKeydown = onKeydown;
+      hostArea.querySelector('[data-iyzi-close]').addEventListener('click', close);
+      hostArea.addEventListener('click', function (event) {
+        if (event.target === hostArea) close();
       });
-      hostArea.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      document.addEventListener('keydown', onKeydown);
+      setTimeout(function () { hostArea.querySelector('[data-iyzi-close]').focus(); }, 20);
       return hostArea;
     }
 
     /* ============ Cancel / Pause / Card update handlers (event delegation) ============ */
-    async function handleCancel() {
-      if (!confirm('Aboneliğini iptal etmek istediğine emin misin? Bir sonraki teslimat oluşturulmayacak.')) return;
-      try {
-        await api('/api/portal/cancel', { method: 'POST', body: {} });
-        setFlash('ok', 'Aboneliğin iptal edildi.');
-        setTimeout(function () { window.location.reload(); }, 1200);
-      } catch (e) { setFlash('err', (e && e.message) || 'İptal başarısız.'); }
+    function handleCancel(btn) {
+      if (activePortalModal) closePortalModal(activePortalModal);
+      var overlay = document.createElement('div');
+      overlay.className = 'ki-pr__modal';
+      overlay.setAttribute('role', 'dialog');
+      overlay.setAttribute('aria-modal', 'true');
+      overlay.setAttribute('aria-labelledby', 'ki-cancel-title-{{ section.id }}');
+      overlay.innerHTML = ''
+        + '<div class="ki-pr__modal-panel ki-pr__modal-panel--small">'
+        +   '<div class="ki-pr__modal-head">'
+        +     '<h3 class="ki-pr__modal-title" id="ki-cancel-title-{{ section.id }}">✕ Aboneliği iptal et</h3>'
+        +     '<button type="button" class="ki-pr__modal-close" data-cls aria-label="İptal penceresini kapat"><span class="ki-pr__modal-close-icon" aria-hidden="true">×</span><span>Kapat</span></button>'
+        +   '</div>'
+        +   '<div class="ki-pr__modal-body">'
+        +     '<p class="ki-pr__modal-copy">Aboneliğini iptal ettiğinde bir sonraki teslimat oluşturulmayacak. Bu işlemden önce paketini duraklatmayı da tercih edebilirsin.</p>'
+        +     '<div class="ki-pr__modal-actions">'
+        +       '<button type="button" class="ki-pr__btn ki-pr__btn--ghost" data-cls>Vazgeç</button>'
+        +       '<button type="button" class="ki-pr__btn ki-pr__btn--danger" data-cancel-confirm>✕ Evet, iptal et</button>'
+        +     '</div>'
+        +   '</div>'
+        + '</div>';
+      root.appendChild(overlay);
+      activePortalModal = overlay;
+      document.body.classList.add('ki-pr-modal-open');
+      function closeCancelModal() {
+        document.removeEventListener('keydown', onCancelKeydown);
+        closePortalModal(overlay, btn);
+      }
+      function onCancelKeydown(event) {
+        if (event.key === 'Escape') closeCancelModal();
+      }
+      overlay._kiKeydown = onCancelKeydown;
+      overlay.querySelectorAll('[data-cls]').forEach(function (closeButton) {
+        closeButton.addEventListener('click', closeCancelModal);
+      });
+      overlay.addEventListener('click', function (event) {
+        if (event.target === overlay) closeCancelModal();
+      });
+      document.addEventListener('keydown', onCancelKeydown);
+      var confirmButton = overlay.querySelector('[data-cancel-confirm]');
+      setTimeout(function () { confirmButton.focus(); }, 20);
+      confirmButton.addEventListener('click', async function () {
+        confirmButton.disabled = true;
+        confirmButton.textContent = 'İptal ediliyor…';
+        try {
+          await api('/api/portal/cancel', { method: 'POST', body: {} });
+          document.removeEventListener('keydown', onCancelKeydown);
+          closePortalModal(overlay);
+          setFlash('ok', 'Aboneliğin iptal edildi.');
+          setTimeout(function () { window.location.reload(); }, 1200);
+        } catch (error) {
+          setFlash('err', (error && error.message) || 'İptal başarısız.');
+          confirmButton.disabled = false;
+          confirmButton.textContent = '✕ Evet, iptal et';
+        }
+      });
     }
 
     async function handlePauseToggle(btn) {
@@ -829,35 +1032,66 @@
         return;
       }
       // Pause modal
+      if (activePortalModal) closePortalModal(activePortalModal);
+      var restoreFocus = btn;
       var overlay = document.createElement('div');
-      overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px;';
+      overlay.className = 'ki-pr__modal';
+      overlay.setAttribute('role', 'dialog');
+      overlay.setAttribute('aria-modal', 'true');
+      overlay.setAttribute('aria-labelledby', 'ki-pause-title-{{ section.id }}');
       overlay.innerHTML = ''
-        + '<div style="background:#fff;border-radius:16px;max-width:440px;width:100%;padding:24px;position:relative;">'
-        +   '<button type="button" data-cls style="position:absolute;top:8px;right:12px;font-size:24px;background:none;border:0;cursor:pointer;color:#5a5a5a;">×</button>'
-        +   '<h3 style="margin:0 0 8px;color:var(--ki-primary,#3a2d6e);font-family:var(--ki-font-primary);font-size:22px;font-weight:500;">Aboneliği duraklat</h3>'
-        +   '<p style="margin:0 0 16px;font-size:13px;color:var(--ki-muted,#5a5a5a);line-height:1.45;">Süre sonunda otomatik devam eder. İstediğin an portaldan değiştirebilirsin.</p>'
-        +   '<label style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ki-muted);display:block;margin-bottom:6px;">Süre</label>'
-        +   '<select data-pdur style="width:100%;padding:11px 12px;border:1px solid rgba(0,0,0,.12);border-radius:10px;font-size:14px;color:var(--ki-primary);background:#fff;margin-bottom:18px;">'
-        +     '<option value="30">1 ay</option><option value="60" selected>2 ay</option><option value="90">3 ay</option><option value="0">Süresiz</option>'
-        +   '</select>'
-        +   '<div style="display:flex;gap:10px;">'
-        +     '<button type="button" data-cls style="flex:1;padding:12px 16px;border-radius:999px;background:transparent;border:1.5px solid rgba(0,0,0,.12);color:var(--ki-primary);font-weight:700;cursor:pointer;">Vazgeç</button>'
-        +     '<button type="button" data-pconf style="flex:1;padding:12px 16px;border-radius:999px;background:var(--ki-amber,#b08526);color:#fff;border:0;font-weight:700;cursor:pointer;">Duraklat</button>'
+        + '<div class="ki-pr__modal-panel ki-pr__modal-panel--small">'
+        +   '<div class="ki-pr__modal-head">'
+        +     '<h3 class="ki-pr__modal-title" id="ki-pause-title-{{ section.id }}">⏸ Aboneliği duraklat</h3>'
+        +     '<button type="button" class="ki-pr__modal-close" data-cls aria-label="Duraklatma penceresini kapat"><span class="ki-pr__modal-close-icon" aria-hidden="true">×</span><span>Kapat</span></button>'
+        +   '</div>'
+        +   '<div class="ki-pr__modal-body">'
+        +     '<p class="ki-pr__modal-copy">Süre sonunda otomatik devam eder. İstediğin an portaldan değiştirebilirsin.</p>'
+        +     '<label class="ki-pr__modal-label" for="ki-pause-duration-{{ section.id }}">Süre</label>'
+        +     '<select class="ki-pr__modal-select" id="ki-pause-duration-{{ section.id }}" data-pdur>'
+        +       '<option value="30">1 ay</option><option value="60" selected>2 ay</option><option value="90">3 ay</option><option value="0">Süresiz</option>'
+        +     '</select>'
+        +     '<div class="ki-pr__modal-actions">'
+        +       '<button type="button" class="ki-pr__btn ki-pr__btn--ghost" data-cls>Vazgeç</button>'
+        +       '<button type="button" class="ki-pr__btn ki-pr__btn--pause" data-pconf>⏸ Duraklat</button>'
+        +     '</div>'
         +   '</div>'
         + '</div>';
-      document.body.appendChild(overlay);
+      root.appendChild(overlay);
+      activePortalModal = overlay;
+      document.body.classList.add('ki-pr-modal-open');
+      function closePauseModal() {
+        document.removeEventListener('keydown', onPauseKeydown);
+        closePortalModal(overlay, restoreFocus);
+        btn.disabled = false;
+      }
+      function onPauseKeydown(event) {
+        if (event.key === 'Escape') closePauseModal();
+      }
+      overlay._kiKeydown = onPauseKeydown;
       overlay.querySelectorAll('[data-cls]').forEach(function (c) {
-        c.addEventListener('click', function () { overlay.remove(); btn.disabled = false; });
+        c.addEventListener('click', closePauseModal);
       });
+      overlay.addEventListener('click', function (event) {
+        if (event.target === overlay) closePauseModal();
+      });
+      document.addEventListener('keydown', onPauseKeydown);
+      setTimeout(function () { overlay.querySelector('[data-pdur]').focus(); }, 20);
       overlay.querySelector('[data-pconf]').addEventListener('click', async function () {
         var dur = parseInt(overlay.querySelector('[data-pdur]').value, 10) || 0;
         btn.disabled = true;
         try {
           await api('/api/portal/pause', { method: 'POST', body: { durationDays: dur } });
-          overlay.remove();
+          document.removeEventListener('keydown', onPauseKeydown);
+          closePortalModal(overlay);
           setFlash('ok', dur === 0 ? 'Süresiz duraklatıldı.' : ('Aboneliğin ' + dur + ' gün duraklatıldı.'));
           setTimeout(function () { window.location.reload(); }, 1500);
-        } catch (e) { setFlash('err', (e && e.message) || 'Duraklatma başarısız.'); overlay.remove(); btn.disabled = false; }
+        } catch (e) {
+          setFlash('err', (e && e.message) || 'Duraklatma başarısız.');
+          document.removeEventListener('keydown', onPauseKeydown);
+          closePortalModal(overlay, restoreFocus);
+          btn.disabled = false;
+        }
       });
     }
 
@@ -891,7 +1125,7 @@
       var pauseEl = t.closest('[data-ki-pr-pause]');
       var cardEl = t.closest('[data-ki-pr-card]');
       var restartEl = t.closest('[data-ki-pr-restart]');
-      if (canEl) { e.preventDefault(); handleCancel(); return; }
+      if (canEl) { e.preventDefault(); handleCancel(canEl); return; }
       if (pauseEl) { e.preventDefault(); handlePauseToggle(pauseEl); return; }
       if (cardEl) { e.preventDefault(); handleCardUpdate(cardEl); return; }
       if (restartEl) { e.preventDefault(); handleRestart(restartEl); return; }

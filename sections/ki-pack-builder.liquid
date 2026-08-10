@@ -1094,11 +1094,17 @@
       #ki-{{ section.id }} .ki-pack__guide-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     }
     @media (max-width: 599px) {
-      #ki-{{ section.id }} .ki-pack__guide { margin-top: 52px; }
-      #ki-{{ section.id }} .ki-pack__guide-head { margin-bottom: 24px; }
-      #ki-{{ section.id }} .ki-pack__guide-grid { grid-template-columns: 1fr; gap: 10px; }
-      #ki-{{ section.id }} .ki-pack__guide-card { min-height: 0; padding: 18px; }
-      #ki-{{ section.id }} .ki-pack__guide-icon { width: 46px; height: 46px; margin-bottom: 18px; }
+      #ki-{{ section.id }} .ki-pack__guide { margin-top: 36px; }
+      #ki-{{ section.id }} .ki-pack__guide-head { margin-bottom: 18px; }
+      #ki-{{ section.id }} .ki-pack__guide-title { font-size: 24px; }
+      #ki-{{ section.id }} .ki-pack__guide-subtitle { margin-top: 8px; font-size: 12px; line-height: 1.45; }
+      #ki-{{ section.id }} .ki-pack__guide-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+      #ki-{{ section.id }} .ki-pack__guide-card { min-height: 152px; padding: 12px; border-radius: 14px; }
+      #ki-{{ section.id }} .ki-pack__guide-card::after { top: 10px; right: 10px; font-size: 9px; }
+      #ki-{{ section.id }} .ki-pack__guide-icon { width: 36px; height: 36px; margin-bottom: 12px; border-radius: 11px; }
+      #ki-{{ section.id }} .ki-pack__guide-icon svg { width: 19px; height: 19px; }
+      #ki-{{ section.id }} .ki-pack__guide-card h3 { margin-bottom: 5px; font-size: 13px; }
+      #ki-{{ section.id }} .ki-pack__guide-card p { font-size: 10.5px; line-height: 1.4; }
       #ki-{{ section.id }} .ki-pack__support { align-items: stretch; flex-direction: column; padding: 20px; }
       #ki-{{ section.id }} .ki-pack__support-link { width: 100%; }
       #ki-{{ section.id }} .ki-pack__frequency { margin-top: 10px; padding: 9px; }
@@ -1133,10 +1139,14 @@
           <button type="button" class="ki-pack__tab is-active" data-ki-pack-tab="" role="tab">Tümü</button>
           {%- for block in section.blocks -%}
             {%- if block.type == 'category' -%}
-              <button type="button" class="ki-pack__tab" data-ki-pack-tab="{{ block.settings.key }}" role="tab">
-                {{ block.settings.label }}
-                <span class="ki-pack__tab-count" data-ki-pack-tab-count="{{ block.settings.key }}" data-count="0">0</span>
-              </button>
+              {%- assign category_key_normalized = block.settings.key | strip | downcase -%}
+              {%- assign category_label_normalized = block.settings.label | strip | downcase -%}
+              {%- unless category_key_normalized contains 'test' or category_label_normalized contains 'test' -%}
+                <button type="button" class="ki-pack__tab" data-ki-pack-tab="{{ block.settings.key }}" role="tab">
+                  {{ block.settings.label }}
+                  <span class="ki-pack__tab-count" data-ki-pack-tab-count="{{ block.settings.key }}" data-count="0">0</span>
+                </button>
+              {%- endunless -%}
             {%- endif -%}
           {%- endfor -%}
         </div>
@@ -1145,6 +1155,9 @@
           {%- assign first_cat_done = false -%}
           {%- for catBlock in section.blocks -%}
             {%- if catBlock.type == 'category' -%}
+              {%- assign category_key_normalized = catBlock.settings.key | strip | downcase -%}
+              {%- assign category_label_normalized = catBlock.settings.label | strip | downcase -%}
+              {%- unless category_key_normalized contains 'test' or category_label_normalized contains 'test' -%}
               <div class="ki-pack__cat" data-ki-pack-cat="{{ catBlock.settings.key }}" data-open="{% unless first_cat_done %}true{% else %}false{% endunless %}" {{ catBlock.shopify_attributes }}>
                 <button type="button" class="ki-pack__cat-head" data-ki-pack-cat-toggle aria-expanded="{% unless first_cat_done %}true{% else %}false{% endunless %}">
                   <div style="min-width:0;flex:1;">
@@ -1310,6 +1323,7 @@
                 </div>
               </div>
               {%- assign first_cat_done = true -%}
+              {%- endunless -%}
             {%- endif -%}
           {%- endfor -%}
         </div>
@@ -1333,13 +1347,17 @@
               <div class="ki-pack__frequency-options" role="radiogroup" aria-label="Gönderim sıklığı">
                 {%- for block in section.blocks -%}
                   {%- if block.type == 'frequency' -%}
+                    {%- assign frequency_label_normalized = block.settings.label | strip | downcase -%}
+                    {%- assign frequency_months = block.settings.months | default: 2 | plus: 0 -%}
+                    {%- unless frequency_label_normalized == 'günlük' or frequency_months == 0 -%}
                     <button
                       type="button"
                       class="ki-pack__frequency-option{% if block.settings.is_default %} is-active{% endif %}"
                       data-ki-pack-frequency-option
                       data-ki-pack-frequency-months="{{ block.settings.months | default: 2 }}"
                       aria-pressed="{% if block.settings.is_default %}true{% else %}false{% endif %}"
-                    >{% if block.settings.months == '0' or block.settings.months == 0 %}Günlük{% else %}{{ block.settings.months | default: 2 }} ay{% endif %}</button>
+                    >{{ block.settings.months | default: 2 }} ay</button>
+                    {%- endunless -%}
                   {%- endif -%}
                 {%- endfor -%}
               </div>
@@ -1354,7 +1372,11 @@
             <select hidden data-ki-pack-freq aria-hidden="true">
               {%- for block in section.blocks -%}
                 {%- if block.type == 'frequency' -%}
+                  {%- assign frequency_label_normalized = block.settings.label | strip | downcase -%}
+                  {%- assign frequency_months = block.settings.months | default: 2 | plus: 0 -%}
+                  {%- unless frequency_label_normalized == 'günlük' or frequency_months == 0 -%}
                   <option value="{{ block.settings.selling_plan_id }}" data-months="{{ block.settings.months | default: 2 }}" {% if block.settings.is_default %}selected{% endif %}>{{ block.settings.label }}</option>
+                  {%- endunless -%}
                 {%- endif -%}
               {%- endfor -%}
             </select>
@@ -1500,7 +1522,6 @@
     var root = document.getElementById('ki-{{ section.id }}');
     if (!root) return;
 
-    var threshold = {{ section.settings.shipping_threshold | default: 750 }};
     var idleText = {{ section.settings.cta_idle | default: 'Önce ürün ekle' | json }};
     var emptyText = {{ section.settings.empty_message | default: 'Üst taraftan ürün ekleyerek paketini oluştur.' | json }};
     var subscriptionEnabled = {{ settings.subscription_enabled | default: false | json }};
@@ -1735,11 +1756,7 @@
       }
 
       var shipText = root.querySelector('[data-ki-pack-ship-text]');
-      if (shipText) {
-        shipText.textContent = subtotal >= threshold
-          ? 'Ücretsiz kargo 🎉'
-          : 'Ücretsiz kargoya ' + fmt(threshold - subtotal) + ' kaldı';
-      }
+      if (shipText) shipText.textContent = 'Ücretsiz kargo 🎉';
 
       updateFrequencyAvailability(lines, subtotal);
 
@@ -2026,7 +2043,6 @@
     { "type": "text", "id": "empty_message", "label": "Boş durum mesajı", "default": "Üst taraftan ürün ekleyerek paketini oluştur." },
     { "type": "text", "id": "cta_idle", "label": "CTA boş durumda", "default": "Önce ürün ekle" },
     { "type": "text", "id": "howit_title", "label": "Nasıl çalışır başlığı", "default": "Nasıl çalışır?" },
-    { "type": "number", "id": "shipping_threshold", "label": "Ücretsiz kargo eşiği (₺)", "default": 750 },
     { "type": "number", "id": "ped_monthly_threshold", "label": "Yalnızca ped içeren pakette aylık gönderim eşiği (₺)", "default": 500 },
     { "type": "range", "id": "subscription_discount_percent", "label": "Takviye, jel ve sprey abonelik indirimi", "min": 0, "max": 30, "step": 1, "unit": "%", "default": 10 }
   ],
@@ -2103,7 +2119,6 @@
         "empty_message": "Üst taraftan ürün ekleyerek paketini oluştur.",
         "cta_idle": "Önce ürün ekle",
         "howit_title": "Nasıl çalışır?",
-        "shipping_threshold": 750,
         "ped_monthly_threshold": 500
       },
       "blocks": [

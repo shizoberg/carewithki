@@ -279,28 +279,6 @@
             "demo_price": 139
           }
         },
-        "cat-test": {
-          "type": "category",
-          "settings": {
-            "key": "test",
-            "label": "Test",
-            "description": "Test amaçlı ürün — gerçek satın alma testi için",
-            "hint": ""
-          }
-        },
-        "p-test": {
-          "type": "product",
-          "settings": {
-            "product": "ki-test-urun",
-            "category_key": "test",
-            "name_override": "Test Ürün (10₺)",
-            "short": "Abonelik satın alma testi",
-            "badge": "",
-            "step": 1,
-            "unit": "adet",
-            "demo_price": 10
-          }
-        },
         "freq-1": {
           "type": "frequency",
           "settings": {
@@ -342,15 +320,6 @@
           "settings": {
             "label": "6 ayda bir",
             "months": "6",
-            "selling_plan_id": "",
-            "is_default": false
-          }
-        },
-        "freq-daily": {
-          "type": "frequency",
-          "settings": {
-            "label": "Günlük (test)",
-            "months": "0",
             "selling_plan_id": "",
             "is_default": false
           }
@@ -407,14 +376,11 @@
         "p-jel-50",
         "cat-ritual",
         "p-sprey",
-        "cat-test",
-        "p-test",
         "freq-1",
         "freq-2",
         "freq-3",
         "freq-4",
         "freq-6",
-        "freq-daily",
         "g1",
         "g2",
         "g3",
@@ -428,7 +394,6 @@
         "empty_message": "Ürünlerini seç, gönderim sıklığını paketine göre belirle.",
         "cta_idle": "Önce ürün ekle",
         "howit_title": "Nasıl çalışır?",
-        "shipping_threshold": 750,
         "ped_monthly_threshold": 500
       }
     },
