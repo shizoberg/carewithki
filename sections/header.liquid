@@ -332,7 +332,7 @@
     reveal() { if (this.headerIsAlwaysSticky) return; this.header.classList.add('shopify-section-header-sticky','animate'); this.header.classList.remove('shopify-section-header-hidden'); }
     reset() { if (this.headerIsAlwaysSticky) return; this.header.classList.remove('shopify-section-header-hidden','shopify-section-header-sticky','animate'); }
     closeMenuDisclosure() { this.disclosures = this.disclosures || this.header.querySelectorAll('header-menu'); this.disclosures.forEach(d => d.close()); }
-    closeSearchModal() { this.searchModal = this.searchModal || this.header.querySelector('details-modal'); this.searchModal.close(false); }
+    closeSearchModal() { this.searchModal = this.searchModal || this.header.querySelector('details-modal'); if (this.searchModal) this.searchModal.close(false); }
   }
   customElements.define('sticky-header', StickyHeader);
 {% endjavascript %}
