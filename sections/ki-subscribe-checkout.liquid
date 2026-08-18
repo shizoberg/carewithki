@@ -376,6 +376,7 @@
       errEl.classList.add('is-visible');
     }
 
+
     function decodePack() {
       try {
         var url = new URL(window.location.href);
@@ -438,6 +439,7 @@
       var name = (firstName + ' ' + lastName).trim();
       var email = (data.get('email') || customerEmail || '').trim();
       var phone = (data.get('phone') || '').trim();
+      var referralCode = String(pack.referralCode || '').trim();
 
       /* Adres kaynağı: seçili kayıtlı kart ya da yeni-adres paneli */
       var address = '', city = '', province = '', zip = '';
@@ -462,6 +464,10 @@
       if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { showError('E-posta Shopify hesabından gelir.'); return; }
       if (!isValidTrPhone(phone)) { showError('Geçerli bir telefon gir (05XX XXX XX XX).'); return; }
       if (address.length < 5) { showError('Bir teslimat adresi seç ya da yeni adres gir.'); return; }
+      if (referralCode && !/^\d{4}$/.test(referralCode)) {
+        showError('Referans kodu dört haneli olmalıdır.');
+        return;
+      }
 
       var payload = {
         name: name, email: email, phone: phone, address: address,
@@ -472,7 +478,9 @@
         sellingPlanId: pack.sellingPlanId || '',
         // Gönderim sıklığı (ay) — builder'da seçilir, backend iyzico plan aralığı olarak kullanır.
         // 0 = günlük (test). isNaN kontrolü: 0 geçerli değer, || tuzağına düşmesin.
-        intervalCount: (function () { var v = Number(pack.intervalCount); return isNaN(v) ? 2 : v; })()
+        intervalCount: (function () { var v = Number(pack.intervalCount); return isNaN(v) ? 2 : v; })(),
+        referralCode: referralCode
+        ,analyticsSessionId: window.kiAnalytics && window.kiAnalytics.getSessionId ? window.kiAnalytics.getSessionId() : ''
       };
 
       ctaEl.disabled = true;
@@ -516,6 +524,8 @@
         addInput('totalPrice', payload.totalPrice || '');
         addInput('sellingPlanId', payload.sellingPlanId || '');
         addInput('intervalCount', String(payload.intervalCount == null ? 2 : payload.intervalCount));
+        addInput('referralCode', payload.referralCode || '');
+        addInput('analyticsSessionId', payload.analyticsSessionId || '');
         addInput('boxItemsJson', JSON.stringify(payload.boxItems || []));
         addInput('returnUrl', window.location.href);
 

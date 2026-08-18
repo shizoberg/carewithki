@@ -790,6 +790,48 @@
       font-family: var(--ki-font-primary, serif);
       font-size: 20px; font-weight: 500;
     }
+    #ki-{{ section.id }} .ki-pack__referral {
+      margin-top: 12px;
+      padding: 12px;
+      border: 1px solid rgba(78,62,168,.16);
+      border-radius: 14px;
+      background: #f8f7ff;
+    }
+    #ki-{{ section.id }} .ki-pack__referral-label {
+      display: block;
+      margin-bottom: 7px;
+      color: var(--ki-primary, #3a2d6e);
+      font-size: 12px;
+      font-weight: 700;
+    }
+    #ki-{{ section.id }} .ki-pack__referral-input {
+      width: 100%;
+      min-height: 42px;
+      padding: 9px 12px;
+      border: 1px solid rgba(78,62,168,.22);
+      border-radius: 10px;
+      background: #fff;
+      color: var(--ki-primary, #3a2d6e);
+      font: inherit;
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: .18em;
+      text-align: center;
+    }
+    #ki-{{ section.id }} .ki-pack__referral-input:focus {
+      outline: 0;
+      border-color: var(--ki-primary, #3a2d6e);
+      box-shadow: 0 0 0 3px rgba(78,62,168,.12);
+    }
+    #ki-{{ section.id }} .ki-pack__referral-status {
+      min-height: 16px;
+      margin: 6px 0 0;
+      color: var(--ki-muted, #6f6978);
+      font-size: 10.5px;
+      line-height: 1.4;
+    }
+    #ki-{{ section.id }} .ki-pack__referral-status.is-valid { color: #267154; }
+    #ki-{{ section.id }} .ki-pack__referral-status.is-invalid { color: #a12828; }
 
     /* CTA */
     #ki-{{ section.id }} .ki-pack__cta {
@@ -1402,6 +1444,14 @@
             </div>
           </dl>
 
+          {%- if settings.subscription_enabled -%}
+            <div class="ki-pack__referral">
+              <label class="ki-pack__referral-label" for="ki-pack-referral-{{ section.id }}">Referans kodunuzu buraya giriniz</label>
+              <input id="ki-pack-referral-{{ section.id }}" class="ki-pack__referral-input" type="text" inputmode="numeric" pattern="[0-9]{4}" maxlength="4" autocomplete="off" placeholder="0000" data-ki-pack-referral aria-describedby="ki-pack-referral-status-{{ section.id }}">
+              <p id="ki-pack-referral-status-{{ section.id }}" class="ki-pack__referral-status" data-ki-pack-referral-status>Kodunuz yoksa bu alanı boş bırakabilirsiniz.</p>
+            </div>
+          {%- endif -%}
+
           <button type="button" class="ki-pack__cta" data-ki-pack-cta disabled>
             <span data-ki-pack-cta-text>{{ section.settings.cta_idle | default: 'Önce ürün ekle' }}</span>
           </button>
@@ -1530,6 +1580,48 @@
     var frequencyLabelEl = root.querySelector('[data-ki-pack-frequency-label]');
     var frequencyButtons = root.querySelectorAll('[data-ki-pack-frequency-option]');
     var frequencyNoteEl = root.querySelector('[data-ki-pack-frequency-note]');
+    var referralInput = root.querySelector('[data-ki-pack-referral]');
+    var referralStatus = root.querySelector('[data-ki-pack-referral-status]');
+    var validatedReferralCode = '';
+
+    if (referralInput) {
+      referralInput.addEventListener('input', function () {
+        referralInput.value = referralInput.value.replace(/\D/g, '').slice(0, 4);
+        validatedReferralCode = '';
+        referralStatus.className = 'ki-pack__referral-status';
+        referralStatus.textContent = referralInput.value.length
+          ? 'Kod devam etmeden önce doğrulanacak.'
+          : 'Kodunuz yoksa bu alanı boş bırakabilirsiniz.';
+      });
+    }
+
+    async function validateReferralCode() {
+      if (!referralInput || !referralInput.value) return '';
+      var code = referralInput.value.trim();
+      if (!/^\d{4}$/.test(code)) throw new Error('Referans kodu 4 haneli olmalıdır.');
+      if (validatedReferralCode === code) return code;
+      var apiBase = (window.kiConfig && window.kiConfig.subscriptionApiBase) || '';
+      if (!apiBase) throw new Error('Referans kodu doğrulama servisi hazır değil.');
+      referralStatus.className = 'ki-pack__referral-status';
+      referralStatus.textContent = 'Kod doğrulanıyor…';
+      var response = await fetch(apiBase + '/api/subscribe/referral/validate?code=' + encodeURIComponent(code), {
+        headers: { 'Accept': 'application/json', 'ngrok-skip-browser-warning': '1' },
+        credentials: 'include'
+      });
+      var result = {}; try { result = await response.json(); } catch (_) {}
+      if (!response.ok || !result.success) {
+        referralStatus.className = 'ki-pack__referral-status is-invalid';
+        referralStatus.textContent = result.error || result.message || 'Referans kodu geçersiz.';
+        throw new Error(referralStatus.textContent);
+      }
+      validatedReferralCode = code;
+      var referral = result.data || {};
+      referralStatus.className = 'ki-pack__referral-status is-valid';
+      referralStatus.textContent = referral.discountPercent > 0
+        ? 'Kod onaylandı · %' + referral.discountPercent + ' referans indirimi'
+        : 'Referans kodu onaylandı.';
+      return code;
+    }
 
     function optionMonths(option) {
       if (!option) return 2;
@@ -1598,6 +1690,9 @@
           if (button.disabled) return;
           var _bm = parseInt(button.getAttribute('data-ki-pack-frequency-months'), 10);
           selectFrequency(isNaN(_bm) ? 2 : _bm);
+          if (window.kiAnalytics && window.kiAnalytics.track) {
+            window.kiAnalytics.track('PACK_FREQUENCY_CHANGED', { metadata: { months: isNaN(_bm) ? 2 : _bm } });
+          }
         });
       });
     }
@@ -1632,6 +1727,9 @@
     var items = root.querySelectorAll('[data-ki-pack-item]');
     var qtyMap = {};
     var removedIds = [];
+    function trackPack(eventName, data) {
+      if (window.kiAnalytics && window.kiAnalytics.track) window.kiAnalytics.track(eventName, data || {});
+    }
     function fmt(n) { return '₺' + Number(n).toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
     function escapeHtml(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]; }); }
     function itemMeta(el) {
@@ -1797,6 +1895,8 @@
       var ri = removedIds.indexOf(id);
       if (ri !== -1) removedIds.splice(ri, 1);
       recalc();
+      var meta = itemMeta(item);
+      trackPack('PACK_ITEM_ADDED', { productId: id, variantId: item.getAttribute('data-ki-pack-variant-id'), productTitle: meta.name, value: meta.price, metadata: { quantity: qtyMap[id], step: step } });
     }
     function subQty(id, step) {
       var prev = qtyMap[id] || 0;
@@ -1805,6 +1905,9 @@
         removedIds = [id].concat(removedIds.filter(function (x) { return x !== id; })).slice(0, 5);
       }
       recalc();
+      var item = root.querySelector('[data-ki-pack-item="' + id + '"]');
+      var meta = item ? itemMeta(item) : { name: '' };
+      trackPack('PACK_ITEM_REMOVED', { productId: id, variantId: item ? item.getAttribute('data-ki-pack-variant-id') : '', productTitle: meta.name, metadata: { quantity: qtyMap[id], step: step } });
     }
 
     items.forEach(function (it) {
@@ -1942,6 +2045,7 @@
       errEl.classList.remove('is-visible');
       var lines = JSON.parse(root.dataset.kiPackLines || '[]');
       if (!lines.length) return;
+      trackPack('SUBSCRIBE_CTA_CLICK', { metadata: { source: 'pack-builder', itemCount: lines.length } });
       openDialog();
     });
 
@@ -1984,6 +2088,7 @@
             sellingPlanId: sellingPlanId || '',
             intervalCount: intervalMonths,
             packName: packName,
+            referralCode: await validateReferralCode(),
             source: 'ki-pack-builder'
           };
           var encoded = encodeURIComponent(btoa(unescape(encodeURIComponent(JSON.stringify(payload)))));

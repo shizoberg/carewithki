@@ -570,6 +570,17 @@
       padding: 2px 4px 2px 1px;
       overscroll-behavior: contain;
     }
+    #ki-{{ section.id }} .ki-pr__editor-empty {
+      grid-column: 1 / -1;
+      margin: 0;
+      padding: 24px;
+      border: 1px dashed #dcd6ed;
+      border-radius: 16px;
+      background: #faf9ff;
+      color: var(--ki-muted, #6f6a75);
+      font-size: 13px;
+      text-align: center;
+    }
     #ki-{{ section.id }} .ki-pr__editor-product {
       min-width: 0;
       display: grid;
@@ -1237,9 +1248,17 @@
       return String(value || '').toLocaleLowerCase('tr-TR').replace(/\s+/g, ' ').trim();
     }
 
+    function isVisibleEditorProduct(product) {
+      var title = normalizedTitle(product.title);
+      var isSystemProduct = title.indexOf('test') !== -1
+        || title.indexOf('ki member') !== -1
+        || title.indexOf('abonelik kutusu') !== -1;
+      return !isSystemProduct && Boolean(product.image) && Number(product.price || 0) > 0;
+    }
+
     function buildEditorProducts(box) {
       var existingItems = box.items || [];
-      var result = shopifyProductCatalog.map(function (catalogItem) {
+      var result = shopifyProductCatalog.filter(isVisibleEditorProduct).map(function (catalogItem) {
         return {
           variantId: String(catalogItem.variantId || ''),
           variantGid: catalogItem.variantGid || '',
@@ -1252,6 +1271,8 @@
       });
 
       existingItems.forEach(function (existingItem) {
+        var existingImage = itemImageUrl(existingItem);
+        if (!isVisibleEditorProduct({ title: existingItem.title, image: existingImage, price: existingItem.price })) return;
         var existingVariantId = itemVariantId(existingItem);
         var existingTitle = normalizedTitle(existingItem.title);
         var match = null;
@@ -1267,14 +1288,14 @@
             variantGid: existingItem.shopifyVariantGid || (existingVariantId ? 'gid://shopify/ProductVariant/' + existingVariantId : ''),
             title: existingItem.title || 'Paket ürünü',
             price: Number(existingItem.price || 0),
-            image: itemImageUrl(existingItem),
+            image: existingImage,
             isPed: /ped/i.test(existingItem.title || ''),
             quantity: 0
           };
           result.unshift(match);
         }
         match.quantity = Math.max(0, Number(existingItem.quantity || existingItem.physicalQuantity || 0));
-        if (!match.image) match.image = itemImageUrl(existingItem);
+        if (!match.image) match.image = existingImage;
         if (!match.price) match.price = Number(existingItem.price || 0);
       });
       return result;
@@ -1339,7 +1360,7 @@
       var saveButton = overlay.querySelector('[data-editor-save]');
 
       function renderEditor() {
-        productList.innerHTML = products.map(function (product, index) {
+        productList.innerHTML = products.length ? products.map(function (product, index) {
           var imageHtml = product.image
             ? '<img src="' + escapeHtml(product.image) + '" alt="' + escapeHtml(product.title) + '" loading="lazy" width="54" height="54">'
             : '<svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path d="m4 7 8-4 8 4-8 4-8-4Z" fill="none" stroke="#766bb6" stroke-width="1.6"></path><path d="M4 7v10l8 4 8-4V7M12 11v10" fill="none" stroke="#766bb6" stroke-width="1.6"></path></svg>';
@@ -1355,7 +1376,7 @@
             +   '</div>'
             + '</div>'
             + '</article>';
-        }).join('');
+        }).join('') : '<p class="ki-pr__editor-empty">Düzenlenebilir ürün bulunamadı.</p>';
         var count = 0;
         var total = 0;
         products.forEach(function (product) {

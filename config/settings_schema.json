@@ -1505,6 +1505,7 @@
       { "type": "header", "content": "Backend bağlantısı (carewithki abonelik)" },
       { "type": "checkbox", "id": "subscription_enabled", "label": "Subscription butonlarını göster", "default": true },
       { "type": "url",  "id": "subscription_api_base",         "label": "API base URL", "info": "Sondaki / olmadan, örn: https://api.carewithki.com (dev: ngrok URL)" },
+      { "type": "url",  "id": "analytics_api_base",            "label": "Analytics API base URL", "info": "Boş bırakılırsa abonelik API adresi kullanılır. Demo için: https://demo.carewithki.com" },
       { "type": "text", "id": "subscription_api_public_token", "label": "Public token (Bearer)" },
       { "type": "url",  "id": "subscription_checkout_url",     "label": "Abonelik checkout URL", "info": "Örn: https://shop.com/pages/paket-checkout" },
       { "type": "url",  "id": "subscription_portal_url",       "label": "Abonelik portal URL",   "info": "Örn: https://shop.com/pages/abonelik-portalim" },
