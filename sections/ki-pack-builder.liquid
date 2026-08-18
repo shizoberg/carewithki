@@ -833,6 +833,97 @@
     #ki-{{ section.id }} .ki-pack__referral-status.is-valid { color: #267154; }
     #ki-{{ section.id }} .ki-pack__referral-status.is-invalid { color: #a12828; }
 
+    #ki-{{ section.id }} .ki-pack__doctor-dialog {
+      position: fixed;
+      inset: 0;
+      z-index: 10000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background: rgba(25, 18, 54, .56);
+      backdrop-filter: blur(6px);
+    }
+    #ki-{{ section.id }} .ki-pack__doctor-dialog.is-open { display: flex; }
+    #ki-{{ section.id }} .ki-pack__doctor-panel {
+      width: min(100%, 430px);
+      padding: 24px;
+      border: 1px solid rgba(78, 62, 168, .16);
+      border-radius: 24px;
+      background: #fff;
+      box-shadow: 0 24px 70px rgba(31, 23, 70, .24);
+    }
+    #ki-{{ section.id }} .ki-pack__doctor-kicker {
+      margin: 0 0 6px;
+      color: var(--ki-primary-medium, #6254b4);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+    }
+    #ki-{{ section.id }} .ki-pack__doctor-title {
+      margin: 0;
+      color: var(--ki-primary, #3a2d6e);
+      font-size: 25px;
+      line-height: 1.15;
+    }
+    #ki-{{ section.id }} .ki-pack__doctor-copy {
+      margin: 10px 0 18px;
+      color: var(--ki-muted, #6f6978);
+      font-size: 14px;
+      line-height: 1.55;
+    }
+    #ki-{{ section.id }} .ki-pack__doctor-input {
+      width: 100%;
+      min-height: 52px;
+      padding: 12px 16px;
+      border: 1px solid rgba(78, 62, 168, .25);
+      border-radius: 14px;
+      color: var(--ki-primary, #3a2d6e);
+      background: #f9f8ff;
+      font: inherit;
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: .22em;
+      text-align: center;
+    }
+    #ki-{{ section.id }} .ki-pack__doctor-input:focus {
+      outline: 0;
+      border-color: var(--ki-primary, #3a2d6e);
+      box-shadow: 0 0 0 4px rgba(78, 62, 168, .12);
+    }
+    #ki-{{ section.id }} .ki-pack__doctor-error {
+      min-height: 18px;
+      margin: 7px 0 0;
+      color: #a12828;
+      font-size: 12px;
+    }
+    #ki-{{ section.id }} .ki-pack__doctor-actions {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 9px;
+      margin-top: 12px;
+    }
+    #ki-{{ section.id }} .ki-pack__doctor-apply,
+    #ki-{{ section.id }} .ki-pack__doctor-skip {
+      min-height: 46px;
+      border-radius: 999px;
+      font: inherit;
+      font-weight: 750;
+      cursor: pointer;
+    }
+    #ki-{{ section.id }} .ki-pack__doctor-apply {
+      border: 0;
+      background: var(--ki-primary, #3a2d6e);
+      color: #fff;
+    }
+    #ki-{{ section.id }} .ki-pack__doctor-apply:disabled { opacity: .6; cursor: wait; }
+    #ki-{{ section.id }} .ki-pack__doctor-skip {
+      border: 1px solid rgba(78, 62, 168, .18);
+      background: #fff;
+      color: var(--ki-primary, #3a2d6e);
+    }
+
     /* CTA */
     #ki-{{ section.id }} .ki-pack__cta {
       margin-top: 14px;
@@ -1448,7 +1539,7 @@
             <div class="ki-pack__referral">
               <label class="ki-pack__referral-label" for="ki-pack-referral-{{ section.id }}">Referans kodunuzu buraya giriniz</label>
               <input id="ki-pack-referral-{{ section.id }}" class="ki-pack__referral-input" type="text" inputmode="numeric" pattern="[0-9]{4}" maxlength="4" autocomplete="off" placeholder="0000" data-ki-pack-referral aria-describedby="ki-pack-referral-status-{{ section.id }}">
-              <p id="ki-pack-referral-status-{{ section.id }}" class="ki-pack__referral-status" data-ki-pack-referral-status>Kodunuz yoksa bu alanı boş bırakabilirsiniz.</p>
+              <p id="ki-pack-referral-status-{{ section.id }}" class="ki-pack__referral-status" data-ki-pack-referral-status>Doktorunuzdan veya danışmanınızdan gelen kodu giriniz. Kodunuz yoksa bu alanı boş bırakabilirsiniz.</p>
             </div>
           {%- endif -%}
 
@@ -1565,6 +1656,20 @@
       </div>
     </div>
   </div>
+
+  <div class="ki-pack__doctor-dialog" data-ki-pack-doctor-dialog role="dialog" aria-modal="true" aria-labelledby="ki-pack-doctor-title-{{ section.id }}" aria-hidden="true">
+    <div class="ki-pack__doctor-panel">
+      <p class="ki-pack__doctor-kicker">Doktor / danışman yönlendirmesi</p>
+      <h3 id="ki-pack-doctor-title-{{ section.id }}" class="ki-pack__doctor-title">Referans kodunu gir</h3>
+      <p class="ki-pack__doctor-copy">Doktorunuzdan veya danışmanınızdan gelen 4 haneli kodu girerek paketini oluşturmaya başlayabilirsin.</p>
+      <input class="ki-pack__doctor-input" type="text" inputmode="numeric" pattern="[0-9]{4}" maxlength="4" autocomplete="one-time-code" placeholder="0000" data-ki-pack-doctor-code>
+      <p class="ki-pack__doctor-error" data-ki-pack-doctor-error aria-live="polite"></p>
+      <div class="ki-pack__doctor-actions">
+        <button type="button" class="ki-pack__doctor-apply" data-ki-pack-doctor-apply>Kodu uygula</button>
+        <button type="button" class="ki-pack__doctor-skip" data-ki-pack-doctor-skip>Kodsuz devam et</button>
+      </div>
+    </div>
+  </div>
 </section>
 
 <script>
@@ -1583,6 +1688,12 @@
     var referralInput = root.querySelector('[data-ki-pack-referral]');
     var referralStatus = root.querySelector('[data-ki-pack-referral-status]');
     var validatedReferralCode = '';
+    var doctorDialog = root.querySelector('[data-ki-pack-doctor-dialog]');
+    var doctorCodeInput = root.querySelector('[data-ki-pack-doctor-code]');
+    var doctorCodeError = root.querySelector('[data-ki-pack-doctor-error]');
+    var doctorApplyButton = root.querySelector('[data-ki-pack-doctor-apply]');
+    var doctorSkipButton = root.querySelector('[data-ki-pack-doctor-skip]');
+    var isDoctorReferralPage = /^\/pages\/abone-ol-doktor\/?$/.test(window.location.pathname);
 
     if (referralInput) {
       referralInput.addEventListener('input', function () {
@@ -1591,7 +1702,7 @@
         referralStatus.className = 'ki-pack__referral-status';
         referralStatus.textContent = referralInput.value.length
           ? 'Kod devam etmeden önce doğrulanacak.'
-          : 'Kodunuz yoksa bu alanı boş bırakabilirsiniz.';
+          : 'Doktorunuzdan veya danışmanınızdan gelen kodu giriniz. Kodunuz yoksa bu alanı boş bırakabilirsiniz.';
       });
     }
 
@@ -1621,6 +1732,57 @@
         ? 'Kod onaylandı · %' + referral.discountPercent + ' referans indirimi'
         : 'Referans kodu onaylandı.';
       return code;
+    }
+
+    function setDoctorDialogOpen(open) {
+      if (!doctorDialog) return;
+      doctorDialog.classList.toggle('is-open', open);
+      doctorDialog.setAttribute('aria-hidden', open ? 'false' : 'true');
+      document.documentElement.style.overflow = open ? 'hidden' : '';
+      if (open && doctorCodeInput) window.setTimeout(function () { doctorCodeInput.focus(); }, 40);
+    }
+
+    if (isDoctorReferralPage && doctorDialog && referralInput) {
+      var doctorParams = new URLSearchParams(window.location.search);
+      var prefilledDoctorCode = String(doctorParams.get('ref') || doctorParams.get('referans') || '').replace(/\D/g, '').slice(0, 4);
+      if (doctorCodeInput) doctorCodeInput.value = prefilledDoctorCode;
+      setDoctorDialogOpen(true);
+
+      if (doctorCodeInput) {
+        doctorCodeInput.addEventListener('input', function () {
+          doctorCodeInput.value = doctorCodeInput.value.replace(/\D/g, '').slice(0, 4);
+          if (doctorCodeError) doctorCodeError.textContent = '';
+        });
+        doctorCodeInput.addEventListener('keydown', function (event) {
+          if (event.key === 'Enter' && doctorApplyButton) doctorApplyButton.click();
+        });
+      }
+
+      if (doctorApplyButton) doctorApplyButton.addEventListener('click', async function () {
+        var code = doctorCodeInput ? doctorCodeInput.value.trim() : '';
+        if (!/^\d{4}$/.test(code)) {
+          if (doctorCodeError) doctorCodeError.textContent = 'Lütfen 4 haneli referans kodunu gir.';
+          return;
+        }
+        doctorApplyButton.disabled = true;
+        doctorApplyButton.textContent = 'Doğrulanıyor…';
+        referralInput.value = code;
+        validatedReferralCode = '';
+        try {
+          await validateReferralCode();
+          setDoctorDialogOpen(false);
+          root.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        } catch (error) {
+          if (doctorCodeError) doctorCodeError.textContent = error.message || 'Referans kodu doğrulanamadı.';
+        } finally {
+          doctorApplyButton.disabled = false;
+          doctorApplyButton.textContent = 'Kodu uygula';
+        }
+      });
+
+      if (doctorSkipButton) doctorSkipButton.addEventListener('click', function () {
+        setDoctorDialogOpen(false);
+      });
     }
 
     function optionMonths(option) {
