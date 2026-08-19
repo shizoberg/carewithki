@@ -631,8 +631,20 @@
       color: var(--ki-primary, #3a2d6e);
     }
     #ki-{{ section.id }} .ki-pack__ship {
+      width: fit-content;
+      min-height: 36px;
+      justify-self: start;
+      padding: 6px 10px;
+      gap: 7px;
+      border-radius: 10px;
       background: var(--ki-secondary, #ebe9f5);
       font-size: 12px; font-weight: 600;
+    }
+    #ki-{{ section.id }} .ki-pack__ship .ki-pack__benefit-icon {
+      width: 24px;
+      height: 24px;
+      flex-basis: 24px;
+      border-radius: 8px;
     }
     #ki-{{ section.id }} .ki-pack__benefit-icon {
       width: 30px;
@@ -650,6 +662,10 @@
       background: linear-gradient(135deg, #f4f2ff 0%, #eeebff 100%);
       border-color: rgba(73,61,154,.14);
     }
+    #ki-{{ section.id }} .ki-pack__benefit-content {
+      flex: 1;
+      min-width: 0;
+    }
     #ki-{{ section.id }} .ki-pack__benefit-title {
       display: block;
       font-size: 11.5px;
@@ -662,6 +678,109 @@
       color: var(--ki-muted, #6f6978);
       font-size: 10.5px;
       line-height: 1.4;
+    }
+    #ki-{{ section.id }} .ki-pack__benefit-info {
+      width: 28px;
+      height: 28px;
+      flex: 0 0 28px;
+      display: grid;
+      place-items: center;
+      margin: 1px 0 0 auto;
+      padding: 0;
+      border: 1px solid rgba(73,61,154,.2);
+      border-radius: 50%;
+      background: rgba(255,255,255,.82);
+      color: var(--ki-primary, #3a2d6e);
+      font: inherit;
+      font-size: 13px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: transform .15s ease, background .15s ease;
+    }
+    #ki-{{ section.id }} .ki-pack__benefit-info:hover {
+      transform: translateY(-1px);
+      background: #fff;
+    }
+    #ki-{{ section.id }} .ki-pack__benefit-info:focus-visible {
+      outline: 2px solid var(--ki-primary-medium, #6254b4);
+      outline-offset: 2px;
+    }
+
+    #ki-{{ section.id }} .ki-pack__pharmacist-dialog {
+      position: fixed;
+      inset: 0;
+      z-index: 10001;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background: rgba(25,18,54,.58);
+      backdrop-filter: blur(6px);
+    }
+    #ki-{{ section.id }} .ki-pack__pharmacist-dialog.is-open { display: flex; }
+    #ki-{{ section.id }} .ki-pack__pharmacist-panel {
+      position: relative;
+      width: min(100%, 460px);
+      overflow: hidden;
+      border: 1px solid rgba(78,62,168,.16);
+      border-radius: 24px;
+      background: #fff;
+      box-shadow: 0 24px 70px rgba(31,23,70,.26);
+    }
+    #ki-{{ section.id }} .ki-pack__pharmacist-close {
+      position: absolute;
+      z-index: 1;
+      top: 12px;
+      right: 12px;
+      width: 36px;
+      height: 36px;
+      display: grid;
+      place-items: center;
+      padding: 0;
+      border: 1px solid rgba(73,61,154,.14);
+      border-radius: 50%;
+      background: rgba(255,255,255,.92);
+      color: var(--ki-primary, #3a2d6e);
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(31,23,70,.1);
+    }
+    #ki-{{ section.id }} .ki-pack__pharmacist-media {
+      aspect-ratio: 16 / 9;
+      background: linear-gradient(135deg, #eeebff, #dcd6ff);
+    }
+    #ki-{{ section.id }} .ki-pack__pharmacist-media img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+    }
+    #ki-{{ section.id }} .ki-pack__pharmacist-body { padding: 22px 24px 26px; }
+    #ki-{{ section.id }} .ki-pack__pharmacist-kicker {
+      margin: 0 0 7px;
+      color: var(--ki-primary-medium, #6254b4);
+      font-size: 10.5px;
+      font-weight: 800;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+    }
+    #ki-{{ section.id }} .ki-pack__pharmacist-title {
+      margin: 0;
+      color: var(--ki-primary, #3a2d6e);
+      font-size: 24px;
+      line-height: 1.18;
+    }
+    #ki-{{ section.id }} .ki-pack__pharmacist-copy {
+      margin: 11px 0 0;
+      color: var(--ki-muted, #6f6978);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+    @media (max-width: 480px) {
+      #ki-{{ section.id }} .ki-pack__pharmacist-dialog { padding: 14px; }
+      #ki-{{ section.id }} .ki-pack__pharmacist-panel { border-radius: 20px; }
+      #ki-{{ section.id }} .ki-pack__pharmacist-body { padding: 19px 18px 22px; }
+      #ki-{{ section.id }} .ki-pack__pharmacist-title { font-size: 21px; }
+      #ki-{{ section.id }} .ki-pack__pharmacist-copy { font-size: 13px; }
     }
 
     /* Removed / suggested helper sections */
@@ -1565,10 +1684,11 @@
                 <span class="ki-pack__benefit-icon" aria-hidden="true">
                   {% render 'ki-icon', name: 'help-circle', size: 17 %}
                 </span>
-                <span>
+                <span class="ki-pack__benefit-content">
                   <strong class="ki-pack__benefit-title">{{ section.settings.pharmacist_benefit_title | default: 'Abonelere özel: 15 dk Eczacına Sor' }}</strong>
                   <span class="ki-pack__benefit-copy">{{ section.settings.pharmacist_benefit_copy | default: 'Dilediğin soruyu uzman eczacımıza ücretsiz sorabilirsin.' }}</span>
                 </span>
+                <button type="button" class="ki-pack__benefit-info" data-ki-pack-pharmacist-info aria-label="Eczacı avantajı hakkında bilgi" aria-haspopup="dialog">i</button>
               </div>
             {%- endif -%}
           </div>
@@ -1710,6 +1830,26 @@
     </div>
   </div>
 
+  {%- if settings.subscription_enabled -%}
+    <div class="ki-pack__pharmacist-dialog" data-ki-pack-pharmacist-dialog role="dialog" aria-modal="true" aria-labelledby="ki-pack-pharmacist-title-{{ section.id }}" aria-hidden="true">
+      <div class="ki-pack__pharmacist-panel">
+        <button type="button" class="ki-pack__pharmacist-close" data-ki-pack-pharmacist-close aria-label="Bilgi penceresini kapat">
+          {% render 'ki-icon', name: 'close', size: 16 %}
+        </button>
+        {%- if section.settings.pharmacist_benefit_image != blank -%}
+          <div class="ki-pack__pharmacist-media">
+            {{ section.settings.pharmacist_benefit_image | image_url: width: 960 | image_tag: loading: 'lazy', widths: '360, 540, 720, 960', sizes: '(max-width: 480px) calc(100vw - 28px), 460px', alt: section.settings.pharmacist_benefit_image.alt }}
+          </div>
+        {%- endif -%}
+        <div class="ki-pack__pharmacist-body">
+          <p class="ki-pack__pharmacist-kicker">Abonelere özel</p>
+          <h3 id="ki-pack-pharmacist-title-{{ section.id }}" class="ki-pack__pharmacist-title">{{ section.settings.pharmacist_modal_title | default: 'Her ay eczacınla buluş' }}</h3>
+          <p class="ki-pack__pharmacist-copy">{{ section.settings.pharmacist_modal_copy | default: 'Abone olanlara özel ilettiğimiz bağlantı sayesinde her ay düzenli eczacı ile online konferans yapabileceksiniz.' }}</p>
+        </div>
+      </div>
+    </div>
+  {%- endif -%}
+
   <div class="ki-pack__doctor-dialog" data-ki-pack-doctor-dialog role="dialog" aria-modal="true" aria-labelledby="ki-pack-doctor-title-{{ section.id }}" aria-hidden="true">
     <div class="ki-pack__doctor-panel">
       <p class="ki-pack__doctor-kicker">Doktor / danışman yönlendirmesi</p>
@@ -1741,12 +1881,34 @@
     var referralInput = root.querySelector('[data-ki-pack-referral]');
     var referralStatus = root.querySelector('[data-ki-pack-referral-status]');
     var validatedReferralCode = '';
+    var pharmacistInfoButton = root.querySelector('[data-ki-pack-pharmacist-info]');
+    var pharmacistDialog = root.querySelector('[data-ki-pack-pharmacist-dialog]');
+    var pharmacistDialogClose = root.querySelector('[data-ki-pack-pharmacist-close]');
     var doctorDialog = root.querySelector('[data-ki-pack-doctor-dialog]');
     var doctorCodeInput = root.querySelector('[data-ki-pack-doctor-code]');
     var doctorCodeError = root.querySelector('[data-ki-pack-doctor-error]');
     var doctorApplyButton = root.querySelector('[data-ki-pack-doctor-apply]');
     var doctorSkipButton = root.querySelector('[data-ki-pack-doctor-skip]');
     var isDoctorReferralPage = /^\/pages\/abone-ol-doktor\/?$/.test(window.location.pathname);
+
+    function setPharmacistDialogOpen(open) {
+      if (!pharmacistDialog) return;
+      pharmacistDialog.classList.toggle('is-open', open);
+      pharmacistDialog.setAttribute('aria-hidden', open ? 'false' : 'true');
+      document.documentElement.style.overflow = open ? 'hidden' : '';
+      if (open && pharmacistDialogClose) window.setTimeout(function () { pharmacistDialogClose.focus(); }, 40);
+      if (!open && pharmacistInfoButton) pharmacistInfoButton.focus();
+    }
+
+    if (pharmacistInfoButton) pharmacistInfoButton.addEventListener('click', function () {
+      setPharmacistDialogOpen(true);
+    });
+    if (pharmacistDialogClose) pharmacistDialogClose.addEventListener('click', function () {
+      setPharmacistDialogOpen(false);
+    });
+    if (pharmacistDialog) pharmacistDialog.addEventListener('click', function (event) {
+      if (event.target === pharmacistDialog) setPharmacistDialogOpen(false);
+    });
 
     if (referralInput) {
       referralInput.addEventListener('input', function () {
@@ -2252,6 +2414,7 @@
     }
     document.addEventListener('keydown', function (e) {
       if (e.key === 'Escape' && dialog && dialog.classList.contains('is-open')) closeDialog();
+      if (e.key === 'Escape' && pharmacistDialog && pharmacistDialog.classList.contains('is-open')) setPharmacistDialogOpen(false);
     });
 
     var ctaEl = root.querySelector('[data-ki-pack-cta]');
@@ -2365,6 +2528,9 @@
     { "type": "text", "id": "howit_title", "label": "Nasıl çalışır başlığı", "default": "Nasıl çalışır?" },
     { "type": "text", "id": "pharmacist_benefit_title", "label": "Eczacı avantajı başlığı", "default": "Abonelere özel: 15 dk Eczacına Sor" },
     { "type": "textarea", "id": "pharmacist_benefit_copy", "label": "Eczacı avantajı açıklaması", "default": "Dilediğin soruyu uzman eczacımıza ücretsiz sorabilirsin." },
+    { "type": "image_picker", "id": "pharmacist_benefit_image", "label": "Eczacı ekip fotoğrafı" },
+    { "type": "text", "id": "pharmacist_modal_title", "label": "Eczacı bilgi penceresi başlığı", "default": "Her ay eczacınla buluş" },
+    { "type": "textarea", "id": "pharmacist_modal_copy", "label": "Eczacı bilgi penceresi açıklaması", "default": "Abone olanlara özel ilettiğimiz bağlantı sayesinde her ay düzenli eczacı ile online konferans yapabileceksiniz." },
     { "type": "number", "id": "ped_monthly_threshold", "label": "Yalnızca ped içeren pakette aylık gönderim eşiği (₺)", "default": 500 },
     { "type": "range", "id": "subscription_discount_percent", "label": "Takviye, jel ve sprey abonelik indirimi", "min": 0, "max": 30, "step": 1, "unit": "%", "default": 10 }
   ],
