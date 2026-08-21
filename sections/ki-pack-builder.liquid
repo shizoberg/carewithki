@@ -253,6 +253,26 @@
       overflow: hidden;
       text-overflow: ellipsis;
     }
+    #ki-{{ section.id }} .ki-pack__pad-size {
+      width: 48px;
+      height: 24px;
+      flex: 0 0 48px;
+      overflow: visible;
+      color: var(--ki-primary, #493d9a);
+    }
+    #ki-{{ section.id }} .ki-pack__pad-shape {
+      fill: rgba(73,61,154,.05);
+      stroke: currentColor;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      opacity: .42;
+      vector-effect: non-scaling-stroke;
+    }
+    #ki-{{ section.id }} .ki-pack__pad-shape.is-active {
+      fill: currentColor;
+      opacity: 1;
+    }
     #ki-{{ section.id }} .ki-pack__item-badge {
       font-size: 9px; font-weight: 700;
       letter-spacing: .04em; text-transform: uppercase;
@@ -1512,6 +1532,18 @@
                     {%- for itemBlock in section.blocks -%}
                       {%- if itemBlock.type == 'product' and itemBlock.settings.category_key == catBlock.settings.key -%}
                         {%- assign p = itemBlock.settings.product -%}
+                        {%- assign item_name_normalized = itemBlock.settings.name_override | default: p.title | downcase -%}
+                        {%- assign item_short_normalized = itemBlock.settings.short | downcase -%}
+                        {%- assign ped_size = blank -%}
+                        {%- if catBlock.settings.key == 'ped' -%}
+                          {%- if item_name_normalized contains 'günlük' or item_short_normalized contains '155' -%}
+                            {%- assign ped_size = 'small' -%}
+                          {%- elsif item_name_normalized contains 'gündüz' or item_name_normalized contains 'normal' or item_short_normalized contains '245' -%}
+                            {%- assign ped_size = 'medium' -%}
+                          {%- elsif item_name_normalized contains 'gece' or item_short_normalized contains '335' -%}
+                            {%- assign ped_size = 'large' -%}
+                          {%- endif -%}
+                        {%- endif -%}
                         {%- if itemBlock.id == 'p-gunluk' -%}
                           {%- if p == blank or p.handle == 'ki-hijyenik-gece-ped' -%}
                             {%- assign p = all_products['ki-hijyenik-gunduz-ped'] -%}
@@ -1555,6 +1587,9 @@
                             <div class="ki-pack__item-info">
                               <div class="ki-pack__item-name">
                                 <span>{{ itemBlock.settings.name_override | default: p.title }}</span>
+                                {%- if ped_size != blank -%}
+                                  {% render 'ki-pad-size-icon', active: ped_size %}
+                                {%- endif -%}
                                 {%- if itemBlock.settings.badge != blank -%}
                                   <span class="ki-pack__item-badge">{{ itemBlock.settings.badge }}</span>
                                 {%- endif -%}
@@ -1615,6 +1650,9 @@
                             <div class="ki-pack__item-info">
                               <div class="ki-pack__item-name">
                                 <span>{{ itemBlock.settings.name_override | default: 'Ürün' }}</span>
+                                {%- if ped_size != blank -%}
+                                  {% render 'ki-pad-size-icon', active: ped_size %}
+                                {%- endif -%}
                                 {%- if itemBlock.settings.badge != blank -%}
                                   <span class="ki-pack__item-badge">{{ itemBlock.settings.badge }}</span>
                                 {%- endif -%}
