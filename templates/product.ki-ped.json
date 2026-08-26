@@ -1,0 +1,233 @@
+{
+  "sections": {
+    "ped_hero": {
+      "type": "ki-ped-pdp-hero",
+      "blocks": {
+        "daily": {
+          "type": "pad_option",
+          "settings": {
+            "product": "ki-hijyenik-gunduz-ped",
+            "name": ".ki Günlük Ped",
+            "size_type": "small",
+            "dimension": "155 mm",
+            "pack_count": "Günlük kullanım",
+            "short_description": "Hafif akıntı ve günlük tazelik"
+          }
+        },
+        "day": {
+          "type": "pad_option",
+          "settings": {
+            "product": "ki-normal-ped",
+            "name": ".ki Gündüz Ped",
+            "size_type": "medium",
+            "dimension": "245 mm",
+            "pack_count": "Gündüz koruması",
+            "short_description": "Orta yoğun akış için"
+          }
+        },
+        "night": {
+          "type": "pad_option",
+          "settings": {
+            "product": "ki-hijyenik-gece-ped",
+            "name": ".ki Gece Ped",
+            "size_type": "large",
+            "dimension": "335 mm",
+            "pack_count": "Gece koruması",
+            "short_description": "Yoğun akış ve uzun koruma"
+          }
+        }
+      },
+      "block_order": ["daily", "day", "night"],
+      "settings": {
+        "background": "#ffffff",
+        "padding_y": 40,
+        "eyebrow": "Bilimsel yaklaşımla geliştirilen hijyenik ped",
+        "rating": "4.9",
+        "review_count": "Değerlendirmeler yakında",
+        "fallback_description": "%95 pamuk ve %5 bambu lifli üst yüzey; Pelin otu özüyle zenginleştirilen, hassas cilt ihtiyaçları gözetilerek geliştirilen ped serisi.",
+        "purchase_title": "Ped boyunu seç",
+        "cta_label": "Sepete Ekle",
+        "trust_1": "%95 Pamuk · %5 Bambu",
+        "trust_2": "Uzman yaklaşımıyla geliştirildi",
+        "trust_3": "Ücretsiz kargo"
+      }
+    },
+    "ped_science": {
+      "type": "ki-ped-science",
+      "blocks": {
+        "cotton": {
+          "type": "material",
+          "settings": {
+            "icon": "cotton",
+            "metric": "%95 Pamuk",
+            "title": "Yumuşak pamuklu üst yüzey",
+            "description": "Cilde temas eden üst yüzeyde yumuşak ve konforlu bir his sağlamaya yardımcı olur.",
+            "reason": "Hassas ciltle temas eden yüzeyde yumuşaklığı önceliklendirmek için."
+          }
+        },
+        "bamboo": {
+          "type": "material",
+          "settings": {
+            "icon": "bamboo",
+            "metric": "%5 Bambu",
+            "title": "Bambu lifli dokunuş",
+            "description": "Hafif ve nefes alabilen yüzey yapısını destekleyen doğal lif yaklaşımı sunar.",
+            "reason": "Günlük kullanımda ferah ve hafif bir yüzey hissini desteklemek için."
+          }
+        },
+        "mugwort": {
+          "type": "material",
+          "settings": {
+            "icon": "mugwort",
+            "metric": "Pelin Otu Özü",
+            "title": "Bitkisel bakım yaklaşımı",
+            "description": "Pelin otu özü, ped serisinin bitkisel içerik hikâyesini tamamlar.",
+            "reason": "Geleneksel bitki bilgisini modern kişisel bakım yaklaşımıyla buluşturmak için."
+          }
+        }
+      },
+      "block_order": ["cotton", "bamboo", "mugwort"],
+      "settings": {
+        "background": "#f6f4fc",
+        "padding_y": 64,
+        "eyebrow": "İçeriği saklamıyoruz",
+        "heading": "Her katmanın bir nedeni var",
+        "subtitle": "Cilde temas eden yüzeyden bitkisel içeriğe kadar her bileşeni, günlük konfor ve hassas kullanım ihtiyacını gözeterek seçtik.",
+        "proof_1": "Uzman eczacı yaklaşımıyla geliştirildi",
+        "proof_2": "İçerik şeffaflığı",
+        "cta_label": "Bu pedi sepete ekle",
+        "footnote": "Onay ve kurum logoları, doğrulama belgeleri tamamlandığında bu alandan güncellenecektir."
+      }
+    },
+    "ped_ugc": {
+      "type": "ki-ugc-carousel",
+      "disabled": true,
+      "settings": {
+        "bg": "#f8f8f6",
+        "eyebrow": "Kullananlardan dinle",
+        "title": "<p>Bizi bir de <em>onlardan</em> dinle.</p>",
+        "subtitle": "Gerçek kullanım deneyimleri yakında burada.",
+        "speed": 30,
+        "padding_top": 56,
+        "padding_bottom": 64
+      }
+    },
+    "ped_faq": {
+      "type": "04-ped-faq",
+      "blocks": {
+        "size": {
+          "type": "qa",
+          "settings": {
+            "question": "Hangi ped boyunu seçmeliyim?",
+            "answer": "Günlük Ped 155 mm boyuyla hafif akıntı ve günlük tazelik; Gündüz Ped 245 mm boyuyla gün içi kullanım; Gece Ped 335 mm boyuyla yoğun akış ve gece kullanımı için tasarlanmıştır."
+          }
+        },
+        "surface": {
+          "type": "qa",
+          "settings": {
+            "question": "%95 pamuk ve %5 bambu ne anlama geliyor?",
+            "answer": "Cilde temas eden üst yüzeyde pamuk ve bambu lifli yapı kullanılır. Amaç yumuşak, hafif ve konforlu bir yüzey deneyimi sunmaktır."
+          }
+        },
+        "mugwort": {
+          "type": "qa",
+          "settings": {
+            "question": "Pelin otu özü neden kullanılıyor?",
+            "answer": "Pelin otu özü, ped serisinin bitkisel bakım yaklaşımını tamamlayan içerik hikâyesidir. Ürün detayları ve kullanım bilgileri ambalaj üzerindeki açıklamalara göre değerlendirilmelidir."
+          }
+        },
+        "subscription": {
+          "type": "qa",
+          "settings": {
+            "question": "Ped paketine abone olabilir miyim?",
+            "answer": "Evet. Paketini Oluştur sayfasından pedlerini, adetlerini ve gönderim sıklığını seçebilir; hesabından paketi daha sonra düzenleyebilirsin."
+          }
+        },
+        "change": {
+          "type": "qa",
+          "settings": {
+            "question": "Gönderim sıklığını değiştirebilir miyim?",
+            "answer": "Evet. Aboneliğini hesabından yönetebilir, gönderim sıklığını değiştirebilir, duraklatabilir veya iptal edebilirsin."
+          }
+        }
+      },
+      "block_order": ["size", "surface", "mugwort", "subscription", "change"],
+      "settings": {
+        "heading": "Pedlerle ilgili merak ettiklerin",
+        "bg": "#f4ede1",
+        "card_bg": "#ffffff",
+        "primary_color": "#493d9a"
+      }
+    },
+    "ped_cross_sell": {
+      "type": "ki-ped-cross-sell",
+      "blocks": {
+        "light_pack": {
+          "type": "product_card",
+          "settings": {
+            "title": "Light Paket",
+            "description": "Günlük kullanım ve hafif akış odağında hazırlanacak pratik ped paketi.",
+            "badge": "Hazır Paket",
+            "price_text": "Fiyat yakında"
+          }
+        },
+        "medium_pack": {
+          "type": "product_card",
+          "settings": {
+            "title": "Medium Paket",
+            "description": "Günlük ve gündüz pedlerini dengeli şekilde bir araya getiren paket.",
+            "badge": "Hazır Paket",
+            "price_text": "Fiyat yakında"
+          }
+        },
+        "intense_pack": {
+          "type": "product_card",
+          "settings": {
+            "title": "Yoğun Paket",
+            "description": "Gündüz ve gece korumasını birlikte sunacak yoğun akış paketi.",
+            "badge": "Hazır Paket",
+            "price_text": "Fiyat yakında"
+          }
+        },
+        "daily_pad": {
+          "type": "product_card",
+          "settings": {
+            "product": "ki-hijyenik-gunduz-ped",
+            "title": ".ki Günlük Ped",
+            "description": "155 mm · hafif akıntı ve günlük tazelik",
+            "badge": "Tekli Ped",
+            "price_text": "Fiyat üründen gelir"
+          }
+        },
+        "day_pad": {
+          "type": "product_card",
+          "settings": {
+            "product": "ki-normal-ped",
+            "title": ".ki Gündüz Ped",
+            "description": "245 mm · gün içi kullanım için",
+            "badge": "Tekli Ped",
+            "price_text": "Fiyat üründen gelir"
+          }
+        },
+        "night_pad": {
+          "type": "product_card",
+          "settings": {
+            "product": "ki-hijyenik-gece-ped",
+            "title": ".ki Gece Ped",
+            "description": "335 mm · yoğun akış ve gece kullanımı",
+            "badge": "Tekli Ped",
+            "price_text": "Fiyat üründen gelir"
+          }
+        }
+      },
+      "block_order": ["light_pack", "medium_pack", "intense_pack", "daily_pad", "day_pad", "night_pad"],
+      "settings": {
+        "background": "#ffffff",
+        "padding_y": 56,
+        "eyebrow": "Rutinin için seçtik",
+        "heading": "Hazır paketler ve diğer pedler"
+      }
+    }
+  },
+  "order": ["ped_hero", "ped_science", "ped_ugc", "ped_faq", "ped_cross_sell"]
+}

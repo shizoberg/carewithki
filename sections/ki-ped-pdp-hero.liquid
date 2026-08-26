@@ -1,0 +1,351 @@
+{%- comment -%}
+  Shared product hero for the three .ki pad products.
+  The current product is selected automatically; the other pads remain available
+  as cross-product purchase options without changing Shopify product data.
+{%- endcomment -%}
+
+{%- liquid
+  assign current_variant = product.selected_or_first_available_variant
+  assign pad_blocks = section.blocks | where: 'type', 'pad_option'
+-%}
+
+<style>
+  #KiPedHero-{{ section.id }} {
+    --ped-purple: #493d9a;
+    --ped-purple-dark: #21184f;
+    --ped-lilac: #f1effb;
+    --ped-line: rgba(73, 61, 154, .14);
+    --ped-muted: #706b7b;
+    background: {{ section.settings.background | default: '#ffffff' }};
+    color: var(--ped-purple-dark);
+    padding: {{ section.settings.padding_y | default: 40 }}px 0;
+  }
+  #KiPedHero-{{ section.id }} * { box-sizing: border-box; }
+  #KiPedHero-{{ section.id }} .kph-shell { width: min(1240px, calc(100% - 40px)); margin: 0 auto; }
+  #KiPedHero-{{ section.id }} .kph-grid { display: grid; grid-template-columns: minmax(0, 1.04fr) minmax(420px, .96fr); gap: 54px; align-items: start; }
+  #KiPedHero-{{ section.id }} .kph-gallery { min-width: 0; }
+  #KiPedHero-{{ section.id }} .kph-main {
+    position: relative; overflow: hidden; aspect-ratio: 1 / 1; border-radius: 26px;
+    background: linear-gradient(145deg, #21184f, #6254b4); border: 1px solid var(--ped-line);
+  }
+  #KiPedHero-{{ section.id }} .kph-slide { position: absolute; inset: 0; opacity: 0; transition: opacity .22s ease; pointer-events: none; }
+  #KiPedHero-{{ section.id }} .kph-slide.is-active { opacity: 1; }
+  #KiPedHero-{{ section.id }} .kph-slide img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  #KiPedHero-{{ section.id }} .kph-placeholder { position: absolute; inset: 0; display: grid; place-items: center; color: rgba(255,255,255,.92); text-align: center; padding: 30px; }
+  #KiPedHero-{{ section.id }} .kph-placeholder svg { width: 120px; height: 64px; margin: 0 auto 18px; }
+  #KiPedHero-{{ section.id }} .kph-placeholder strong { display: block; font-size: 24px; }
+  #KiPedHero-{{ section.id }} .kph-placeholder span { display: block; margin-top: 7px; color: rgba(255,255,255,.7); font-size: 13px; }
+  #KiPedHero-{{ section.id }} .kph-thumbs { display: flex; gap: 10px; overflow-x: auto; padding: 12px 2px 2px; scrollbar-width: none; }
+  #KiPedHero-{{ section.id }} .kph-thumbs::-webkit-scrollbar { display: none; }
+  #KiPedHero-{{ section.id }} .kph-thumb { width: 74px; height: 74px; padding: 0; flex: 0 0 74px; overflow: hidden; border-radius: 13px; border: 2px solid transparent; background: var(--ped-lilac); cursor: pointer; opacity: .72; }
+  #KiPedHero-{{ section.id }} .kph-thumb.is-active { border-color: var(--ped-purple); opacity: 1; }
+  #KiPedHero-{{ section.id }} .kph-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  #KiPedHero-{{ section.id }} .kph-info { position: sticky; top: 96px; }
+  #KiPedHero-{{ section.id }} .kph-eyebrow { margin: 0 0 9px; color: var(--ped-purple); font-size: 11px; font-weight: 800; letter-spacing: .16em; text-transform: uppercase; }
+  #KiPedHero-{{ section.id }} .kph-title { margin: 0; color: #121212; font-family: var(--font-heading-family), Raleway, sans-serif; font-size: clamp(34px, 4vw, 55px); line-height: 1.02; letter-spacing: -.035em; }
+  #KiPedHero-{{ section.id }} .kph-rating { display: flex; flex-wrap: wrap; align-items: center; gap: 7px; margin-top: 14px; color: #7a7482; font-size: 13px; }
+  #KiPedHero-{{ section.id }} .kph-stars { color: #f0a11a; letter-spacing: 1px; }
+  #KiPedHero-{{ section.id }} .kph-rating strong { color: #1a1340; }
+  #KiPedHero-{{ section.id }} .kph-description { margin: 18px 0 0; color: #67616f; font-size: 15px; line-height: 1.65; }
+  #KiPedHero-{{ section.id }} .kph-description p { margin: 0 0 8px; }
+  #KiPedHero-{{ section.id }} .kph-purchase-title { margin: 24px 0 10px; color: var(--ped-purple); font-size: 13px; font-weight: 800; letter-spacing: .04em; }
+  #KiPedHero-{{ section.id }} .kph-options { display: grid; gap: 9px; }
+  #KiPedHero-{{ section.id }} .kph-option {
+    width: 100%; display: grid; grid-template-columns: 62px minmax(0, 1fr) auto; align-items: center; gap: 13px;
+    padding: 11px 13px; border: 1.5px solid var(--ped-line); border-radius: 16px; background: #fff;
+    color: inherit; text-align: left; cursor: pointer; transition: border-color .18s, background .18s, box-shadow .18s;
+  }
+  #KiPedHero-{{ section.id }} .kph-option:hover { border-color: rgba(73,61,154,.35); }
+  #KiPedHero-{{ section.id }} .kph-option.is-selected { border-color: var(--ped-purple); background: #f8f6ff; box-shadow: 0 8px 28px rgba(73,61,154,.10); }
+  #KiPedHero-{{ section.id }} .kph-option-media { width: 62px; height: 62px; border-radius: 12px; overflow: hidden; display: grid; place-items: center; background: var(--ped-lilac); }
+  #KiPedHero-{{ section.id }} .kph-option-media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  #KiPedHero-{{ section.id }} .kph-option-media svg { width: 50px; height: 25px; }
+  #KiPedHero-{{ section.id }} .ki-pack__pad-shape { fill: transparent; stroke: rgba(73,61,154,.28); stroke-width: 1.4; }
+  #KiPedHero-{{ section.id }} .ki-pack__pad-shape.is-active { fill: var(--ped-purple); stroke: var(--ped-purple); }
+  #KiPedHero-{{ section.id }} .kph-option-name { display: flex; align-items: center; gap: 7px; flex-wrap: wrap; font-size: 14px; font-weight: 800; color: #1a1340; }
+  #KiPedHero-{{ section.id }} .kph-current { padding: 3px 7px; border-radius: 999px; background: #e9e4ff; color: var(--ped-purple); font-size: 8px; letter-spacing: .08em; text-transform: uppercase; }
+  #KiPedHero-{{ section.id }} .kph-option-copy { min-width: 0; }
+  #KiPedHero-{{ section.id }} .kph-option-meta { display: block; margin-top: 4px; color: var(--ped-muted); font-size: 11px; line-height: 1.35; }
+  #KiPedHero-{{ section.id }} .kph-option-price { color: var(--ped-purple); font-size: 15px; font-weight: 900; white-space: nowrap; text-align: right; }
+  #KiPedHero-{{ section.id }} .kph-option-price small { display: block; margin-top: 3px; color: #898391; font-size: 9px; font-weight: 600; }
+  #KiPedHero-{{ section.id }} .kph-actions { display: grid; gap: 10px; margin-top: 15px; }
+  #KiPedHero-{{ section.id }} .kph-atc, #KiPedHero-{{ section.id }} .kph-subscribe {
+    min-height: 52px; width: 100%; border-radius: 13px; display: flex; align-items: center; justify-content: center; gap: 9px;
+    padding: 13px 20px; font-size: 15px; font-weight: 800; text-decoration: none; cursor: pointer; transition: transform .18s, opacity .18s;
+  }
+  #KiPedHero-{{ section.id }} .kph-atc { border: 0; background: linear-gradient(135deg, #5d4fba, #493d9a); color: #fff; box-shadow: 0 8px 24px rgba(73,61,154,.24); }
+  #KiPedHero-{{ section.id }} .kph-atc:disabled { opacity: .48; cursor: not-allowed; box-shadow: none; }
+  #KiPedHero-{{ section.id }} .kph-subscribe { border: 1.5px solid var(--ped-purple); background: #fff; color: var(--ped-purple); }
+  #KiPedHero-{{ section.id }} .kph-atc:not(:disabled):hover, #KiPedHero-{{ section.id }} .kph-subscribe:hover { transform: translateY(-1px); }
+  #KiPedHero-{{ section.id }} .kph-trust { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 14px; }
+  #KiPedHero-{{ section.id }} .kph-trust-item { min-height: 54px; border: 1px solid var(--ped-line); border-radius: 13px; display: flex; align-items: center; justify-content: center; gap: 7px; padding: 9px; color: var(--ped-purple); text-align: center; font-size: 10px; font-weight: 750; }
+  #KiPedHero-{{ section.id }} .kph-trust-item svg { width: 17px; height: 17px; flex: 0 0 auto; }
+  #KiPedHero-{{ section.id }} .kph-status { min-height: 18px; margin: 8px 0 0; color: #47745d; text-align: center; font-size: 12px; font-weight: 700; }
+
+  @media (max-width: 989px) {
+    #KiPedHero-{{ section.id }} { padding: 18px 0 32px; }
+    #KiPedHero-{{ section.id }} .kph-shell { width: min(100% - 28px, 720px); }
+    #KiPedHero-{{ section.id }} .kph-grid { grid-template-columns: 1fr; gap: 24px; }
+    #KiPedHero-{{ section.id }} .kph-info { position: static; }
+    #KiPedHero-{{ section.id }} .kph-main { border-radius: 20px; }
+    #KiPedHero-{{ section.id }} .kph-title { font-size: 36px; }
+  }
+  @media (max-width: 520px) {
+    #KiPedHero-{{ section.id }} .kph-option { grid-template-columns: 52px minmax(0, 1fr) auto; gap: 10px; padding: 10px; }
+    #KiPedHero-{{ section.id }} .kph-option-media { width: 52px; height: 52px; }
+    #KiPedHero-{{ section.id }} .kph-option-name { font-size: 12px; }
+    #KiPedHero-{{ section.id }} .kph-option-meta { font-size: 9.5px; }
+    #KiPedHero-{{ section.id }} .kph-option-price { font-size: 13px; }
+    #KiPedHero-{{ section.id }} .kph-trust { gap: 6px; }
+    #KiPedHero-{{ section.id }} .kph-trust-item { min-height: 48px; padding: 7px 5px; font-size: 8.5px; }
+  }
+</style>
+
+<section id="KiPedHero-{{ section.id }}" data-current-handle="{{ product.handle | escape }}">
+  <div class="kph-shell">
+    <div class="kph-grid">
+      <div class="kph-gallery">
+        <div class="kph-main" data-kph-main>
+          {%- if product.images.size > 0 -%}
+            {%- for image in product.images limit: 6 -%}
+              {%- liquid
+                if forloop.first
+                  assign image_loading = 'eager'
+                  assign image_priority = 'high'
+                else
+                  assign image_loading = 'lazy'
+                  assign image_priority = 'auto'
+                endif
+                assign image_alt = image.alt | default: product.title
+              -%}
+              <div class="kph-slide{% if forloop.first %} is-active{% endif %}" data-kph-slide="{{ forloop.index0 }}">
+                {{ image | image_url: width: 1200 | image_tag: widths: '480, 720, 960, 1200', sizes: '(max-width: 989px) calc(100vw - 28px), 52vw', loading: image_loading, fetchpriority: image_priority, alt: image_alt }}
+              </div>
+            {%- endfor -%}
+          {%- else -%}
+            <div class="kph-placeholder">
+              <div>
+                {% render 'ki-pad-size-icon', active: 'medium' %}
+                <strong>Ürün görseli hazırlanıyor</strong>
+                <span>Fotoğraflar Shopify ürün medyasından otomatik gelecektir.</span>
+              </div>
+            </div>
+          {%- endif -%}
+        </div>
+        {%- if product.images.size > 1 -%}
+          <div class="kph-thumbs" aria-label="Ürün görselleri">
+            {%- for image in product.images limit: 6 -%}
+              <button type="button" class="kph-thumb{% if forloop.first %} is-active{% endif %}" data-kph-thumb="{{ forloop.index0 }}" aria-label="Görsel {{ forloop.index }}">
+                {{ image | image_url: width: 180 | image_tag: loading: 'lazy', alt: '' }}
+              </button>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+      </div>
+
+      <div class="kph-info">
+        <p class="kph-eyebrow">{{ section.settings.eyebrow | default: 'Bilimsel yaklaşımla geliştirilen hijyenik ped' | escape }}</p>
+        <h1 class="kph-title">{{ product.title | escape }}</h1>
+        <div class="kph-rating" aria-label="5 üzerinden {{ section.settings.rating }} puan">
+          <span class="kph-stars">★★★★★</span>
+          <strong>{{ section.settings.rating | default: '4.9' }}</strong>
+          <span>/ 5</span>
+          <span>({{ section.settings.review_count | default: 'Değerlendirmeler yakında' | escape }})</span>
+        </div>
+        <div class="kph-description">
+          {%- if product.description != blank -%}
+            {{ product.description }}
+          {%- else -%}
+            <p>{{ section.settings.fallback_description }}</p>
+          {%- endif -%}
+        </div>
+
+        <p class="kph-purchase-title">{{ section.settings.purchase_title | default: 'Ped boyunu seç' | escape }}</p>
+        <div class="kph-options" role="list" data-kph-options>
+          {%- for block in pad_blocks -%}
+            {%- liquid
+              assign option_product = block.settings.product
+              if option_product == blank
+                case block.settings.size_type
+                  when 'small'
+                    assign option_product = all_products['ki-hijyenik-gunduz-ped']
+                  when 'medium'
+                    assign option_product = all_products['ki-normal-ped']
+                  when 'large'
+                    assign option_product = all_products['ki-hijyenik-gece-ped']
+                endcase
+              endif
+              assign option_variant = option_product.selected_or_first_available_variant
+              assign is_current = false
+              if option_product != blank and option_product.handle == product.handle
+                assign is_current = true
+              endif
+            -%}
+            <button
+              type="button"
+              class="kph-option{% if is_current %} is-selected{% endif %}"
+              role="listitem"
+              data-kph-option
+              data-variant-id="{{ option_variant.id }}"
+              data-product-handle="{{ option_product.handle | escape }}"
+              data-product-name="{{ block.settings.name | default: option_product.title | escape }}"
+              data-product-price="{% if option_product != blank %}{{ option_product.price | money | escape }}{% endif %}"
+              data-available="{% if option_variant.available %}true{% else %}false{% endif %}"
+              {{ block.shopify_attributes }}
+            >
+              <span class="kph-option-media">
+                {%- if option_product.featured_image != blank -%}
+                  {{ option_product.featured_image | image_url: width: 180 | image_tag: loading: 'lazy', alt: block.settings.name | default: option_product.title }}
+                {%- else -%}
+                  {% render 'ki-pad-size-icon', active: block.settings.size_type %}
+                {%- endif -%}
+              </span>
+              <span class="kph-option-copy">
+                <span class="kph-option-name">
+                  {{ block.settings.name | default: option_product.title | escape }}
+                  {%- if is_current -%}<span class="kph-current">Bu ürün</span>{%- endif -%}
+                </span>
+                <span class="kph-option-meta">{{ block.settings.dimension | escape }} · {{ block.settings.pack_count | escape }} · {{ block.settings.short_description | escape }}</span>
+              </span>
+              <span class="kph-option-price">
+                {%- if option_product != blank -%}{{ option_product.price | money }}{%- else -%}Yakında{%- endif -%}
+                <small>{% if option_variant.available %}Stokta{% else %}Yakında{% endif %}</small>
+              </span>
+            </button>
+          {%- endfor -%}
+        </div>
+
+        <div class="kph-actions">
+          <button type="button" class="kph-atc" data-kph-atc{% unless current_variant.available %} disabled{% endunless %}>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><path d="M3 6h18M16 10a4 4 0 0 1-8 0"/></svg>
+            <span data-kph-atc-label>{{ section.settings.cta_label | default: 'Sepete Ekle' }}</span>
+          </button>
+          <a class="kph-subscribe" data-kph-subscribe href="/pages/paket-olustur?abone={{ current_variant.id }}&product={{ product.handle | url_encode }}">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 12a8 8 0 1 1-2.34-5.66"/><path d="M20 4v6h-6"/></svg>
+            Abone Ol · Paketini Oluştur
+          </a>
+        </div>
+        <p class="kph-status" data-kph-status aria-live="polite"></p>
+
+        <div class="kph-trust" role="list" aria-label="Ürün güvenceleri">
+          <div class="kph-trust-item" role="listitem"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v18M4 7c2.5 0 4-1.3 4-4M20 7c-2.5 0-4-1.3-4-4M4 17c2.5 0 4 1.3 4 4M20 17c-2.5 0-4 1.3-4 4"/></svg>{{ section.settings.trust_1 }}</div>
+          <div class="kph-trust-item" role="listitem"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/><path d="m9 12 2 2 4-4"/></svg>{{ section.settings.trust_2 }}</div>
+          <div class="kph-trust-item" role="listitem"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 7h13v10H3zM16 10h3l2 2v5h-5"/><circle cx="7" cy="19" r="2"/><circle cx="18" cy="19" r="2"/></svg>{{ section.settings.trust_3 }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  (function () {
+    var root = document.getElementById('KiPedHero-{{ section.id }}');
+    if (!root) return;
+
+    var options = Array.prototype.slice.call(root.querySelectorAll('[data-kph-option]'));
+    var atc = root.querySelector('[data-kph-atc]');
+    var atcLabel = root.querySelector('[data-kph-atc-label]');
+    var subscribe = root.querySelector('[data-kph-subscribe]');
+    var status = root.querySelector('[data-kph-status]');
+    var selected = root.querySelector('[data-kph-option].is-selected') || options[0];
+
+    function selectOption(option) {
+      if (!option) return;
+      selected = option;
+      options.forEach(function (item) { item.classList.toggle('is-selected', item === option); });
+      var available = option.getAttribute('data-available') === 'true';
+      var name = option.getAttribute('data-product-name') || 'Ped';
+      var price = option.getAttribute('data-product-price') || '';
+      var variantId = option.getAttribute('data-variant-id') || '';
+      var handle = option.getAttribute('data-product-handle') || '';
+      atc.disabled = !available || !variantId;
+      atcLabel.textContent = available ? 'Sepete Ekle · ' + name + (price ? ' · ' + price : '') : 'Şu anda stokta yok';
+      subscribe.href = '/pages/paket-olustur?abone=' + encodeURIComponent(variantId) + '&product=' + encodeURIComponent(handle);
+      status.textContent = '';
+    }
+
+    options.forEach(function (option) {
+      option.addEventListener('click', function () { selectOption(option); });
+    });
+
+    root.querySelectorAll('[data-kph-thumb]').forEach(function (thumb) {
+      thumb.addEventListener('click', function () {
+        var index = thumb.getAttribute('data-kph-thumb');
+        root.querySelectorAll('[data-kph-slide]').forEach(function (slide) { slide.classList.toggle('is-active', slide.getAttribute('data-kph-slide') === index); });
+        root.querySelectorAll('[data-kph-thumb]').forEach(function (item) { item.classList.toggle('is-active', item === thumb); });
+      });
+    });
+
+    atc.addEventListener('click', function () {
+      if (!selected || atc.disabled) return;
+      var variantId = selected.getAttribute('data-variant-id');
+      atc.disabled = true;
+      status.textContent = 'Sepete ekleniyor…';
+      fetch('/cart/add.js', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
+        body: JSON.stringify({ id: variantId, quantity: 1 })
+      }).then(function (response) {
+        if (!response.ok) throw new Error('Ürün sepete eklenemedi.');
+        return response.json();
+      }).then(function () {
+        status.textContent = '✓ Ürün sepete eklendi.';
+        document.dispatchEvent(new CustomEvent('cart:refresh', { bubbles: true }));
+      }).catch(function (error) {
+        status.textContent = error.message || 'Bir sorun oluştu.';
+      }).finally(function () {
+        atc.disabled = selected.getAttribute('data-available') !== 'true';
+      });
+    });
+
+    selectOption(selected);
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Ped PDP Hero",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    { "type": "color", "id": "background", "label": "Arka plan", "default": "#ffffff" },
+    { "type": "range", "id": "padding_y", "label": "Dikey boşluk", "min": 16, "max": 80, "step": 4, "unit": "px", "default": 40 },
+    { "type": "text", "id": "eyebrow", "label": "Üst etiket", "default": "Bilimsel yaklaşımla geliştirilen hijyenik ped" },
+    { "type": "text", "id": "rating", "label": "Puan", "default": "4.9" },
+    { "type": "text", "id": "review_count", "label": "Değerlendirme metni", "default": "Değerlendirmeler yakında" },
+    { "type": "textarea", "id": "fallback_description", "label": "Ürün açıklaması yoksa göster", "default": "%95 pamuk ve %5 bambu lifli üst yüzey; Pelin otu özüyle zenginleştirilen, hassas cilt ihtiyaçları gözetilerek geliştirilen ped serisi." },
+    { "type": "text", "id": "purchase_title", "label": "Seçenek başlığı", "default": "Ped boyunu seç" },
+    { "type": "text", "id": "cta_label", "label": "Sepete ekle butonu", "default": "Sepete Ekle" },
+    { "type": "text", "id": "trust_1", "label": "Güvence 1", "default": "%95 Pamuk · %5 Bambu" },
+    { "type": "text", "id": "trust_2", "label": "Güvence 2", "default": "Uzman yaklaşımıyla geliştirildi" },
+    { "type": "text", "id": "trust_3", "label": "Güvence 3", "default": "Ücretsiz kargo" }
+  ],
+  "blocks": [
+    {
+      "type": "pad_option",
+      "name": "Ped seçeneği",
+      "limit": 3,
+      "settings": [
+        { "type": "product", "id": "product", "label": "Shopify ürünü" },
+        { "type": "text", "id": "name", "label": "Görünen ad", "default": ".ki Günlük Ped" },
+        { "type": "select", "id": "size_type", "label": "Boyut simgesi", "default": "small", "options": [
+          { "value": "small", "label": "Küçük / Günlük" },
+          { "value": "medium", "label": "Orta / Gündüz" },
+          { "value": "large", "label": "Büyük / Gece" }
+        ] },
+        { "type": "text", "id": "dimension", "label": "Ölçü", "default": "155 mm" },
+        { "type": "text", "id": "pack_count", "label": "Paket içeriği", "default": "Paket adedi ürün bilgisinden güncellenecek" },
+        { "type": "text", "id": "short_description", "label": "Kısa açıklama", "default": "Hafif akıntı ve günlük tazelik" }
+      ]
+    }
+  ],
+  "presets": [{
+    "name": "Ped PDP Hero",
+    "blocks": [
+      { "type": "pad_option", "settings": { "name": ".ki Günlük Ped", "size_type": "small", "dimension": "155 mm", "pack_count": "Günlük kullanım", "short_description": "Hafif akıntı ve günlük tazelik" } },
+      { "type": "pad_option", "settings": { "name": ".ki Gündüz Ped", "size_type": "medium", "dimension": "245 mm", "pack_count": "Gündüz koruması", "short_description": "Orta yoğun akış için" } },
+      { "type": "pad_option", "settings": { "name": ".ki Gece Ped", "size_type": "large", "dimension": "335 mm", "pack_count": "Gece koruması", "short_description": "Yoğun akış ve uzun koruma" } }
+    ]
+  }]
+}
+{% endschema %}
