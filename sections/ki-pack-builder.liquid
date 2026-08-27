@@ -672,6 +672,100 @@
       width: 14px;
       height: 14px;
     }
+    #ki-{{ section.id }} .ki-pack__shipping-progress {
+      --ki-shipping-min-position: 50%;
+      padding: 12px 13px 10px;
+      border: 1px solid rgba(73,61,154,.12);
+      border-radius: 14px;
+      background: linear-gradient(135deg, rgba(247,245,255,.96), rgba(239,236,255,.88));
+      transition: border-color .2s ease, background .2s ease, box-shadow .2s ease;
+    }
+    #ki-{{ section.id }} .ki-pack__shipping-progress.is-free {
+      border-color: rgba(39,126,91,.24);
+      background: linear-gradient(135deg, #f0fbf6, #e1f6eb);
+      box-shadow: 0 8px 24px rgba(39,126,91,.08);
+    }
+    #ki-{{ section.id }} .ki-pack__shipping-progress .ki-pack__ship {
+      width: 100%;
+      font-size: 11.5px;
+      line-height: 1.35;
+    }
+    #ki-{{ section.id }} .ki-pack__shipping-track {
+      position: relative;
+      height: 8px;
+      margin: 12px 2px 0;
+      border-radius: 999px;
+      background: rgba(73,61,154,.12);
+      overflow: visible;
+    }
+    #ki-{{ section.id }} .ki-pack__shipping-fill {
+      position: absolute;
+      inset: 0 auto 0 0;
+      width: 0;
+      border-radius: inherit;
+      background: linear-gradient(90deg, #493d9a 0%, #7464d7 72%, #2f8b67 100%);
+      box-shadow: 0 0 12px rgba(98,84,180,.24);
+      transition: width .35s cubic-bezier(.2,.75,.25,1);
+    }
+    #ki-{{ section.id }} .ki-pack__shipping-progress.is-free .ki-pack__shipping-fill {
+      background: linear-gradient(90deg, #493d9a 0%, #6254b4 48%, #2f8b67 100%);
+      box-shadow: 0 0 14px rgba(39,126,91,.28);
+    }
+    #ki-{{ section.id }} .ki-pack__shipping-marker {
+      position: absolute;
+      z-index: 1;
+      top: 50%;
+      width: 14px;
+      height: 14px;
+      border: 3px solid #fff;
+      border-radius: 50%;
+      background: #d3cee9;
+      box-shadow: 0 0 0 1px rgba(73,61,154,.18);
+      transform: translate(-50%, -50%);
+      transition: background .2s ease, transform .2s ease;
+    }
+    #ki-{{ section.id }} .ki-pack__shipping-marker--minimum {
+      left: var(--ki-shipping-min-position);
+    }
+    #ki-{{ section.id }} .ki-pack__shipping-marker--free {
+      left: 100%;
+    }
+    #ki-{{ section.id }} .ki-pack__shipping-marker.is-reached {
+      background: #2f8b67;
+      transform: translate(-50%, -50%) scale(1.08);
+    }
+    #ki-{{ section.id }} .ki-pack__shipping-labels {
+      position: relative;
+      min-height: 29px;
+      margin-top: 6px;
+      color: var(--ki-muted, #6f6978);
+      font-size: 8.5px;
+      line-height: 1.2;
+    }
+    #ki-{{ section.id }} .ki-pack__shipping-label {
+      position: absolute;
+      top: 0;
+      display: grid;
+      gap: 1px;
+      white-space: nowrap;
+    }
+    #ki-{{ section.id }} .ki-pack__shipping-label strong {
+      color: var(--ki-primary, #493d9a);
+      font-size: 9.5px;
+      font-weight: 800;
+    }
+    #ki-{{ section.id }} .ki-pack__shipping-label--minimum {
+      left: var(--ki-shipping-min-position);
+      text-align: center;
+      transform: translateX(-50%);
+    }
+    #ki-{{ section.id }} .ki-pack__shipping-label--free {
+      right: 0;
+      text-align: right;
+    }
+    #ki-{{ section.id }} .ki-pack__shipping-progress.is-free .ki-pack__shipping-label--free strong {
+      color: #277e5b;
+    }
     #ki-{{ section.id }} .ki-pack__benefit-icon {
       width: 30px;
       height: 30px;
@@ -1819,11 +1913,28 @@
           {%- endif -%}
 
           <div class="ki-pack__benefits" aria-label="Abonelik avantajları">
-            <div class="ki-pack__benefit ki-pack__ship">
-              <span class="ki-pack__benefit-icon" aria-hidden="true">
-                {% render 'ki-icon', name: 'truck', size: 16 %}
-              </span>
-              <span data-ki-pack-ship-text>₺400 üzeri abonelik kargosu ₺59</span>
+            <div class="ki-pack__shipping-progress" data-ki-pack-shipping-progress>
+              <div class="ki-pack__benefit ki-pack__ship">
+                <span class="ki-pack__benefit-icon" aria-hidden="true">
+                  {% render 'ki-icon', name: 'truck', size: 16 %}
+                </span>
+                <strong data-ki-pack-ship-text>₺400 üzeri abonelik kargosu ₺59</strong>
+              </div>
+              <div class="ki-pack__shipping-track" data-ki-pack-shipping-track role="progressbar" aria-label="Ücretsiz abonelik kargosu ilerlemesi" aria-valuemin="0" aria-valuemax="800" aria-valuenow="0">
+                <span class="ki-pack__shipping-fill" data-ki-pack-shipping-fill></span>
+                <span class="ki-pack__shipping-marker ki-pack__shipping-marker--minimum" data-ki-pack-shipping-min-marker aria-hidden="true"></span>
+                <span class="ki-pack__shipping-marker ki-pack__shipping-marker--free" data-ki-pack-shipping-free-marker aria-hidden="true"></span>
+              </div>
+              <div class="ki-pack__shipping-labels" aria-hidden="true">
+                <span class="ki-pack__shipping-label ki-pack__shipping-label--minimum">
+                  <strong data-ki-pack-shipping-min-label>₺400</strong>
+                  <span>Kargo ₺59</span>
+                </span>
+                <span class="ki-pack__shipping-label ki-pack__shipping-label--free">
+                  <strong data-ki-pack-shipping-free-label>₺800</strong>
+                  <span>Ücretsiz kargo</span>
+                </span>
+              </div>
             </div>
             {%- if settings.subscription_enabled -%}
               <div class="ki-pack__benefit ki-pack__benefit--pharmacist">
@@ -2410,6 +2521,31 @@
           shipText.textContent = 'Ücretsiz abonelik kargosu 🎉';
         }
       }
+      var shippingProgress = root.querySelector('[data-ki-pack-shipping-progress]');
+      var shippingTrack = root.querySelector('[data-ki-pack-shipping-track]');
+      var shippingFill = root.querySelector('[data-ki-pack-shipping-fill]');
+      var shippingMinMarker = root.querySelector('[data-ki-pack-shipping-min-marker]');
+      var shippingFreeMarker = root.querySelector('[data-ki-pack-shipping-free-marker]');
+      var shippingMinLabel = root.querySelector('[data-ki-pack-shipping-min-label]');
+      var shippingFreeLabel = root.querySelector('[data-ki-pack-shipping-free-label]');
+      var shippingMax = Math.max(subscriptionFreeShippingThreshold, 1);
+      var shippingProgressPercent = Math.min(100, Math.max(0, subtotal / shippingMax * 100));
+      var shippingMinimumPercent = Math.min(100, Math.max(0, subscriptionMinimum / shippingMax * 100));
+      if (shippingProgress) {
+        shippingProgress.hidden = !subscriptionEnabled;
+        shippingProgress.style.setProperty('--ki-shipping-min-position', shippingMinimumPercent + '%');
+        shippingProgress.classList.toggle('is-minimum-met', minimumMet && count > 0);
+        shippingProgress.classList.toggle('is-free', subscriptionEnabled && count > 0 && subtotal >= subscriptionFreeShippingThreshold);
+      }
+      if (shippingTrack) {
+        shippingTrack.setAttribute('aria-valuemax', String(subscriptionFreeShippingThreshold));
+        shippingTrack.setAttribute('aria-valuenow', String(Math.min(subtotal, subscriptionFreeShippingThreshold)));
+      }
+      if (shippingFill) shippingFill.style.width = shippingProgressPercent + '%';
+      if (shippingMinMarker) shippingMinMarker.classList.toggle('is-reached', minimumMet && count > 0);
+      if (shippingFreeMarker) shippingFreeMarker.classList.toggle('is-reached', subscriptionEnabled && count > 0 && subtotal >= subscriptionFreeShippingThreshold);
+      if (shippingMinLabel) shippingMinLabel.textContent = fmt(subscriptionMinimum);
+      if (shippingFreeLabel) shippingFreeLabel.textContent = fmt(subscriptionFreeShippingThreshold);
 
       updateFrequencyAvailability(lines);
 
