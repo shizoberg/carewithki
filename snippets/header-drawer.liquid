@@ -39,6 +39,9 @@
 .ki-row:last-child{border-bottom:none}
 .ki-ico{width:36px;height:36px;border-radius:50%;background:rgba(73,61,154,.08);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:#493d9a}
 .ki-ico svg{width:17px;height:17px}
+.ki-ico--pad svg{width:28px;height:16px}
+.ki-ico--pad .ki-pack__pad-shape{fill:transparent;stroke:rgba(73,61,154,.3);stroke-width:1.45}
+.ki-ico--pad .ki-pack__pad-shape.is-active{fill:#493d9a;stroke:#493d9a}
 .ki-lbl{font-size:15px;font-weight:500;flex:1;color:#222}
 .ki-chv{color:#ccc;flex-shrink:0}
 .ki-chv svg{width:15px;height:15px;display:block}
@@ -123,9 +126,9 @@
             <div class="ki-sec">
               <p class="ki-sec__ttl">Hijyenik Pedler</p>
               <ul class="ki-sec__list">
-                <li><a href="/products/ki-hijyenik-gunduz-ped?view=ki-ped" class="ki-row"><span class="ki-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3l1.5 4.5L18 9l-4.5 1.5L12 15l-1.5-4.5L6 9l4.5-1.5L12 3z"/><path d="M19 14l.8 2.2L22 17l-2.2.8L19 20l-.8-2.2L16 17l2.2-.8L19 14z"/></svg></span><span class="ki-lbl">.ki Günlük Ped</span><span class="ki-chv"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></span></a></li>
-                <li><a href="/products/ki-normal-ped?view=ki-ped" class="ki-row"><span class="ki-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9 7 7M17 17l2.1 2.1M4.9 19.1 7 17M17 7l2.1-2.1" stroke-linecap="round"/></svg></span><span class="ki-lbl">.ki Gündüz Ped</span><span class="ki-chv"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></span></a></li>
-                <li><a href="/products/ki-hijyenik-gece-ped?view=ki-ped" class="ki-row"><span class="ki-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8z"/></svg></span><span class="ki-lbl">.ki Gece Ped</span><span class="ki-chv"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></span></a></li>
+                <li><a href="/products/ki-hijyenik-gunduz-ped?view=ki-ped" class="ki-row"><span class="ki-ico ki-ico--pad">{% render 'ki-pad-size-icon', active: 'small' %}</span><span class="ki-lbl">.ki Günlük Ped</span><span class="ki-chv"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></span></a></li>
+                <li><a href="/products/ki-normal-ped?view=ki-ped" class="ki-row"><span class="ki-ico ki-ico--pad">{% render 'ki-pad-size-icon', active: 'medium' %}</span><span class="ki-lbl">.ki Gündüz Ped</span><span class="ki-chv"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></span></a></li>
+                <li><a href="/products/ki-hijyenik-gece-ped?view=ki-ped" class="ki-row"><span class="ki-ico ki-ico--pad">{% render 'ki-pad-size-icon', active: 'large' %}</span><span class="ki-lbl">.ki Gece Ped</span><span class="ki-chv"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></span></a></li>
               </ul>
             </div>
             {%- comment -%} ═══ /Hijyenik Pedler ═══ {%- endcomment -%}

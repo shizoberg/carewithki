@@ -1,163 +1,65 @@
-{% comment %}.ki Kampüs Elçisi Sayfası — v1{% endcomment %}
+{% comment %}.ki Kampüs Elçisi — ped odaklı referans programı{% endcomment %}
 <style>
-*,*::before,*::after{box-sizing:border-box;}
-.kampus{--p:#493d9a;--pd:#3b3280;--lil:#dad2ff;--lilf:#f0eeff;--bg:#f8f8f6;--txt:#1a1340;--mut:#6b6b8a;--bdr:#e8e2ff;font-family:'Raleway',system-ui,sans-serif;background:var(--bg);color:var(--txt);}
-.kampus__hero{background:linear-gradient(135deg,#2d1b69 0%,#493d9a 55%,#6b5dd3 100%);position:relative;overflow:hidden;padding:80px 24px 90px;text-align:center;}
-.kampus__hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 70% 30%,rgba(218,210,255,.15) 0%,transparent 60%),radial-gradient(ellipse at 20% 80%,rgba(255,255,255,.06) 0%,transparent 50%);pointer-events:none;}
-.kampus__hero-eyebrow{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.8);font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;padding:6px 16px;border-radius:50px;margin-bottom:22px;}
-.kampus__hero h1{font-size:clamp(32px,5vw,58px);font-weight:800;color:#fff;margin:0 0 16px;line-height:1.05;letter-spacing:-.03em;}
-.kampus__hero h1 em{font-style:italic;color:#c4b5fd;}
-.kampus__hero p{font-size:clamp(15px,2vw,18px);color:rgba(255,255,255,.7);max-width:560px;margin:0 auto 32px;line-height:1.7;font-weight:400;}
-.kampus__hero-cta{display:inline-flex;align-items:center;gap:8px;background:#fff;color:var(--p);font-size:14px;font-weight:800;letter-spacing:.02em;padding:14px 28px;border-radius:50px;text-decoration:none;box-shadow:0 8px 32px rgba(0,0,0,.2);transition:transform .2s,box-shadow .2s;}
-.kampus__hero-cta:hover{transform:translateY(-2px);box-shadow:0 12px 40px rgba(0,0,0,.28);}
-.kampus__hero-cta svg{width:16px;height:16px;}
-.kampus__hero-tags{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:28px;}
-.kampus__htag{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);color:rgba(255,255,255,.85);font-size:12px;font-weight:600;padding:5px 14px;border-radius:50px;}
-.kampus__wrap{max-width:1060px;margin:0 auto;padding:0 24px;}
-.kampus__perks{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--bdr);border:1px solid var(--bdr);border-radius:20px;overflow:hidden;margin:56px auto;max-width:900px;}
-.kampus__perk{background:#fff;padding:28px 24px;display:flex;flex-direction:column;gap:10px;}
-.kampus__perk .ico{font-size:28px;line-height:1;}
-.kampus__perk h3{font-size:14px;font-weight:800;color:var(--txt);margin:0;}
-.kampus__perk p{font-size:13px;color:var(--mut);line-height:1.65;margin:0;font-weight:400;}
-.kampus__split{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start;padding:0 0 64px;}
-.kampus__col h2{font-size:clamp(20px,2.5vw,28px);font-weight:800;color:var(--txt);margin:0 0 20px;letter-spacing:-.02em;}
-.kampus__col h2 span{color:var(--p);}
-.kampus__who{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:32px;}
-.kampus__who-tag{display:inline-flex;align-items:center;gap:6px;background:var(--lilf);border:1.5px solid var(--lil);color:var(--p);font-size:12px;font-weight:700;padding:6px 14px;border-radius:8px;}
-.kampus__learn{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:12px;}
-.kampus__learn li{display:flex;align-items:flex-start;gap:12px;font-size:14px;color:var(--txt);line-height:1.6;font-weight:500;}
-.kampus__learn li .dot{width:20px;height:20px;border-radius:6px;background:var(--lilf);border:1.5px solid var(--lil);color:var(--p);display:inline-flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;flex-shrink:0;margin-top:2px;}
-.kampus__form-section{background:linear-gradient(135deg,#2d1b69 0%,#493d9a 100%);padding:80px 24px;position:relative;overflow:hidden;}
-.kampus__form-section::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 80% 20%,rgba(255,255,255,.08) 0%,transparent 55%);pointer-events:none;}
-.kampus__form-inner{max-width:720px;margin:0 auto;position:relative;z-index:1;}
-.kampus__form-hd{text-align:center;margin-bottom:40px;}
-.kampus__form-hd h2{font-size:clamp(24px,3vw,36px);font-weight:800;color:#fff;margin:0 0 10px;letter-spacing:-.02em;}
-.kampus__form-hd p{font-size:15px;color:rgba(255,255,255,.65);margin:0;font-weight:400;}
-.kampus__form{display:flex;flex-direction:column;gap:14px;}
-.kampus__form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
-.kampus__field{display:flex;flex-direction:column;gap:6px;}
-.kampus__field label{font-size:11px;font-weight:700;color:rgba(255,255,255,.6);letter-spacing:.08em;text-transform:uppercase;}
-.kampus__field input,.kampus__field select,.kampus__field textarea{font-family:'Raleway',system-ui,sans-serif;font-size:14px;font-weight:500;color:#fff;background:rgba(255,255,255,.08);border:1.5px solid rgba(255,255,255,.15);border-radius:12px;padding:13px 16px;outline:none;transition:border-color .15s,background .15s;width:100%;}
-.kampus__field input::placeholder,.kampus__field textarea::placeholder{color:rgba(255,255,255,.35);}
-.kampus__field input:focus,.kampus__field select:focus,.kampus__field textarea:focus{border-color:rgba(255,255,255,.45);background:rgba(255,255,255,.13);}
-.kampus__field select option{background:#2d1b69;color:#fff;}
-.kampus__field textarea{resize:vertical;min-height:110px;}
-.kampus__submit{background:#fff;color:var(--p);font-family:'Raleway',system-ui,sans-serif;font-size:15px;font-weight:800;letter-spacing:.02em;border:none;border-radius:14px;padding:16px 36px;cursor:pointer;align-self:center;margin-top:8px;transition:transform .15s,box-shadow .15s;box-shadow:0 4px 20px rgba(0,0,0,.2);display:flex;align-items:center;gap:8px;}
-.kampus__submit:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(0,0,0,.3);}
-.kampus__note{text-align:center;font-size:12px;color:rgba(255,255,255,.4);margin-top:8px;font-weight:400;}
-.kampus__success{display:none;background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.2);border-radius:16px;padding:28px 32px;text-align:center;color:#fff;font-size:16px;font-weight:700;line-height:1.6;margin-top:20px;}
-@media(max-width:900px){.kampus__perks{grid-template-columns:repeat(3,1fr);}.kampus__split{grid-template-columns:1fr;gap:32px;}}
-@media(max-width:600px){.kampus__hero{padding:56px 20px 64px;}.kampus__perks{grid-template-columns:1fr;margin:32px 12px;}.kampus__perk{padding:20px 16px;}.kampus__form-row{grid-template-columns:1fr;}.kampus__wrap{padding:0 16px;}.kampus__form-section{padding:56px 16px;}}
+#KiCampus-{{ section.id }}{--p:#493d9a;--pd:#21184f;--l:#f1effb;--line:rgba(73,61,154,.13);--txt:#1a1340;--mut:#6f6a78;background:#fff;color:var(--txt);font-family:var(--font-body-family),Raleway,system-ui,sans-serif;overflow:hidden}
+#KiCampus-{{ section.id }} *{box-sizing:border-box}#KiCampus-{{ section.id }} .kc-shell{width:min(1160px,calc(100% - 40px));margin:0 auto}
+#KiCampus-{{ section.id }} .kc-hero{position:relative;padding:88px 0 78px;background:linear-gradient(135deg,#21184f,#493d9a 58%,#6b5dd3);color:#fff;overflow:hidden}
+#KiCampus-{{ section.id }} .kc-hero:before{content:'';position:absolute;width:520px;height:520px;border-radius:50%;right:-150px;top:-240px;background:radial-gradient(circle,rgba(255,255,255,.2),transparent 68%)}
+#KiCampus-{{ section.id }} .kc-hero-grid{position:relative;z-index:1;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(360px,.9fr);align-items:center;gap:64px}
+#KiCampus-{{ section.id }} .kc-kicker{display:inline-flex;align-items:center;gap:8px;margin:0 0 18px;padding:7px 13px;border:1px solid rgba(255,255,255,.2);border-radius:999px;background:rgba(255,255,255,.1);font-size:10px;font-weight:800;letter-spacing:.14em;text-transform:uppercase}
+#KiCampus-{{ section.id }} .kc-kicker svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.8}
+#KiCampus-{{ section.id }} .kc-hero h1{max-width:700px;margin:0;color:#fff;font-family:var(--font-heading-family),Raleway,sans-serif;font-size:clamp(38px,5.2vw,68px);line-height:.99;letter-spacing:-.045em}
+#KiCampus-{{ section.id }} .kc-hero h1 em{display:block;color:#d9d1ff;font-style:italic}#KiCampus-{{ section.id }} .kc-hero-copy{max-width:620px;margin:20px 0 0;color:rgba(255,255,255,.74);font-size:16px;line-height:1.7}
+#KiCampus-{{ section.id }} .kc-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px}#KiCampus-{{ section.id }} .kc-btn{min-height:50px;display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:13px 22px;border-radius:14px;text-decoration:none;font-size:14px;font-weight:800;transition:transform .18s}
+#KiCampus-{{ section.id }} .kc-btn:hover{transform:translateY(-2px)}#KiCampus-{{ section.id }} .kc-btn--light{background:#fff;color:var(--p);box-shadow:0 12px 34px rgba(0,0,0,.18)}#KiCampus-{{ section.id }} .kc-btn--ghost{border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.08);color:#fff}#KiCampus-{{ section.id }} .kc-btn svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:2}
+#KiCampus-{{ section.id }} .kc-code-card{padding:24px;border:1px solid rgba(255,255,255,.18);border-radius:24px;background:rgba(255,255,255,.1);backdrop-filter:blur(10px);box-shadow:0 24px 60px rgba(15,8,50,.2)}
+#KiCampus-{{ section.id }} .kc-code-label{margin:0 0 8px;color:rgba(255,255,255,.6);font-size:9px;font-weight:800;letter-spacing:.13em;text-transform:uppercase}#KiCampus-{{ section.id }} .kc-code{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px 17px;border-radius:15px;background:#fff;color:var(--pd)}
+#KiCampus-{{ section.id }} .kc-code strong{font-size:25px;letter-spacing:.14em}#KiCampus-{{ section.id }} .kc-code span{width:36px;height:36px;border-radius:11px;background:var(--l);display:grid;place-items:center;color:var(--p)}#KiCampus-{{ section.id }} .kc-code svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8}
+#KiCampus-{{ section.id }} .kc-code-steps{display:grid;gap:10px;margin:18px 0 0;padding:0;list-style:none}#KiCampus-{{ section.id }} .kc-code-steps li{display:flex;align-items:center;gap:10px;color:rgba(255,255,255,.78);font-size:12px;line-height:1.45}#KiCampus-{{ section.id }} .kc-code-steps b{width:24px;height:24px;border-radius:8px;display:grid;place-items:center;flex:0 0 auto;background:rgba(255,255,255,.13);font-size:9px}
+#KiCampus-{{ section.id }} .kc-section{padding:70px 0}#KiCampus-{{ section.id }} .kc-soft{background:#faf9fe}#KiCampus-{{ section.id }} .kc-head{max-width:760px;margin:0 auto 30px;text-align:center}#KiCampus-{{ section.id }} .kc-eyebrow{margin:0 0 8px;color:var(--p);font-size:10px;font-weight:850;letter-spacing:.15em;text-transform:uppercase}
+#KiCampus-{{ section.id }} .kc-title{margin:0;color:var(--txt);font-family:var(--font-heading-family),Raleway,sans-serif;font-size:clamp(29px,4vw,46px);line-height:1.07;letter-spacing:-.03em}#KiCampus-{{ section.id }} .kc-subtitle{margin:13px 0 0;color:var(--mut);font-size:14px;line-height:1.65}
+#KiCampus-{{ section.id }} .kc-benefits,#KiCampus-{{ section.id }} .kc-products{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}#KiCampus-{{ section.id }} .kc-benefit{padding:24px;border:1px solid var(--line);border-radius:20px;background:#fff;box-shadow:0 9px 30px rgba(73,61,154,.055)}
+#KiCampus-{{ section.id }} .kc-icon{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;margin-bottom:20px;background:var(--l);color:var(--p)}#KiCampus-{{ section.id }} .kc-icon svg{width:23px;height:23px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+#KiCampus-{{ section.id }} .kc-benefit h3{margin:0 0 8px;font-size:18px}#KiCampus-{{ section.id }} .kc-benefit p{margin:0;color:var(--mut);font-size:13px;line-height:1.6}
+#KiCampus-{{ section.id }} .kc-product{display:flex;align-items:center;gap:16px;min-height:132px;padding:18px;border:1px solid var(--line);border-radius:20px;background:#fff;color:inherit;text-decoration:none;transition:transform .2s,box-shadow .2s}#KiCampus-{{ section.id }} .kc-product:hover{transform:translateY(-2px);box-shadow:0 12px 30px rgba(73,61,154,.09)}
+#KiCampus-{{ section.id }} .kc-product-icon{width:84px;height:84px;flex:0 0 84px;border-radius:18px;background:linear-gradient(145deg,#ece8ff,#f8f7ff);display:grid;place-items:center;color:var(--p)}#KiCampus-{{ section.id }} .kc-product-icon svg{width:60px;height:29px}#KiCampus-{{ section.id }} .kc-product-icon .ki-pack__pad-shape{fill:transparent;stroke:rgba(73,61,154,.28);stroke-width:1.4}#KiCampus-{{ section.id }} .kc-product-icon .ki-pack__pad-shape.is-active{fill:var(--p);stroke:var(--p)}
+#KiCampus-{{ section.id }} .kc-product small{display:block;margin-bottom:5px;color:var(--p);font-size:9px;font-weight:850;letter-spacing:.1em;text-transform:uppercase}#KiCampus-{{ section.id }} .kc-product strong{display:block;font-size:16px}#KiCampus-{{ section.id }} .kc-product p{margin:6px 0 0;color:var(--mut);font-size:11px;line-height:1.45}
+#KiCampus-{{ section.id }} .kc-journey{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border:1px solid var(--line);border-radius:22px;overflow:hidden;background:#fff}#KiCampus-{{ section.id }} .kc-stage{padding:26px 22px;border-right:1px solid var(--line)}#KiCampus-{{ section.id }} .kc-stage:last-child{border-right:0;background:linear-gradient(145deg,#493d9a,#6858c7);color:#fff}
+#KiCampus-{{ section.id }} .kc-stage-num{display:inline-flex;margin-bottom:18px;color:var(--p);font-size:10px;font-weight:900;letter-spacing:.1em}#KiCampus-{{ section.id }} .kc-stage:last-child .kc-stage-num{color:#d9d1ff}#KiCampus-{{ section.id }} .kc-stage h3{margin:0 0 8px;font-size:16px;color:inherit}#KiCampus-{{ section.id }} .kc-stage p{margin:0;color:var(--mut);font-size:12px;line-height:1.55}#KiCampus-{{ section.id }} .kc-stage:last-child p{color:rgba(255,255,255,.72)}
+#KiCampus-{{ section.id }} .kc-terms{max-width:920px;margin:16px auto 0;color:#8b8592;text-align:center;font-size:10px;line-height:1.55}#KiCampus-{{ section.id }} .kc-profile{display:grid;grid-template-columns:.8fr 1.2fr;gap:40px;align-items:start}#KiCampus-{{ section.id }} .kc-profile-card{padding:28px;border-radius:22px;background:linear-gradient(145deg,#f1effb,#fff);border:1px solid var(--line)}#KiCampus-{{ section.id }} .kc-profile-card h2{margin:0 0 18px;font-family:var(--font-heading-family),Raleway,sans-serif;font-size:30px;line-height:1.08}
+#KiCampus-{{ section.id }} .kc-tags{display:flex;flex-wrap:wrap;gap:8px}#KiCampus-{{ section.id }} .kc-tag{padding:7px 10px;border-radius:999px;background:#fff;border:1px solid var(--line);color:var(--p);font-size:11px;font-weight:750}#KiCampus-{{ section.id }} .kc-checks{display:grid;gap:12px;margin:0;padding:0;list-style:none}#KiCampus-{{ section.id }} .kc-checks li{display:flex;gap:12px;align-items:flex-start;font-size:14px;line-height:1.55}#KiCampus-{{ section.id }} .kc-checks span{width:25px;height:25px;flex:0 0 auto;border-radius:8px;background:var(--l);color:var(--p);display:grid;place-items:center;font-size:9px;font-weight:900}
+#KiCampus-{{ section.id }} .kc-form-section{padding:76px 0;background:linear-gradient(135deg,#21184f,#493d9a);color:#fff}#KiCampus-{{ section.id }} .kc-form-wrap{width:min(760px,calc(100% - 40px));margin:0 auto}#KiCampus-{{ section.id }} .kc-form-head{text-align:center;margin-bottom:30px}#KiCampus-{{ section.id }} .kc-form-head h2{margin:0;color:#fff;font-family:var(--font-heading-family),Raleway,sans-serif;font-size:clamp(29px,4vw,43px)}#KiCampus-{{ section.id }} .kc-form-head p{margin:10px 0 0;color:rgba(255,255,255,.65);font-size:14px}
+#KiCampus-{{ section.id }} .kc-form{display:grid;gap:13px}#KiCampus-{{ section.id }} .kc-form-row{display:grid;grid-template-columns:1fr 1fr;gap:13px}#KiCampus-{{ section.id }} .kc-field{display:grid;gap:6px}#KiCampus-{{ section.id }} .kc-field label{color:rgba(255,255,255,.68);font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase}#KiCampus-{{ section.id }} .kc-field input,#KiCampus-{{ section.id }} .kc-field select,#KiCampus-{{ section.id }} .kc-field textarea{width:100%;min-height:48px;padding:12px 14px;border:1px solid rgba(255,255,255,.18);border-radius:12px;background:rgba(255,255,255,.09);color:#fff;font:inherit;font-size:14px;outline:none}#KiCampus-{{ section.id }} .kc-field textarea{min-height:110px;resize:vertical}#KiCampus-{{ section.id }} .kc-field input::placeholder,#KiCampus-{{ section.id }} .kc-field textarea::placeholder{color:rgba(255,255,255,.34)}#KiCampus-{{ section.id }} .kc-field select option{color:#1a1340;background:#fff}
+#KiCampus-{{ section.id }} .kc-consent{display:flex;align-items:flex-start;gap:9px;color:rgba(255,255,255,.66);font-size:11px;line-height:1.5}#KiCampus-{{ section.id }} .kc-consent input{margin-top:2px}#KiCampus-{{ section.id }} .kc-consent a{color:#fff}#KiCampus-{{ section.id }} .kc-submit{min-height:52px;border:0;border-radius:14px;background:#fff;color:var(--p);font:inherit;font-size:14px;font-weight:850;cursor:pointer;box-shadow:0 10px 28px rgba(0,0,0,.18)}#KiCampus-{{ section.id }} .kc-success,#KiCampus-{{ section.id }} .kc-errors{padding:15px 17px;border-radius:13px;margin-bottom:16px;font-size:13px;line-height:1.5}#KiCampus-{{ section.id }} .kc-success{background:rgba(92,220,157,.16);border:1px solid rgba(92,220,157,.35)}#KiCampus-{{ section.id }} .kc-errors{background:rgba(255,110,110,.14);border:1px solid rgba(255,110,110,.3)}
+@media(max-width:900px){#KiCampus-{{ section.id }} .kc-hero-grid,#KiCampus-{{ section.id }} .kc-profile{grid-template-columns:1fr}#KiCampus-{{ section.id }} .kc-code-card{max-width:520px}#KiCampus-{{ section.id }} .kc-benefits,#KiCampus-{{ section.id }} .kc-products{grid-template-columns:1fr}#KiCampus-{{ section.id }} .kc-journey{grid-template-columns:1fr 1fr}#KiCampus-{{ section.id }} .kc-stage:nth-child(2){border-right:0}#KiCampus-{{ section.id }} .kc-stage:nth-child(-n+2){border-bottom:1px solid var(--line)}}
+@media(max-width:600px){#KiCampus-{{ section.id }} .kc-shell{width:calc(100% - 28px)}#KiCampus-{{ section.id }} .kc-hero{padding:58px 0 50px}#KiCampus-{{ section.id }} .kc-hero-grid{gap:34px}#KiCampus-{{ section.id }} .kc-hero h1{font-size:40px}#KiCampus-{{ section.id }} .kc-hero-copy{font-size:14px}#KiCampus-{{ section.id }} .kc-actions{display:grid}#KiCampus-{{ section.id }} .kc-section{padding:46px 0}#KiCampus-{{ section.id }} .kc-head{text-align:left;margin-bottom:20px}#KiCampus-{{ section.id }} .kc-journey{grid-template-columns:1fr}#KiCampus-{{ section.id }} .kc-stage{border-right:0;border-bottom:1px solid var(--line)}#KiCampus-{{ section.id }} .kc-form-section{padding:52px 0}#KiCampus-{{ section.id }} .kc-form-wrap{width:calc(100% - 28px)}#KiCampus-{{ section.id }} .kc-form-row{grid-template-columns:1fr}}
 </style>
 
-<div class="kampus">
-  <div class="kampus__hero">
-    <p class="kampus__hero-eyebrow">.ki Kampüs Elçisi Programı</p>
-    <h1>Kampüsünde<br><em>.ki'yi temsil et.</em></h1>
-    <p>Arkadaşlarına .ki'yi anlat, paylaş ve kazan. Üniversitende kadın sağlığı hakkında farkındalık yarat.</p>
-    <a href="#basvur" class="kampus__hero-cta">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-      Elçi Ol
-    </a>
-    <div class="kampus__hero-tags">
-      <span class="kampus__htag">🎓 Üniversite öğrencisi</span>
-      <span class="kampus__htag">📣 Sosyal medya</span>
-      <span class="kampus__htag">💰 Komisyon kazan</span>
-      <span class="kampus__htag">💜 Üretsiz ürünler</span>
-    </div>
-  </div>
+<div id="KiCampus-{{ section.id }}">
+  <section class="kc-hero"><div class="kc-shell kc-hero-grid"><div><p class="kc-kicker"><svg viewBox="0 0 24 24"><path d="m3 11 9-5 9 5-9 5z"/><path d="M7 13v5c3 2 7 2 10 0v-5"/></svg>{{ section.settings.hero_kicker }}</p><h1>{{ section.settings.hero_title }}<em>{{ section.settings.hero_emphasis }}</em></h1><p class="kc-hero-copy">{{ section.settings.hero_text }}</p><div class="kc-actions"><a class="kc-btn kc-btn--light" href="#kampus-basvuru">Hemen başvur<svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a><a class="kc-btn kc-btn--ghost" href="#kampus-program">Programı incele</a></div></div><aside class="kc-code-card"><p class="kc-code-label">Sana özel kampüs referans kodu</p><div class="kc-code"><strong>ADA24</strong><span><svg viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M4 16H3a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h11a2 2 0 0 1 2 2v1"/></svg></span></div><ol class="kc-code-steps"><li><b>01</b>Kodunu arkadaşlarınla ve kampüs topluluğunla paylaş.</li><li><b>02</b>Doğrulanan satışlar referans kodunla eşleşsin.</li><li><b>03</b>Dönemsel hedeflere ulaştıkça ödül yolculuğunda ilerle.</li></ol></aside></div></section>
 
-  <div class="kampus__perks">
-    <div class="kampus__perk"><span class="ico">💰</span><h3>Komisyon Kazan</h3><p>Her satıştan komisyon al. Kendi indirim kodunla arkadaşlarına özel fırsat sun.</p></div>
-    <div class="kampus__perk"><span class="ico">📦</span><h3>Ücretsiz .ki Ürünleri</h3><p>Elçi süresince tüm ürünlerimize ücretsiz erişim. Kullan, hisset, paylaş.</p></div>
-    <div class="kampus__perk"><span class="ico">🌟</span><h3>Portföyüne Ekle</h3><p>Gerçek bir markada deneyim kazan. CV'ne ve LinkedIn'e ekleyebileceğin somut bir iş deneyimi.</p></div>
-  </div>
+  <section class="kc-section" id="kampus-program"><div class="kc-shell"><header class="kc-head"><p class="kc-eyebrow">Elçi deneyimi</p><h2 class="kc-title">Kampüsünde farkındalık yarat, kodunla büyü</h2><p class="kc-subtitle">Ped deneyimini doğru bilgiyle anlatırken içerik üretme, topluluk kurma ve satış performansını takip etme deneyimi kazan.</p></header><div class="kc-benefits"><article class="kc-benefit"><span class="kc-icon"><svg viewBox="0 0 24 24"><path d="M4 4h16v16H4zM8 8h8M8 12h5"/><path d="m15 16 2 2 3-4"/></svg></span><h3>Kişisel referans kodun</h3><p>Başvurun kabul edildiğinde sana özel kod tanımlanır. Kodla eşleşen doğrulanmış satışlar program performansına eklenir.</p></article><article class="kc-benefit"><span class="kc-icon"><svg viewBox="0 0 24 24"><path d="M3 8h18v12H3zM7 8V5h10v3M8 13h8"/></svg></span><h3>Ped başlangıç kiti</h3><p>Günlük, gündüz ve gece pedlerini tanıman için ürün eğitimi, içerik rehberi ve dönemsel ürün desteği alırsın.</p></article><article class="kc-benefit"><span class="kc-icon"><svg viewBox="0 0 24 24"><path d="M3 17h18M5 17l2-9h10l2 9M9 8V5h6v3M8 21h8"/></svg></span><h3>Seyahat hedefi</h3><p>Duyurulan dönemsel satış hedeflerini tamamlayan kampüs elçileri, .ki ekibiyle özel seyahat deneyimine katılma hakkı kazanabilir.</p></article></div></div></section>
 
-  <div class="kampus__wrap">
-    <div class="kampus__split">
-      <div class="kampus__col">
-        <h2>Kimler <span>başvurabilir?</span></h2>
-        <div class="kampus__who">
-          <span class="kampus__who-tag">🎓 Üniversite öğrencisi</span>
-          <span class="kampus__who-tag">📣 Sosyal medya aktif</span>
-          <span class="kampus__who-tag">💜 Kadın sağlığına ilgili</span>
-          <span class="kampus__who-tag">💊 Eczacılık</span>
-          <span class="kampus__who-tag">🎨 İçerik üretici</span>
-          <span class="kampus__who-tag">🌍 Her bölüm</span>
-        </div>
-        <p style="font-size:14px;color:#6b6b8a;line-height:1.7;font-weight:400;">.ki'ye inanan, çevresine anlatabilen, sosyal medyada aktif olan herkes başvurabilir.</p>
-      </div>
-      <div class="kampus__col">
-        <h2>Elçi olunca <span>ne olur?</span></h2>
-        <ul class="kampus__learn">
-          <li><span class="dot">01</span>Sana özel indirim kodu tanımlanır</li>
-          <li><span class="dot">02</span>Tüm .ki ürünleri ücretsiz gönderilir</li>
-          <li><span class="dot">03</span>Her satıştan komisyon hesabına geçer</li>
-          <li><span class="dot">04</span>Kampus etkinlikleri için destek alırsın</li>
-          <li><span class="dot">05</span>.ki sosyal medyasında öne çıkarılırsın</li>
-          <li><span class="dot">06</span>Referans mektubu hakkı kazanırsın</li>
-        </ul>
-      </div>
-    </div>
-  </div>
+  <section class="kc-section kc-soft"><div class="kc-shell"><header class="kc-head"><p class="kc-eyebrow">Ped odağı</p><h2 class="kc-title">Üç boy, üç farklı kampüs ihtiyacı</h2><p class="kc-subtitle">Elçilerimiz ürünleri yalnızca paylaşmaz; hangi pedin hangi kullanım ihtiyacına uygun olduğunu da doğru şekilde anlatır.</p></header><div class="kc-products"><a class="kc-product" href="/products/ki-hijyenik-gunduz-ped?view=ki-ped"><span class="kc-product-icon">{% render 'ki-pad-size-icon', active: 'small' %}</span><span><small>155 mm</small><strong>.ki Günlük Ped</strong><p>Günlük tazelik ve hafif akıntı odağı.</p></span></a><a class="kc-product" href="/products/ki-normal-ped?view=ki-ped"><span class="kc-product-icon">{% render 'ki-pad-size-icon', active: 'medium' %}</span><span><small>245 mm</small><strong>.ki Gündüz Ped</strong><p>Gün içi kullanım ve orta yoğun akış odağı.</p></span></a><a class="kc-product" href="/products/ki-hijyenik-gece-ped?view=ki-ped"><span class="kc-product-icon">{% render 'ki-pad-size-icon', active: 'large' %}</span><span><small>335 mm</small><strong>.ki Gece Ped</strong><p>Gece kullanımı ve yoğun akış odağı.</p></span></a></div></div></section>
 
-  <div class="kampus__form-section" id="basvur">
-    <div class="kampus__form-inner">
-      <div class="kampus__form-hd">
-        <h2>Başvurunu yap 👇</h2>
-        <p>Formu doldur — 3 iş günü içinde sana dönelim.</p>
-      </div>
-      <form class="kampus__form" id="ki-kampus-form">
-        <div class="kampus__form-row">
-          <div class="kampus__field"><label>Ad Soyad</label><input type="text" name="name" placeholder="Ada Yılmaz" required></div>
-          <div class="kampus__field"><label>E-posta</label><input type="email" name="email" placeholder="ada@uni.edu.tr" required></div>
-        </div>
-        <div class="kampus__form-row">
-          <div class="kampus__field"><label>Üniversite</label><input type="text" name="university" placeholder="DEÜ, Boğaziçi..." required></div>
-          <div class="kampus__field"><label>Bölüm &amp; Sınıf</label><input type="text" name="department" placeholder="Eczacılık, 3. sınıf" required></div>
-        </div>
-        <div class="kampus__field"><label>Instagram / TikTok hesabın</label><input type="text" name="social" placeholder="@kullaniciadiniz" required></div>
-        <div class="kampus__field"><label>Takipçi sayın (yaklaşık)</label>
-          <select name="followers" required>
-            <option value="">Seç...</option>
-            <option>500 altı</option>
-            <option>500 — 2.000</option>
-            <option>2.000 — 10.000</option>
-            <option>10.000+</option>
-          </select>
-        </div>
-        <div class="kampus__field"><label>Neden .ki elçisi olmak istiyorsun?</label><textarea name="message" placeholder="Motivasyonunu kısaca anlat." required></textarea></div>
-        <button type="submit" class="kampus__submit">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-          Başvuruyu Gönder
-        </button>
-        <p class="kampus__note">Başvurun berk@carewithki.com ve arin@carewithki.com adreslerine iletilir.</p>
-      </form>
-      <div class="kampus__success" id="ki-kampus-success">✅ Başvurun alındı!<br><span style="font-weight:400;font-size:14px;opacity:.85;">3 iş günü içinde seninle iletişime geçeceğiz. .ki ailesine hoş geldin 💜</span></div>
-    </div>
-  </div>
+  <section class="kc-section"><div class="kc-shell"><header class="kc-head"><p class="kc-eyebrow">Ödül yolculuğu</p><h2 class="kc-title">Kodun paylaşıldıkça hedefe yaklaş</h2><p class="kc-subtitle">Program performansı yalnızca doğrulanan ve iade süresi tamamlanan referans satışları üzerinden değerlendirilir.</p></header><div class="kc-journey"><article class="kc-stage"><span class="kc-stage-num">01 · BAŞLA</span><h3>Kodunu al</h3><p>Ürün eğitimini tamamla ve kişisel referans kodunu kullanmaya başla.</p></article><article class="kc-stage"><span class="kc-stage-num">02 · BÜYÜT</span><h3>Topluluğunu kur</h3><p>Kampüs etkinlikleri, sosyal medya ve öğrenci topluluklarıyla farkındalık yarat.</p></article><article class="kc-stage"><span class="kc-stage-num">03 · HEDEF</span><h3>Dönem hedefini tamamla</h3><p>Program döneminde açıklanan doğrulanmış satış ve içerik hedeflerine ulaş.</p></article><article class="kc-stage"><span class="kc-stage-num">04 · SEYAHAT</span><h3>.ki ile yola çık</h3><p>Koşulları sağlayan elçiler için planlanan özel seyahat deneyimine davet edil.</p></article></div><p class="kc-terms">{{ section.settings.reward_terms }}</p></div></section>
+
+  <section class="kc-section kc-soft"><div class="kc-shell kc-profile"><div class="kc-profile-card"><p class="kc-eyebrow">Kimler başvurabilir?</p><h2>Kampüsünde etki yaratmak isteyen öğrenciler</h2><div class="kc-tags"><span class="kc-tag">Üniversite öğrencisi</span><span class="kc-tag">Kadın sağlığına ilgili</span><span class="kc-tag">İçerik üretmeyi seven</span><span class="kc-tag">Topluluklara aktif</span><span class="kc-tag">Her bölümden</span></div></div><ol class="kc-checks"><li><span>01</span>Ped ürünleri, içerikleri ve doğru iletişim dili hakkında kısa eğitim alırsın.</li><li><span>02</span>Kampüsüne uygun içerik ve etkinlik fikirlerini .ki ekibiyle planlarsın.</li><li><span>03</span>Kişisel kodunla gelen doğrulanmış satışlar program kapsamında takip edilir.</li><li><span>04</span>Dönemsel ürün, deneyim, komisyon ve seyahat kampanyalarına katılabilirsin.</li><li><span>05</span>Program sonunda performansına göre katılım belgesi veya referans değerlendirmesi alabilirsin.</li></ol></div></section>
+
+  <section class="kc-form-section" id="kampus-basvuru"><div class="kc-form-wrap"><header class="kc-form-head"><h2>Kampüs elçisi başvurusu</h2><p>Formu doldur; başvurunu inceleyip uygun program dönemi için seninle iletişime geçelim.</p></header>{% form 'contact', id: 'ki-kampus-form', class: 'kc-form' %}<input type="hidden" name="contact[tags]" value="kampus-elcisi,ped-programi"><input type="hidden" name="contact[subject]" value=".ki Kampüs Elçisi Başvurusu">{%- if form.posted_successfully? -%}<div class="kc-success" role="status">Başvurun başarıyla alındı. .ki ekibi uygun program dönemi için seninle iletişime geçecek.</div>{%- endif -%}{%- if form.errors -%}<div class="kc-errors" role="alert">{{ form.errors | default_errors }}</div>{%- endif -%}<div class="kc-form-row"><div class="kc-field"><label for="KampusName-{{ section.id }}">Ad Soyad</label><input id="KampusName-{{ section.id }}" type="text" name="contact[name]" autocomplete="name" required></div><div class="kc-field"><label for="KampusEmail-{{ section.id }}">E-posta</label><input id="KampusEmail-{{ section.id }}" type="email" name="contact[email]" autocomplete="email" required></div></div><div class="kc-form-row"><div class="kc-field"><label for="KampusPhone-{{ section.id }}">Telefon</label><input id="KampusPhone-{{ section.id }}" type="tel" name="contact[phone]" autocomplete="tel" required></div><div class="kc-field"><label for="KampusCity-{{ section.id }}">Şehir</label><input id="KampusCity-{{ section.id }}" type="text" name="contact[Şehir]" required></div></div><div class="kc-form-row"><div class="kc-field"><label for="KampusUniversity-{{ section.id }}">Üniversite</label><input id="KampusUniversity-{{ section.id }}" type="text" name="contact[Üniversite]" required></div><div class="kc-field"><label for="KampusDepartment-{{ section.id }}">Bölüm ve sınıf</label><input id="KampusDepartment-{{ section.id }}" type="text" name="contact[Bölüm ve Sınıf]" required></div></div><div class="kc-form-row"><div class="kc-field"><label for="KampusSocial-{{ section.id }}">Instagram / TikTok</label><input id="KampusSocial-{{ section.id }}" type="text" name="contact[Sosyal Medya]" placeholder="@kullaniciadi" required></div><div class="kc-field"><label for="KampusFollowers-{{ section.id }}">Yaklaşık takipçi</label><select id="KampusFollowers-{{ section.id }}" name="contact[Takipçi Sayısı]" required><option value="">Seç</option><option>500 altı</option><option>500–2.000</option><option>2.000–10.000</option><option>10.000+</option></select></div></div><div class="kc-field"><label for="KampusMessage-{{ section.id }}">Neden .ki kampüs elçisi olmak istiyorsun?</label><textarea id="KampusMessage-{{ section.id }}" name="contact[body]" placeholder="Kampüsünde yapmak istediğin çalışmaları ve motivasyonunu kısaca anlat." required></textarea></div><label class="kc-consent"><input type="checkbox" required><span>Başvuru bilgilerimin program değerlendirmesi için işlenmesini kabul ediyor, <a href="/pages/kvkk" target="_blank">KVKK Aydınlatma Metni</a>'ni okuduğumu onaylıyorum.</span></label><button class="kc-submit" type="submit">Başvuruyu gönder</button>{% endform %}</div></section>
 </div>
 
-<script>
-document.getElementById('ki-kampus-form').addEventListener('submit',function(e){
-  e.preventDefault();
-  var d=new FormData(this);
-  var lines=[];
-  d.forEach(function(v,k){if(v) lines.push(k.toUpperCase()+': '+v);});
-  var body=lines.join('\n\n');
-  var subject=encodeURIComponent('.ki Kampüs Elçisi Başvurusu — '+(d.get('name')||''));
-  var bodyEnc=encodeURIComponent(body);
-  window.location.href='mailto:berk@carewithki.com,arin@carewithki.com?subject='+subject+'&body='+bodyEnc;
-  this.style.display='none';
-  document.getElementById('ki-kampus-success').style.display='block';
-  document.getElementById('ki-kampus-success').scrollIntoView({behavior:'smooth'});
-});
-document.querySelector('.kampus__hero-cta').addEventListener('click',function(e){
-  var t=document.getElementById('basvur');
-  if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth'});}
-});
-</script>
-
 {% schema %}
-{"name":"Kampüs Elçisi (.ki)","tag":"section","class":"section","settings":[],"presets":[{"name":"Kampüs Elçisi (.ki)"}]}
+{
+  "name":"Kampüs Elçisi (.ki)",
+  "tag":"section",
+  "class":"section",
+  "settings":[
+    {"type":"text","id":"hero_kicker","label":"Hero üst etiketi","default":".ki Kampüs Elçisi Programı"},
+    {"type":"text","id":"hero_title","label":"Hero başlığı","default":"Kampüsünde ped farkındalığını büyüt."},
+    {"type":"text","id":"hero_emphasis","label":"Vurgulu başlık","default":"Kodunla paylaş, hedefinle yola çık."},
+    {"type":"textarea","id":"hero_text","label":"Hero açıklaması","default":"Arkadaşlarının doğru ped seçimini kolaylaştır, kadın sağlığı farkındalığını büyüt ve sana özel referans koduyla dönemsel ödül yolculuğuna katıl."},
+    {"type":"textarea","id":"reward_terms","label":"Seyahat kampanyası koşul notu","default":"Seyahat ödülü otomatik veya koşulsuz değildir. Katılım; ilan edilen kampanya dönemi, doğrulanmış ve iade süresi tamamlanmış referans satışları, içerik görevleri, uygunluk kriterleri ve kontenjan koşullarına bağlıdır. Ayrıntılı koşullar seçilen elçilere program başlangıcında yazılı olarak iletilir."}
+  ],
+  "presets":[{"name":"Kampüs Elçisi (.ki)"}]
+}
 {% endschema %}

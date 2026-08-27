@@ -60,6 +60,9 @@
     flex-shrink: 0; color: #493d9a;
   }
   .ki-mega-col__icon svg { width: 15px; height: 15px; }
+  .ki-mega-col__icon--pad svg { width: 26px; height: 15px; }
+  .ki-mega-col__icon--pad .ki-pack__pad-shape { fill: transparent; stroke: rgba(73,61,154,.3); stroke-width: 1.45; }
+  .ki-mega-col__icon--pad .ki-pack__pad-shape.is-active { fill: #493d9a; stroke: #493d9a; }
   .ki-mega-col__label { font-size: 12px; font-weight: 600; line-height: 1.3; color: #222; }
   .ki-mega-col__item:hover .ki-mega-col__label { color: #493d9a; }
   .ki-mega-col__divider { margin-top: 14px; padding-top: 10px; border-top: 1px solid rgba(73,61,154,.08); }
@@ -214,21 +217,15 @@
             <div class="ki-mega-col__title">Hijyenik Pedler</div>
             <ul class="ki-mega-col__list">
               <li><a href="/products/ki-hijyenik-gunduz-ped?view=ki-ped" class="ki-mega-col__item">
-                <span class="ki-mega-col__icon">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3l1.5 4.5L18 9l-4.5 1.5L12 15l-1.5-4.5L6 9l4.5-1.5L12 3z"/><path d="M19 14l.8 2.2L22 17l-2.2.8L19 20l-.8-2.2L16 17l2.2-.8L19 14z"/></svg>
-                </span>
+                <span class="ki-mega-col__icon ki-mega-col__icon--pad">{% render 'ki-pad-size-icon', active: 'small' %}</span>
                 <span class="ki-mega-col__label">.ki Günlük Ped</span>
               </a></li>
               <li><a href="/products/ki-normal-ped?view=ki-ped" class="ki-mega-col__item">
-                <span class="ki-mega-col__icon">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9 7 7M17 17l2.1 2.1M4.9 19.1 7 17M17 7l2.1-2.1" stroke-linecap="round"/></svg>
-                </span>
+                <span class="ki-mega-col__icon ki-mega-col__icon--pad">{% render 'ki-pad-size-icon', active: 'medium' %}</span>
                 <span class="ki-mega-col__label">.ki Gündüz Ped</span>
               </a></li>
               <li><a href="/products/ki-hijyenik-gece-ped?view=ki-ped" class="ki-mega-col__item">
-                <span class="ki-mega-col__icon">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8z"/></svg>
-                </span>
+                <span class="ki-mega-col__icon ki-mega-col__icon--pad">{% render 'ki-pad-size-icon', active: 'large' %}</span>
                 <span class="ki-mega-col__label">.ki Gece Ped</span>
               </a></li>
             </ul>

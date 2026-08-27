@@ -88,7 +88,7 @@
       },
       "block_order": ["cotton", "bamboo", "mugwort"],
       "settings": {
-        "background": "#f6f4fc",
+        "background": "#ffffff",
         "padding_y": 64,
         "eyebrow": "İçeriği saklamıyoruz",
         "heading": "Her katmanın bir nedeni var",
@@ -99,14 +99,74 @@
         "footnote": "Onay ve kurum logoları, doğrulama belgeleri tamamlandığında bu alandan güncellenecektir."
       }
     },
+    "ped_expert": {
+      "type": "ki-ped-pharmacist-video",
+      "settings": {
+        "padding_y": 56,
+        "eyebrow": "Eczacımız anlatıyor",
+        "heading": "Pedi bilimsel açıdan tanı",
+        "description": "Eczacımız ürünün katmanlarını, içerik yaklaşımını ve hangi ped boyunun hangi ihtiyaca uygun olduğunu sade bir dille anlatıyor.",
+        "daily_label": "Günlük Ped · Eczacı Anlatımı",
+        "day_label": "Gündüz Ped · Eczacı Anlatımı",
+        "night_label": "Gece Ped · Eczacı Anlatımı"
+      }
+    },
+    "ped_flow": {
+      "type": "ki-ped-subscription-flow",
+      "settings": {
+        "padding_y": 56,
+        "eyebrow": "Nasıl abone olunur?",
+        "heading": "Dört adımda ped paketin hazır",
+        "subtitle": "İhtiyacına göre pedlerini seç, düzenli teslim al. Taahhüt yok; paketini hesabından kolayca yönet.",
+        "cta_label": "Ped paketini oluştur"
+      }
+    },
     "ped_ugc": {
       "type": "ki-ugc-carousel",
-      "disabled": true,
+      "blocks": {
+        "daily_story": {
+          "type": "video_card",
+          "settings": {
+            "creator_name": "Kullanım deneyimi",
+            "creator_handle": "Günlük ped",
+            "creator_review": "Günlük ped kullanım deneyimi ve içerik üreticisi videosu yakında burada yayınlanacak.",
+            "product": "ki-hijyenik-gunduz-ped",
+            "product_name": ".ki Günlük Ped",
+            "label": "Günlük kullanım deneyimi",
+            "badge": "Yakında"
+          }
+        },
+        "day_story": {
+          "type": "video_card",
+          "settings": {
+            "creator_name": "Kullanım deneyimi",
+            "creator_handle": "Gündüz ped",
+            "creator_review": "Gündüz ped kullanım deneyimi ve içerik üreticisi videosu yakında burada yayınlanacak.",
+            "product": "ki-normal-ped",
+            "product_name": ".ki Gündüz Ped",
+            "label": "Gün içi kullanım deneyimi",
+            "badge": "Yakında"
+          }
+        },
+        "night_story": {
+          "type": "video_card",
+          "settings": {
+            "creator_name": "Kullanım deneyimi",
+            "creator_handle": "Gece ped",
+            "creator_review": "Gece ped kullanım deneyimi ve içerik üreticisi videosu yakında burada yayınlanacak.",
+            "product": "ki-hijyenik-gece-ped",
+            "product_name": ".ki Gece Ped",
+            "label": "Gece kullanım deneyimi",
+            "badge": "Yakında"
+          }
+        }
+      },
+      "block_order": ["daily_story", "day_story", "night_story"],
       "settings": {
-        "bg": "#f8f8f6",
+        "bg": "#ffffff",
         "eyebrow": "Kullananlardan dinle",
         "title": "<p>Bizi bir de <em>onlardan</em> dinle.</p>",
-        "subtitle": "Gerçek kullanım deneyimleri yakında burada.",
+        "subtitle": "Ped deneyimlerini gerçek kullanıcılardan dinle.",
         "speed": 30,
         "padding_top": 56,
         "padding_bottom": 64
@@ -154,7 +214,7 @@
       "block_order": ["size", "surface", "mugwort", "subscription", "change"],
       "settings": {
         "heading": "Pedlerle ilgili merak ettiklerin",
-        "bg": "#f4ede1",
+        "bg": "#ffffff",
         "card_bg": "#ffffff",
         "primary_color": "#493d9a"
       }
@@ -229,5 +289,5 @@
       }
     }
   },
-  "order": ["ped_hero", "ped_science", "ped_ugc", "ped_faq", "ped_cross_sell"]
+  "order": ["ped_hero", "ped_science", "ped_expert", "ped_flow", "ped_ugc", "ped_faq", "ped_cross_sell"]
 }

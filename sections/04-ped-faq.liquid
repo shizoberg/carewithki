@@ -7,7 +7,7 @@
 <section id="pad-faq-{{ section.id }}" class="section pad-faq">
   <style>
     #pad-faq-{{ section.id }} {
-      --pq-bg: {{ section.settings.bg | default: '#f4ede1' }};
+      --pq-bg: {{ section.settings.bg | default: '#ffffff' }};
       --pq-card: {{ section.settings.card_bg | default: '#ffffff' }};
       --pq-primary: {{ section.settings.primary_color | default: '#3a2d6e' }};
       --pq-text: #1a1a1a;
@@ -57,7 +57,7 @@
       color: var(--pq-primary);
     }
     #pad-faq-{{ section.id }} details.pq-item summary::-webkit-details-marker { display: none; }
-    #pad-faq-{{ section.id }} details.pq-item summary:hover { background: rgba(244,237,225,.4); }
+    #pad-faq-{{ section.id }} details.pq-item summary:hover { background: #f8f7fc; }
     #pad-faq-{{ section.id }} .pq-icon {
       width: 20px; height: 20px;
       flex-shrink: 0;
@@ -106,7 +106,7 @@
   "class": "pad-faq",
   "settings": [
     { "type": "text", "id": "heading", "label": "Başlık", "default": "Sıkça sorulan sorular" },
-    { "type": "color", "id": "bg", "label": "Arka plan", "default": "#f4ede1" },
+    { "type": "color", "id": "bg", "label": "Arka plan", "default": "#ffffff" },
     { "type": "color", "id": "card_bg", "label": "Kart arka planı", "default": "#ffffff" },
     { "type": "color", "id": "primary_color", "label": "Primary", "default": "#3a2d6e" }
   ],

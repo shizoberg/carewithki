@@ -6,7 +6,7 @@
     --kps-dark: #1a1340;
     --kps-muted: #706b7b;
     --kps-line: rgba(73,61,154,.13);
-    background: {{ section.settings.background | default: '#f6f4fc' }};
+    background: {{ section.settings.background | default: '#ffffff' }};
     padding: {{ section.settings.padding_y | default: 64 }}px 0;
   }
   #KiPedScience-{{ section.id }} * { box-sizing: border-box; }
@@ -128,7 +128,7 @@
   "tag": "section",
   "class": "section",
   "settings": [
-    { "type": "color", "id": "background", "label": "Arka plan", "default": "#f6f4fc" },
+    { "type": "color", "id": "background", "label": "Arka plan", "default": "#ffffff" },
     { "type": "range", "id": "padding_y", "label": "Dikey boşluk", "min": 28, "max": 96, "step": 4, "unit": "px", "default": 64 },
     { "type": "text", "id": "eyebrow", "label": "Üst etiket", "default": "İçeriği saklamıyoruz" },
     { "type": "text", "id": "heading", "label": "Başlık", "default": "Her katmanın bir nedeni var" },
