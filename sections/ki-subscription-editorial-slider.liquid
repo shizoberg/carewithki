@@ -73,13 +73,15 @@
     border-radius: 24px;
     background: #211a4d;
   }
-  #KiEditorialSlider-{{ section.id }} .kes-media img {
+  #KiEditorialSlider-{{ section.id }} .kes-media img,
+  #KiEditorialSlider-{{ section.id }} .kes-media video {
     width: 100%;
     height: 100%;
     display: block;
     object-fit: contain;
     object-position: center;
   }
+  #KiEditorialSlider-{{ section.id }} .kes-media video { object-fit: cover; }
   #KiEditorialSlider-{{ section.id }} .kes-media-placeholder {
     width: 100%;
     height: 100%;
@@ -189,6 +191,7 @@
         {%- for block in section.blocks -%}
           {%- liquid
             assign slide_product = block.settings.product
+            assign slide_video = block.settings.video
             assign slide_image = block.settings.image
             if slide_image == blank and slide_product != blank
               assign slide_image = slide_product.featured_image
@@ -213,7 +216,9 @@
               </a>
             </div>
             <a class="kes-media" href="{{ slide_link }}" aria-label="{{ block.settings.title | escape }}">
-              {%- if slide_image != blank -%}
+              {%- if slide_video != blank -%}
+                {{ slide_video | video_tag: autoplay: false, loop: true, muted: true, controls: false, playsinline: true, preload: 'metadata' }}
+              {%- elsif slide_image != blank -%}
                 {{ slide_image | image_url: width: 1800 | image_tag: widths: '600, 900, 1200, 1500, 1800', sizes: '(max-width: 749px) calc(100vw - 24px), 62vw', loading: 'eager', fetchpriority: 'high', alt: block.settings.title }}
               {%- elsif fallback_asset != blank -%}
                 <img src="{{ fallback_asset | asset_url }}" loading="eager" fetchpriority="high" alt="{{ block.settings.title | escape }}" width="1800" height="1013">
@@ -252,10 +257,22 @@
     const track = root.querySelector('[data-kes-track]');
     const slides = [...root.querySelectorAll('[data-kes-slide]')];
     const count = root.querySelector('[data-kes-count]');
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     let index = 0;
     const render = () => {
       track.style.transform = `translateX(-${index * 100}%)`;
-      slides.forEach((slide, slideIndex) => slide.setAttribute('aria-hidden', slideIndex === index ? 'false' : 'true'));
+      slides.forEach((slide, slideIndex) => {
+        const active = slideIndex === index;
+        slide.setAttribute('aria-hidden', active ? 'false' : 'true');
+        const video = slide.querySelector('video');
+        if (!video) return;
+        if (active && !reduceMotion) {
+          const playPromise = video.play();
+          if (playPromise) playPromise.catch(() => {});
+        } else {
+          video.pause();
+        }
+      });
       if (count) count.textContent = `${index + 1} / ${slides.length}`;
     };
     root.querySelector('[data-kes-prev]')?.addEventListener('click', () => { index = (index - 1 + slides.length) % slides.length; render(); });
@@ -286,6 +303,7 @@
       "limit": 6,
       "settings": [
         { "type": "product", "id": "product", "label": "Ürün" },
+        { "type": "video", "id": "video", "label": "16:9 video", "info": "Video seçilirse görsel yerine sessiz ve döngüde oynatılır." },
         { "type": "image_picker", "id": "image", "label": "16:9 görsel", "info": "Boş bırakılırsa ürünün kapak görseli kullanılır." },
         { "type": "text", "id": "fallback_asset", "label": "Tema içi yedek görsel dosyası", "info": "Örn: ki-ped-gunduz-01.webp. Ürün ve özel görsel bulunmazsa kullanılır." },
         { "type": "text", "id": "eyebrow", "label": "Üst etiket", "default": "ABONELİK · SANA ÖZEL" },

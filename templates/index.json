@@ -71,6 +71,7 @@
     },
     "custom_hero_video_3_jENbDg": {
       "type": "custom-hero-video-3",
+      "disabled": true,
       "blocks": {
         "slide_L7wDtK": {
           "type": "slide",
