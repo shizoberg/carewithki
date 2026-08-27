@@ -9,6 +9,66 @@
  */
 {
   "sections": {
+    "ki_subscription_editorial_slider": {
+      "type": "ki-subscription-editorial-slider",
+      "blocks": {
+        "slide_ped": {
+          "type": "slide",
+          "settings": {
+            "product": "shopify://products/ki-normal-ped",
+            "fallback_asset": "ki-ped-gunduz-01.webp",
+            "eyebrow": "ABONELİK · PED RUTİNİ",
+            "title": "Pedlerin bitmeden kapında.",
+            "description": "Günlük, gündüz ve gece pedlerini ihtiyacına göre seç; gönderim sıklığını sen belirle.",
+            "button_label": "Ped Paketini Oluştur",
+            "button_link": "/pages/paket-olustur",
+            "proof_text": "%95 pamuk · %5 bambu · pelin otu özü"
+          }
+        },
+        "slide_supplement": {
+          "type": "slide",
+          "settings": {
+            "product": "shopify://products/balance-your-cycle",
+            "image": "shopify://shop_images/pms_-_product_page_b88e49fd-d469-4585-9fe4-c63379926631.jpg",
+            "eyebrow": "ECZACI ONAYLI TAKVİYE",
+            "title": "Takviyeni aksatma.",
+            "description": "Döngü rutinini düzenli gönderimle destekle; paketini dilediğin zaman değiştir.",
+            "button_label": "Takviyeyi İncele",
+            "button_link": "shopify://products/balance-your-cycle",
+            "proof_text": "Uzman eczacılar tarafından geliştirildi"
+          }
+        },
+        "slide_intimate": {
+          "type": "slide",
+          "settings": {
+            "product": "shopify://products/ki-intimate-intim-bakim-spreyi",
+            "image": "shopify://shop_images/intimate.sprey_1080_x_1350_piksel_-2.jpg",
+            "eyebrow": "İNTİM BAKIM RUTİNİ",
+            "title": "Bakımın hep hazır olsun.",
+            "description": "İntim bakım ürünlerini rutinine ekle; ihtiyaç duyduğun aralıkta kapına gelsin.",
+            "button_label": "İntim Bakımı İncele",
+            "button_link": "shopify://products/ki-intimate-intim-bakim-spreyi",
+            "proof_text": "pH dengeli günlük bakım"
+          }
+        }
+      },
+      "block_order": [
+        "slide_ped",
+        "slide_supplement",
+        "slide_intimate"
+      ],
+      "name": "Sade Abonelik Slider",
+      "settings": {
+        "background": "#f7f5f1",
+        "text_color": "#211a45",
+        "accent_color": "#493d9a",
+        "max_width": 1450,
+        "benefit_one": "%15 abonelik avantajı",
+        "benefit_two": "Kişiselleştirilebilir",
+        "benefit_three": "Eczacı onaylı",
+        "benefit_four": "Dilediğin zaman değiştir"
+      }
+    },
     "custom_hero_video_3_jENbDg": {
       "type": "custom-hero-video-3",
       "blocks": {
@@ -685,6 +745,7 @@
     }
   },
   "order": [
+    "ki_subscription_editorial_slider",
     "custom_hero_video_3_jENbDg",
     "ki_trust_bar_main",
     "custom_routine_cards_3gzAbh",

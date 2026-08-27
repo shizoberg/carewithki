@@ -23,7 +23,7 @@
           "type": "trust",
           "settings": {
             "icon": "truck",
-            "label": "₺400+ kargo ₺59 · ₺800+ ücretsiz"
+            "label": "₺800 altı kargo ₺59 · ₺800+ ücretsiz"
           }
         },
         "t3": {
@@ -397,7 +397,6 @@
         "empty_message": "Ürünlerini seç, gönderim sıklığını paketine göre belirle.",
         "cta_idle": "Önce ürün ekle",
         "howit_title": "Nasıl çalışır?",
-        "subscription_minimum_amount": 400,
         "subscription_shipping_fee": 59,
         "subscription_free_shipping_threshold": 800,
         "subscription_discount_percent": 15
