@@ -22,13 +22,19 @@
   #KiPedCrossSell-{{ section.id }} .kpc-arrow { width:30px; height:30px; border-radius:50%; display:grid; place-items:center; background:#eeeafd; color:var(--kpc-purple); }
   #KiPedCrossSell-{{ section.id }} .kpc-arrow svg { width:14px; height:14px; }
   @media(max-width:749px){
-    #KiPedCrossSell-{{ section.id }}{padding:40px 0;}
+    #KiPedCrossSell-{{ section.id }}{padding:28px 0;}
     #KiPedCrossSell-{{ section.id }} .kpc-shell{width:calc(100% - 28px);}
+    #KiPedCrossSell-{{ section.id }} .kpc-head{margin-bottom:14px;}
+    #KiPedCrossSell-{{ section.id }} .kpc-title{font-size:23px;}
     #KiPedCrossSell-{{ section.id }} .kpc-grid{display:flex;overflow-x:auto;gap:10px;margin:0 -14px;padding:0 14px 8px;scroll-snap-type:x mandatory;scrollbar-width:none;}
     #KiPedCrossSell-{{ section.id }} .kpc-grid::-webkit-scrollbar{display:none;}
-    #KiPedCrossSell-{{ section.id }} .kpc-card{flex:0 0 min(76vw,290px);scroll-snap-align:start;display:grid;grid-template-columns:42% minmax(0,1fr);}
-    #KiPedCrossSell-{{ section.id }} .kpc-media{height:100%;min-height:160px;aspect-ratio:auto;}
-    #KiPedCrossSell-{{ section.id }} .kpc-body{padding:13px 12px;display:flex;flex-direction:column;}
+    #KiPedCrossSell-{{ section.id }} .kpc-card{flex:0 0 min(64vw,240px);scroll-snap-align:start;display:grid;grid-template-columns:40% minmax(0,1fr);border-radius:14px;}
+    #KiPedCrossSell-{{ section.id }} .kpc-media{height:100%;min-height:126px;aspect-ratio:auto;}
+    #KiPedCrossSell-{{ section.id }} .kpc-body{padding:10px 9px;display:flex;flex-direction:column;}
+    #KiPedCrossSell-{{ section.id }} .kpc-name{font-size:12px;}
+    #KiPedCrossSell-{{ section.id }} .kpc-copy{font-size:9px;line-height:1.35;}
+    #KiPedCrossSell-{{ section.id }} .kpc-price{font-size:11px;}
+    #KiPedCrossSell-{{ section.id }} .kpc-arrow{width:25px;height:25px;}
     #KiPedCrossSell-{{ section.id }} .kpc-copy{min-height:0;}
     #KiPedCrossSell-{{ section.id }} .kpc-footer{margin-top:auto;}
   }

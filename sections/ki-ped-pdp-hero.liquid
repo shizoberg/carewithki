@@ -103,21 +103,37 @@
   #KiPedHero-{{ section.id }} .kph-status { min-height: 18px; margin: 8px 0 0; color: #47745d; text-align: center; font-size: 12px; font-weight: 700; }
 
   @media (max-width: 989px) {
-    #KiPedHero-{{ section.id }} { padding: 18px 0 32px; }
+    #KiPedHero-{{ section.id }} { padding: 12px 0 24px; }
     #KiPedHero-{{ section.id }} .kph-shell { width: min(100% - 28px, 720px); }
-    #KiPedHero-{{ section.id }} .kph-grid { grid-template-columns: 1fr; gap: 24px; }
+    #KiPedHero-{{ section.id }} .kph-grid { grid-template-columns: 1fr; gap: 16px; }
     #KiPedHero-{{ section.id }} .kph-info { position: static; }
-    #KiPedHero-{{ section.id }} .kph-main { border-radius: 20px; }
-    #KiPedHero-{{ section.id }} .kph-title { font-size: 36px; }
+    #KiPedHero-{{ section.id }} .kph-main { height: min(92vw, 390px); aspect-ratio: auto; border-radius: 18px; }
+    #KiPedHero-{{ section.id }} .kph-slide img { object-fit: contain; }
+    #KiPedHero-{{ section.id }} .kph-thumbs { gap: 6px; padding-top: 8px; }
+    #KiPedHero-{{ section.id }} .kph-thumb { width: 50px; height: 50px; flex-basis: 50px; border-radius: 9px; }
+    #KiPedHero-{{ section.id }} .kph-eyebrow { margin-bottom: 5px; font-size: 9px; }
+    #KiPedHero-{{ section.id }} .kph-title { font-size: 28px; line-height: 1.05; }
+    #KiPedHero-{{ section.id }} .kph-rating { gap: 5px; margin-top: 8px; font-size: 11px; }
+    #KiPedHero-{{ section.id }} .kph-description { margin-top: 10px; font-size: 12px; line-height: 1.48; }
+    #KiPedHero-{{ section.id }} .kph-purchase-title { margin: 14px 0 7px; font-size: 11px; }
+    #KiPedHero-{{ section.id }} .kph-options { gap: 6px; }
+    #KiPedHero-{{ section.id }} .kph-actions { gap: 7px; margin-top: 10px; }
+    #KiPedHero-{{ section.id }} .kph-atc,
+    #KiPedHero-{{ section.id }} .kph-subscribe { min-height: 43px; padding: 10px 15px; border-radius: 11px; font-size: 12px; }
+    #KiPedHero-{{ section.id }} .kph-trust { margin-top: 9px; }
   }
   @media (max-width: 520px) {
-    #KiPedHero-{{ section.id }} .kph-option { grid-template-columns: 52px minmax(0, 1fr) auto; gap: 10px; padding: 10px; }
-    #KiPedHero-{{ section.id }} .kph-option-media { width: 52px; height: 52px; }
-    #KiPedHero-{{ section.id }} .kph-option-name { font-size: 12px; }
-    #KiPedHero-{{ section.id }} .kph-option-meta { font-size: 9.5px; }
-    #KiPedHero-{{ section.id }} .kph-option-price { font-size: 13px; }
-    #KiPedHero-{{ section.id }} .kph-trust { gap: 6px; }
-    #KiPedHero-{{ section.id }} .kph-trust-item { min-height: 48px; padding: 7px 5px; font-size: 8.5px; }
+    #KiPedHero-{{ section.id }} .kph-option { grid-template-columns: 44px minmax(0, 1fr) auto; gap: 8px; padding: 7px 8px; border-radius: 12px; }
+    #KiPedHero-{{ section.id }} .kph-option-media { width: 44px; height: 44px; border-radius: 9px; }
+    #KiPedHero-{{ section.id }} .kph-option-media svg { width: 40px; height: 21px; }
+    #KiPedHero-{{ section.id }} .kph-option-name { gap: 4px; font-size: 11px; }
+    #KiPedHero-{{ section.id }} .kph-current { padding: 2px 5px; font-size: 6.5px; }
+    #KiPedHero-{{ section.id }} .kph-option-meta { margin-top: 2px; font-size: 8.5px; line-height: 1.25; }
+    #KiPedHero-{{ section.id }} .kph-option-price { font-size: 11.5px; }
+    #KiPedHero-{{ section.id }} .kph-option-price small { margin-top: 1px; font-size: 7.5px; }
+    #KiPedHero-{{ section.id }} .kph-trust { gap: 5px; }
+    #KiPedHero-{{ section.id }} .kph-trust-item { min-height: 39px; gap: 4px; padding: 5px 4px; border-radius: 10px; font-size: 7.5px; line-height: 1.2; }
+    #KiPedHero-{{ section.id }} .kph-trust-item svg { width: 13px; height: 13px; }
   }
 </style>
 
