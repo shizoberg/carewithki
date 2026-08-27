@@ -7,6 +7,26 @@
 {%- liquid
   assign current_variant = product.selected_or_first_available_variant
   assign pad_blocks = section.blocks | where: 'type', 'pad_option'
+  assign is_five_pack = false
+  if product.handle contains '-5li'
+    assign is_five_pack = true
+  endif
+  assign gallery_csv = blank
+  case product.handle
+    when 'ki-hijyenik-gunduz-ped'
+      assign gallery_csv = 'ki-ped-gunluk-01.webp,ki-ped-gunluk-02.webp,ki-ped-gunluk-03.webp,ki-ped-gunluk-04.webp,ki-ped-gunluk-05.webp,ki-ped-gunluk-06.webp,ki-ped-gunluk-07.webp'
+    when 'ki-normal-ped'
+      assign gallery_csv = 'ki-ped-gunduz-01.webp,ki-ped-gunduz-02.webp,ki-ped-gunduz-03.webp,ki-ped-gunduz-04.webp,ki-ped-gunduz-05.webp,ki-ped-gunduz-06.webp,ki-ped-gunduz-07.webp,ki-ped-gunduz-08.webp'
+    when 'ki-hijyenik-gece-ped'
+      assign gallery_csv = 'ki-ped-gece-01.webp,ki-ped-gece-02.webp,ki-ped-gece-03.webp,ki-ped-gece-04.webp,ki-ped-gece-05.webp,ki-ped-gece-06.webp'
+    when 'ki-gunluk-ped-5li'
+      assign gallery_csv = 'ki-ped-gunluk-5li.webp'
+    when 'ki-gunduz-ped-5li'
+      assign gallery_csv = 'ki-ped-gunduz-5li.webp'
+    when 'ki-gece-ped-5li'
+      assign gallery_csv = 'ki-ped-gece-5li.webp'
+  endcase
+  assign gallery_assets = gallery_csv | split: ','
 -%}
 
 <style>
@@ -25,7 +45,7 @@
   #KiPedHero-{{ section.id }} .kph-grid { display: grid; grid-template-columns: minmax(0, 1.04fr) minmax(420px, .96fr); gap: 54px; align-items: start; }
   #KiPedHero-{{ section.id }} .kph-gallery { min-width: 0; }
   #KiPedHero-{{ section.id }} .kph-main {
-    position: relative; overflow: hidden; aspect-ratio: 1 / 1; border-radius: 26px;
+    position: relative; overflow: hidden; aspect-ratio: 4 / 5; border-radius: 26px;
     background: linear-gradient(145deg, #21184f, #6254b4); border: 1px solid var(--ped-line);
   }
   #KiPedHero-{{ section.id }} .kph-slide { position: absolute; inset: 0; opacity: 0; transition: opacity .22s ease; pointer-events: none; }
@@ -106,7 +126,19 @@
     <div class="kph-grid">
       <div class="kph-gallery">
         <div class="kph-main" data-kph-main>
-          {%- if product.images.size > 0 -%}
+          {%- if gallery_csv != blank -%}
+            {%- for gallery_asset in gallery_assets -%}
+              <div class="kph-slide{% if forloop.first %} is-active{% endif %}" data-kph-slide="{{ forloop.index0 }}">
+                <img
+                  src="{{ gallery_asset | asset_url }}"
+                  width="1080"
+                  height="1350"
+                  alt="{{ product.title | escape }} · görsel {{ forloop.index }}"
+                  {% if forloop.first %}loading="eager" fetchpriority="high"{% else %}loading="lazy"{% endif %}
+                >
+              </div>
+            {%- endfor -%}
+          {%- elsif product.images.size > 0 -%}
             {%- for image in product.images limit: 6 -%}
               {%- liquid
                 if forloop.first
@@ -132,7 +164,15 @@
             </div>
           {%- endif -%}
         </div>
-        {%- if product.images.size > 1 -%}
+        {%- if gallery_assets.size > 1 -%}
+          <div class="kph-thumbs" aria-label="Ürün görselleri">
+            {%- for gallery_asset in gallery_assets -%}
+              <button type="button" class="kph-thumb{% if forloop.first %} is-active{% endif %}" data-kph-thumb="{{ forloop.index0 }}" aria-label="Görsel {{ forloop.index }}">
+                <img src="{{ gallery_asset | asset_url }}" width="108" height="135" loading="lazy" alt="">
+              </button>
+            {%- endfor -%}
+          </div>
+        {%- elsif gallery_csv == blank and product.images.size > 1 -%}
           <div class="kph-thumbs" aria-label="Ürün görselleri">
             {%- for image in product.images limit: 6 -%}
               <button type="button" class="kph-thumb{% if forloop.first %} is-active{% endif %}" data-kph-thumb="{{ forloop.index0 }}" aria-label="Görsel {{ forloop.index }}">
@@ -164,18 +204,34 @@
         <div class="kph-options" role="list" data-kph-options>
           {%- for block in pad_blocks -%}
             {%- liquid
-              assign option_product = block.settings.product
-              if option_product == blank
+              assign option_product = blank
+              if is_five_pack
                 case block.settings.size_type
                   when 'small'
-                    assign option_product = all_products['ki-hijyenik-gunduz-ped']
+                    assign option_product = all_products['ki-gunluk-ped-5li']
                   when 'medium'
-                    assign option_product = all_products['ki-normal-ped']
+                    assign option_product = all_products['ki-gunduz-ped-5li']
                   when 'large'
-                    assign option_product = all_products['ki-hijyenik-gece-ped']
+                    assign option_product = all_products['ki-gece-ped-5li']
                 endcase
+              else
+                assign option_product = block.settings.product
+                if option_product == blank
+                  case block.settings.size_type
+                    when 'small'
+                      assign option_product = all_products['ki-hijyenik-gunduz-ped']
+                    when 'medium'
+                      assign option_product = all_products['ki-normal-ped']
+                    when 'large'
+                      assign option_product = all_products['ki-hijyenik-gece-ped']
+                  endcase
+                endif
               endif
               assign option_variant = option_product.selected_or_first_available_variant
+              assign display_pack_count = block.settings.pack_count
+              if is_five_pack
+                assign display_pack_count = '5 adet'
+              endif
               assign is_current = false
               if option_product != blank and option_product.handle == product.handle
                 assign is_current = true
@@ -205,7 +261,7 @@
                   {{ block.settings.name | default: option_product.title | escape }}
                   {%- if is_current -%}<span class="kph-current">Bu ürün</span>{%- endif -%}
                 </span>
-                <span class="kph-option-meta">{{ block.settings.dimension | escape }} · {{ block.settings.pack_count | escape }} · {{ block.settings.short_description | escape }}</span>
+                <span class="kph-option-meta">{{ block.settings.dimension | escape }} · {{ display_pack_count | escape }} · {{ block.settings.short_description | escape }}</span>
               </span>
               <span class="kph-option-price">
                 {%- if option_product != blank -%}{{ option_product.price | money }}{%- else -%}Yakında{%- endif -%}
@@ -342,9 +398,9 @@
   "presets": [{
     "name": "Ped PDP Hero",
     "blocks": [
-      { "type": "pad_option", "settings": { "name": ".ki Günlük Ped", "size_type": "small", "dimension": "155 mm", "pack_count": "Günlük kullanım", "short_description": "Hafif akıntı ve günlük tazelik" } },
-      { "type": "pad_option", "settings": { "name": ".ki Gündüz Ped", "size_type": "medium", "dimension": "245 mm", "pack_count": "Gündüz koruması", "short_description": "Orta yoğun akış için" } },
-      { "type": "pad_option", "settings": { "name": ".ki Gece Ped", "size_type": "large", "dimension": "335 mm", "pack_count": "Gece koruması", "short_description": "Yoğun akış ve uzun koruma" } }
+      { "type": "pad_option", "settings": { "name": ".ki Günlük Ped", "size_type": "small", "dimension": "155 mm", "pack_count": "30 adet", "short_description": "Hafif akıntı ve günlük tazelik" } },
+      { "type": "pad_option", "settings": { "name": ".ki Gündüz Ped", "size_type": "medium", "dimension": "245 mm", "pack_count": "12 adet", "short_description": "Orta yoğun akış için" } },
+      { "type": "pad_option", "settings": { "name": ".ki Gece Ped", "size_type": "large", "dimension": "335 mm", "pack_count": "8 adet", "short_description": "Yoğun akış ve uzun koruma" } }
     ]
   }]
 }

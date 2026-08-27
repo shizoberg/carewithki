@@ -1531,8 +1531,9 @@
                   <div class="ki-pack__items">
                     {%- for itemBlock in section.blocks -%}
                       {%- if itemBlock.type == 'product' and itemBlock.settings.category_key == catBlock.settings.key -%}
-                        {%- assign p = itemBlock.settings.product -%}
-                        {%- assign item_name_normalized = itemBlock.settings.name_override | default: p.title | downcase -%}
+                        {%- assign box_product = itemBlock.settings.product -%}
+                        {%- assign loose_product = itemBlock.settings.loose_product -%}
+                        {%- assign item_name_normalized = itemBlock.settings.name_override | default: box_product.title | downcase -%}
                         {%- assign item_short_normalized = itemBlock.settings.short | downcase -%}
                         {%- assign ped_size = blank -%}
                         {%- if catBlock.settings.key == 'ped' -%}
@@ -1545,25 +1546,54 @@
                           {%- endif -%}
                         {%- endif -%}
                         {%- if itemBlock.id == 'p-gunluk' -%}
-                          {%- if p == blank or p.handle == 'ki-hijyenik-gece-ped' -%}
-                            {%- assign p = all_products['ki-hijyenik-gunduz-ped'] -%}
+                          {%- if box_product == blank or box_product.handle == 'ki-hijyenik-gece-ped' -%}
+                            {%- assign box_product = all_products['ki-hijyenik-gunduz-ped'] -%}
                           {%- endif -%}
                         {%- endif -%}
-                        {%- if p != blank -%}
+                        {%- assign p = box_product -%}
+                        {%- if catBlock.settings.key == 'ped' -%}
+                          {%- assign p = loose_product -%}
+                        {%- endif -%}
+                        {%- assign display_product = p | default: box_product -%}
+                        {%- if display_product != blank -%}
                           {%- assign v = p.selected_or_first_available_variant -%}
+                          {%- assign box_variant = box_product.selected_or_first_available_variant -%}
+                          {%- assign loose_variant = loose_product.selected_or_first_available_variant -%}
+                          {%- assign loose_asset = blank -%}
+                          {%- assign box_asset = blank -%}
+                          {%- case ped_size -%}
+                            {%- when 'small' -%}
+                              {%- assign loose_asset = 'ki-ped-gunluk-5li.webp' -%}
+                              {%- assign box_asset = 'ki-ped-gunluk-01.webp' -%}
+                            {%- when 'medium' -%}
+                              {%- assign loose_asset = 'ki-ped-gunduz-5li.webp' -%}
+                              {%- assign box_asset = 'ki-ped-gunduz-01.webp' -%}
+                            {%- when 'large' -%}
+                              {%- assign loose_asset = 'ki-ped-gece-5li.webp' -%}
+                              {%- assign box_asset = 'ki-ped-gece-01.webp' -%}
+                          {%- endcase -%}
                           {%- assign subscription_discount = 0 -%}
                           {%- if settings.subscription_enabled -%}
-                            {%- if catBlock.settings.key == 'supplement' or catBlock.settings.key == 'gel' or p.handle == 'ki-intimate-intim-bakim-spreyi' -%}
+                            {%- if catBlock.settings.key == 'supplement' or catBlock.settings.key == 'gel' or display_product.handle == 'ki-intimate-intim-bakim-spreyi' -%}
                               {%- assign subscription_discount = section.settings.subscription_discount_percent | default: 10 -%}
                             {%- endif -%}
                           {%- endif -%}
-                          {%- assign subscription_discount_amount = v.price | times: subscription_discount | divided_by: 100 -%}
-                          {%- assign subscription_price = v.price | minus: subscription_discount_amount -%}
+                          {%- assign active_price = v.price | default: 0 -%}
+                          {%- assign subscription_discount_amount = active_price | times: subscription_discount | divided_by: 100 -%}
+                          {%- assign subscription_price = active_price | minus: subscription_discount_amount -%}
                           <div class="ki-pack__item{% unless v.available %} is-unavailable{% endunless %}"
                                data-ki-pack-item="{{ itemBlock.id }}"
                                data-ki-pack-cat-key="{{ catBlock.settings.key }}"
                                data-ki-pack-product-handle="{{ p.handle }}"
                                data-ki-pack-variant-id="{{ v.id }}"
+                               data-ki-pack-loose-product-handle="{{ loose_product.handle }}"
+                               data-ki-pack-loose-variant-id="{{ loose_variant.id }}"
+                               data-ki-pack-loose-price="{{ loose_variant.price | divided_by: 100.0 }}"
+                               data-ki-pack-loose-available="{{ loose_variant.available }}"
+                               data-ki-pack-box-product-handle="{{ box_product.handle }}"
+                               data-ki-pack-box-variant-id="{{ box_variant.id }}"
+                               data-ki-pack-box-price="{{ box_variant.price | divided_by: 100.0 }}"
+                               data-ki-pack-box-available="{{ box_variant.available }}"
                                data-ki-pack-step="{{ itemBlock.settings.step | default: 1 }}"
                                data-ki-pack-loose-step="{{ itemBlock.settings.step | default: 1 }}"
                                data-ki-pack-box-step="{{ itemBlock.settings.box_step | default: 1 }}"
@@ -1576,8 +1606,19 @@
                                data-ki-pack-selection-mode="{% if catBlock.settings.key == 'ped' %}loose_pads{% else %}standard{% endif %}"
                                {{ itemBlock.shopify_attributes }}>
                             <div class="ki-pack__item-img">
-                              {%- if p.featured_image -%}
-                                {{ p.featured_image | image_url: width: 200 | image_tag: alt: p.title, loading: 'lazy', widths: '120,240' }}
+                              {%- if catBlock.settings.key == 'ped' and loose_asset != blank -%}
+                                <img
+                                  src="{{ loose_asset | asset_url }}"
+                                  data-ki-pack-mode-image
+                                  data-ki-pack-loose-src="{{ loose_asset | asset_url }}"
+                                  data-ki-pack-box-src="{{ box_asset | asset_url }}"
+                                  width="108"
+                                  height="135"
+                                  alt="{{ itemBlock.settings.name_override | default: display_product.title | escape }}"
+                                  loading="lazy"
+                                >
+                              {%- elsif display_product.featured_image -%}
+                                {{ display_product.featured_image | image_url: width: 200 | image_tag: alt: display_product.title, loading: 'lazy', widths: '120,240' }}
                               {%- else -%}
                                 <span class="ki-pack__item-img-placeholder" aria-hidden="true">
                                   {% render 'ki-icon', name: 'sparkles', size: 20 %}
@@ -1599,11 +1640,11 @@
                               {%- endif -%}
                               <p class="ki-pack__item-price">
                                 {%- if subscription_discount > 0 -%}
-                                  ₺{{ subscription_price | money_without_currency }}
-                                  <s>₺{{ v.price | money_without_currency }}</s>
+                                  <span data-ki-pack-price-value>₺{{ subscription_price | money_without_currency }}</span>
+                                  <s>₺{{ active_price | money_without_currency }}</s>
                                   <br><span class="ki-pack__item-discount">Abonelikte %{{ subscription_discount }} indirim</span>
                                 {%- else -%}
-                                  ₺{{ v.price | money_without_currency }}
+                                  <span data-ki-pack-price-value>{% if active_price > 0 %}₺{{ active_price | money_without_currency }}{% else %}Yakında{% endif %}</span>
                                 {%- endif -%}
                                 {%- if itemBlock.settings.step != blank and itemBlock.settings.step > 1 -%}
                                   <small data-ki-pack-price-unit>/ {{ itemBlock.settings.step }} {{ itemBlock.settings.unit }}</small>
@@ -2395,17 +2436,36 @@
         items.forEach(function (item) {
           if (item.getAttribute('data-ki-pack-cat-key') !== 'ped') return;
           var id = item.getAttribute('data-ki-pack-item');
+          var modePrefix = mode === 'box' ? 'box' : 'loose';
           var step = mode === 'box'
             ? parseInt(item.getAttribute('data-ki-pack-box-step'), 10) || 1
             : parseInt(item.getAttribute('data-ki-pack-loose-step'), 10) || 5;
           var unit = mode === 'box'
             ? item.getAttribute('data-ki-pack-box-unit') || 'kutu'
             : item.getAttribute('data-ki-pack-loose-unit') || 'ped';
+          var variantId = item.getAttribute('data-ki-pack-' + modePrefix + '-variant-id') || '';
+          var productHandle = item.getAttribute('data-ki-pack-' + modePrefix + '-product-handle') || '';
+          var price = parseFloat(item.getAttribute('data-ki-pack-' + modePrefix + '-price')) || 0;
+          var available = item.getAttribute('data-ki-pack-' + modePrefix + '-available') === 'true';
           item.setAttribute('data-ki-pack-step', step);
           item.setAttribute('data-ki-pack-unit', unit);
+          item.setAttribute('data-ki-pack-variant-id', variantId);
+          item.setAttribute('data-ki-pack-product-handle', productHandle);
+          item.setAttribute('data-ki-pack-price', price);
+          item.setAttribute('data-ki-pack-available', available ? 'true' : 'false');
           item.setAttribute('data-ki-pack-selection-mode', mode === 'box' ? 'pad_box' : 'loose_pads');
+          item.classList.toggle('is-unavailable', !available);
+          var plusButton = item.querySelector('[data-ki-pack-plus]');
+          if (plusButton) plusButton.disabled = !available;
+          var priceValue = item.querySelector('[data-ki-pack-price-value]');
+          if (priceValue) priceValue.textContent = price > 0 ? fmt(price) : 'Yakında';
           var priceUnit = item.querySelector('[data-ki-pack-price-unit]');
           if (priceUnit) priceUnit.textContent = '/ ' + step + ' ' + unit;
+          var modeImage = item.querySelector('[data-ki-pack-mode-image]');
+          if (modeImage) {
+            var imageSource = modeImage.getAttribute('data-ki-pack-' + modePrefix + '-src');
+            if (imageSource) modeImage.src = imageSource;
+          }
           qtyMap[id] = 0;
           removedIds = removedIds.filter(function (removedId) { return removedId !== id; });
         });
@@ -2633,7 +2693,8 @@
       "type": "product",
       "name": "Ürün (Shopify picker)",
       "settings": [
-        { "type": "product", "id": "product", "label": "Shopify ürünü", "info": "Boşsa aşağıdaki demo değerleri (isim/açıklama/fiyat) gösterilir." },
+        { "type": "product", "id": "product", "label": "Tam kutu Shopify ürünü", "info": "Pedlerde 30/12/8 adetlik kutu; diğer kategorilerde standart üründür." },
+        { "type": "product", "id": "loose_product", "label": "5’li ped Shopify ürünü", "info": "Yalnızca ped kategorisinde kullanılır. 5’li seçim modunda bu ürünün fiyatı ve stoğu kullanılır." },
         { "type": "text", "id": "category_key", "label": "Kategori anahtarı", "info": "Yukarıdaki kategori block'unun 'key' alanı" },
         { "type": "text", "id": "name_override", "label": "İsim override (opsiyonel)" },
         { "type": "textarea", "id": "short", "label": "Kısa açıklama" },

@@ -119,46 +119,49 @@
         "p-gunluk": {
           "type": "product",
           "settings": {
-            "product": "ki-hijyenik-gece-ped",
+            "product": "shopify://products/ki-hijyenik-gunduz-ped",
+            "loose_product": "shopify://products/ki-gunluk-ped-5li",
             "category_key": "ped",
             "name_override": ".ki Günlük Ped",
-            "short": "155 mm · 5’li seçim veya kutu aboneliği",
+            "short": "155 mm · 5 adet seçim / 30 adet kutu",
             "badge": "",
             "step": 5,
             "unit": "ped",
             "box_step": 1,
             "box_unit": "kutu",
-            "demo_price": 149
+            "demo_price": 250
           }
         },
         "p-gunduz": {
           "type": "product",
           "settings": {
             "product": "shopify://products/ki-normal-ped",
+            "loose_product": "shopify://products/ki-gunduz-ped-5li",
             "category_key": "ped",
             "name_override": ".ki Gündüz Pedi",
-            "short": "245 mm · 5’li seçim veya kutu aboneliği",
+            "short": "245 mm · 5 adet seçim / 12 adet kutu",
             "badge": "",
             "step": 5,
             "unit": "ped",
             "box_step": 1,
             "box_unit": "kutu",
-            "demo_price": 169
+            "demo_price": 250
           }
         },
         "p-gece": {
           "type": "product",
           "settings": {
             "product": "shopify://products/ki-hijyenik-gece-ped",
+            "loose_product": "shopify://products/ki-gece-ped-5li",
             "category_key": "ped",
             "name_override": ".ki Gece Pedi",
-            "short": "335 mm · 5’li seçim veya kutu aboneliği",
+            "short": "335 mm · 5 adet seçim / 8 adet kutu",
             "badge": "",
             "step": 5,
             "unit": "ped",
             "box_step": 1,
             "box_unit": "kutu",
-            "demo_price": 189
+            "demo_price": 250
           }
         },
         "cat-supp": {

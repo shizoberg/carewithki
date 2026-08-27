@@ -10,7 +10,7 @@
             "name": ".ki Günlük Ped",
             "size_type": "small",
             "dimension": "155 mm",
-            "pack_count": "Günlük kullanım",
+            "pack_count": "30 adet",
             "short_description": "Hafif akıntı ve günlük tazelik"
           }
         },
@@ -21,7 +21,7 @@
             "name": ".ki Gündüz Ped",
             "size_type": "medium",
             "dimension": "245 mm",
-            "pack_count": "Gündüz koruması",
+            "pack_count": "12 adet",
             "short_description": "Orta yoğun akış için"
           }
         },
@@ -32,7 +32,7 @@
             "name": ".ki Gece Ped",
             "size_type": "large",
             "dimension": "335 mm",
-            "pack_count": "Gece koruması",
+            "pack_count": "8 adet",
             "short_description": "Yoğun akış ve uzun koruma"
           }
         }
