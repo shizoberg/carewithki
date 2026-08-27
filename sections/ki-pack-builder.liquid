@@ -1536,13 +1536,17 @@
                         {%- assign item_name_normalized = itemBlock.settings.name_override | default: box_product.title | downcase -%}
                         {%- assign item_short_normalized = itemBlock.settings.short | downcase -%}
                         {%- assign ped_size = blank -%}
+                        {%- assign ped_box_count = blank -%}
                         {%- if catBlock.settings.key == 'ped' -%}
                           {%- if item_name_normalized contains 'günlük' or item_short_normalized contains '155' -%}
                             {%- assign ped_size = 'small' -%}
+                            {%- assign ped_box_count = 30 -%}
                           {%- elsif item_name_normalized contains 'gündüz' or item_name_normalized contains 'normal' or item_short_normalized contains '245' -%}
                             {%- assign ped_size = 'medium' -%}
+                            {%- assign ped_box_count = 12 -%}
                           {%- elsif item_name_normalized contains 'gece' or item_short_normalized contains '335' -%}
                             {%- assign ped_size = 'large' -%}
+                            {%- assign ped_box_count = 8 -%}
                           {%- endif -%}
                         {%- endif -%}
                         {%- case ped_size -%}
@@ -1652,7 +1656,12 @@
                                 {%- endif -%}
                               </div>
                               {%- if itemBlock.settings.short != blank -%}
-                                <p class="ki-pack__item-short">{{ itemBlock.settings.short }}</p>
+                                <p
+                                  class="ki-pack__item-short"
+                                  data-ki-pack-mode-short
+                                  data-ki-pack-loose-text="{{ itemBlock.settings.short | escape }}"
+                                  data-ki-pack-box-text="{{ itemBlock.settings.short | escape }}{% if ped_box_count != blank %} · {{ ped_box_count }} adet/kutu{% endif %}"
+                                >{{ itemBlock.settings.short }}</p>
                               {%- endif -%}
                               <p class="ki-pack__item-price">
                                 {%- if subscription_discount > 0 -%}
@@ -1713,7 +1722,12 @@
                                 {%- endif -%}
                               </div>
                               {%- if itemBlock.settings.short != blank -%}
-                                <p class="ki-pack__item-short">{{ itemBlock.settings.short }}</p>
+                                <p
+                                  class="ki-pack__item-short"
+                                  data-ki-pack-mode-short
+                                  data-ki-pack-loose-text="{{ itemBlock.settings.short | escape }}"
+                                  data-ki-pack-box-text="{{ itemBlock.settings.short | escape }}{% if ped_box_count != blank %} · {{ ped_box_count }} adet/kutu{% endif %}"
+                                >{{ itemBlock.settings.short }}</p>
                               {%- endif -%}
                               <p class="ki-pack__item-price">
                                 Yakında
@@ -2512,6 +2526,11 @@
           if (priceValue) priceValue.textContent = price > 0 ? fmt(price) : 'Yakında';
           var priceUnit = item.querySelector('[data-ki-pack-price-unit]');
           if (priceUnit) priceUnit.textContent = '/ ' + step + ' ' + unit;
+          var modeShort = item.querySelector('[data-ki-pack-mode-short]');
+          if (modeShort) {
+            var modeShortText = modeShort.getAttribute('data-ki-pack-' + modePrefix + '-text');
+            if (modeShortText) modeShort.textContent = modeShortText;
+          }
           var availabilityText = item.querySelector('[data-ki-pack-availability-text]');
           if (availabilityText) availabilityText.hidden = available;
           var modeImage = item.querySelector('[data-ki-pack-mode-image]');
