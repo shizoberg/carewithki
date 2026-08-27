@@ -1592,9 +1592,7 @@
                           {%- endcase -%}
                           {%- assign subscription_discount = 0 -%}
                           {%- if settings.subscription_enabled -%}
-                            {%- if catBlock.settings.key == 'supplement' or catBlock.settings.key == 'gel' or display_product.handle == 'ki-intimate-intim-bakim-spreyi' -%}
-                              {%- assign subscription_discount = section.settings.subscription_discount_percent | default: 10 -%}
-                            {%- endif -%}
+                            {%- assign subscription_discount = section.settings.subscription_discount_percent | default: 15 -%}
                           {%- endif -%}
                           {%- assign active_price = v.price | default: 0 -%}
                           {%- assign subscription_discount_amount = active_price | times: subscription_discount | divided_by: 100 -%}
@@ -1811,7 +1809,7 @@
               <span class="ki-pack__benefit-icon" aria-hidden="true">
                 {% render 'ki-icon', name: 'truck', size: 16 %}
               </span>
-              <span data-ki-pack-ship-text>Ücretsiz kargo</span>
+              <span data-ki-pack-ship-text>₺400 üzeri abonelik kargosu ₺59</span>
             </div>
             {%- if settings.subscription_enabled -%}
               <div class="ki-pack__benefit ki-pack__benefit--pharmacist">
@@ -1835,6 +1833,10 @@
             <div class="ki-pack__tot-row" data-ki-pack-discount-row hidden>
               <dt>Abonelik indirimi</dt>
               <dd data-ki-pack-discount-total>−₺0</dd>
+            </div>
+            <div class="ki-pack__tot-row" data-ki-pack-shipping-row hidden>
+              <dt>Abonelik kargosu</dt>
+              <dd data-ki-pack-shipping-total>₺0</dd>
             </div>
             <div class="ki-pack__tot-row ki-pack__tot-grand">
               <dt>Toplam</dt>
@@ -2007,7 +2009,12 @@
     var idleText = {{ section.settings.cta_idle | default: 'Önce ürün ekle' | json }};
     var emptyText = {{ section.settings.empty_message | default: 'Üst taraftan ürün ekleyerek paketini oluştur.' | json }};
     var subscriptionEnabled = {{ settings.subscription_enabled | default: false | json }};
-    var pedMonthlyThreshold = {{ section.settings.ped_monthly_threshold | default: 500 }};
+    var subscriptionMinimum = {{ section.settings.subscription_minimum_amount | default: 400 }};
+    var subscriptionShippingFee = {{ section.settings.subscription_shipping_fee | default: 59 }};
+    var subscriptionFreeShippingThreshold = {{ section.settings.subscription_free_shipping_threshold | default: 800 }};
+    subscriptionMinimum = Math.max(0, Number(subscriptionMinimum) || 0);
+    subscriptionShippingFee = Math.max(0, Number(subscriptionShippingFee) || 0);
+    subscriptionFreeShippingThreshold = Math.max(subscriptionMinimum, Number(subscriptionFreeShippingThreshold) || subscriptionMinimum);
     var frequencyEl = root.querySelector('[data-ki-pack-freq]');
     var frequencyLabelEl = root.querySelector('[data-ki-pack-frequency-label]');
     var frequencyButtons = root.querySelectorAll('[data-ki-pack-frequency-option]');
@@ -2169,11 +2176,12 @@
       frequencyEl.selectedIndex = nextIndex;
       syncFrequencyUi();
     }
-    function updateFrequencyAvailability(lines, subtotal) {
+    function updateFrequencyAvailability(lines) {
       if (!frequencyEl) return;
       var hasItems = lines.length > 0;
-      var hasNonPedItem = lines.some(function (line) { return line.cat !== 'ped'; });
-      var monthlyAllowed = hasNonPedItem || (hasItems && subtotal >= pedMonthlyThreshold);
+      var monthlyCategories = ['supplement', 'gel', 'ritual', 'cosmetic', 'oil', 'spray'];
+      var hasMonthlyProduct = lines.some(function (line) { return monthlyCategories.indexOf(line.cat) !== -1; });
+      var monthlyAllowed = hasMonthlyProduct;
 
       Array.prototype.forEach.call(frequencyEl.options, function (option) {
         if (optionMonths(option) === 1) option.disabled = !monthlyAllowed;
@@ -2192,12 +2200,10 @@
       frequencyNoteEl.classList.toggle('is-warning', !monthlyAllowed);
       if (!hasItems) {
         frequencyNoteEl.textContent = 'Ürünlerini eklediğinde uygun gönderim sıklıkları otomatik açılır.';
-      } else if (!hasNonPedItem && !monthlyAllowed) {
-        frequencyNoteEl.textContent = 'Sadece ped içeren pakette aylık gönderim için ' + fmt(Math.max(0, pedMonthlyThreshold - subtotal)) + ' daha ekle.';
-      } else if (!hasNonPedItem) {
-        frequencyNoteEl.textContent = 'Ped paketin aylık gönderim sınırına ulaştı; 1 ay seçeneği açıldı.';
+      } else if (!monthlyAllowed) {
+        frequencyNoteEl.textContent = 'Sadece ped içeren paketler en erken 2 ayda bir gönderilir. Ayda bir için takviye, jel veya kozmetik ürün ekle.';
       } else {
-        frequencyNoteEl.textContent = 'Bakım veya takviye ürünü bulunduğu için 1 ay seçeneği açık.';
+        frequencyNoteEl.textContent = 'Takviye, jel veya kozmetik ürün bulunduğu için 1 ay seçeneği açık.';
       }
     }
 
@@ -2371,10 +2377,27 @@
         }).join('');
       }
 
+      var minimumMet = !subscriptionEnabled || subtotal >= subscriptionMinimum;
+      var shippingFee = subscriptionEnabled && minimumMet && subtotal < subscriptionFreeShippingThreshold
+        ? subscriptionShippingFee
+        : 0;
+      var grandTotal = subtotal + shippingFee;
       var shipText = root.querySelector('[data-ki-pack-ship-text]');
-      if (shipText) shipText.textContent = 'Ücretsiz kargo 🎉';
+      if (shipText) {
+        if (!subscriptionEnabled) {
+          shipText.textContent = 'Kargo ödeme adımında hesaplanır';
+        } else if (count === 0) {
+          shipText.textContent = fmt(subscriptionMinimum) + '+ kargo ' + fmt(subscriptionShippingFee) + ' · ' + fmt(subscriptionFreeShippingThreshold) + '+ ücretsiz';
+        } else if (!minimumMet) {
+          shipText.textContent = 'Abonelik için ' + fmt(subscriptionMinimum - subtotal) + ' daha ekle';
+        } else if (shippingFee > 0) {
+          shipText.textContent = 'Abonelik kargosu ' + fmt(shippingFee) + ' · Ücretsiz kargoya ' + fmt(subscriptionFreeShippingThreshold - subtotal) + ' kaldı';
+        } else {
+          shipText.textContent = 'Ücretsiz abonelik kargosu 🎉';
+        }
+      }
 
-      updateFrequencyAvailability(lines, subtotal);
+      updateFrequencyAvailability(lines);
 
       root.querySelector('[data-ki-pack-subtotal]').textContent = fmt(originalSubtotal);
       var discountTotal = Math.max(0, originalSubtotal - subtotal);
@@ -2382,12 +2405,20 @@
       var discountTotalEl = root.querySelector('[data-ki-pack-discount-total]');
       if (discountRow) discountRow.hidden = discountTotal <= 0;
       if (discountTotalEl) discountTotalEl.textContent = '−' + fmt(discountTotal);
-      root.querySelector('[data-ki-pack-total]').textContent = fmt(subtotal);
+      var shippingRow = root.querySelector('[data-ki-pack-shipping-row]');
+      var shippingTotalEl = root.querySelector('[data-ki-pack-shipping-total]');
+      if (shippingRow) shippingRow.hidden = !subscriptionEnabled || count === 0 || !minimumMet;
+      if (shippingTotalEl) shippingTotalEl.textContent = shippingFee > 0 ? fmt(shippingFee) : 'Ücretsiz';
+      root.querySelector('[data-ki-pack-total]').textContent = fmt(grandTotal);
 
       var cta = root.querySelector('[data-ki-pack-cta]');
       var ctaTxt = root.querySelector('[data-ki-pack-cta-text]');
-      cta.disabled = count === 0;
-      var ctaLabel = count === 0 ? idleText : (subscriptionEnabled ? 'Aboneliğe devam et' : 'Sepete ekle');
+      cta.disabled = count === 0 || (subscriptionEnabled && !minimumMet);
+      var ctaLabel = count === 0
+        ? idleText
+        : (subscriptionEnabled && !minimumMet
+          ? 'Abonelik için ' + fmt(subscriptionMinimum - subtotal) + ' daha ekle'
+          : (subscriptionEnabled ? 'Aboneliğe devam et' : 'Sepete ekle'));
       ctaTxt.textContent = ctaLabel;
 
       var allIds = Array.prototype.map.call(items, function (it) { return it.getAttribute('data-ki-pack-item'); });
@@ -2404,6 +2435,10 @@
       renderHelper('[data-ki-pack-suggested-block]', '[data-ki-pack-suggested-list]', count > 0 ? suggestedIds : [], '+ Ekle');
 
       root.dataset.kiPackLines = JSON.stringify(lines);
+      root.dataset.kiPackProductTotal = subtotal.toFixed(2);
+      root.dataset.kiPackShippingFee = shippingFee.toFixed(2);
+      root.dataset.kiPackGrandTotal = grandTotal.toFixed(2);
+      root.dataset.kiPackMinimumMet = minimumMet ? 'true' : 'false';
     }
 
     function addQty(id, step) {
@@ -2600,6 +2635,9 @@
       ctaEl.disabled = true;
       try {
         if (mode === 'subscription' && subscriptionEnabled) {
+          if (root.dataset.kiPackMinimumMet !== 'true') {
+            throw new Error('Abonelik paketi ürün toplamı en az ' + fmt(subscriptionMinimum) + ' olmalıdır.');
+          }
           var checkoutUrl = (window.kiConfig && window.kiConfig.subscriptionCheckoutUrl) || '/pages/paket-checkout';
           var freqEl = root.querySelector('[data-ki-pack-freq]');
           var sellingPlanId = (freqEl && freqEl.value) || (window.kiConfig && window.kiConfig.defaultSellingPlanId);
@@ -2607,9 +2645,9 @@
           var selectedFreqOpt = (freqEl && freqEl.options.length) ? freqEl.options[freqEl.selectedIndex] : null;
           var intervalMonths = 2;
           if (selectedFreqOpt) { var _im = parseInt(selectedFreqOpt.getAttribute('data-months'), 10); intervalMonths = isNaN(_im) ? 2 : _im; }
-          var total = 0;
+          var productTotal = 0;
           var boxItems = lines.map(function (l) {
-            total += l.total;
+            productTotal += l.total;
             return {
               shopifyVariantGid: l.variantId ? ('gid://shopify/ProductVariant/' + l.variantId) : '',
               title: l.name,
@@ -2622,9 +2660,26 @@
               unit: l.unit
             };
           });
+          var shippingFee = parseFloat(root.dataset.kiPackShippingFee || '0') || 0;
+          if (shippingFee > 0) {
+            boxItems.push({
+              shopifyVariantGid: '',
+              title: 'Abonelik kargo bedeli',
+              price: shippingFee.toFixed(2),
+              originalPrice: shippingFee.toFixed(2),
+              discountRate: 0,
+              quantity: 1,
+              selectionMode: 'shipping',
+              physicalQuantity: 1,
+              unit: 'gönderim'
+            });
+          }
+          var total = productTotal + shippingFee;
           var payload = {
             boxItems: boxItems,
             totalPrice: total.toFixed(2),
+            productTotal: productTotal.toFixed(2),
+            shippingFee: shippingFee.toFixed(2),
             sellingPlanId: sellingPlanId || '',
             intervalCount: intervalMonths,
             packName: packName,
@@ -2693,8 +2748,10 @@
     { "type": "image_picker", "id": "pharmacist_benefit_image", "label": "Eczacı ekip fotoğrafı" },
     { "type": "text", "id": "pharmacist_modal_title", "label": "Eczacı bilgi penceresi başlığı", "default": "Her ay eczacınla buluş" },
     { "type": "textarea", "id": "pharmacist_modal_copy", "label": "Eczacı bilgi penceresi açıklaması", "default": "Abone olanlara özel ilettiğimiz bağlantı sayesinde her ay düzenli eczacı ile online konferans yapabileceksiniz." },
-    { "type": "number", "id": "ped_monthly_threshold", "label": "Yalnızca ped içeren pakette aylık gönderim eşiği (₺)", "default": 500 },
-    { "type": "range", "id": "subscription_discount_percent", "label": "Takviye, jel ve sprey abonelik indirimi", "min": 0, "max": 30, "step": 1, "unit": "%", "default": 10 }
+    { "type": "number", "id": "subscription_minimum_amount", "label": "Minimum abonelik ürün toplamı (₺)", "default": 400 },
+    { "type": "number", "id": "subscription_shipping_fee", "label": "Abonelik kargo bedeli (₺)", "default": 59 },
+    { "type": "number", "id": "subscription_free_shipping_threshold", "label": "Ücretsiz abonelik kargo eşiği (₺)", "default": 800 },
+    { "type": "range", "id": "subscription_discount_percent", "label": "Tüm paket için abonelik indirimi", "min": 0, "max": 30, "step": 1, "unit": "%", "default": 15 }
   ],
   "blocks": [
     {
@@ -2770,13 +2827,16 @@
         "empty_message": "Üst taraftan ürün ekleyerek paketini oluştur.",
         "cta_idle": "Önce ürün ekle",
         "howit_title": "Nasıl çalışır?",
-        "ped_monthly_threshold": 500
+        "subscription_minimum_amount": 400,
+        "subscription_shipping_fee": 59,
+        "subscription_free_shipping_threshold": 800,
+        "subscription_discount_percent": 15
       },
       "blocks": [
         { "type": "category", "settings": { "key": "ped",        "label": "Pedler",         "description": "5’li seçim oluştur veya ped kutusuna abone ol", "hint": "İhtiyacına göre pedlerini 5’er adet artırabilir ya da kutu aboneliği oluşturabilirsin." } },
-        { "type": "product",  "settings": { "category_key": "ped",  "step": 5, "unit": "ped", "box_step": 1, "box_unit": "kutu", "name_override": ".ki Günlük Ped",  "short": "155 mm · 5’li seçim veya kutu aboneliği", "demo_price": 149 } },
-        { "type": "product",  "settings": { "category_key": "ped",  "step": 5, "unit": "ped", "box_step": 1, "box_unit": "kutu", "name_override": ".ki Gündüz Pedi", "short": "245 mm · 5’li seçim veya kutu aboneliği", "demo_price": 169 } },
-        { "type": "product",  "settings": { "category_key": "ped",  "step": 5, "unit": "ped", "box_step": 1, "box_unit": "kutu", "name_override": ".ki Gece Pedi",   "short": "335 mm · 5’li seçim veya kutu aboneliği", "demo_price": 189 } },
+        { "type": "product",  "settings": { "category_key": "ped",  "step": 5, "unit": "ped", "box_step": 1, "box_unit": "kutu", "name_override": ".ki Günlük Ped",  "short": "155 mm", "demo_price": 149 } },
+        { "type": "product",  "settings": { "category_key": "ped",  "step": 5, "unit": "ped", "box_step": 1, "box_unit": "kutu", "name_override": ".ki Gündüz Pedi", "short": "245 mm", "demo_price": 169 } },
+        { "type": "product",  "settings": { "category_key": "ped",  "step": 5, "unit": "ped", "box_step": 1, "box_unit": "kutu", "name_override": ".ki Gece Pedi",   "short": "335 mm", "demo_price": 189 } },
 
         { "type": "category", "settings": { "key": "supplement", "label": "Takviyeler", "description": ".ki Balance ve .ki Change — döngü ve menopoz dönemlerine özel destek", "hint": "Balance döngü dönemini, Change menopoz dönemini desteklemek için geliştirilmiştir." } },
         { "type": "product",  "settings": { "category_key": "supplement", "step": 1, "unit": "kutu", "badge": "EN POPÜLER", "name_override": ".ki Balance · Saşe", "short": "Döngü dönemini destekler · 10 saşe", "demo_price": 395 } },

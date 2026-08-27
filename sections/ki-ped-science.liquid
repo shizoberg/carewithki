@@ -58,12 +58,31 @@
 
     <div class="kps-grid">
       {%- for block in section.blocks -%}
+        {%- liquid
+          assign material_asset = blank
+          case block.settings.icon
+            when 'cotton'
+              assign material_asset = 'ki-ped-material-cotton.webp'
+            when 'bamboo'
+              assign material_asset = 'ki-ped-material-bamboo.webp'
+            when 'mugwort'
+              assign material_asset = 'ki-ped-material-mugwort.webp'
+          endcase
+        -%}
         <article class="kps-card" {{ block.shopify_attributes }}>
           <div class="kps-media">
             {%- if block.settings.video != blank -%}
               {{ block.settings.video | video_tag: autoplay: true, loop: true, muted: true, controls: false, playsinline: true, preload: 'metadata' }}
             {%- elsif block.settings.image != blank -%}
               {{ block.settings.image | image_url: width: 900 | image_tag: widths: '320, 520, 720, 900', sizes: '(max-width: 749px) 78vw, 33vw', loading: 'lazy', alt: block.settings.title }}
+            {%- elsif material_asset != blank -%}
+              <img
+                src="{{ material_asset | asset_url }}"
+                width="1080"
+                height="1350"
+                loading="lazy"
+                alt="{{ block.settings.title | escape }}"
+              >
             {%- else -%}
               <span class="kps-media-placeholder" aria-hidden="true">
                 {%- case block.settings.icon -%}

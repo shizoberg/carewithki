@@ -23,7 +23,7 @@
           "type": "trust",
           "settings": {
             "icon": "truck",
-            "label": "Ücretsiz kargo"
+            "label": "₺400+ kargo ₺59 · ₺800+ ücretsiz"
           }
         },
         "t3": {
@@ -123,7 +123,7 @@
             "loose_product": "shopify://products/ki-gunluk-ped-5li",
             "category_key": "ped",
             "name_override": ".ki Günlük Ped",
-            "short": "155 mm · 5 adet seçim / 30 adet kutu",
+            "short": "155 mm",
             "badge": "",
             "step": 5,
             "unit": "ped",
@@ -139,7 +139,7 @@
             "loose_product": "shopify://products/ki-gunduz-ped-5li",
             "category_key": "ped",
             "name_override": ".ki Gündüz Pedi",
-            "short": "245 mm · 5 adet seçim / 12 adet kutu",
+            "short": "245 mm",
             "badge": "",
             "step": 5,
             "unit": "ped",
@@ -155,7 +155,7 @@
             "loose_product": "shopify://products/ki-gece-ped-5li",
             "category_key": "ped",
             "name_override": ".ki Gece Pedi",
-            "short": "335 mm · 5 adet seçim / 8 adet kutu",
+            "short": "335 mm",
             "badge": "",
             "step": 5,
             "unit": "ped",
@@ -397,7 +397,10 @@
         "empty_message": "Ürünlerini seç, gönderim sıklığını paketine göre belirle.",
         "cta_idle": "Önce ürün ekle",
         "howit_title": "Nasıl çalışır?",
-        "ped_monthly_threshold": 500
+        "subscription_minimum_amount": 400,
+        "subscription_shipping_fee": 59,
+        "subscription_free_shipping_threshold": 800,
+        "subscription_discount_percent": 15
       }
     },
     "faq": {
