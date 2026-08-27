@@ -1545,18 +1545,36 @@
                             {%- assign ped_size = 'large' -%}
                           {%- endif -%}
                         {%- endif -%}
-                        {%- if itemBlock.id == 'p-gunluk' -%}
-                          {%- if box_product == blank or box_product.handle == 'ki-hijyenik-gece-ped' -%}
-                            {%- assign box_product = all_products['ki-hijyenik-gunduz-ped'] -%}
-                          {%- endif -%}
-                        {%- endif -%}
+                        {%- case ped_size -%}
+                          {%- when 'small' -%}
+                            {%- if box_product == blank or box_product.handle == 'ki-hijyenik-gece-ped' -%}
+                              {%- assign box_product = all_products['ki-hijyenik-gunduz-ped'] -%}
+                            {%- endif -%}
+                            {%- if loose_product == blank -%}
+                              {%- assign loose_product = all_products['ki-gunluk-ped-5li'] -%}
+                            {%- endif -%}
+                          {%- when 'medium' -%}
+                            {%- if box_product == blank -%}
+                              {%- assign box_product = all_products['ki-normal-ped'] -%}
+                            {%- endif -%}
+                            {%- if loose_product == blank -%}
+                              {%- assign loose_product = all_products['ki-gunduz-ped-5li'] -%}
+                            {%- endif -%}
+                          {%- when 'large' -%}
+                            {%- if box_product == blank -%}
+                              {%- assign box_product = all_products['ki-hijyenik-gece-ped'] -%}
+                            {%- endif -%}
+                            {%- if loose_product == blank -%}
+                              {%- assign loose_product = all_products['ki-gece-ped-5li'] -%}
+                            {%- endif -%}
+                        {%- endcase -%}
                         {%- assign p = box_product -%}
                         {%- if catBlock.settings.key == 'ped' -%}
                           {%- assign p = loose_product -%}
                         {%- endif -%}
                         {%- assign display_product = p | default: box_product -%}
                         {%- if display_product != blank -%}
-                          {%- assign v = p.selected_or_first_available_variant -%}
+                          {%- assign v = display_product.selected_or_first_available_variant -%}
                           {%- assign box_variant = box_product.selected_or_first_available_variant -%}
                           {%- assign loose_variant = loose_product.selected_or_first_available_variant -%}
                           {%- assign loose_asset = blank -%}
@@ -1584,7 +1602,7 @@
                           <div class="ki-pack__item{% unless v.available %} is-unavailable{% endunless %}"
                                data-ki-pack-item="{{ itemBlock.id }}"
                                data-ki-pack-cat-key="{{ catBlock.settings.key }}"
-                               data-ki-pack-product-handle="{{ p.handle }}"
+                               data-ki-pack-product-handle="{{ display_product.handle }}"
                                data-ki-pack-variant-id="{{ v.id }}"
                                data-ki-pack-loose-product-handle="{{ loose_product.handle }}"
                                data-ki-pack-loose-variant-id="{{ loose_variant.id }}"
@@ -1649,9 +1667,7 @@
                                 {%- if itemBlock.settings.step != blank and itemBlock.settings.step > 1 -%}
                                   <small data-ki-pack-price-unit>/ {{ itemBlock.settings.step }} {{ itemBlock.settings.unit }}</small>
                                 {%- endif -%}
-                                {%- unless v.available -%}
-                                  <br><span class="ki-pack__item-discount">Şu anda stokta yok</span>
-                                {%- endunless -%}
+                                <br><span class="ki-pack__item-discount" data-ki-pack-availability-text{% if v.available %} hidden{% endif %}>Şu anda stokta yok</span>
                               </p>
                             </div>
                             <div class="ki-pack__stepper">
@@ -2461,6 +2477,8 @@
           if (priceValue) priceValue.textContent = price > 0 ? fmt(price) : 'Yakında';
           var priceUnit = item.querySelector('[data-ki-pack-price-unit]');
           if (priceUnit) priceUnit.textContent = '/ ' + step + ' ' + unit;
+          var availabilityText = item.querySelector('[data-ki-pack-availability-text]');
+          if (availabilityText) availabilityText.hidden = available;
           var modeImage = item.querySelector('[data-ki-pack-mode-image]');
           if (modeImage) {
             var imageSource = modeImage.getAttribute('data-ki-pack-' + modePrefix + '-src');
