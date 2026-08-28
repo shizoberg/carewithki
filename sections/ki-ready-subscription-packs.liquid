@@ -25,6 +25,7 @@
       #ki-ready-packs-{{ section.id }} .ki-ready-pack{position:relative;display:flex;min-height:100%;flex-direction:column;overflow:hidden;border:1px solid var(--ready-border);border-radius:20px;background:#fff;box-shadow:0 12px 32px -24px rgba(73,61,154,.55);scroll-snap-align:start;transition:border-color .2s,transform .2s,box-shadow .2s}
       #ki-ready-packs-{{ section.id }} .ki-ready-pack.is-active{border-color:var(--ready-primary);box-shadow:0 14px 36px -20px rgba(73,61,154,.62)}
       #ki-ready-packs-{{ section.id }} .ki-ready-pack__media{position:relative;display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);height:138px;overflow:hidden;background:linear-gradient(135deg,#28204f,#5d51b1)}
+      #ki-ready-packs-{{ section.id }} .ki-ready-pack__media.is-single{display:block}
       #ki-ready-packs-{{ section.id }} .ki-ready-pack__image{position:relative;min-width:0;overflow:hidden}
       #ki-ready-packs-{{ section.id }} .ki-ready-pack__image::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 60%,rgba(19,13,54,.22))}
       #ki-ready-packs-{{ section.id }} .ki-ready-pack__image img{display:block;width:100%;height:100%;object-fit:cover}
@@ -34,9 +35,10 @@
       #ki-ready-packs-{{ section.id }} .ki-ready-pack__text{margin:6px 0 0;color:var(--ready-muted);font-size:11.5px;line-height:1.45}
       #ki-ready-packs-{{ section.id }} .ki-ready-pack__products{display:flex;flex-wrap:wrap;gap:5px;margin:11px 0 13px}
       #ki-ready-packs-{{ section.id }} .ki-ready-pack__product{padding:5px 7px;border-radius:8px;background:#f2f0fb;color:#554a97;font-size:9.5px;font-weight:700;line-height:1.2}
+      #ki-ready-packs-{{ section.id }} .ki-ready-pack__price{display:block;color:var(--ready-primary);font-size:17px;font-weight:900;line-height:1}
       #ki-ready-packs-{{ section.id }} .ki-ready-pack__footer{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:auto}
       #ki-ready-packs-{{ section.id }} .ki-ready-pack__meta{color:#786fa5;font-size:10px;font-weight:700}
-      #ki-ready-packs-{{ section.id }} .ki-ready-pack__apply{min-height:38px;padding:9px 14px;border:0;border-radius:999px;background:var(--ready-primary);color:#fff;font:inherit;font-size:11px;font-weight:800;white-space:nowrap;cursor:pointer}
+      #ki-ready-packs-{{ section.id }} .ki-ready-pack__apply{display:inline-flex;align-items:center;justify-content:center;min-height:38px;padding:9px 14px;border:0;border-radius:999px;background:var(--ready-primary);color:#fff;font:inherit;font-size:11px;font-weight:800;line-height:1;text-decoration:none;white-space:nowrap;cursor:pointer}
       #ki-ready-packs-{{ section.id }} .ki-ready-pack__apply:hover{background:#6254b4}
       #ki-ready-packs-{{ section.id }} .ki-ready-pack__apply.is-applied{background:#287655}
       #ki-ready-packs-{{ section.id }} .ki-ready-packs__status{min-height:16px;margin:7px 0 0;color:#287655;font-size:10.5px;font-weight:700}
@@ -85,26 +87,33 @@
           {%- assign ready_product_1 = block.settings.product_1 -%}
           {%- assign ready_product_2 = block.settings.product_2 -%}
           {%- assign ready_product_3 = block.settings.product_3 -%}
+          {%- assign ready_fallback_asset = block.settings.fallback_asset | strip -%}
           {%- assign ready_product_count = 0 -%}
           {%- if ready_product_1 != blank -%}{%- assign ready_product_count = ready_product_count | plus: 1 -%}{%- endif -%}
           {%- if ready_product_2 != blank -%}{%- assign ready_product_count = ready_product_count | plus: 1 -%}{%- endif -%}
           {%- if ready_product_3 != blank -%}{%- assign ready_product_count = ready_product_count | plus: 1 -%}{%- endif -%}
           <article class="ki-ready-pack" data-ready-pack-card {{ block.shopify_attributes }}>
-            <div class="ki-ready-pack__media">
-              {%- for product_index in (1..3) -%}
-                {%- case product_index -%}
-                  {%- when 1 -%}{%- assign ready_product = ready_product_1 -%}
-                  {%- when 2 -%}{%- assign ready_product = ready_product_2 -%}
-                  {%- when 3 -%}{%- assign ready_product = ready_product_3 -%}
-                {%- endcase -%}
-                {%- if ready_product != blank and ready_product.featured_image -%}
-                  <div class="ki-ready-pack__image">
-                    {%- assign ready_loading = 'lazy' -%}
-                    {%- if ready_card_first -%}{%- assign ready_loading = 'eager' -%}{%- endif -%}
-                    {{ ready_product.featured_image | image_url: width: 420 | image_tag: loading: ready_loading, widths: '160,240,320,420', sizes: '(min-width: 750px) 120px, 96px', alt: ready_product.title }}
-                  </div>
-                {%- endif -%}
-              {%- endfor -%}
+            <div class="ki-ready-pack__media{% if ready_fallback_asset != blank %} is-single{% endif %}">
+              {%- if ready_fallback_asset != blank -%}
+                <div class="ki-ready-pack__image">
+                  <img src="{{ ready_fallback_asset | asset_url }}" alt="{{ block.settings.title | escape }}" width="1080" height="1350" loading="{% if ready_card_first %}eager{% else %}lazy{% endif %}">
+                </div>
+              {%- else -%}
+                {%- for product_index in (1..3) -%}
+                  {%- case product_index -%}
+                    {%- when 1 -%}{%- assign ready_product = ready_product_1 -%}
+                    {%- when 2 -%}{%- assign ready_product = ready_product_2 -%}
+                    {%- when 3 -%}{%- assign ready_product = ready_product_3 -%}
+                  {%- endcase -%}
+                  {%- if ready_product != blank and ready_product.featured_image -%}
+                    <div class="ki-ready-pack__image">
+                      {%- assign ready_loading = 'lazy' -%}
+                      {%- if ready_card_first -%}{%- assign ready_loading = 'eager' -%}{%- endif -%}
+                      {{ ready_product.featured_image | image_url: width: 420 | image_tag: loading: ready_loading, widths: '160,240,320,420', sizes: '(min-width: 750px) 120px, 96px', alt: ready_product.title }}
+                    </div>
+                  {%- endif -%}
+                {%- endfor -%}
+              {%- endif -%}
               {%- if block.settings.badge != blank -%}
                 <span class="ki-ready-pack__badge">{{ block.settings.badge }}</span>
               {%- endif -%}
@@ -115,26 +124,35 @@
                 <p class="ki-ready-pack__text">{{ block.settings.description }}</p>
               {%- endif -%}
               <div class="ki-ready-pack__products">
+                {%- if block.settings.composition_text != blank -%}<span class="ki-ready-pack__product">{{ block.settings.composition_text }}</span>{%- endif -%}
                 {%- if ready_product_1 != blank -%}<span class="ki-ready-pack__product">{{ block.settings.qty_1 }}× {{ ready_product_1.title }}</span>{%- endif -%}
                 {%- if ready_product_2 != blank -%}<span class="ki-ready-pack__product">{{ block.settings.qty_2 }}× {{ ready_product_2.title }}</span>{%- endif -%}
                 {%- if ready_product_3 != blank -%}<span class="ki-ready-pack__product">{{ block.settings.qty_3 }}× {{ ready_product_3.title }}</span>{%- endif -%}
               </div>
               <div class="ki-ready-pack__footer">
-                <span class="ki-ready-pack__meta">{{ ready_product_count }} ürün · Dilediğin an düzenle</span>
-                <button
-                  type="button"
-                  class="ki-ready-pack__apply"
-                  data-ready-pack-apply
-                  data-ready-product-1="{{ ready_product_1.handle }}"
-                  data-ready-qty-1="{{ block.settings.qty_1 }}"
-                  data-ready-product-2="{{ ready_product_2.handle }}"
-                  data-ready-qty-2="{{ block.settings.qty_2 }}"
-                  data-ready-product-3="{{ ready_product_3.handle }}"
-                  data-ready-qty-3="{{ block.settings.qty_3 }}"
-                  {% if ready_product_count == 0 %}disabled{% endif %}
-                >
-                  {{ section.settings.button_label }}
-                </button>
+                <span class="ki-ready-pack__meta">
+                  {%- if block.settings.price_text != blank -%}<strong class="ki-ready-pack__price">{{ block.settings.price_text }}</strong>{%- endif -%}
+                  Dilediğin an düzenle
+                </span>
+                {%- if ready_product_count > 0 -%}
+                  <button
+                    type="button"
+                    class="ki-ready-pack__apply"
+                    data-ready-pack-apply
+                    data-ready-product-1="{{ ready_product_1.handle }}"
+                    data-ready-qty-1="{{ block.settings.qty_1 }}"
+                    data-ready-product-2="{{ ready_product_2.handle }}"
+                    data-ready-qty-2="{{ block.settings.qty_2 }}"
+                    data-ready-product-3="{{ ready_product_3.handle }}"
+                    data-ready-qty-3="{{ block.settings.qty_3 }}"
+                  >
+                    {{ section.settings.button_label }}
+                  </button>
+                {%- elsif block.settings.button_link != blank -%}
+                  <a class="ki-ready-pack__apply" href="{{ block.settings.button_link }}">{{ section.settings.button_label }}</a>
+                {%- else -%}
+                  <button type="button" class="ki-ready-pack__apply" disabled>{{ section.settings.button_label }}</button>
+                {%- endif -%}
               </div>
             </div>
           </article>
@@ -226,6 +244,10 @@
         { "type": "text", "id": "badge", "label": "Rozet", "default": "Hazır abonelik" },
         { "type": "text", "id": "title", "label": "Paket adı", "default": "Bakım Rutini" },
         { "type": "textarea", "id": "description", "label": "Kısa açıklama", "default": "Birlikte iyi çalışan ürünlerle hızlıca paketini oluştur." },
+        { "type": "text", "id": "fallback_asset", "label": "Tema görsel dosyası", "info": "Örn. ki-ped-pack-light.png" },
+        { "type": "textarea", "id": "composition_text", "label": "Paket içeriği" },
+        { "type": "text", "id": "price_text", "label": "Gösterim fiyatı" },
+        { "type": "url", "id": "button_link", "label": "Ürün seçilmemişse buton bağlantısı" },
         { "type": "product", "id": "product_1", "label": "Ürün 1" },
         { "type": "range", "id": "qty_1", "label": "Ürün 1 adedi", "min": 1, "max": 6, "step": 1, "default": 1 },
         { "type": "product", "id": "product_2", "label": "Ürün 2" },

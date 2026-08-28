@@ -115,6 +115,7 @@
       <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M8 3h8M9 3v5l-5 9a2 2 0 0 0 1.8 3h12.4A2 2 0 0 0 20 17l-5-9V3"/><path d="M8 14h8"/></svg>{{ section.settings.proof_1 }}</span>
       <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/><path d="m9 12 2 2 4-4"/></svg>{{ section.settings.proof_2 }}</span>
     </div>
+    {% render 'ki-ped-certifications', context: 'compact', label: 'ISO · CE · FDA · Intertek' %}
 
     <div class="kps-action"><button type="button" class="kps-atc" data-kps-atc data-variant-id="{{ product.selected_or_first_available_variant.id }}">{{ section.settings.cta_label }}</button></div>
     <p class="kps-status" data-kps-status aria-live="polite"></p>

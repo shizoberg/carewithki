@@ -225,6 +225,9 @@
               {%- else -%}
                 <span class="kes-media-placeholder">Görseli tema editöründen ekleyebilirsin.</span>
               {%- endif -%}
+              {%- if block.settings.show_certifications -%}
+                {% render 'ki-ped-certifications', context: 'media', label: 'ISO · CE · FDA · Intertek' %}
+              {%- endif -%}
               {%- if block.settings.proof_text != blank -%}<span class="kes-proof">{{ block.settings.proof_text | escape }}</span>{%- endif -%}
             </a>
           </article>
@@ -311,6 +314,7 @@
         { "type": "textarea", "id": "description", "label": "Açıklama", "default": "İhtiyacın olan ürünleri seç, gönderim sıklığını belirle; gerisini bize bırak." },
         { "type": "text", "id": "button_label", "label": "Buton", "default": "Hemen Abone Ol" },
         { "type": "url", "id": "button_link", "label": "Buton bağlantısı" },
+        { "type": "checkbox", "id": "show_certifications", "label": "Ped sertifika şeridini göster", "default": false },
         { "type": "text", "id": "proof_text", "label": "Görsel üzeri not", "default": "Eczacılar tarafından geliştirildi" }
       ]
     }

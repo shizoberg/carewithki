@@ -1612,10 +1612,13 @@
                 <div class="ki-pack__cat-body">
                   {%- if catBlock.settings.key == 'ped' -%}
                     <div class="ki-pack__ped-modes" role="group" aria-label="Ped paketleme seçeneği">
-                      <button type="button" class="ki-pack__ped-mode is-active" data-ki-pack-ped-mode="loose" aria-pressed="true">5’li Ped Seç</button>
+                      <button type="button" class="ki-pack__ped-mode is-active" data-ki-pack-ped-mode="loose" aria-pressed="true">Adetli Ped Seç</button>
                       <button type="button" class="ki-pack__ped-mode" data-ki-pack-ped-mode="box" aria-pressed="false">Ped Kutusuna Abone Ol</button>
                     </div>
-                    <p class="ki-pack__ped-mode-note" data-ki-pack-ped-mode-note>Her + dokunuşunda 5 adet ped paketine eklenir.</p>
+                    <p class="ki-pack__ped-mode-note" data-ki-pack-ped-mode-note>Günlük ve gündüz pedler 10’lu, gece pedleri 8’li paket halinde eklenir.</p>
+                    <div style="margin:8px 0 12px">
+                      {% render 'ki-ped-certifications', context: 'compact', label: 'ISO · CE · FDA · Intertek' %}
+                    </div>
                   {%- endif -%}
                   <div class="ki-pack__items">
                     {%- for itemBlock in section.blocks -%}
@@ -2662,7 +2665,7 @@
         if (note) {
           note.textContent = mode === 'box'
             ? 'Seçtiğin ped kutusu abonelik paketine 1 kutu olarak eklenir.'
-            : 'Her + dokunuşunda 5 adet ped paketine eklenir.';
+            : 'Günlük ve gündüz pedler 10’lu, gece pedleri 8’li paket halinde eklenir.';
         }
         recalc();
       });
@@ -2827,7 +2830,7 @@
           var addItems = lines.filter(function (l) { return l.variantId; }).map(function (l) {
             var properties = { '_PackName': packName };
             if (l.selectionMode === 'loose_pads') {
-              properties._PackOption = '5’li ped seçimi';
+              properties._PackOption = 'Adetli ped seçimi';
               properties._PackQuantity = l.qty + ' adet ped';
             } else if (l.selectionMode === 'pad_box') {
               properties._PackOption = 'Ped kutusu aboneliği';
@@ -2901,7 +2904,7 @@
       "name": "Ürün (Shopify picker)",
       "settings": [
         { "type": "product", "id": "product", "label": "Tam kutu Shopify ürünü", "info": "Pedlerde 30/12/8 adetlik kutu; diğer kategorilerde standart üründür." },
-        { "type": "product", "id": "loose_product", "label": "5’li ped Shopify ürünü", "info": "Yalnızca ped kategorisinde kullanılır. 5’li seçim modunda bu ürünün fiyatı ve stoğu kullanılır." },
+        { "type": "product", "id": "loose_product", "label": "Adetli ped Shopify ürünü", "info": "Yalnızca ped kategorisinde kullanılır. Adetli seçim modunda bu ürünün fiyatı ve stoğu kullanılır." },
         { "type": "text", "id": "category_key", "label": "Kategori anahtarı", "info": "Yukarıdaki kategori block'unun 'key' alanı" },
         { "type": "text", "id": "name_override", "label": "İsim override (opsiyonel)" },
         { "type": "textarea", "id": "short", "label": "Kısa açıklama" },
@@ -2964,10 +2967,10 @@
         "subscription_discount_percent": 15
       },
       "blocks": [
-        { "type": "category", "settings": { "key": "ped",        "label": "Pedler",         "description": "5’li seçim oluştur veya ped kutusuna abone ol", "hint": "İhtiyacına göre pedlerini 5’er adet artırabilir ya da kutu aboneliği oluşturabilirsin." } },
-        { "type": "product",  "settings": { "category_key": "ped",  "step": 5, "unit": "ped", "box_step": 1, "box_unit": "kutu", "name_override": ".ki Günlük Ped",  "short": "155 mm", "demo_price": 149 } },
-        { "type": "product",  "settings": { "category_key": "ped",  "step": 5, "unit": "ped", "box_step": 1, "box_unit": "kutu", "name_override": ".ki Gündüz Pedi", "short": "245 mm", "demo_price": 169 } },
-        { "type": "product",  "settings": { "category_key": "ped",  "step": 5, "unit": "ped", "box_step": 1, "box_unit": "kutu", "name_override": ".ki Gece Pedi",   "short": "335 mm", "demo_price": 189 } },
+        { "type": "category", "settings": { "key": "ped",        "label": "Pedler",         "description": "Adetli paket seç veya ped kutusuna abone ol", "hint": "Günlük ve gündüz pedler 10’lu, gece pedleri 8’li paket halinde eklenir." } },
+        { "type": "product",  "settings": { "category_key": "ped",  "step": 10, "unit": "ped", "box_step": 1, "box_unit": "kutu", "name_override": ".ki Günlük Ped",  "short": "155 mm · 10 adet", "demo_price": 88.96 } },
+        { "type": "product",  "settings": { "category_key": "ped",  "step": 10, "unit": "ped", "box_step": 1, "box_unit": "kutu", "name_override": ".ki Gündüz Pedi", "short": "245 mm · 10 adet", "demo_price": 169.98 } },
+        { "type": "product",  "settings": { "category_key": "ped",  "step": 8, "unit": "ped", "box_step": 1, "box_unit": "kutu", "name_override": ".ki Gece Pedi",   "short": "335 mm · 8 adet", "demo_price": 186.99 } },
 
         { "type": "category", "settings": { "key": "supplement", "label": "Takviyeler", "description": ".ki Balance ve .ki Change — döngü ve menopoz dönemlerine özel destek", "hint": "Balance döngü dönemini, Change menopoz dönemini desteklemek için geliştirilmiştir." } },
         { "type": "product",  "settings": { "category_key": "supplement", "step": 1, "unit": "kutu", "badge": "EN POPÜLER", "name_override": ".ki Balance · Saşe", "short": "Döngü dönemini destekler · 10 saşe", "demo_price": 395 } },

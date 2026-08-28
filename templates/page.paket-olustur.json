@@ -49,6 +49,51 @@
     "ready-packs": {
       "type": "ki-ready-subscription-packs",
       "blocks": {
+        "ready-pad-light": {
+          "type": "ready_pack",
+          "settings": {
+            "badge": "15 ped",
+            "title": "Light Paket",
+            "description": "Hafif günler ve günlük kullanım için dengeli başlangıç paketi.",
+            "fallback_asset": "ki-ped-pack-light.png",
+            "composition_text": "9 Günlük + 4 Gündüz + 2 Gece",
+            "price_text": "₺190",
+            "button_link": "/pages/paket-olustur#ki-builder",
+            "qty_1": 1,
+            "qty_2": 1,
+            "qty_3": 1
+          }
+        },
+        "ready-pad-medium": {
+          "type": "ready_pack",
+          "settings": {
+            "badge": "22 ped",
+            "title": "Medium Paket",
+            "description": "Günlük ve gündüz kullanımını dengeleyen kapsamlı ped paketi.",
+            "fallback_asset": "ki-ped-pack-medium.png",
+            "composition_text": "9 Günlük + 9 Gündüz + 4 Gece",
+            "price_text": "₺319",
+            "button_link": "/pages/paket-olustur#ki-builder",
+            "qty_1": 1,
+            "qty_2": 1,
+            "qty_3": 1
+          }
+        },
+        "ready-pad-intense": {
+          "type": "ready_pack",
+          "settings": {
+            "badge": "26 ped",
+            "title": "Yoğun Günler Paketi",
+            "description": "Yoğun akış ve gece korumasına daha fazla yer veren güçlü rutin.",
+            "fallback_asset": "ki-ped-pack-intense.png",
+            "composition_text": "6 Günlük + 12 Gündüz + 8 Gece",
+            "price_text": "₺429",
+            "button_link": "/pages/paket-olustur#ki-builder",
+            "qty_1": 1,
+            "qty_2": 1,
+            "qty_3": 1
+          }
+        },
         "ready-cycle": {
           "type": "ready_pack",
           "settings": {
@@ -93,6 +138,9 @@
         }
       },
       "block_order": [
+        "ready-pad-light",
+        "ready-pad-medium",
+        "ready-pad-intense",
         "ready-cycle",
         "ready-sensitive",
         "ready-menopause"
@@ -112,8 +160,8 @@
           "settings": {
             "key": "ped",
             "label": "Pedler",
-            "description": "5’li seçim oluştur veya ped kutusuna abone ol",
-            "hint": "İhtiyacına göre pedlerini 5’er adet artırabilir ya da kutu aboneliği oluşturabilirsin."
+            "description": "Adetli ped paketini oluştur veya ped kutusuna abone ol",
+            "hint": "Günlük ve gündüz pedleri 10’lu, gece pedleri 8’li paketler halinde ekleyebilirsin."
           }
         },
         "p-gunluk": {
@@ -123,13 +171,13 @@
             "loose_product": "shopify://products/ki-gunluk-ped-5li",
             "category_key": "ped",
             "name_override": ".ki Günlük Ped",
-            "short": "155 mm",
+            "short": "155 mm · 10 adet",
             "badge": "",
-            "step": 5,
+            "step": 10,
             "unit": "ped",
             "box_step": 1,
             "box_unit": "kutu",
-            "demo_price": 250
+            "demo_price": 88.96
           }
         },
         "p-gunduz": {
@@ -139,13 +187,13 @@
             "loose_product": "shopify://products/ki-gunduz-ped-5li",
             "category_key": "ped",
             "name_override": ".ki Gündüz Pedi",
-            "short": "245 mm",
+            "short": "245 mm · 10 adet",
             "badge": "",
-            "step": 5,
+            "step": 10,
             "unit": "ped",
             "box_step": 1,
             "box_unit": "kutu",
-            "demo_price": 250
+            "demo_price": 169.98
           }
         },
         "p-gece": {
@@ -155,13 +203,13 @@
             "loose_product": "shopify://products/ki-gece-ped-5li",
             "category_key": "ped",
             "name_override": ".ki Gece Pedi",
-            "short": "335 mm",
+            "short": "335 mm · 8 adet",
             "badge": "",
-            "step": 5,
+            "step": 8,
             "unit": "ped",
             "box_step": 1,
             "box_unit": "kutu",
-            "demo_price": 250
+            "demo_price": 186.99
           }
         },
         "cat-supp": {

@@ -22,6 +22,7 @@
             "description": "Günlük, gündüz ve gece pedlerini ihtiyacına göre seç; gönderim sıklığını sen belirle.",
             "button_label": "Ped Paketini Oluştur",
             "button_link": "/pages/paket-olustur",
+            "show_certifications": true,
             "proof_text": "%95 pamuk · %5 bambu · pelin otu özü"
           }
         },
