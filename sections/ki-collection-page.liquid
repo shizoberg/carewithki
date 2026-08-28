@@ -4,6 +4,17 @@
 {%- assign banner_bg = section.settings.banner_gradient | default: 'linear-gradient(135deg, #493d9a 0%, #6b5dd3 100%)' -%}
 {%- assign eyebrow = section.settings.eyebrow_text | default: '.ki koleksiyonu' -%}
 {%- assign badge_clr = section.settings.badge_color | default: '#493d9a' -%}
+{%- assign source_collection = collection -%}
+{%- if section.settings.source_all_products -%}
+  {%- assign source_collection = collections['all'] -%}
+{%- endif -%}
+{%- assign hidden_handles = section.settings.hidden_product_handles | default: 'abonelik-kutusu,ki-member,ki-test-urun' | split: ',' -%}
+{%- assign visible_product_count = 0 -%}
+{%- for source_product in source_collection.products -%}
+  {%- unless hidden_handles contains source_product.handle -%}
+    {%- assign visible_product_count = visible_product_count | plus: 1 -%}
+  {%- endunless -%}
+{%- endfor -%}
 
 <style>
 .kicol-{{ section.id }} {
@@ -21,8 +32,7 @@
 /* ── BANNER ── */
 .kicol-{{ section.id }} .kicol-banner {
   background: {{ banner_bg }};
-  padding: 52px 24px 46px;
-  text-align: center;
+  padding: 42px 24px;
   position: relative;
   overflow: hidden;
 }
@@ -32,6 +42,12 @@
   background: radial-gradient(ellipse at 70% 50%, rgba(255,255,255,.08) 0%, transparent 60%);
   pointer-events: none;
 }
+.kicol-{{ section.id }} .kicol-banner__inner {
+  max-width: 1320px; margin: 0 auto;
+  display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(320px, .8fr);
+  align-items: center; gap: 44px; position: relative; z-index: 1;
+}
+.kicol-{{ section.id }} .kicol-banner__copy { max-width: 690px; }
 .kicol-{{ section.id }} .kicol-banner__eyebrow {
   display: inline-flex; align-items: center; gap: 6px;
   font-size: 10px; font-weight: 700; letter-spacing: .14em;
@@ -48,11 +64,11 @@
   font-family: 'Raleway', system-ui, sans-serif;
   font-size: clamp(24px, 4vw, 44px);
   font-weight: 800; color: #fff;
-  margin: 0 0 10px; line-height: 1.1; letter-spacing: -.02em;
+  margin: 0 0 12px; line-height: 1.04; letter-spacing: -.03em;
 }
 .kicol-{{ section.id }} .kicol-banner__desc {
   font-size: 14px; color: rgba(255,255,255,.68);
-  max-width: 520px; margin: 0 auto;
+  max-width: 620px; margin: 0;
   line-height: 1.65;
 }
 .kicol-{{ section.id }} .kicol-banner__count {
@@ -61,6 +77,27 @@
   padding: 4px 14px; border-radius: 50px;
   font-size: 11px; font-weight: 600; color: rgba(255,255,255,.75);
   letter-spacing: .04em;
+}
+.kicol-{{ section.id }} .kicol-banner__visual {
+  min-height: 220px; position: relative; display: flex; justify-content: flex-end; align-items: center;
+}
+.kicol-{{ section.id }} .kicol-banner__stack {
+  width: min(100%, 410px); display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;
+  transform: rotate(-2deg);
+}
+.kicol-{{ section.id }} .kicol-banner__mini {
+  aspect-ratio: .8; border-radius: 18px; overflow: hidden; background: rgba(255,255,255,.12);
+  border: 1px solid rgba(255,255,255,.24); box-shadow: 0 18px 38px rgba(17,12,55,.22);
+}
+.kicol-{{ section.id }} .kicol-banner__mini:nth-child(2) { transform: translateY(-16px); }
+.kicol-{{ section.id }} .kicol-banner__mini img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.kicol-{{ section.id }} .kicol-banner__trust {
+  display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px;
+}
+.kicol-{{ section.id }} .kicol-banner__trust span {
+  display: inline-flex; align-items: center; gap: 6px; padding: 7px 11px; border-radius: 999px;
+  background: rgba(255,255,255,.11); border: 1px solid rgba(255,255,255,.18);
+  color: rgba(255,255,255,.88); font-size: 10px; font-weight: 700;
 }
 
 /* ── TOOLBAR ── */
@@ -235,7 +272,13 @@
 
 /* ── MOBILE ── */
 @media (max-width: 749px) {
-  .kicol-{{ section.id }} .kicol-banner { padding: 36px 16px 30px; }
+  .kicol-{{ section.id }} .kicol-banner { padding: 30px 16px 24px; }
+  .kicol-{{ section.id }} .kicol-banner__inner { grid-template-columns: 1fr; gap: 22px; }
+  .kicol-{{ section.id }} .kicol-banner__title { font-size: 30px; }
+  .kicol-{{ section.id }} .kicol-banner__visual { min-height: 128px; justify-content: flex-start; }
+  .kicol-{{ section.id }} .kicol-banner__stack { width: 250px; gap: 7px; }
+  .kicol-{{ section.id }} .kicol-banner__mini { border-radius: 12px; }
+  .kicol-{{ section.id }} .kicol-banner__mini:nth-child(2) { transform: translateY(-8px); }
   .kicol-{{ section.id }} .kicol-toolbar__inner { padding: 8px 14px; }
   .kicol-{{ section.id }} .kicol-main { padding: 18px 14px 48px; }
   .kicol-{{ section.id }} .kicol-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 10px; }
@@ -262,12 +305,40 @@
 
   <!-- BANNER -->
   <div class="kicol-banner">
-    <p class="kicol-banner__eyebrow">{{ eyebrow | escape }}</p>
-    <h1 class="kicol-banner__title">{{ collection.title | escape }}</h1>
-    {%- if collection.description != blank -%}
-      <p class="kicol-banner__desc">{{ collection.description }}</p>
-    {%- endif -%}
-    <span class="kicol-banner__count">{{ collection.products_count }} ürün</span>
+    <div class="kicol-banner__inner">
+      <div class="kicol-banner__copy">
+        <p class="kicol-banner__eyebrow">{{ eyebrow | escape }}</p>
+        <h1 class="kicol-banner__title">{{ section.settings.hero_title | default: collection.title | escape }}</h1>
+        <p class="kicol-banner__desc">
+          {%- if section.settings.hero_description != blank -%}
+            {{ section.settings.hero_description | escape }}
+          {%- elsif collection.description != blank -%}
+            {{ collection.description }}
+          {%- else -%}
+            Kadın sağlığının farklı dönemleri için geliştirilen tüm .ki ürünlerini bir arada keşfet.
+          {%- endif -%}
+        </p>
+        <span class="kicol-banner__count">{{ visible_product_count }} ürün</span>
+        <div class="kicol-banner__trust" aria-label="Koleksiyon özellikleri">
+          <span>Uzman eczacı formülü</span><span>Bilimsel yaklaşım</span><span>Aboneliğe uygun</span>
+        </div>
+      </div>
+      <div class="kicol-banner__visual" aria-hidden="true">
+        <div class="kicol-banner__stack">
+          {%- assign hero_product_count = 0 -%}
+          {%- for hero_product in source_collection.products -%}
+            {%- unless hidden_handles contains hero_product.handle -%}
+              {%- if hero_product.featured_image and hero_product_count < 3 -%}
+                <div class="kicol-banner__mini">
+                  {{ hero_product.featured_image | image_url: width: 360 | image_tag: loading: 'eager', alt: '' }}
+                </div>
+                {%- assign hero_product_count = hero_product_count | plus: 1 -%}
+              {%- endif -%}
+            {%- endunless -%}
+          {%- endfor -%}
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- TOOLBAR -->
@@ -300,10 +371,11 @@
 
   <!-- ÜRÜN GRİD -->
   <div class="kicol-main">
-    {%- paginate collection.products by products_per_page -%}
-      {%- if collection.products.size > 0 -%}
+    {%- paginate source_collection.products by products_per_page -%}
+      {%- if source_collection.products.size > 0 -%}
         <ul class="kicol-grid{% if is_bundle %} kicol-grid--bundle{% endif %}">
-          {%- for product in collection.products -%}
+          {%- for product in source_collection.products -%}
+            {%- if hidden_handles contains product.handle -%}{%- continue -%}{%- endif -%}
             {%- assign cv = product.selected_or_first_available_variant -%}
             <li class="kicol-card">
               <a href="{{ product.url }}" class="kicol-card__img-wrap">
@@ -407,8 +479,13 @@
     {"type":"range","id":"products_per_page","label":"Sayfa başına ürün","min":4,"max":48,"step":4,"default":12},
     {"type":"header","content":"Banner"},
     {"type":"text","id":"eyebrow_text","label":"Eyebrow metni","default":".ki koleksiyonu"},
+    {"type":"text","id":"hero_title","label":"Modern başlık"},
+    {"type":"textarea","id":"hero_description","label":"Modern başlık açıklaması"},
     {"type":"text","id":"banner_gradient","label":"Banner gradient (CSS)","default":"linear-gradient(135deg, #493d9a 0%, #6b5dd3 100%)","info":"Örnek: linear-gradient(135deg, #493d9a 0%, #6b5dd3 100%)"},
     {"type":"color","id":"badge_color","label":"Rozet rengi","default":"#493d9a"},
+    {"type":"header","content":"Ürün kaynağı"},
+    {"type":"checkbox","id":"source_all_products","label":"Tüm yayınlanmış ürünleri göster","default":false},
+    {"type":"textarea","id":"hidden_product_handles","label":"Gizlenecek ürün handle'ları","default":"abonelik-kutusu,ki-member,ki-test-urun","info":"Virgülle ayırın."},
     {"type":"header","content":"Görünüm"},
     {"type":"checkbox","id":"show_description","label":"Ürün açıklaması","default":false},
     {"type":"checkbox","id":"show_filters","label":"Etiket filtreleri","default":true},

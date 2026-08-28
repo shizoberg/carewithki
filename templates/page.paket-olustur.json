@@ -103,6 +103,7 @@
             "badge": "En popüler",
             "title": "Döngü Destek Paketi",
             "description": "Döngü desteği, regl dönemi bakımı ve gün boyu ferahlık bir arada.",
+            "subscription_discount_percent": 15,
             "product_1": "balance-your-cycle",
             "qty_1": 1,
             "product_2": "ki-flow-care-intim-bakim-jeli",
@@ -117,6 +118,7 @@
             "badge": "Nazik bakım",
             "title": "Hassas Bakım Paketi",
             "description": "Hassas ciltlere uygun intim bakım ve pratik ferahlık rutini.",
+            "subscription_discount_percent": 15,
             "product_1": "ki-sens-care-intim-bakim-jeli",
             "qty_1": 1,
             "product_2": "ki-intimate-intim-bakim-spreyi",
@@ -131,6 +133,7 @@
             "badge": "50+ rutin",
             "title": "Menopoz Bakım Paketi",
             "description": "Menopoz dönemine özel takviye, yoğun nem ve ferahlık desteği.",
+            "subscription_discount_percent": 15,
             "product_1": "change-is-good",
             "qty_1": 1,
             "product_2": "ki-50-care-intim-bakim-jeli",
@@ -338,8 +341,8 @@
           "settings": {
             "key": "packages",
             "label": "Paketler",
-            "description": "Hazır ped paketlerinden birini doğrudan aboneliğine ekle",
-            "hint": "Light, Medium ve Yoğun Günler paketleri belirtilen toplam ped adedi ve abonelik fiyatıyla eklenir."
+            "description": "Hazır ped ve bakım paketlerinden birini doğrudan aboneliğine ekle",
+            "hint": "Paket seçildiğinde içindeki ürünler aboneliğine eklenir; adetleri daha sonra değiştirebilirsin."
           }
         },
         "p-pack-light": {
@@ -385,6 +388,50 @@
             "step": 1,
             "unit": "paket",
             "demo_price": 429
+          }
+        },
+        "preset-cycle": {
+          "type": "package_preset",
+          "settings": {
+            "category_key": "packages",
+            "preset_key": "cycle",
+            "title": "Döngü Destek Paketi",
+            "description": "Döngü desteği, regl dönemi bakımı ve gün boyu ferahlık bir arada.",
+            "product_1": "balance-your-cycle",
+            "qty_1": 1,
+            "product_2": "ki-flow-care-intim-bakim-jeli",
+            "qty_2": 1,
+            "product_3": "ki-intimate-intim-bakim-spreyi",
+            "qty_3": 1
+          }
+        },
+        "preset-sensitive": {
+          "type": "package_preset",
+          "settings": {
+            "category_key": "packages",
+            "preset_key": "sensitive",
+            "title": "Hassas Bakım Paketi",
+            "description": "Hassas ciltlere uygun intim bakım ve pratik ferahlık rutini.",
+            "product_1": "ki-sens-care-intim-bakim-jeli",
+            "qty_1": 1,
+            "product_2": "ki-intimate-intim-bakim-spreyi",
+            "qty_2": 1,
+            "qty_3": 1
+          }
+        },
+        "preset-menopause": {
+          "type": "package_preset",
+          "settings": {
+            "category_key": "packages",
+            "preset_key": "menopause",
+            "title": "Menopoz Bakım Paketi",
+            "description": "Menopoz dönemine özel takviye, yoğun nem ve ferahlık desteği.",
+            "product_1": "change-is-good",
+            "qty_1": 1,
+            "product_2": "ki-50-care-intim-bakim-jeli",
+            "qty_2": 1,
+            "product_3": "ki-intimate-intim-bakim-spreyi",
+            "qty_3": 1
           }
         },
         "freq-1": {
@@ -488,6 +535,9 @@
         "p-pack-light",
         "p-pack-medium",
         "p-pack-intense",
+        "preset-cycle",
+        "preset-sensitive",
+        "preset-menopause",
         "freq-1",
         "freq-2",
         "freq-3",

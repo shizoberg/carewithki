@@ -99,7 +99,19 @@
           {%- if ready_discount_percent == 0 and ready_fallback_asset contains 'ki-ped-pack-' -%}
             {%- assign ready_discount_percent = 15 -%}
           {%- endif -%}
-          {%- assign ready_original_price = ready_product_1.price | default: 0 -%}
+          {%- assign ready_original_price = 0 -%}
+          {%- if ready_product_1 != blank -%}
+            {%- assign ready_product_1_total = ready_product_1.price | times: block.settings.qty_1 -%}
+            {%- assign ready_original_price = ready_original_price | plus: ready_product_1_total -%}
+          {%- endif -%}
+          {%- if ready_product_2 != blank -%}
+            {%- assign ready_product_2_total = ready_product_2.price | times: block.settings.qty_2 -%}
+            {%- assign ready_original_price = ready_original_price | plus: ready_product_2_total -%}
+          {%- endif -%}
+          {%- if ready_product_3 != blank -%}
+            {%- assign ready_product_3_total = ready_product_3.price | times: block.settings.qty_3 -%}
+            {%- assign ready_original_price = ready_original_price | plus: ready_product_3_total -%}
+          {%- endif -%}
           {%- assign ready_discount_amount = ready_original_price | times: ready_discount_percent | divided_by: 100 -%}
           {%- assign ready_discount_price = ready_original_price | minus: ready_discount_amount -%}
           {%- assign ready_product_count = 0 -%}
@@ -163,6 +175,7 @@
                     type="button"
                     class="ki-ready-pack__apply"
                     data-ready-pack-apply
+                    data-ready-pack-title="{{ block.settings.title | escape }}"
                     data-ready-product-1="{{ ready_product_1.handle }}"
                     data-ready-qty-1="{{ block.settings.qty_1 }}"
                     data-ready-product-2="{{ ready_product_2.handle }}"
@@ -226,7 +239,7 @@
         button.classList.add('is-applied');
         button.textContent='Hazırlanıyor…';
         if(status) status.textContent='Hazır paket ürünleri seçiliyor…';
-        document.dispatchEvent(new CustomEvent('ki:apply-pack-preset',{detail:{items:selected}}));
+        document.dispatchEvent(new CustomEvent('ki:apply-pack-preset',{detail:{items:selected,title:button.getAttribute('data-ready-pack-title')||''}}));
       });
 
       document.addEventListener('ki:pack-preset-applied',function(event){

@@ -12,11 +12,17 @@
     "ki_collection": {
       "type": "ki-collection-page",
       "settings": {
+        "eyebrow_text": "TÜM .Kİ ÜRÜNLERİ",
+        "hero_title": "Kadın sağlığına modern çözümler",
+        "hero_description": "Döngü desteğinden intim bakıma, hijyenik pedlerden hazır paketlere tüm .ki ürünlerini bir arada keşfet.",
+        "banner_gradient": "linear-gradient(130deg,#21184d 0%,#493d9a 52%,#7467c9 100%)",
+        "source_all_products": true,
+        "hidden_product_handles": "abonelik-kutusu,ki-member,ki-test-urun",
         "columns_desktop": 3,
-        "products_per_page": 12,
+        "products_per_page": 24,
         "show_description": false,
-        "show_filters": true,
-        "show_sort": true
+        "show_filters": false,
+        "show_sort": false
       }
     }
   },

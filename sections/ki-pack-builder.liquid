@@ -314,6 +314,86 @@
       font-size: 10px;
       font-weight: 700;
     }
+    #ki-{{ section.id }} .ki-pack__bundle {
+      display: grid;
+      grid-template-columns: 76px minmax(0,1fr);
+      gap: 10px 14px;
+      padding: 16px 18px;
+      border-bottom: 1px solid var(--ki-border, #e6e3ee);
+      background: linear-gradient(135deg, rgba(73,61,154,.055), rgba(255,255,255,.98));
+    }
+    #ki-{{ section.id }} .ki-pack__bundle:last-child { border-bottom: 0; }
+    #ki-{{ section.id }} .ki-pack__bundle-media {
+      display: flex;
+      align-items: center;
+      width: 76px;
+      min-height: 70px;
+      padding-left: 10px;
+    }
+    #ki-{{ section.id }} .ki-pack__bundle-media img {
+      width: 42px;
+      height: 58px;
+      margin-left: -10px;
+      border: 2px solid #fff;
+      border-radius: 10px;
+      object-fit: cover;
+      box-shadow: 0 7px 18px rgba(42,31,94,.15);
+    }
+    #ki-{{ section.id }} .ki-pack__bundle-info { min-width: 0; }
+    #ki-{{ section.id }} .ki-pack__bundle-title {
+      margin: 0;
+      color: var(--ki-primary, #3a2d6e);
+      font-size: 15px;
+      font-weight: 800;
+      line-height: 1.25;
+    }
+    #ki-{{ section.id }} .ki-pack__bundle-copy {
+      margin: 4px 0 0;
+      color: var(--ki-muted, #5a5a5a);
+      font-size: 11px;
+      line-height: 1.4;
+    }
+    #ki-{{ section.id }} .ki-pack__bundle-products {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin: 8px 0 0;
+    }
+    #ki-{{ section.id }} .ki-pack__bundle-products span {
+      padding: 4px 6px;
+      border-radius: 7px;
+      background: #f0eef9;
+      color: #554a97;
+      font-size: 9px;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+    #ki-{{ section.id }} .ki-pack__bundle-footer {
+      grid-column: 1 / -1;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    #ki-{{ section.id }} .ki-pack__bundle-price { color: var(--ki-primary, #3a2d6e); }
+    #ki-{{ section.id }} .ki-pack__bundle-price strong { font-size: 15px; }
+    #ki-{{ section.id }} .ki-pack__bundle-price s { margin-left: 5px; color: var(--ki-muted, #6b6360); font-size: 10px; }
+    #ki-{{ section.id }} .ki-pack__bundle-price small { display: block; margin-top: 2px; color: #287457; font-size: 9px; font-weight: 800; }
+    #ki-{{ section.id }} .ki-pack__bundle-apply {
+      min-height: 36px;
+      padding: 8px 13px;
+      border: 0;
+      border-radius: 999px;
+      background: var(--ki-primary, #3a2d6e);
+      color: #fff;
+      font: inherit;
+      font-size: 10px;
+      font-weight: 800;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    #ki-{{ section.id }} .ki-pack__bundle-apply.is-applied { background: #287457; }
+    #ki-{{ section.id }} .ki-pack__bundle-apply:disabled { cursor: not-allowed; opacity: .45; }
 
     /* ===== Stepper — 2-row layout'ta alt satır, sağa hizalı ===== */
     #ki-{{ section.id }} .ki-pack__stepper {
@@ -1849,6 +1929,72 @@
                           </div>
                         {%- endif -%}
                       {%- endif -%}
+                      {%- if itemBlock.type == 'package_preset' and itemBlock.settings.category_key == catBlock.settings.key -%}
+                        {%- assign preset_product_1 = itemBlock.settings.product_1 -%}
+                        {%- assign preset_product_2 = itemBlock.settings.product_2 -%}
+                        {%- assign preset_product_3 = itemBlock.settings.product_3 -%}
+                        {%- assign preset_total = 0 -%}
+                        {%- assign preset_product_count = 0 -%}
+                        {%- assign preset_available = true -%}
+                        {%- if preset_product_1 != blank -%}
+                          {%- assign preset_product_count = preset_product_count | plus: 1 -%}
+                          {%- assign preset_product_1_total = preset_product_1.price | times: itemBlock.settings.qty_1 -%}
+                          {%- assign preset_total = preset_total | plus: preset_product_1_total -%}
+                          {%- unless preset_product_1.available -%}{%- assign preset_available = false -%}{%- endunless -%}
+                        {%- endif -%}
+                        {%- if preset_product_2 != blank -%}
+                          {%- assign preset_product_count = preset_product_count | plus: 1 -%}
+                          {%- assign preset_product_2_total = preset_product_2.price | times: itemBlock.settings.qty_2 -%}
+                          {%- assign preset_total = preset_total | plus: preset_product_2_total -%}
+                          {%- unless preset_product_2.available -%}{%- assign preset_available = false -%}{%- endunless -%}
+                        {%- endif -%}
+                        {%- if preset_product_3 != blank -%}
+                          {%- assign preset_product_count = preset_product_count | plus: 1 -%}
+                          {%- assign preset_product_3_total = preset_product_3.price | times: itemBlock.settings.qty_3 -%}
+                          {%- assign preset_total = preset_total | plus: preset_product_3_total -%}
+                          {%- unless preset_product_3.available -%}{%- assign preset_available = false -%}{%- endunless -%}
+                        {%- endif -%}
+                        {%- assign preset_discount = section.settings.subscription_discount_percent | default: 15 -%}
+                        {%- assign preset_discount_amount = preset_total | times: preset_discount | divided_by: 100 -%}
+                        {%- assign preset_subscription_total = preset_total | minus: preset_discount_amount -%}
+                        <article class="ki-pack__bundle" {{ itemBlock.shopify_attributes }}>
+                          <div class="ki-pack__bundle-media" aria-hidden="true">
+                            {%- if preset_product_1.featured_image -%}{{ preset_product_1.featured_image | image_url: width: 100 | image_tag: loading: 'lazy', widths: '64,100', alt: '' }}{%- endif -%}
+                            {%- if preset_product_2.featured_image -%}{{ preset_product_2.featured_image | image_url: width: 100 | image_tag: loading: 'lazy', widths: '64,100', alt: '' }}{%- endif -%}
+                            {%- if preset_product_3.featured_image -%}{{ preset_product_3.featured_image | image_url: width: 100 | image_tag: loading: 'lazy', widths: '64,100', alt: '' }}{%- endif -%}
+                          </div>
+                          <div class="ki-pack__bundle-info">
+                            <h3 class="ki-pack__bundle-title">{{ itemBlock.settings.title }}</h3>
+                            {%- if itemBlock.settings.description != blank -%}<p class="ki-pack__bundle-copy">{{ itemBlock.settings.description }}</p>{%- endif -%}
+                            <div class="ki-pack__bundle-products">
+                              {%- if preset_product_1 != blank -%}<span>{{ itemBlock.settings.qty_1 }}× {{ preset_product_1.title }}</span>{%- endif -%}
+                              {%- if preset_product_2 != blank -%}<span>{{ itemBlock.settings.qty_2 }}× {{ preset_product_2.title }}</span>{%- endif -%}
+                              {%- if preset_product_3 != blank -%}<span>{{ itemBlock.settings.qty_3 }}× {{ preset_product_3.title }}</span>{%- endif -%}
+                            </div>
+                          </div>
+                          <div class="ki-pack__bundle-footer">
+                            <span class="ki-pack__bundle-price">
+                              <strong>{{ preset_subscription_total | money }}</strong>
+                              <s>{{ preset_total | money }}</s>
+                              <small>Abonelikte %{{ preset_discount }} indirim</small>
+                            </span>
+                            <button
+                              type="button"
+                              class="ki-pack__bundle-apply"
+                              data-ki-pack-preset-button
+                              data-preset-key="{{ itemBlock.settings.preset_key | handle }}"
+                              data-preset-title="{{ itemBlock.settings.title | escape }}"
+                              data-product-1="{{ preset_product_1.handle }}"
+                              data-qty-1="{{ itemBlock.settings.qty_1 }}"
+                              data-product-2="{{ preset_product_2.handle }}"
+                              data-qty-2="{{ itemBlock.settings.qty_2 }}"
+                              data-product-3="{{ preset_product_3.handle }}"
+                              data-qty-3="{{ itemBlock.settings.qty_3 }}"
+                              {% if preset_product_count == 0 or preset_available == false %}disabled{% endif %}
+                            >Paketi aboneliğe ekle</button>
+                          </div>
+                        </article>
+                      {%- endif -%}
                     {%- endfor -%}
                   </div>
                   {%- if catBlock.settings.hint != blank -%}
@@ -2690,6 +2836,7 @@
     document.addEventListener('ki:apply-pack-preset', function (event) {
       var presetItems = event.detail && Array.isArray(event.detail.items) ? event.detail.items : [];
       if (!presetItems.length) return;
+      root.dataset.kiPackPresetTitle = event.detail && event.detail.title ? event.detail.title : '';
       Object.keys(qtyMap).forEach(function (id) { qtyMap[id] = 0; });
       removedIds = [];
       var appliedCount = 0;
@@ -2721,7 +2868,38 @@
       document.dispatchEvent(new CustomEvent('ki:pack-preset-applied', { detail: { count: appliedCount } }));
     });
 
+    document.addEventListener('ki:pack-preset-applied', function (event) {
+      var activeButton = root.querySelector('[data-ki-pack-preset-button].is-applying');
+      if (!activeButton) return;
+      activeButton.classList.remove('is-applying');
+      if (event.detail && event.detail.count > 0) {
+        activeButton.classList.add('is-applied');
+        activeButton.textContent = 'Paket seçildi ✓';
+      } else {
+        activeButton.textContent = 'Paketi aboneliğe ekle';
+      }
+    });
+
     root.addEventListener('click', function (e) {
+      var presetButton = e.target.closest && e.target.closest('[data-ki-pack-preset-button]');
+      if (presetButton && !presetButton.disabled) {
+        var selectedPresetItems = [];
+        for (var presetIndex = 1; presetIndex <= 3; presetIndex++) {
+          var presetHandle = presetButton.getAttribute('data-product-' + presetIndex);
+          var presetQuantity = parseInt(presetButton.getAttribute('data-qty-' + presetIndex), 10) || 1;
+          if (presetHandle) selectedPresetItems.push({ handle: presetHandle, quantity: presetQuantity });
+        }
+        root.querySelectorAll('[data-ki-pack-preset-button]').forEach(function (button) {
+          button.classList.remove('is-applied', 'is-applying');
+          button.textContent = 'Paketi aboneliğe ekle';
+        });
+        presetButton.classList.add('is-applying');
+        presetButton.textContent = 'Paket hazırlanıyor…';
+        document.dispatchEvent(new CustomEvent('ki:apply-pack-preset', {
+          detail: { items: selectedPresetItems, title: presetButton.getAttribute('data-preset-title') || '' }
+        }));
+        return;
+      }
       var decreaseBtn = e.target.closest && e.target.closest('[data-ki-pack-decrease]');
       if (decreaseBtn) {
         var decreaseId = decreaseBtn.getAttribute('data-ki-pack-decrease');
@@ -2746,6 +2924,7 @@
     var dialogConfirm = root.querySelector('[data-ki-pack-dialog-confirm]');
     function openDialog() {
       if (!dialog) return;
+      if (dialogInput && root.dataset.kiPackPresetTitle) dialogInput.value = root.dataset.kiPackPresetTitle;
       dialog.classList.add('is-open');
       dialog.setAttribute('aria-hidden', 'false');
       setTimeout(function () { if (dialogInput) { dialogInput.focus(); dialogInput.select(); } }, 50);
@@ -2880,6 +3059,15 @@
     });
 
     recalc();
+
+    var requestedPresetKey = new URLSearchParams(window.location.search).get('preset');
+    if (requestedPresetKey) {
+      window.setTimeout(function () {
+        var safePresetKey = String(requestedPresetKey).replace(/[^a-z0-9-_]/gi, '');
+        var requestedPresetButton = root.querySelector('[data-ki-pack-preset-button][data-preset-key="' + safePresetKey + '"]');
+        if (requestedPresetButton && !requestedPresetButton.disabled) requestedPresetButton.click();
+      }, 80);
+    }
   })();
 </script>
 
@@ -2932,6 +3120,22 @@
         { "type": "number", "id": "box_step", "label": "Ped kutusu adım miktarı", "default": 1, "info": "Yalnızca ped kategorisindeki kutu aboneliği seçeneğinde kullanılır." },
         { "type": "text", "id": "box_unit", "label": "Ped kutusu birimi", "default": "kutu" },
         { "type": "number", "id": "demo_price", "label": "Demo fiyat (Shopify ürünü yokken)", "default": 0 }
+      ]
+    },
+    {
+      "type": "package_preset",
+      "name": "Hazır bakım paketi",
+      "settings": [
+        { "type": "text", "id": "category_key", "label": "Kategori anahtarı", "default": "packages" },
+        { "type": "text", "id": "preset_key", "label": "Paket anahtarı", "default": "bakim-paketi", "info": "Koleksiyon kartından bu paketi otomatik seçmek için kullanılır." },
+        { "type": "text", "id": "title", "label": "Paket adı", "default": "Bakım Paketi" },
+        { "type": "textarea", "id": "description", "label": "Kısa açıklama" },
+        { "type": "product", "id": "product_1", "label": "Ürün 1" },
+        { "type": "range", "id": "qty_1", "label": "Ürün 1 adedi", "min": 1, "max": 12, "step": 1, "default": 1 },
+        { "type": "product", "id": "product_2", "label": "Ürün 2" },
+        { "type": "range", "id": "qty_2", "label": "Ürün 2 adedi", "min": 1, "max": 12, "step": 1, "default": 1 },
+        { "type": "product", "id": "product_3", "label": "Ürün 3" },
+        { "type": "range", "id": "qty_3", "label": "Ürün 3 adedi", "min": 1, "max": 12, "step": 1, "default": 1 }
       ]
     },
     {

@@ -1,0 +1,56 @@
+{%- liquid
+  assign bundle_variant = product.selected_or_first_available_variant
+  assign bundle_label = pack_label | default: 'Hazır Paket'
+  assign bundle_contains = contains_products | default: ''
+-%}
+
+<li class="kbd-card">
+  <a href="{{ product.url }}" class="kbd-card__hero" aria-label="{{ product.title | escape }}">
+    {%- if product.featured_image -%}
+      {{ product.featured_image | image_url: width: 900 | image_tag: class: 'kbd-card__hero-img', loading: 'lazy', alt: product.title }}
+    {%- else -%}
+      {{ 'product-2' | placeholder_svg_tag: 'kbd-card__hero-img kbd-card__placeholder' }}
+    {%- endif -%}
+    {%- if bundle_variant.compare_at_price > bundle_variant.price -%}
+      {%- assign saving_percent = bundle_variant.compare_at_price | minus: bundle_variant.price | times: 100 | divided_by: bundle_variant.compare_at_price -%}
+      <span class="kbd-card__save">%{{ saving_percent }} avantaj</span>
+    {%- endif -%}
+    <span class="kbd-card__pack-label">{{ bundle_label | escape }}</span>
+  </a>
+
+  <div class="kbd-card__body">
+    <div class="kbd-card__meta">Hazır .ki paketi</div>
+    <a href="{{ product.url }}" class="kbd-card__title">{{ product.title | escape }}</a>
+    {%- if product.description != blank -%}
+      <p class="kbd-card__desc">{{ product.description | strip_html | truncate: 120 }}</p>
+    {%- endif -%}
+
+    {%- if bundle_contains != blank -%}
+      <div class="kbd-card__products">
+        {%- assign bundle_items = bundle_contains | split: ',' -%}
+        {%- for bundle_item in bundle_items limit: 4 -%}
+          <span class="kbd-card__product-tag">✓ {{ bundle_item | strip | escape }}</span>
+        {%- endfor -%}
+      </div>
+    {%- elsif product.tags.size > 0 -%}
+      <div class="kbd-card__products">
+        {%- for product_tag in product.tags limit: 3 -%}
+          <span class="kbd-card__product-tag">✓ {{ product_tag | escape }}</span>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+
+    <div class="kbd-card__footer">
+      <div class="kbd-card__prices">
+        <span class="kbd-card__price">{{ bundle_variant.price | money }}</span>
+        {%- if bundle_variant.compare_at_price > bundle_variant.price -%}
+          <span class="kbd-card__compare">{{ bundle_variant.compare_at_price | money }}</span>
+        {%- endif -%}
+      </div>
+      <div class="kbd-card__actions">
+        <a href="{{ product.url }}" class="kbd-card__btn kbd-card__btn--ghost">İncele</a>
+        <a href="/pages/paket-olustur?abone={{ bundle_variant.id }}&product={{ product.handle | url_encode }}" class="kbd-card__btn">Abone ol →</a>
+      </div>
+    </div>
+  </div>
+</li>
