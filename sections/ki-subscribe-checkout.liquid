@@ -31,6 +31,9 @@
       display: flex; justify-content: space-between; align-items: center;
       font-size: 13px; color: rgba(0,0,0,.75);
     }
+    #ki-{{ section.id }} .ki-sc__summary-prices { display:flex; align-items:baseline; justify-content:flex-end; gap:7px; white-space:nowrap; }
+    #ki-{{ section.id }} .ki-sc__summary-original { color:#8a8591; font-size:11px; }
+    #ki-{{ section.id }} .ki-sc__summary-saving { display:flex; justify-content:space-between; gap:12px; margin-top:12px; padding:10px 12px; border-radius:10px; background:#e8f7ef; color:#287655; font-size:13px; font-weight:750; }
     #ki-{{ section.id }} .ki-sc__summary-empty { font-size: 13px; color: rgba(0,0,0,.6); text-align: center; padding: 12px 0; }
 
     #ki-{{ section.id }} .ki-sc__form {
@@ -165,6 +168,10 @@
       <div class="ki-sc__summary-list" data-ki-sc-items>
         <div class="ki-sc__summary-empty">Yükleniyor…</div>
       </div>
+      <div class="ki-sc__summary-saving" data-ki-sc-savings-row hidden>
+        <span>Abone olarak kazancın</span>
+        <strong data-ki-sc-savings>—</strong>
+      </div>
     </div>
 
     <div class="ki-sc__error" data-ki-sc-error></div>
@@ -282,6 +289,8 @@
     var summaryEl = root.querySelector('[data-ki-sc-summary]');
     var summaryItemsEl = root.querySelector('[data-ki-sc-items]');
     var summaryTotalEl = root.querySelector('[data-ki-sc-total]');
+    var summarySavingsRowEl = root.querySelector('[data-ki-sc-savings-row]');
+    var summarySavingsEl = root.querySelector('[data-ki-sc-savings]');
     var formEl = root.querySelector('[data-ki-sc-form]');
     var ctaEl = root.querySelector('[data-ki-sc-cta]');
     var errEl = root.querySelector('[data-ki-sc-error]');
@@ -398,15 +407,26 @@
         return;
       }
       summaryEl.hidden = false;
+      var savings = 0;
       summaryItemsEl.innerHTML = pack.boxItems.map(function (it) {
         var qty = Number(it.quantity || 0);
         var price = Number(it.price || 0);
+        var originalPrice = Number(it.originalPrice || price);
+        var linePrice = qty * price;
+        var lineOriginalPrice = qty * originalPrice;
+        savings += Math.max(0, lineOriginalPrice - linePrice);
+        var priceMarkup = '<strong>' + fmtMoney(linePrice) + '</strong>';
+        if (lineOriginalPrice > linePrice) {
+          priceMarkup = '<span class="ki-sc__summary-prices"><s class="ki-sc__summary-original">' + fmtMoney(lineOriginalPrice) + '</s><strong>' + fmtMoney(linePrice) + '</strong></span>';
+        }
         return '<div class="ki-sc__summary-li">' +
           '<span>' + escapeHtml(it.title || 'Ürün') + ' × ' + qty + '</span>' +
-          '<span>' + fmtMoney(qty * price) + '</span>' +
+          priceMarkup +
           '</div>';
       }).join('');
       summaryTotalEl.textContent = fmtMoney(Number(pack.totalPrice || 0));
+      if (summarySavingsRowEl) summarySavingsRowEl.hidden = savings <= 0;
+      if (summarySavingsEl) summarySavingsEl.textContent = fmtMoney(savings);
     }
 
     var pack = decodePack();

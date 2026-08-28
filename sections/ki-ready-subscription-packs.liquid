@@ -25,10 +25,13 @@
       #ki-ready-packs-{{ section.id }} .ki-ready-pack{position:relative;display:flex;min-height:100%;flex-direction:column;overflow:hidden;border:1px solid var(--ready-border);border-radius:20px;background:#fff;box-shadow:0 12px 32px -24px rgba(73,61,154,.55);scroll-snap-align:start;transition:border-color .2s,transform .2s,box-shadow .2s}
       #ki-ready-packs-{{ section.id }} .ki-ready-pack.is-active{border-color:var(--ready-primary);box-shadow:0 14px 36px -20px rgba(73,61,154,.62)}
       #ki-ready-packs-{{ section.id }} .ki-ready-pack__media{position:relative;display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);height:138px;overflow:hidden;background:linear-gradient(135deg,#28204f,#5d51b1)}
-      #ki-ready-packs-{{ section.id }} .ki-ready-pack__media.is-single{display:block}
+      #ki-ready-packs-{{ section.id }} .ki-ready-pack__media.is-single{display:block;height:180px;background:#17142f}
       #ki-ready-packs-{{ section.id }} .ki-ready-pack__image{position:relative;min-width:0;overflow:hidden}
       #ki-ready-packs-{{ section.id }} .ki-ready-pack__image::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 60%,rgba(19,13,54,.22))}
       #ki-ready-packs-{{ section.id }} .ki-ready-pack__image img{display:block;width:100%;height:100%;object-fit:cover}
+      #ki-ready-packs-{{ section.id }} .ki-ready-pack__media.is-single .ki-ready-pack__image{height:100%}
+      #ki-ready-packs-{{ section.id }} .ki-ready-pack__media.is-single .ki-ready-pack__image::after{display:none}
+      #ki-ready-packs-{{ section.id }} .ki-ready-pack__media.is-single .ki-ready-pack__image img{object-fit:contain}
       #ki-ready-packs-{{ section.id }} .ki-ready-pack__badge{position:absolute;z-index:2;top:10px;left:10px;padding:6px 9px;border-radius:999px;background:rgba(255,255,255,.92);color:var(--ready-primary);font-size:9px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;backdrop-filter:blur(8px)}
       #ki-ready-packs-{{ section.id }} .ki-ready-pack__body{display:flex;flex:1;flex-direction:column;padding:15px}
       #ki-ready-packs-{{ section.id }} .ki-ready-pack__title{margin:0;color:#2d245f;font-size:17px;line-height:1.25;font-weight:800}
@@ -36,6 +39,9 @@
       #ki-ready-packs-{{ section.id }} .ki-ready-pack__products{display:flex;flex-wrap:wrap;gap:5px;margin:11px 0 13px}
       #ki-ready-packs-{{ section.id }} .ki-ready-pack__product{padding:5px 7px;border-radius:8px;background:#f2f0fb;color:#554a97;font-size:9.5px;font-weight:700;line-height:1.2}
       #ki-ready-packs-{{ section.id }} .ki-ready-pack__price{display:block;color:var(--ready-primary);font-size:17px;font-weight:900;line-height:1}
+      #ki-ready-packs-{{ section.id }} .ki-ready-pack__price-row{display:flex;align-items:baseline;gap:7px;margin-bottom:3px}
+      #ki-ready-packs-{{ section.id }} .ki-ready-pack__compare{color:#88818e;font-size:11px}
+      #ki-ready-packs-{{ section.id }} .ki-ready-pack__saving{display:block;color:#287655;font-size:9.5px;font-weight:800}
       #ki-ready-packs-{{ section.id }} .ki-ready-pack__footer{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:auto}
       #ki-ready-packs-{{ section.id }} .ki-ready-pack__meta{color:#786fa5;font-size:10px;font-weight:700}
       #ki-ready-packs-{{ section.id }} .ki-ready-pack__apply{display:inline-flex;align-items:center;justify-content:center;min-height:38px;padding:9px 14px;border:0;border-radius:999px;background:var(--ready-primary);color:#fff;font:inherit;font-size:11px;font-weight:800;line-height:1;text-decoration:none;white-space:nowrap;cursor:pointer}
@@ -51,6 +57,7 @@
         #ki-ready-packs-{{ section.id }} .ki-ready-packs__arrows{display:flex}
         #ki-ready-packs-{{ section.id }} .ki-ready-packs__track{grid-auto-columns:minmax(310px,32%)}
         #ki-ready-packs-{{ section.id }} .ki-ready-pack__media{height:158px}
+        #ki-ready-packs-{{ section.id }} .ki-ready-pack__media.is-single{height:220px}
       }
       @media (max-width:380px){
         #ki-ready-packs-{{ section.id }} .ki-ready-packs__wrap{padding:0 14px}
@@ -88,6 +95,13 @@
           {%- assign ready_product_2 = block.settings.product_2 -%}
           {%- assign ready_product_3 = block.settings.product_3 -%}
           {%- assign ready_fallback_asset = block.settings.fallback_asset | strip -%}
+          {%- assign ready_discount_percent = block.settings.subscription_discount_percent | default: 0 -%}
+          {%- if ready_discount_percent == 0 and ready_fallback_asset contains 'ki-ped-pack-' -%}
+            {%- assign ready_discount_percent = 15 -%}
+          {%- endif -%}
+          {%- assign ready_original_price = ready_product_1.price | default: 0 -%}
+          {%- assign ready_discount_amount = ready_original_price | times: ready_discount_percent | divided_by: 100 -%}
+          {%- assign ready_discount_price = ready_original_price | minus: ready_discount_amount -%}
           {%- assign ready_product_count = 0 -%}
           {%- if ready_product_1 != blank -%}{%- assign ready_product_count = ready_product_count | plus: 1 -%}{%- endif -%}
           {%- if ready_product_2 != blank -%}{%- assign ready_product_count = ready_product_count | plus: 1 -%}{%- endif -%}
@@ -133,7 +147,15 @@
               </div>
               <div class="ki-ready-pack__footer">
                 <span class="ki-ready-pack__meta">
-                  {%- if block.settings.price_text != blank -%}<strong class="ki-ready-pack__price">{{ block.settings.price_text }}</strong>{%- endif -%}
+                  {%- if ready_discount_percent > 0 and ready_original_price > 0 -%}
+                    <span class="ki-ready-pack__price-row">
+                      <s class="ki-ready-pack__compare">{{ ready_original_price | money }}</s>
+                      <strong class="ki-ready-pack__price">{{ ready_discount_price | money }}</strong>
+                    </span>
+                    <span class="ki-ready-pack__saving">Abonelikte %{{ ready_discount_percent }} indirim</span>
+                  {%- elsif block.settings.price_text != blank -%}
+                    <strong class="ki-ready-pack__price">{{ block.settings.price_text }}</strong>
+                  {%- endif -%}
                   Dilediğin an düzenle
                 </span>
                 {%- if ready_product_count > 0 -%}
@@ -249,6 +271,7 @@
         { "type": "text", "id": "fallback_asset", "label": "Tema görsel dosyası", "info": "Örn. ki-ped-pack-light.png" },
         { "type": "textarea", "id": "composition_text", "label": "Paket içeriği" },
         { "type": "text", "id": "price_text", "label": "Gösterim fiyatı" },
+        { "type": "range", "id": "subscription_discount_percent", "label": "Abonelik indirimi", "min": 0, "max": 30, "step": 1, "unit": "%", "default": 0 },
         { "type": "url", "id": "button_link", "label": "Ürün seçilmemişse buton bağlantısı" },
         { "type": "product", "id": "product_1", "label": "Ürün 1" },
         { "type": "range", "id": "qty_1", "label": "Ürün 1 adedi", "min": 1, "max": 6, "step": 1, "default": 1 },

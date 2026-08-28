@@ -225,34 +225,40 @@
         "light_pack": {
           "type": "product_card",
           "settings": {
+            "product": "ki-light-ped-paketi-15-adet",
             "title": "Light Paket",
             "description": "9 Günlük + 4 Gündüz + 2 Gece · Toplam 15 ped",
             "badge": "15 Ped",
             "fallback_asset": "ki-ped-pack-light.png",
             "link": "/pages/paket-olustur#ki-builder",
-            "price_text": "₺190"
+            "price_text": "₺190",
+            "subscription_discount_percent": 15
           }
         },
         "medium_pack": {
           "type": "product_card",
           "settings": {
+            "product": "ki-medium-ped-paketi-22-adet",
             "title": "Medium Paket",
             "description": "9 Günlük + 9 Gündüz + 4 Gece · Toplam 22 ped",
             "badge": "22 Ped",
             "fallback_asset": "ki-ped-pack-medium.png",
             "link": "/pages/paket-olustur#ki-builder",
-            "price_text": "₺319"
+            "price_text": "₺319",
+            "subscription_discount_percent": 15
           }
         },
         "intense_pack": {
           "type": "product_card",
           "settings": {
+            "product": "ki-yogun-gunler-ped-paketi-26-adet",
             "title": "Yoğun Günler Paketi",
             "description": "6 Günlük + 12 Gündüz + 8 Gece · Toplam 26 ped",
             "badge": "26 Ped",
             "fallback_asset": "ki-ped-pack-intense.png",
             "link": "/pages/paket-olustur#ki-builder",
-            "price_text": "₺429"
+            "price_text": "₺429",
+            "subscription_discount_percent": 15
           }
         },
         "daily_pad": {
@@ -262,6 +268,7 @@
             "title": ".ki Günlük Ped",
             "description": "155 mm · hafif akıntı ve günlük tazelik",
             "badge": "Tekli Ped",
+            "fallback_asset": "ki-ped-gunluk-01.webp",
             "price_text": "Fiyat üründen gelir"
           }
         },
@@ -272,6 +279,7 @@
             "title": ".ki Gündüz Ped",
             "description": "245 mm · gün içi kullanım için",
             "badge": "Tekli Ped",
+            "fallback_asset": "ki-ped-gunduz-01.webp",
             "price_text": "Fiyat üründen gelir"
           }
         },
@@ -282,6 +290,7 @@
             "title": ".ki Gece Ped",
             "description": "335 mm · yoğun akış ve gece kullanımı",
             "badge": "Tekli Ped",
+            "fallback_asset": "ki-ped-gece-01.webp",
             "price_text": "Fiyat üründen gelir"
           }
         }

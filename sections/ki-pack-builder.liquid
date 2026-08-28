@@ -1770,7 +1770,7 @@
                               <p class="ki-pack__item-price">
                                 {%- if subscription_discount > 0 -%}
                                   <span data-ki-pack-price-value>₺{{ subscription_price | money_without_currency }}</span>
-                                  <s>₺{{ active_price | money_without_currency }}</s>
+                                  <s data-ki-pack-price-original>₺{{ active_price | money_without_currency }}</s>
                                   <br><span class="ki-pack__item-discount">Abonelikte %{{ subscription_discount }} indirim</span>
                                 {%- else -%}
                                   <span data-ki-pack-price-value>{% if active_price > 0 %}₺{{ active_price | money_without_currency }}{% else %}Yakında{% endif %}</span>
@@ -1965,7 +1965,7 @@
               <dd data-ki-pack-subtotal>₺0</dd>
             </div>
             <div class="ki-pack__tot-row" data-ki-pack-discount-row hidden>
-              <dt>Abonelik indirimi</dt>
+              <dt>Abone olarak kazancın</dt>
               <dd data-ki-pack-discount-total>−₺0</dd>
             </div>
             <div class="ki-pack__tot-row" data-ki-pack-shipping-row hidden>
@@ -2655,7 +2655,11 @@
           var plusButton = item.querySelector('[data-ki-pack-plus]');
           if (plusButton) plusButton.disabled = !available;
           var priceValue = item.querySelector('[data-ki-pack-price-value]');
-          if (priceValue) priceValue.textContent = price > 0 ? fmt(price) : 'Yakında';
+          var discountRate = subscriptionEnabled ? (parseFloat(item.getAttribute('data-ki-pack-discount')) || 0) : 0;
+          var discountedPrice = Math.round(price * (100 - discountRate)) / 100;
+          if (priceValue) priceValue.textContent = price > 0 ? fmt(discountedPrice) : 'Yakında';
+          var originalPriceValue = item.querySelector('[data-ki-pack-price-original]');
+          if (originalPriceValue) originalPriceValue.textContent = price > 0 ? fmt(price) : '';
           var priceUnit = item.querySelector('[data-ki-pack-price-unit]');
           if (priceUnit) priceUnit.textContent = '/ ' + step + ' ' + unit;
           var modeShort = item.querySelector('[data-ki-pack-mode-short]');

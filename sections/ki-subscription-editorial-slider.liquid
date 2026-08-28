@@ -50,9 +50,14 @@
     font-size: 16px;
     line-height: 1.45;
   }
+  #KiEditorialSlider-{{ section.id }} .kes-actions {
+    margin-top: 22px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
   #KiEditorialSlider-{{ section.id }} .kes-button {
     min-height: 48px;
-    margin-top: 22px;
     padding: 0 21px;
     display: inline-flex;
     align-items: center;
@@ -64,6 +69,11 @@
     text-decoration: none;
     font-size: 14px;
     font-weight: 800;
+  }
+  #KiEditorialSlider-{{ section.id }} .kes-button--secondary {
+    border: 1px solid var(--ki-slider-accent);
+    background: transparent;
+    color: var(--ki-slider-accent);
   }
   #KiEditorialSlider-{{ section.id }} .kes-button svg { width: 17px; height: 17px; }
   #KiEditorialSlider-{{ section.id }} .kes-media {
@@ -162,7 +172,8 @@
     #KiEditorialSlider-{{ section.id }} .kes-eyebrow { margin-bottom: 8px; font-size: 8px; }
     #KiEditorialSlider-{{ section.id }} .kes-title { max-width: 350px; font-size: clamp(31px, 9.2vw, 40px); line-height: 1; }
     #KiEditorialSlider-{{ section.id }} .kes-description { margin-top: 10px; font-size: 13px; line-height: 1.4; }
-    #KiEditorialSlider-{{ section.id }} .kes-button { min-height: 39px; margin-top: 14px; padding: 0 15px; font-size: 11px; }
+    #KiEditorialSlider-{{ section.id }} .kes-actions { margin-top: 14px; gap: 8px; }
+    #KiEditorialSlider-{{ section.id }} .kes-button { min-height: 39px; padding: 0 15px; font-size: 11px; }
     #KiEditorialSlider-{{ section.id }} .kes-media { border-radius: 18px; }
     #KiEditorialSlider-{{ section.id }} .kes-proof { right: 10px; bottom: 10px; padding: 8px 10px; font-size: 8.5px; }
     #KiEditorialSlider-{{ section.id }} .kes-controls { margin-top: 11px; gap: 7px; }
@@ -193,10 +204,10 @@
             assign slide_product = block.settings.product
             assign slide_video = block.settings.video
             assign slide_image = block.settings.image
-            if slide_image == blank and slide_product != blank
+            assign fallback_asset = block.settings.fallback_asset | strip
+            if slide_image == blank and fallback_asset == blank and slide_product != blank
               assign slide_image = slide_product.featured_image
             endif
-            assign fallback_asset = block.settings.fallback_asset | strip
             assign slide_link = block.settings.button_link
             if slide_link == blank and slide_product != blank
               assign slide_link = slide_product.url
@@ -210,10 +221,18 @@
               {%- if block.settings.eyebrow != blank -%}<p class="kes-eyebrow">{{ block.settings.eyebrow | escape }}</p>{%- endif -%}
               <h2 class="kes-title">{{ block.settings.title | escape }}</h2>
               {%- if block.settings.description != blank -%}<p class="kes-description">{{ block.settings.description | escape }}</p>{%- endif -%}
-              <a class="kes-button" href="{{ slide_link }}">
-                {{ block.settings.button_label | escape }}
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-              </a>
+              <div class="kes-actions">
+                <a class="kes-button" href="{{ slide_link }}">
+                  {{ block.settings.button_label | escape }}
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                </a>
+                {%- if block.settings.secondary_button_label != blank and block.settings.secondary_button_link != blank -%}
+                  <a class="kes-button kes-button--secondary" href="{{ block.settings.secondary_button_link }}">
+                    {{ block.settings.secondary_button_label | escape }}
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                  </a>
+                {%- endif -%}
+              </div>
             </div>
             <a class="kes-media" href="{{ slide_link }}" aria-label="{{ block.settings.title | escape }}">
               {%- if slide_video != blank -%}
@@ -314,6 +333,8 @@
         { "type": "textarea", "id": "description", "label": "Açıklama", "default": "İhtiyacın olan ürünleri seç, gönderim sıklığını belirle; gerisini bize bırak." },
         { "type": "text", "id": "button_label", "label": "Buton", "default": "Hemen Abone Ol" },
         { "type": "url", "id": "button_link", "label": "Buton bağlantısı" },
+        { "type": "text", "id": "secondary_button_label", "label": "İkinci buton" },
+        { "type": "url", "id": "secondary_button_link", "label": "İkinci buton bağlantısı" },
         { "type": "checkbox", "id": "show_certifications", "label": "Ped sertifika şeridini göster", "default": false },
         { "type": "text", "id": "proof_text", "label": "Görsel üzeri not", "default": "Eczacılar tarafından geliştirildi" }
       ]

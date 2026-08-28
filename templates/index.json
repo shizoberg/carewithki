@@ -16,47 +16,76 @@
           "type": "slide",
           "settings": {
             "product": "shopify://products/ki-normal-ped",
-            "fallback_asset": "ki-ped-gunduz-01.webp",
+            "fallback_asset": "ki-home-hero-pads.webp",
             "eyebrow": "ABONELİK · PED RUTİNİ",
             "title": "Pedlerin bitmeden kapında.",
             "description": "Günlük, gündüz ve gece pedlerini ihtiyacına göre seç; gönderim sıklığını sen belirle.",
-            "button_label": "Ped Paketini Oluştur",
+            "button_label": "Abone Ol",
             "button_link": "/pages/paket-olustur",
+            "secondary_button_label": "Pedleri İncele",
+            "secondary_button_link": "/products/ki-normal-ped?view=ki-ped",
             "show_certifications": true,
             "proof_text": "%95 pamuk · %5 bambu · pelin otu özü"
-          }
-        },
-        "slide_supplement": {
-          "type": "slide",
-          "settings": {
-            "product": "shopify://products/balance-your-cycle",
-            "image": "shopify://shop_images/pms_-_product_page_b88e49fd-d469-4585-9fe4-c63379926631.jpg",
-            "eyebrow": "ECZACI ONAYLI TAKVİYE",
-            "title": "Takviyeni aksatma.",
-            "description": "Döngü rutinini düzenli gönderimle destekle; paketini dilediğin zaman değiştir.",
-            "button_label": "Takviyeyi İncele",
-            "button_link": "shopify://products/balance-your-cycle",
-            "proof_text": "Uzman eczacılar tarafından geliştirildi"
           }
         },
         "slide_intimate": {
           "type": "slide",
           "settings": {
             "product": "shopify://products/ki-intimate-intim-bakim-spreyi",
-            "image": "shopify://shop_images/intimate.sprey_1080_x_1350_piksel_-2.jpg",
-            "eyebrow": "İNTİM BAKIM RUTİNİ",
-            "title": "Bakımın hep hazır olsun.",
-            "description": "İntim bakım ürünlerini rutinine ekle; ihtiyaç duyduğun aralıkta kapına gelsin.",
-            "button_label": "İntim Bakımı İncele",
+            "fallback_asset": "ki-home-hero-intimate-spray.webp",
+            "eyebrow": "GÜNLÜK İNTİM BAKIM",
+            "title": "Ferahlık gün boyu seninle.",
+            "description": "pH dengeli .ki Intimate ile günlük bakım rutinini pratikçe tamamla.",
+            "button_label": "Spreyi İncele",
             "button_link": "shopify://products/ki-intimate-intim-bakim-spreyi",
-            "proof_text": "pH dengeli günlük bakım"
+            "proof_text": "Durulama gerektirmeyen pratik bakım"
+          }
+        },
+        "slide_gels": {
+          "type": "slide",
+          "settings": {
+            "fallback_asset": "ki-home-hero-intimate-gels.webp",
+            "eyebrow": "İHTİYACINA ÖZEL İNTİM BAKIM",
+            "title": "Her döneme uygun bir bakım rutini.",
+            "description": "Daily, Sens, Flow ve 50+ serisiyle ihtiyacına uygun intim bakım jelini keşfet.",
+            "button_label": "Jelleri Keşfet",
+            "button_link": "/collections/all",
+            "proof_text": "Dört farklı ihtiyaca özel bakım"
+          }
+        },
+        "slide_balance": {
+          "type": "slide",
+          "settings": {
+            "product": "shopify://products/balance-your-cycle",
+            "fallback_asset": "ki-home-hero-balance.webp",
+            "eyebrow": "DÖNGÜ DÖNEMİNE ÖZEL",
+            "title": "Döngü rutinini günlük destekle.",
+            "description": "10 saşelik .ki Balance, PMS dönemine özel bakım rutinine eşlik eder.",
+            "button_label": "Balance'ı İncele",
+            "button_link": "shopify://products/balance-your-cycle",
+            "proof_text": "Uzman eczacı formülü"
+          }
+        },
+        "slide_change": {
+          "type": "slide",
+          "settings": {
+            "product": "shopify://products/change-is-good",
+            "fallback_asset": "ki-home-hero-change.webp",
+            "eyebrow": "MENOPOZ DÖNEMİNE ÖZEL",
+            "title": "Değişen ihtiyaçlarına uygun destek.",
+            "description": "30 kapsüllük .ki Change ile menopoz dönemine özel rutinini tamamla.",
+            "button_label": "Change'i İncele",
+            "button_link": "shopify://products/change-is-good",
+            "proof_text": "Menopoz dönemini destekleyen içerikler"
           }
         }
       },
       "block_order": [
         "slide_ped",
-        "slide_supplement",
-        "slide_intimate"
+        "slide_intimate",
+        "slide_gels",
+        "slide_balance",
+        "slide_change"
       ],
       "name": "Sade Abonelik Slider",
       "settings": {
