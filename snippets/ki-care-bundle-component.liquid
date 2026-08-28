@@ -1,0 +1,16 @@
+{%- if component_product != blank -%}
+  <article class="kicbp-component">
+    <a href="{{ component_product.url }}" class="kicbp-component__image" aria-label="{{ component_product.title | escape }}">
+      {%- if component_product.featured_image -%}
+        {{ component_product.featured_image | image_url: width: 420 | image_tag: loading: 'lazy', alt: component_product.title }}
+      {%- else -%}
+        {{ 'product-1' | placeholder_svg_tag }}
+      {%- endif -%}
+    </a>
+    <div class="kicbp-component__copy">
+      <span>{{ component_label | default: 'Paket ürünü' | escape }}</span>
+      <a href="{{ component_product.url }}">{{ component_product.title | escape }}</a>
+      <strong>{{ component_product.price | money }}</strong>
+    </div>
+  </article>
+{%- endif -%}

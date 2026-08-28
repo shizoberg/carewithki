@@ -13,47 +13,27 @@
       "type": "ki-collection-bundle",
       "blocks": {
         "care_cycle": {
-          "type": "virtual_bundle",
+          "type": "featured_product",
           "settings": {
-            "preset_key": "cycle",
-            "title": "Döngü Destek Paketi",
-            "description": "Döngü desteği, regl dönemi bakımı ve gün boyu ferahlık bir arada.",
+            "product": "ki-dongu-destek-paketi",
             "pack_label": "En Popüler",
-            "product_1": "balance-your-cycle",
-            "qty_1": 1,
-            "product_2": "ki-flow-care-intim-bakim-jeli",
-            "qty_2": 1,
-            "product_3": "ki-intimate-intim-bakim-spreyi",
-            "qty_3": 1
+            "contains_products": "Balance, flow.care İntim Bakım Jeli, intimate İntim Bakım Spreyi"
           }
         },
         "care_sensitive": {
-          "type": "virtual_bundle",
+          "type": "featured_product",
           "settings": {
-            "preset_key": "sensitive",
-            "title": "Hassas Bakım Paketi",
-            "description": "Hassas ciltlere uygun intim bakım ve pratik ferahlık rutini.",
+            "product": "ki-hassas-bakim-paketi",
             "pack_label": "Nazik Bakım",
-            "product_1": "ki-sens-care-intim-bakim-jeli",
-            "qty_1": 1,
-            "product_2": "ki-intimate-intim-bakim-spreyi",
-            "qty_2": 1,
-            "qty_3": 1
+            "contains_products": "sens.care İntim Bakım Jeli, intimate İntim Bakım Spreyi"
           }
         },
         "care_menopause": {
-          "type": "virtual_bundle",
+          "type": "featured_product",
           "settings": {
-            "preset_key": "menopause",
-            "title": "Menopoz Bakım Paketi",
-            "description": "Menopoz dönemine özel takviye, yoğun nem ve ferahlık desteği.",
+            "product": "ki-menopoz-bakim-paketi",
             "pack_label": "50+ Rutin",
-            "product_1": "change-is-good",
-            "qty_1": 1,
-            "product_2": "ki-50-care-intim-bakim-jeli",
-            "qty_2": 1,
-            "product_3": "ki-intimate-intim-bakim-spreyi",
-            "qty_3": 1
+            "contains_products": "Change, 50+.care İntim Bakım Jeli, intimate İntim Bakım Spreyi"
           }
         },
         "ped_light": {

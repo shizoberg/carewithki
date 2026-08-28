@@ -2,12 +2,22 @@
   assign bundle_variant = product.selected_or_first_available_variant
   assign bundle_label = pack_label | default: 'Hazır Paket'
   assign bundle_contains = contains_products | default: ''
+  assign subscription_url = '/pages/paket-olustur?abone=' | append: bundle_variant.id | append: '&product=' | append: product.handle
+  if product.handle == 'ki-dongu-destek-paketi'
+    assign subscription_url = '/pages/paket-olustur?preset=cycle'
+  elsif product.handle == 'ki-hassas-bakim-paketi'
+    assign subscription_url = '/pages/paket-olustur?preset=sensitive'
+  elsif product.handle == 'ki-menopoz-bakim-paketi'
+    assign subscription_url = '/pages/paket-olustur?preset=menopause'
+  endif
 -%}
 
 <li class="kbd-card">
   <a href="{{ product.url }}" class="kbd-card__hero" aria-label="{{ product.title | escape }}">
     {%- if product.featured_image -%}
       {{ product.featured_image | image_url: width: 900 | image_tag: class: 'kbd-card__hero-img', loading: 'lazy', alt: product.title }}
+    {%- elsif product.handle == 'ki-dongu-destek-paketi' or product.handle == 'ki-hassas-bakim-paketi' or product.handle == 'ki-menopoz-bakim-paketi' -%}
+      {% render 'ki-care-bundle-collage', product: product %}
     {%- else -%}
       {{ 'product-2' | placeholder_svg_tag: 'kbd-card__hero-img kbd-card__placeholder' }}
     {%- endif -%}
@@ -49,7 +59,7 @@
       </div>
       <div class="kbd-card__actions">
         <a href="{{ product.url }}" class="kbd-card__btn kbd-card__btn--ghost">İncele</a>
-        <a href="/pages/paket-olustur?abone={{ bundle_variant.id }}&product={{ product.handle | url_encode }}" class="kbd-card__btn">Abone ol →</a>
+        <a href="{{ subscription_url }}" class="kbd-card__btn">Abone ol →</a>
       </div>
     </div>
   </div>

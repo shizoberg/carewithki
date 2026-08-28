@@ -177,6 +177,20 @@
   transition: transform .5s;
 }
 .kicol-{{ section.id }} .kicol-card:hover .kicol-card__img { transform: scale(1.04); }
+.kicol-{{ section.id }} .ki-care-bundle-collage {
+  display: grid; width: 100%; height: 100%;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 5px; padding: 12px;
+  background: linear-gradient(140deg, #21194c, #6357bb);
+}
+.kicol-{{ section.id }} .ki-care-bundle-collage__item {
+  min-width: 0; overflow: hidden; border-radius: 10px;
+  background: #2a2358; box-shadow: 0 8px 20px rgba(7,4,30,.18);
+}
+.kicol-{{ section.id }} .ki-care-bundle-collage__item:nth-child(2) { transform: translateY(-5px); }
+.kicol-{{ section.id }} .ki-care-bundle-collage__item img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+}
 .kicol-{{ section.id }} .kicol-card__badge {
   position: absolute; top: 10px; left: 10px;
   background: var(--badge); color: #fff;
@@ -381,6 +395,8 @@
               <a href="{{ product.url }}" class="kicol-card__img-wrap">
                 {%- if product.featured_image -%}
                   {{ product.featured_image | image_url: width: 600 | image_tag: class: 'kicol-card__img', loading: 'lazy', alt: product.title }}
+                {%- elsif product.handle == 'ki-dongu-destek-paketi' or product.handle == 'ki-hassas-bakim-paketi' or product.handle == 'ki-menopoz-bakim-paketi' -%}
+                  {% render 'ki-care-bundle-collage', product: product %}
                 {%- else -%}
                   {{ 'product-1' | placeholder_svg_tag: 'kicol-card__img' }}
                 {%- endif -%}
