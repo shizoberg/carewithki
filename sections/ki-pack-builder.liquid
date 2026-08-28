@@ -1690,6 +1690,10 @@
                           {%- if settings.subscription_enabled -%}
                             {%- assign subscription_discount = section.settings.subscription_discount_percent | default: 15 -%}
                           {%- endif -%}
+                          {%- if itemBlock.settings.no_subscription_discount -%}
+                            {%- assign subscription_discount = 0 -%}
+                          {%- endif -%}
+                          {%- assign item_image_asset = itemBlock.settings.image_asset | strip -%}
                           {%- assign active_price = v.price | default: 0 -%}
                           {%- assign subscription_discount_amount = active_price | times: subscription_discount | divided_by: 100 -%}
                           {%- assign subscription_price = active_price | minus: subscription_discount_amount -%}
@@ -1724,6 +1728,14 @@
                                   data-ki-pack-mode-image
                                   data-ki-pack-loose-src="{{ loose_asset | asset_url }}"
                                   data-ki-pack-box-src="{{ box_asset | asset_url }}"
+                                  width="108"
+                                  height="135"
+                                  alt="{{ itemBlock.settings.name_override | default: display_product.title | escape }}"
+                                  loading="lazy"
+                                >
+                              {%- elsif item_image_asset != blank -%}
+                                <img
+                                  src="{{ item_image_asset | asset_url }}"
                                   width="108"
                                   height="135"
                                   alt="{{ itemBlock.settings.name_override | default: display_product.title | escape }}"
@@ -2909,6 +2921,8 @@
         { "type": "text", "id": "name_override", "label": "İsim override (opsiyonel)" },
         { "type": "textarea", "id": "short", "label": "Kısa açıklama" },
         { "type": "text", "id": "badge", "label": "Rozet (opsiyonel)" },
+        { "type": "text", "id": "image_asset", "label": "Tema görsel dosyası (opsiyonel)", "info": "Örn. ki-ped-pack-light.png" },
+        { "type": "checkbox", "id": "no_subscription_discount", "label": "Abonelik indirimini tekrar uygulama", "default": false, "info": "Fiyatı zaten abonelik fiyatı olan hazır paketlerde açın." },
         { "type": "number", "id": "step", "label": "Adım miktarı", "default": 1 },
         { "type": "text", "id": "unit", "label": "Birim", "default": "adet" },
         { "type": "number", "id": "box_step", "label": "Ped kutusu adım miktarı", "default": 1, "info": "Yalnızca ped kategorisindeki kutu aboneliği seçeneğinde kullanılır." },

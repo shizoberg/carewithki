@@ -58,7 +58,7 @@
             "fallback_asset": "ki-ped-pack-light.png",
             "composition_text": "9 Günlük + 4 Gündüz + 2 Gece",
             "price_text": "₺190",
-            "button_link": "/pages/paket-olustur#ki-builder",
+            "product_1": "ki-light-ped-paketi-15-adet",
             "qty_1": 1,
             "qty_2": 1,
             "qty_3": 1
@@ -73,7 +73,7 @@
             "fallback_asset": "ki-ped-pack-medium.png",
             "composition_text": "9 Günlük + 9 Gündüz + 4 Gece",
             "price_text": "₺319",
-            "button_link": "/pages/paket-olustur#ki-builder",
+            "product_1": "ki-medium-ped-paketi-22-adet",
             "qty_1": 1,
             "qty_2": 1,
             "qty_3": 1
@@ -88,7 +88,7 @@
             "fallback_asset": "ki-ped-pack-intense.png",
             "composition_text": "6 Günlük + 12 Gündüz + 8 Gece",
             "price_text": "₺429",
-            "button_link": "/pages/paket-olustur#ki-builder",
+            "product_1": "ki-yogun-gunler-ped-paketi-26-adet",
             "qty_1": 1,
             "qty_2": 1,
             "qty_3": 1
@@ -167,8 +167,8 @@
         "p-gunluk": {
           "type": "product",
           "settings": {
-            "product": "shopify://products/ki-hijyenik-gunduz-ped",
-            "loose_product": "shopify://products/ki-gunluk-ped-5li",
+            "product": "ki-hijyenik-gunduz-ped",
+            "loose_product": "ki-gunluk-ped-5li",
             "category_key": "ped",
             "name_override": ".ki Günlük Ped",
             "short": "155 mm · 10 adet",
@@ -183,8 +183,8 @@
         "p-gunduz": {
           "type": "product",
           "settings": {
-            "product": "shopify://products/ki-normal-ped",
-            "loose_product": "shopify://products/ki-gunduz-ped-5li",
+            "product": "ki-normal-ped",
+            "loose_product": "ki-gunduz-ped-5li",
             "category_key": "ped",
             "name_override": ".ki Gündüz Pedi",
             "short": "245 mm · 10 adet",
@@ -199,8 +199,8 @@
         "p-gece": {
           "type": "product",
           "settings": {
-            "product": "shopify://products/ki-hijyenik-gece-ped",
-            "loose_product": "shopify://products/ki-gece-ped-5li",
+            "product": "ki-hijyenik-gece-ped",
+            "loose_product": "ki-gece-ped-5li",
             "category_key": "ped",
             "name_override": ".ki Gece Pedi",
             "short": "335 mm · 8 adet",
@@ -285,7 +285,7 @@
         "p-jel-flow": {
           "type": "product",
           "settings": {
-            "product": "shopify://products/ki-flow-care-intim-bakim-jeli",
+            "product": "ki-flow-care-intim-bakim-jeli",
             "category_key": "gel",
             "name_override": "İntim Yıkama Jeli · Flow",
             "short": "Üriner sistem desteği için · 200 ml",
@@ -328,6 +328,60 @@
             "step": 1,
             "unit": "şişe",
             "demo_price": 139
+          }
+        },
+        "cat-packages": {
+          "type": "category",
+          "settings": {
+            "key": "packages",
+            "label": "Paketler",
+            "description": "Hazır ped paketlerinden birini doğrudan aboneliğine ekle",
+            "hint": "Light, Medium ve Yoğun Günler paketleri belirtilen toplam ped adedi ve abonelik fiyatıyla eklenir."
+          }
+        },
+        "p-pack-light": {
+          "type": "product",
+          "settings": {
+            "product": "ki-light-ped-paketi-15-adet",
+            "category_key": "packages",
+            "name_override": ".ki Light Ped Paketi",
+            "short": "9 Günlük + 4 Gündüz + 2 Gece · 15 ped",
+            "badge": "15 PED",
+            "image_asset": "ki-ped-pack-light.png",
+            "no_subscription_discount": true,
+            "step": 1,
+            "unit": "paket",
+            "demo_price": 190
+          }
+        },
+        "p-pack-medium": {
+          "type": "product",
+          "settings": {
+            "product": "ki-medium-ped-paketi-22-adet",
+            "category_key": "packages",
+            "name_override": ".ki Medium Ped Paketi",
+            "short": "9 Günlük + 9 Gündüz + 4 Gece · 22 ped",
+            "badge": "22 PED",
+            "image_asset": "ki-ped-pack-medium.png",
+            "no_subscription_discount": true,
+            "step": 1,
+            "unit": "paket",
+            "demo_price": 319
+          }
+        },
+        "p-pack-intense": {
+          "type": "product",
+          "settings": {
+            "product": "ki-yogun-gunler-ped-paketi-26-adet",
+            "category_key": "packages",
+            "name_override": ".ki Yoğun Günler Ped Paketi",
+            "short": "6 Günlük + 12 Gündüz + 8 Gece · 26 ped",
+            "badge": "26 PED",
+            "image_asset": "ki-ped-pack-intense.png",
+            "no_subscription_discount": true,
+            "step": 1,
+            "unit": "paket",
+            "demo_price": 429
           }
         },
         "freq-1": {
@@ -427,6 +481,10 @@
         "p-jel-50",
         "cat-ritual",
         "p-sprey",
+        "cat-packages",
+        "p-pack-light",
+        "p-pack-medium",
+        "p-pack-intense",
         "freq-1",
         "freq-2",
         "freq-3",

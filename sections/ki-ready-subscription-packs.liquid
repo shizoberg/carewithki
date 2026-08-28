@@ -125,9 +125,11 @@
               {%- endif -%}
               <div class="ki-ready-pack__products">
                 {%- if block.settings.composition_text != blank -%}<span class="ki-ready-pack__product">{{ block.settings.composition_text }}</span>{%- endif -%}
-                {%- if ready_product_1 != blank -%}<span class="ki-ready-pack__product">{{ block.settings.qty_1 }}× {{ ready_product_1.title }}</span>{%- endif -%}
-                {%- if ready_product_2 != blank -%}<span class="ki-ready-pack__product">{{ block.settings.qty_2 }}× {{ ready_product_2.title }}</span>{%- endif -%}
-                {%- if ready_product_3 != blank -%}<span class="ki-ready-pack__product">{{ block.settings.qty_3 }}× {{ ready_product_3.title }}</span>{%- endif -%}
+                {%- if block.settings.composition_text == blank -%}
+                  {%- if ready_product_1 != blank -%}<span class="ki-ready-pack__product">{{ block.settings.qty_1 }}× {{ ready_product_1.title }}</span>{%- endif -%}
+                  {%- if ready_product_2 != blank -%}<span class="ki-ready-pack__product">{{ block.settings.qty_2 }}× {{ ready_product_2.title }}</span>{%- endif -%}
+                  {%- if ready_product_3 != blank -%}<span class="ki-ready-pack__product">{{ block.settings.qty_3 }}× {{ ready_product_3.title }}</span>{%- endif -%}
+                {%- endif -%}
               </div>
               <div class="ki-ready-pack__footer">
                 <span class="ki-ready-pack__meta">
