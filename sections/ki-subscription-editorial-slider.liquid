@@ -24,6 +24,51 @@
     align-items: center;
     gap: clamp(28px, 5vw, 74px);
   }
+  #KiEditorialSlider-{{ section.id }} .kes-slide--artwork {
+    position: relative;
+    display: block;
+  }
+  #KiEditorialSlider-{{ section.id }} .kes-slide--artwork .kes-copy {
+    position: absolute;
+    z-index: 2;
+    left: clamp(28px, 4vw, 64px);
+    bottom: clamp(24px, 3.2vw, 48px);
+    padding: 0;
+    pointer-events: none;
+  }
+  #KiEditorialSlider-{{ section.id }} .kes-slide--artwork .kes-eyebrow,
+  #KiEditorialSlider-{{ section.id }} .kes-slide--artwork .kes-title,
+  #KiEditorialSlider-{{ section.id }} .kes-slide--artwork .kes-description {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+  #KiEditorialSlider-{{ section.id }} .kes-slide--artwork .kes-actions {
+    margin: 0;
+    pointer-events: auto;
+  }
+  #KiEditorialSlider-{{ section.id }} .kes-slide--artwork .kes-button {
+    background: #fff;
+    color: var(--ki-slider-accent);
+    box-shadow: 0 10px 24px rgba(20,14,52,.18);
+  }
+  #KiEditorialSlider-{{ section.id }} .kes-slide--artwork .kes-button--secondary {
+    border-color: rgba(255,255,255,.82);
+    background: rgba(30,23,77,.24);
+    color: #fff;
+    box-shadow: none;
+    backdrop-filter: blur(6px);
+  }
+  #KiEditorialSlider-{{ section.id }} .kes-slide--artwork .kes-media {
+    width: 100%;
+  }
+  #KiEditorialSlider-{{ section.id }} .kes-slide--artwork .kes-proof { display: none; }
   #KiEditorialSlider-{{ section.id }} .kes-copy { padding: 18px 0 18px 10px; }
   #KiEditorialSlider-{{ section.id }} .kes-eyebrow {
     margin: 0 0 12px;
@@ -168,6 +213,55 @@
       grid-template-columns: 1fr;
       gap: 16px;
     }
+    #KiEditorialSlider-{{ section.id }} .kes-slide--artwork {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+    #KiEditorialSlider-{{ section.id }} .kes-slide--artwork .kes-copy {
+      position: static;
+      grid-row: 1;
+      padding: 2px 4px 0;
+      pointer-events: auto;
+    }
+    #KiEditorialSlider-{{ section.id }} .kes-slide--artwork .kes-eyebrow,
+    #KiEditorialSlider-{{ section.id }} .kes-slide--artwork .kes-title,
+    #KiEditorialSlider-{{ section.id }} .kes-slide--artwork .kes-description {
+      position: static;
+      width: auto;
+      height: auto;
+      margin: revert;
+      overflow: visible;
+      clip: auto;
+      white-space: normal;
+    }
+    #KiEditorialSlider-{{ section.id }} .kes-slide--artwork .kes-eyebrow { margin: 0 0 8px; }
+    #KiEditorialSlider-{{ section.id }} .kes-slide--artwork .kes-title { margin: 0; }
+    #KiEditorialSlider-{{ section.id }} .kes-slide--artwork .kes-description { margin: 10px 0 0; }
+    #KiEditorialSlider-{{ section.id }} .kes-slide--artwork .kes-actions { margin-top: 14px; }
+    #KiEditorialSlider-{{ section.id }} .kes-slide--artwork .kes-button {
+      background: var(--ki-slider-accent);
+      color: #fff;
+      box-shadow: none;
+    }
+    #KiEditorialSlider-{{ section.id }} .kes-slide--artwork .kes-button--secondary {
+      border-color: var(--ki-slider-accent);
+      background: transparent;
+      color: var(--ki-slider-accent);
+      backdrop-filter: none;
+    }
+    #KiEditorialSlider-{{ section.id }} .kes-slide--artwork .kes-media {
+      grid-row: 2;
+      aspect-ratio: 4 / 3;
+    }
+    #KiEditorialSlider-{{ section.id }} .kes-slide--artwork .kes-media > img {
+      position: relative;
+      width: 178%;
+      max-width: none;
+      object-fit: cover;
+    }
+    #KiEditorialSlider-{{ section.id }} .kes-slide--focus-left .kes-media > img { left: 0; }
+    #KiEditorialSlider-{{ section.id }} .kes-slide--focus-right .kes-media > img { left: -78%; }
     #KiEditorialSlider-{{ section.id }} .kes-copy { padding: 2px 4px 0; }
     #KiEditorialSlider-{{ section.id }} .kes-eyebrow { margin-bottom: 8px; font-size: 8px; }
     #KiEditorialSlider-{{ section.id }} .kes-title { max-width: 350px; font-size: clamp(31px, 9.2vw, 40px); line-height: 1; }
@@ -205,6 +299,14 @@
             assign slide_video = block.settings.video
             assign slide_image = block.settings.image
             assign fallback_asset = block.settings.fallback_asset | strip
+            assign is_editorial_artwork = false
+            assign mobile_focus = 'left'
+            if slide_video == blank and slide_image == blank and fallback_asset contains 'ki-home-hero-'
+              assign is_editorial_artwork = true
+              if fallback_asset contains 'pads' or fallback_asset contains 'gels'
+                assign mobile_focus = 'right'
+              endif
+            endif
             if slide_image == blank and fallback_asset == blank and slide_product != blank
               assign slide_image = slide_product.featured_image
             endif
@@ -216,7 +318,7 @@
               assign slide_link = '/pages/paket-olustur'
             endif
           -%}
-          <article class="kes-slide" data-kes-slide aria-hidden="{% if forloop.first %}false{% else %}true{% endif %}" {{ block.shopify_attributes }}>
+          <article class="kes-slide{% if is_editorial_artwork %} kes-slide--artwork kes-slide--focus-{{ mobile_focus }}{% endif %}" data-kes-slide aria-hidden="{% if forloop.first %}false{% else %}true{% endif %}" {{ block.shopify_attributes }}>
             <div class="kes-copy">
               {%- if block.settings.eyebrow != blank -%}<p class="kes-eyebrow">{{ block.settings.eyebrow | escape }}</p>{%- endif -%}
               <h2 class="kes-title">{{ block.settings.title | escape }}</h2>
@@ -309,7 +411,7 @@
   "tag": "section",
   "class": "section",
   "settings": [
-    { "type": "color", "id": "background", "label": "Arka plan", "default": "#f7f5f1" },
+    { "type": "color", "id": "background", "label": "Arka plan", "default": "#ffffff" },
     { "type": "color", "id": "text_color", "label": "Metin", "default": "#211a45" },
     { "type": "color", "id": "accent_color", "label": "Vurgu", "default": "#493d9a" },
     { "type": "range", "id": "max_width", "label": "Maksimum genişlik", "min": 1000, "max": 1800, "step": 50, "unit": "px", "default": 1450 },
