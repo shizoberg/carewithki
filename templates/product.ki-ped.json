@@ -129,11 +129,11 @@
           "settings": {
             "creator_name": "Kullanım deneyimi",
             "creator_handle": "Günlük ped",
-            "creator_review": "Günlük ped kullanım deneyimi ve içerik üreticisi videosu yakında burada yayınlanacak.",
+            "creator_review": "Günlük ped; hafif akıntı ve günlük tazelik ihtiyacına uygun, yumuşak üst yüzeyli ped deneyimi sunar.",
             "product": "ki-hijyenik-gunduz-ped",
             "product_name": ".ki Günlük Ped",
             "label": "Günlük kullanım deneyimi",
-            "badge": "Yakında"
+            "badge": "Günlük rutin"
           }
         },
         "day_story": {
@@ -141,11 +141,11 @@
           "settings": {
             "creator_name": "Kullanım deneyimi",
             "creator_handle": "Gündüz ped",
-            "creator_review": "Gündüz ped kullanım deneyimi ve içerik üreticisi videosu yakında burada yayınlanacak.",
+            "creator_review": "Gündüz ped; gün içi kullanımda konfor, güven hissi ve daha uzun koruma arayan rutinler için tasarlandı.",
             "product": "ki-normal-ped",
             "product_name": ".ki Gündüz Ped",
             "label": "Gün içi kullanım deneyimi",
-            "badge": "Yakında"
+            "badge": "Gün içi konfor"
           }
         },
         "night_story": {
@@ -153,11 +153,11 @@
           "settings": {
             "creator_name": "Kullanım deneyimi",
             "creator_handle": "Gece ped",
-            "creator_review": "Gece ped kullanım deneyimi ve içerik üreticisi videosu yakında burada yayınlanacak.",
+            "creator_review": "Gece ped; yoğun akış ve gece kullanımında daha geniş yüzeyle güvenli hissetmeyi destekler.",
             "product": "ki-hijyenik-gece-ped",
             "product_name": ".ki Gece Ped",
             "label": "Gece kullanım deneyimi",
-            "badge": "Yakında"
+            "badge": "Gece koruması"
           }
         }
       },

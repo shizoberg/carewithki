@@ -1,0 +1,173 @@
+{% comment %}
+  Shared product page for .ki care bundles and ready ped packs.
+  It is rendered both by the dedicated bundle template and by the default
+  product template router so Shopify products do not depend on a template
+  suffix being assigned in Admin.
+{% endcomment %}
+
+{%- liquid
+  assign bundle_variant = product.selected_or_first_available_variant
+  assign preset_key = ''
+  assign subscription_url = routes.root_url | append: 'pages/paket-olustur?abone=' | append: bundle_variant.id | append: '&product=' | append: product.handle
+  assign bundle_eyebrow = 'Hazır bakım paketi'
+  assign bundle_summary = product.description | strip_html
+  assign pack_asset = ''
+  assign is_ped_bundle = false
+  assign component_1 = nil
+  assign component_2 = nil
+  assign component_3 = nil
+  assign component_1_label = 'Takviye'
+  assign component_2_label = 'İntim bakım'
+  assign component_3_label = 'Günlük ferahlık'
+
+  case product.handle
+    when 'ki-light-ped-paketi-15-adet'
+      assign is_ped_bundle = true
+      assign pack_asset = 'ki-ped-pack-light.png'
+      assign bundle_eyebrow = '15 ped · Hafif günler'
+      assign bundle_summary = 'Hafif akış ve günlük tazelik için 9 Günlük Ped, 4 Gündüz Ped ve 2 Gece Pedi tek pakette buluşturan dengeli başlangıç rutini.'
+      assign component_1 = all_products['ki-hijyenik-gunduz-ped']
+      assign component_2 = all_products['ki-normal-ped']
+      assign component_3 = all_products['ki-hijyenik-gece-ped']
+      assign component_1_label = '9 adet Günlük Ped'
+      assign component_2_label = '4 adet Gündüz Ped'
+      assign component_3_label = '2 adet Gece Ped'
+    when 'ki-medium-ped-paketi-22-adet'
+      assign is_ped_bundle = true
+      assign pack_asset = 'ki-ped-pack-medium.png'
+      assign bundle_eyebrow = '22 ped · Dengeli rutin'
+      assign bundle_summary = 'Döngünün farklı günleri için 9 Günlük Ped, 9 Gündüz Ped ve 4 Gece Pedi bir araya getiren kapsamlı ped paketi.'
+      assign component_1 = all_products['ki-hijyenik-gunduz-ped']
+      assign component_2 = all_products['ki-normal-ped']
+      assign component_3 = all_products['ki-hijyenik-gece-ped']
+      assign component_1_label = '9 adet Günlük Ped'
+      assign component_2_label = '9 adet Gündüz Ped'
+      assign component_3_label = '4 adet Gece Ped'
+    when 'ki-yogun-gunler-ped-paketi-26-adet'
+      assign is_ped_bundle = true
+      assign pack_asset = 'ki-ped-pack-intense.png'
+      assign bundle_eyebrow = '26 ped · Yoğun günler'
+      assign bundle_summary = 'Yoğun akış ve gece korumasına daha fazla yer veren 6 Günlük Ped, 12 Gündüz Ped ve 8 Gece Pedden oluşan güçlü rutin.'
+      assign component_1 = all_products['ki-hijyenik-gunduz-ped']
+      assign component_2 = all_products['ki-normal-ped']
+      assign component_3 = all_products['ki-hijyenik-gece-ped']
+      assign component_1_label = '6 adet Günlük Ped'
+      assign component_2_label = '12 adet Gündüz Ped'
+      assign component_3_label = '8 adet Gece Ped'
+    when 'ki-dongu-destek-paketi'
+      assign preset_key = 'cycle'
+      assign bundle_eyebrow = 'Döngü rutini'
+      assign bundle_summary = 'Döngü desteği, regl dönemi bakımı ve gün boyu ferahlığı tek pakette birleştiren eksiksiz rutin.'
+      assign component_1 = all_products['balance-your-cycle']
+      assign component_2 = all_products['ki-flow-care-intim-bakim-jeli']
+      assign component_3 = all_products['ki-intimate-intim-bakim-spreyi']
+      assign component_1_label = 'Döngü desteği'
+      assign component_2_label = 'İntim bakım'
+    when 'ki-hassas-bakim-paketi'
+      assign preset_key = 'sensitive'
+      assign bundle_eyebrow = 'Hassas bakım rutini'
+      assign bundle_summary = 'Hassas ciltlere uygun intim yıkama ve pratik ferahlık bakımını birlikte sunan sade rutin.'
+      assign component_1 = all_products['ki-sens-care-intim-bakim-jeli']
+      assign component_2 = all_products['ki-intimate-intim-bakim-spreyi']
+      assign component_1_label = 'Hassas intim bakım'
+      assign component_2_label = 'Günlük ferahlık'
+    when 'ki-menopoz-bakim-paketi'
+      assign preset_key = 'menopause'
+      assign bundle_eyebrow = 'Menopoz bakım rutini'
+      assign bundle_summary = 'Menopoz dönemine özel takviye, yoğun nem ve günlük ferahlık desteğini bir araya getiren rutin.'
+      assign component_1 = all_products['change-is-good']
+      assign component_2 = all_products['ki-50-care-intim-bakim-jeli']
+      assign component_3 = all_products['ki-intimate-intim-bakim-spreyi']
+      assign component_1_label = 'Menopoz desteği'
+      assign component_2_label = '50+ yoğun bakım'
+  endcase
+
+  if preset_key != blank
+    assign subscription_url = routes.root_url | append: 'pages/paket-olustur?preset=' | append: preset_key
+  endif
+
+  if bundle_summary == blank
+    assign bundle_summary = product.title | append: ' ile ihtiyacına uygun ürünleri tek pakette keşfet; tek seferlik satın al veya düzenli teslimat için abone ol.'
+  endif
+
+  assign subscription_discount = 15
+  assign subscription_discount_amount = bundle_variant.price | times: subscription_discount | divided_by: 100
+  assign subscription_price = bundle_variant.price | minus: subscription_discount_amount
+-%}
+
+<style>
+  .kicbp-{{ section.id }}{--p:#4d3ea7;--deep:#171238;--mut:#747080;--soft:#f5f3ff;background:#fff;color:var(--deep);padding:34px 24px 76px}.kicbp-{{ section.id }} *{box-sizing:border-box}.kicbp-{{ section.id }} .kicbp-shell{max-width:1260px;margin:0 auto}.kicbp-{{ section.id }} .kicbp-main{display:grid;grid-template-columns:minmax(0,1.03fr) minmax(390px,.97fr);gap:46px;align-items:start}.kicbp-{{ section.id }} .kicbp-visual{position:sticky;top:22px;display:grid;grid-template-columns:repeat(3,1fr);gap:10px;min-height:560px;padding:44px 34px;border-radius:28px;overflow:hidden;background:linear-gradient(142deg,#19143e 0%,#4f43a0 55%,#7569ce 100%);box-shadow:0 28px 70px rgba(35,27,89,.18)}.kicbp-{{ section.id }} .kicbp-visual:before{content:'';position:absolute;inset:-25%;background:radial-gradient(circle at 72% 38%,rgba(255,255,255,.2),transparent 31%);pointer-events:none}.kicbp-{{ section.id }} .kicbp-visual.is-pack{display:block;padding:24px}.kicbp-{{ section.id }} .kicbp-visual__pack{position:relative;z-index:1;width:100%;height:100%;min-height:512px;object-fit:contain}.kicbp-{{ section.id }} .kicbp-visual__item{position:relative;z-index:1;align-self:center;aspect-ratio:.78;border-radius:18px;overflow:hidden;background:#fff;box-shadow:0 18px 38px rgba(10,6,38,.27)}.kicbp-{{ section.id }} .kicbp-visual__item:nth-child(2){transform:translateY(-22px)}.kicbp-{{ section.id }} .kicbp-visual__item img,.kicbp-{{ section.id }} .kicbp-visual__item svg{width:100%;height:100%;display:block;object-fit:cover}.kicbp-{{ section.id }} .kicbp-copy{padding:18px 0 0}.kicbp-{{ section.id }} .kicbp-eyebrow{margin:0 0 13px;color:var(--p);font-size:11px;font-weight:850;letter-spacing:.16em;text-transform:uppercase}.kicbp-{{ section.id }} .kicbp-title{margin:0 0 15px;color:var(--deep);font:800 clamp(34px,4.7vw,62px)/1.02 'Raleway',system-ui,sans-serif;letter-spacing:-.045em}.kicbp-{{ section.id }} .kicbp-summary{margin:0 0 22px;color:var(--mut);font-size:15px;line-height:1.7}.kicbp-{{ section.id }} .kicbp-trust{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:24px}.kicbp-{{ section.id }} .kicbp-trust span{padding:7px 10px;border-radius:999px;background:var(--soft);color:var(--p);font-size:10px;font-weight:800}.kicbp-{{ section.id }} .kicbp-price-box{padding:19px;border:1px solid rgba(77,62,167,.15);border-radius:20px;background:#fff;box-shadow:0 12px 34px rgba(77,62,167,.08)}.kicbp-{{ section.id }} .kicbp-price-row{display:flex;align-items:end;justify-content:space-between;gap:18px;margin-bottom:15px}.kicbp-{{ section.id }} .kicbp-price-label{display:block;margin-bottom:5px;color:var(--mut);font-size:11px;font-weight:700}.kicbp-{{ section.id }} .kicbp-price{color:var(--p);font-size:30px;font-weight:900}.kicbp-{{ section.id }} .kicbp-sub-price{text-align:right;color:#277653;font-size:12px;font-weight:700}.kicbp-{{ section.id }} .kicbp-sub-price strong{display:block;font-size:18px}.kicbp-{{ section.id }} .kicbp-actions{display:grid;gap:9px}.kicbp-{{ section.id }} .kicbp-atc,.kicbp-{{ section.id }} .kicbp-subscribe{display:flex;align-items:center;justify-content:center;min-height:52px;padding:12px 18px;border-radius:14px;font:800 13px/1 system-ui,sans-serif;text-decoration:none;cursor:pointer}.kicbp-{{ section.id }} .kicbp-atc{width:100%;border:0;background:var(--p);color:#fff}.kicbp-{{ section.id }} .kicbp-atc:disabled{background:#c9c6d8;cursor:not-allowed}.kicbp-{{ section.id }} .kicbp-subscribe{border:1.5px solid var(--p);background:#fff;color:var(--p)}.kicbp-{{ section.id }} .kicbp-note{margin:10px 0 0;text-align:center;color:var(--mut);font-size:10px}.kicbp-{{ section.id }} .kicbp-section-head{margin:54px 0 19px;text-align:center}.kicbp-{{ section.id }} .kicbp-section-head span{color:var(--p);font-size:10px;font-weight:850;letter-spacing:.15em}.kicbp-{{ section.id }} .kicbp-section-head h2{margin:7px 0 5px;font:800 clamp(24px,3vw,36px)/1.1 'Raleway',system-ui,sans-serif}.kicbp-{{ section.id }} .kicbp-section-head p{margin:0;color:var(--mut);font-size:13px}.kicbp-{{ section.id }} .kicbp-components{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px}.kicbp-{{ section.id }} .kicbp-component{display:grid;grid-template-columns:100px 1fr;gap:13px;align-items:center;padding:13px;border:1px solid rgba(77,62,167,.12);border-radius:18px;background:#fff;box-shadow:0 6px 20px rgba(77,62,167,.06)}.kicbp-{{ section.id }} .kicbp-component__image{display:block;aspect-ratio:1;border-radius:13px;overflow:hidden;background:var(--soft)}.kicbp-{{ section.id }} .kicbp-component__image img,.kicbp-{{ section.id }} .kicbp-component__image svg{width:100%;height:100%;object-fit:cover;display:block}.kicbp-{{ section.id }} .kicbp-component__copy{min-width:0}.kicbp-{{ section.id }} .kicbp-component__copy span{display:block;margin-bottom:4px;color:#9b92c7;font-size:8px;font-weight:850;letter-spacing:.09em;text-transform:uppercase}.kicbp-{{ section.id }} .kicbp-component__copy a{display:block;color:var(--deep);font-size:12px;font-weight:800;line-height:1.35;text-decoration:none}.kicbp-{{ section.id }} .kicbp-component__copy strong{display:block;margin-top:6px;color:var(--p);font-size:12px}.kicbp-{{ section.id }} .kicbp-benefits{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px}.kicbp-{{ section.id }} .kicbp-benefit{overflow:hidden;border:1px solid rgba(77,62,167,.12);border-radius:20px;background:#fff;box-shadow:0 8px 28px rgba(77,62,167,.055)}.kicbp-{{ section.id }} .kicbp-benefit img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover;background:var(--soft)}.kicbp-{{ section.id }} .kicbp-benefit div{padding:18px}.kicbp-{{ section.id }} .kicbp-benefit b{display:inline-flex;padding:5px 9px;border-radius:999px;background:#ebe7ff;color:var(--p);font-size:10px}.kicbp-{{ section.id }} .kicbp-benefit h3{margin:11px 0 6px;font-size:18px}.kicbp-{{ section.id }} .kicbp-benefit p{margin:0;color:var(--mut);font-size:12px;line-height:1.55}.kicbp-{{ section.id }} .kicbp-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:22px}.kicbp-{{ section.id }} .kicbp-step{padding:16px;border-radius:17px;background:var(--soft)}.kicbp-{{ section.id }} .kicbp-step b{display:flex;align-items:center;justify-content:center;width:28px;height:28px;margin-bottom:10px;border-radius:50%;background:var(--p);color:#fff;font-size:11px}.kicbp-{{ section.id }} .kicbp-step strong{display:block;margin-bottom:4px;font-size:12px}.kicbp-{{ section.id }} .kicbp-step span{color:var(--mut);font-size:10px;line-height:1.45}.kicbp-{{ section.id }} .kicbp-bottom-cta{display:flex;justify-content:center;margin-top:20px}.kicbp-{{ section.id }} .kicbp-bottom-cta a{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:12px 24px;border-radius:13px;background:var(--p);color:#fff;text-decoration:none;font-size:13px;font-weight:800}.kicbp-{{ section.id }} .kicbp-faq{max-width:860px;margin:0 auto}.kicbp-{{ section.id }} .kicbp-faq details{border:1px solid rgba(77,62,167,.14);border-radius:14px;background:#fff;margin-bottom:9px}.kicbp-{{ section.id }} .kicbp-faq summary{display:flex;justify-content:space-between;gap:16px;padding:17px 18px;color:var(--deep);font-size:13px;font-weight:800;cursor:pointer;list-style:none}.kicbp-{{ section.id }} .kicbp-faq summary::-webkit-details-marker{display:none}.kicbp-{{ section.id }} .kicbp-faq summary:after{content:'+';color:var(--p);font-size:18px}.kicbp-{{ section.id }} .kicbp-faq details[open] summary:after{content:'−'}.kicbp-{{ section.id }} .kicbp-faq p{margin:0;padding:0 18px 18px;color:var(--mut);font-size:12px;line-height:1.65}
+  @media(max-width:900px){.kicbp-{{ section.id }} .kicbp-main{grid-template-columns:1fr;gap:24px}.kicbp-{{ section.id }} .kicbp-visual{position:relative;top:auto;min-height:430px}.kicbp-{{ section.id }} .kicbp-visual__pack{min-height:382px}.kicbp-{{ section.id }} .kicbp-components,.kicbp-{{ section.id }} .kicbp-benefits{grid-template-columns:1fr 1fr}}
+  @media(max-width:749px){.kicbp-{{ section.id }}{padding:14px 14px 48px}.kicbp-{{ section.id }} .kicbp-main{gap:18px}.kicbp-{{ section.id }} .kicbp-visual{min-height:285px;padding:27px 20px;border-radius:20px;gap:6px}.kicbp-{{ section.id }} .kicbp-visual__pack{min-height:237px}.kicbp-{{ section.id }} .kicbp-visual__item{border-radius:11px}.kicbp-{{ section.id }} .kicbp-visual__item:nth-child(2){transform:translateY(-12px)}.kicbp-{{ section.id }} .kicbp-copy{padding-top:0}.kicbp-{{ section.id }} .kicbp-title{font-size:34px}.kicbp-{{ section.id }} .kicbp-summary{font-size:13px;margin-bottom:15px}.kicbp-{{ section.id }} .kicbp-price-box{padding:14px;border-radius:16px}.kicbp-{{ section.id }} .kicbp-price{font-size:24px}.kicbp-{{ section.id }} .kicbp-components,.kicbp-{{ section.id }} .kicbp-benefits{grid-template-columns:1fr;gap:9px}.kicbp-{{ section.id }} .kicbp-component{grid-template-columns:72px 1fr;padding:9px}.kicbp-{{ section.id }} .kicbp-benefits{display:flex;overflow-x:auto;margin:0 -14px;padding:0 14px 7px;scroll-snap-type:x mandatory}.kicbp-{{ section.id }} .kicbp-benefit{flex:0 0 min(72vw,250px);scroll-snap-align:start}.kicbp-{{ section.id }} .kicbp-steps{grid-template-columns:1fr 1fr;gap:7px}.kicbp-{{ section.id }} .kicbp-step{padding:11px 9px}.kicbp-{{ section.id }} .kicbp-step span{font-size:9px}.kicbp-{{ section.id }} .kicbp-section-head{margin-top:36px}.kicbp-{{ section.id }} .kicbp-price-row{align-items:flex-start;flex-direction:column}.kicbp-{{ section.id }} .kicbp-sub-price{text-align:left}}
+</style>
+
+<section class="kicbp-{{ section.id }}" data-ki-bundle-product data-product-handle="{{ product.handle | escape }}">
+  <div class="kicbp-shell">
+    <div class="kicbp-main">
+      <div class="kicbp-visual{% if pack_asset != blank %} is-pack{% endif %}" aria-label="{{ product.title | escape }} görseli">
+        {%- if pack_asset != blank -%}
+          <img class="kicbp-visual__pack" src="{{ pack_asset | asset_url }}" width="1080" height="1350" loading="eager" alt="{{ product.title | escape }} paket içeriği">
+        {%- elsif product.media.size > 0 -%}
+          {%- for media in product.media limit: 3 -%}
+            <div class="kicbp-visual__item">{{ media.preview_image | image_url: width: 760 | image_tag: loading: 'eager', alt: product.title }}</div>
+          {%- endfor -%}
+        {%- else -%}
+          {%- if component_1 != blank -%}<div class="kicbp-visual__item">{{ component_1.featured_image | image_url: width: 620 | image_tag: loading: 'eager', alt: component_1.title }}</div>{%- endif -%}
+          {%- if component_2 != blank -%}<div class="kicbp-visual__item">{{ component_2.featured_image | image_url: width: 620 | image_tag: loading: 'eager', alt: component_2.title }}</div>{%- endif -%}
+          {%- if component_3 != blank -%}<div class="kicbp-visual__item">{{ component_3.featured_image | image_url: width: 620 | image_tag: loading: 'eager', alt: component_3.title }}</div>{%- endif -%}
+        {%- endif -%}
+      </div>
+
+      <div class="kicbp-copy">
+        <p class="kicbp-eyebrow">{{ bundle_eyebrow | escape }}</p>
+        <h1 class="kicbp-title">{{ product.title | escape }}</h1>
+        <p class="kicbp-summary">{{ bundle_summary | escape }}</p>
+        <div class="kicbp-trust"><span>Uzman eczacı yaklaşımı</span><span>{% if is_ped_bundle %}Pamuk ve bambu üst yüzey{% else %}Tek pakette eksiksiz rutin{% endif %}</span><span>Abonelikte %{{ subscription_discount }} avantaj</span></div>
+
+        <div class="kicbp-price-box">
+          <div class="kicbp-price-row">
+            <div><span class="kicbp-price-label">Tek seferlik paket fiyatı</span><strong class="kicbp-price">{{ bundle_variant.price | money }}</strong></div>
+            <div class="kicbp-sub-price"><span>Abonelikte</span><strong>{{ subscription_price | money }}</strong></div>
+          </div>
+          <div class="kicbp-actions">
+            {%- form 'product', product -%}
+              <input type="hidden" name="id" value="{{ bundle_variant.id }}">
+              <input type="hidden" name="quantity" value="1">
+              <button class="kicbp-atc" type="submit"{% unless bundle_variant.available %} disabled{% endunless %}>{% if bundle_variant.available %}Paketi Sepete Ekle{% else %}Stokta Yok{% endif %}</button>
+            {%- endform -%}
+            {%- if bundle_variant.available -%}<a class="kicbp-subscribe" href="{{ subscription_url }}">Pakete Abone Ol · %{{ subscription_discount }} avantaj →</a>{%- endif -%}
+          </div>
+          <p class="kicbp-note">Tek seferlik alımda paket sepete eklenir. Abonelikte gönderim sıklığını dilediğin zaman değiştirebilir, duraklatabilir veya iptal edebilirsin.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="kicbp-section-head"><span>PAKETİNDE NELER VAR?</span><h2>{% if is_ped_bundle %}Döngünün her günü için doğru ped{% else %}Birlikte çalışan bakım rutini{% endif %}</h2><p>{% if is_ped_bundle %}Günlük, gündüz ve gece pedleri ihtiyacına uygun adetlerde bir arada.{% else %}Her ürün kendi ihtiyacına odaklanır; paket içinde tamamlayıcı bir rutin oluşturur.{% endif %}</p></div>
+    <div class="kicbp-components">{% render 'ki-care-bundle-component', component_product: component_1, component_label: component_1_label %}{% render 'ki-care-bundle-component', component_product: component_2, component_label: component_2_label %}{% render 'ki-care-bundle-component', component_product: component_3, component_label: component_3_label %}</div>
+
+    {%- if is_ped_bundle -%}
+      <div class="kicbp-section-head"><span>İÇERİĞİ SAKLAMIYORUZ</span><h2>Her katmanın bir nedeni var</h2><p>Ped sayfalarındaki içerik ve yüzey bilgileri bu hazır paketlerin tamamı için de geçerlidir.</p></div>
+      <div class="kicbp-benefits">
+        <article class="kicbp-benefit"><img src="{{ 'ki-ped-material-cotton.webp' | asset_url }}" width="1080" height="1350" loading="lazy" alt=".ki ped pamuklu üst yüzey"><div><b>%95 PAMUK</b><h3>Yumuşak pamuklu üst yüzey</h3><p>Cilde temas eden üst yüzeyde yumuşak ve konforlu bir his sağlamaya yardımcı olur.</p></div></article>
+        <article class="kicbp-benefit"><img src="{{ 'ki-ped-material-bamboo.webp' | asset_url }}" width="1080" height="1350" loading="lazy" alt=".ki ped bambu lifli yüzey"><div><b>%5 BAMBU</b><h3>Bambu lifli dokunuş</h3><p>Hafif ve nefes alabilen yüzey yapısını destekleyen doğal lif yaklaşımı sunar.</p></div></article>
+        <article class="kicbp-benefit"><img src="{{ 'ki-ped-material-mugwort.webp' | asset_url }}" width="1080" height="1350" loading="lazy" alt=".ki ped pelin otu özü"><div><b>PELİN OTU ÖZÜ</b><h3>Bitkisel bakım yaklaşımı</h3><p>Pelin otu özü, .ki ped serisinin bitkisel içerik hikâyesini tamamlar.</p></div></article>
+      </div>
+      {% render 'ki-ped-certifications', context: 'compact', label: 'ISO · CE · FDA · Intertek' %}
+    {%- endif -%}
+
+    <div class="kicbp-section-head"><span>NASIL ÇALIŞIR?</span><h2>Dört adımda paketin hazır</h2><p>Tek seferlik satın al veya düzenli teslimatla pedinin bitmesini bekleme.</p></div>
+    <div class="kicbp-steps"><div class="kicbp-step"><b>1</b><strong>Paketi seç</strong><span>İhtiyacına uygun hazır paketi seç.</span></div><div class="kicbp-step"><b>2</b><strong>Satın al veya abone ol</strong><span>Tek seferlik sepete ekle ya da aboneliği başlat.</span></div><div class="kicbp-step"><b>3</b><strong>Sıklığını belirle</strong><span>Abonelikte gönderim sıklığını düzenle.</span></div><div class="kicbp-step"><b>4</b><strong>Kapına gelsin</strong><span>Paketin planladığın zamanda hazırlansın.</span></div></div>
+    <div class="kicbp-bottom-cta"><a href="{{ subscription_url }}">Bu Pakete Abone Ol →</a></div>
+
+    {%- if is_ped_bundle -%}
+      <div class="kicbp-section-head"><span>SIKÇA SORULAN SORULAR</span><h2>Ped paketiyle ilgili merak ettiklerin</h2></div>
+      <div class="kicbp-faq">
+        <details open><summary>Bu paketin içinde hangi pedler var?</summary><p>{{ component_1_label }}, {{ component_2_label }} ve {{ component_3_label }} bulunur. Toplam adet paket adına göre Light için 15, Medium için 22, Yoğun Günler için 26 peddir.</p></details>
+        <details><summary>Pedlerin üst yüzeyi nasıl?</summary><p>Cilde temas eden üst yüzeyde %95 pamuk ve %5 bambu lifli yapı kullanılır. Yumuşak ve konforlu bir yüzey deneyimi hedeflenir.</p></details>
+        <details><summary>Paketi tek seferlik satın alabilir miyim?</summary><p>Evet. “Paketi Sepete Ekle” düğmesiyle paketi tek seferlik ürün olarak satın alabilirsin.</p></details>
+        <details><summary>Bu hazır pakete abone olabilir miyim?</summary><p>Evet. “Pakete Abone Ol” seçeneği paketi Paketini Oluştur alanında seçili açar; gönderim sıklığını belirleyip aboneliğini başlatabilirsin.</p></details>
+        <details><summary>Aboneliği daha sonra değiştirebilir miyim?</summary><p>Evet. Gönderim sıklığını değiştirebilir, gönderimi duraklatabilir veya aboneliğini iptal edebilirsin.</p></details>
+      </div>
+    {%- endif -%}
+  </div>
+</section>

@@ -5,7 +5,12 @@
 
 {%- assign pdp_product = section.settings.product | default: product -%}
 {%- assign media_items = pdp_product.media -%}
+{%- assign ki_ready_ped_pack_handles = '|ki-light-ped-paketi-15-adet|ki-medium-ped-paketi-22-adet|ki-yogun-gunler-ped-paketi-26-adet|' -%}
+{%- assign ki_current_product_token = '|' | append: product.handle | append: '|' -%}
 
+{%- if ki_ready_ped_pack_handles contains ki_current_product_token -%}
+  {% render 'ki-care-bundle-product-content' %}
+{%- else -%}
 <section id="pdpki-{{ section.id }}" class="section">
   <style>
     #pdpki-{{ section.id }} {
@@ -1012,6 +1017,7 @@
     })();
   </script>
 </section>
+{%- endif -%}
 
 {% schema %}
 {

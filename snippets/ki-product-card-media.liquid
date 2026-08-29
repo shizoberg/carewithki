@@ -4,6 +4,7 @@
   assign placeholder_name = placeholder_name | default: 'product-1'
   assign media_image = image | default: product.featured_image
   assign fallback_asset = ''
+  assign product_key = product.handle | append: ' ' | append: product.title | downcase
 
   case product.handle
     when 'ki-hijyenik-gunduz-ped'
@@ -25,6 +26,22 @@
     when 'ki-yogun-gunler-ped-paketi-26-adet'
       assign fallback_asset = 'ki-ped-pack-intense.png'
   endcase
+
+  if fallback_asset == blank
+    if product_key contains 'light' and product_key contains 'ped'
+      assign fallback_asset = 'ki-ped-pack-light.png'
+    elsif product_key contains 'medium' and product_key contains 'ped'
+      assign fallback_asset = 'ki-ped-pack-medium.png'
+    elsif product_key contains 'yoğun' or product_key contains 'yogun'
+      assign fallback_asset = 'ki-ped-pack-intense.png'
+    elsif product_key contains 'günlük' or product_key contains 'gunluk'
+      assign fallback_asset = 'ki-ped-gunluk-5li.webp'
+    elsif product_key contains 'gündüz' or product_key contains 'gunduz' or product_key contains 'uzun'
+      assign fallback_asset = 'ki-ped-gunduz-5li.webp'
+    elsif product_key contains 'gece'
+      assign fallback_asset = 'ki-ped-gece-5li.webp'
+    endif
+  endif
 -%}
 
 {%- if media_image -%}

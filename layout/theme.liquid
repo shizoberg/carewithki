@@ -19,18 +19,112 @@
       <link rel="preconnect" href="https://fonts.shopifycdn.com" crossorigin>
     {%- endunless -%}
 
+    {%- liquid
+      assign ki_meta_title = page_title
+      assign ki_meta_description = page_description
+
+      if request.page_type == 'index'
+        assign ki_meta_title = '.ki Kadın Sağlığı | Ped, İntim Bakım ve Takviye'
+        if ki_meta_description == blank
+          assign ki_meta_description = '.ki hijyenik ped, intim bakım, PMS ve menopoz destek ürünlerini keşfet; kadın sağlığı rutinini ihtiyacına göre oluştur.'
+        endif
+      elsif request.page_type == 'product' and product
+        case product.handle
+          when 'ki-light-ped-paketi-15-adet'
+            assign ki_meta_title = '.ki Light Ped Paketi (15 Adet) | Hijyenik Ped'
+            assign ki_meta_description = 'Hafif günler için 9 Günlük, 4 Gündüz ve 2 Gece Ped içeren .ki Light Ped Paketini tek seferlik satın al veya abonelikle düzenli teslim al.'
+          when 'ki-medium-ped-paketi-22-adet'
+            assign ki_meta_title = '.ki Medium Ped Paketi (22 Adet) | Hijyenik Ped'
+            assign ki_meta_description = 'Dengeli döngü rutini için 9 Günlük, 9 Gündüz ve 4 Gece Ped içeren .ki Medium Ped Paketini satın al veya abonelikle düzenli teslim al.'
+          when 'ki-yogun-gunler-ped-paketi-26-adet'
+            assign ki_meta_title = '.ki Yoğun Günler Ped Paketi (26 Adet)'
+            assign ki_meta_description = 'Yoğun akış için 6 Günlük, 12 Gündüz ve 8 Gece Ped içeren .ki Yoğun Günler Paketini satın al veya abonelikle düzenli teslim al.'
+          when 'ki-hijyenik-gunduz-ped'
+            assign ki_meta_title = '.ki Günlük Ped | Pamuk ve Bambu Üst Yüzey'
+            if ki_meta_description == blank
+              assign ki_meta_description = '.ki Günlük Ped; hafif akıntı ve günlük tazelik için pamuk ve bambu lifli yumuşak üst yüzeyle tasarlanmıştır.'
+            endif
+          when 'ki-normal-ped'
+            assign ki_meta_title = '.ki Gündüz Ped | Gün Boyu Konfor'
+            if ki_meta_description == blank
+              assign ki_meta_description = '.ki Gündüz Ped; gün içi kullanım ve orta akış için pamuk ve bambu lifli yumuşak üst yüzeyle tasarlanmıştır.'
+            endif
+          when 'ki-hijyenik-gece-ped'
+            assign ki_meta_title = '.ki Gece Ped | Yoğun Akış ve Gece Koruması'
+            if ki_meta_description == blank
+              assign ki_meta_description = '.ki Gece Ped; yoğun akış ve gece kullanımı için geniş yüzeyli, pamuk ve bambu lifli konfor odaklı ped deneyimi sunar.'
+            endif
+          when 'ki-dongu-destek-paketi'
+            assign ki_meta_title = '.ki Döngü Destek Paketi | PMS ve İntim Bakım'
+            assign ki_meta_description = '.ki Balance, flow.care ve intimate ürünlerini birleştiren Döngü Destek Paketini tek seferlik satın al veya abonelikle düzenli teslim al.'
+          when 'ki-hassas-bakim-paketi'
+            assign ki_meta_title = '.ki Hassas Bakım Paketi | İntim Bakım Rutini'
+            assign ki_meta_description = 'Hassas intim bakım ve günlük ferahlığı birleştiren .ki Hassas Bakım Paketini tek seferlik satın al veya abonelikle düzenli teslim al.'
+          when 'ki-menopoz-bakim-paketi'
+            assign ki_meta_title = '.ki Menopoz Bakım Paketi | 50+ Kadın Bakımı'
+            assign ki_meta_description = 'Menopoz desteği, 50+ intim bakım ve günlük ferahlığı birleştiren .ki Menopoz Bakım Paketini satın al veya abonelikle teslim al.'
+          else
+            unless ki_meta_title contains '.ki'
+              assign ki_meta_title = ki_meta_title | append: ' | .ki'
+            endunless
+            if ki_meta_description == blank
+              assign ki_meta_description = product.description | strip_html | strip
+            endif
+            if ki_meta_description == blank
+              assign ki_meta_description = product.title | append: ' ürününü ve .ki kadın sağlığı bakım rutinini keşfet.'
+            endif
+        endcase
+      elsif request.page_type == 'collection' and collection
+        unless ki_meta_title contains '.ki'
+          assign ki_meta_title = ki_meta_title | append: ' | .ki Kadın Sağlığı'
+        endunless
+        if ki_meta_description == blank
+          assign ki_meta_description = collection.title | append: ' koleksiyonunda .ki ped, intim bakım, PMS ve menopoz destek ürünlerini keşfet.'
+        endif
+      elsif request.page_type == 'page' and page
+        case page.handle
+          when 'paket-olustur'
+            assign ki_meta_title = 'Ped Aboneliği ve Bakım Paketi Oluştur | .ki'
+            assign ki_meta_description = '.ki Paketini Oluştur ile ped, intim bakım, PMS ve menopoz ürünlerini seç; gönderim sıklığını belirle ve aboneliğini dilediğin zaman yönet.'
+          when 'ki-rehberi'
+            assign ki_meta_title = '.ki Rehberi | Kadın Sağlığı ve Bakım İçerikleri'
+          when 'ki-lab'
+            assign ki_meta_title = '.ki Bilimi | İçerik ve Ürün Geliştirme Yaklaşımı'
+          else
+            unless ki_meta_title contains '.ki'
+              assign ki_meta_title = ki_meta_title | append: ' | .ki'
+            endunless
+        endcase
+        if ki_meta_description == blank
+          assign ki_meta_description = page.content | strip_html | strip
+        endif
+        if ki_meta_description == blank
+          assign ki_meta_description = page.title | append: ' hakkında .ki kadın sağlığı ve bakım bilgilerini incele.'
+        endif
+      else
+        unless ki_meta_title contains '.ki'
+          assign ki_meta_title = ki_meta_title | append: ' | .ki'
+        endunless
+        if ki_meta_description == blank
+          assign ki_meta_description = '.ki; hijyenik ped, intim bakım, PMS ve menopoz destek ürünleriyle kadın sağlığına modern bakım rutinleri sunar.'
+        endif
+      endif
+
+      assign ki_meta_description = ki_meta_description | strip_html | strip | truncate: 160
+    -%}
+
     <title>
-      {{ page_title }}
+      {{ ki_meta_title }}
       {%- if current_tags %} &ndash; tagged "{{ current_tags | join: ', ' }}"{% endif -%}
       {%- if current_page != 1 %} &ndash; Page {{ current_page }}{% endif -%}
-      {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
     </title>
 
-    {% if page_description %}
-      <meta name="description" content="{{ page_description | escape }}">
+    {% if ki_meta_description != blank %}
+      <meta name="description" content="{{ ki_meta_description | escape }}">
     {% endif %}
 
-    {% render 'meta-tags' %}
+    {% render 'meta-tags', seo_title: ki_meta_title, seo_description: ki_meta_description %}
+    {% render 'ki-seo-enhancements', seo_title: ki_meta_title, seo_description: ki_meta_description %}
 
     {%- comment %} HIZLANMA: JS dosyaları defer — render bloklamaz {%- endcomment -%}
     <script src="{{ 'constants.js' | asset_url }}" defer="defer"></script>
