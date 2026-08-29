@@ -34,15 +34,15 @@
   #KiPedScience-{{ section.id }} .kps-status { min-height: 18px; margin: 8px 0 0; color: #47745d; text-align: center; font-size: 12px; font-weight: 750; }
   #KiPedScience-{{ section.id }} .kps-footnote { max-width: 760px; margin: 14px auto 0; color: #8b8591; text-align: center; font-size: 10px; line-height: 1.5; }
 
-  @media (max-width: 749px) {
-    #KiPedScience-{{ section.id }} { padding: 28px 0; }
-    #KiPedScience-{{ section.id }} .kps-shell { width: calc(100% - 28px); }
-    #KiPedScience-{{ section.id }} .kps-head { margin-bottom: 14px; text-align: left; }
-    #KiPedScience-{{ section.id }} .kps-title { font-size: 24px; }
-    #KiPedScience-{{ section.id }} .kps-subtitle { margin-top: 8px; font-size: 11.5px; line-height: 1.5; }
-    #KiPedScience-{{ section.id }} .kps-grid { display: flex; gap: 9px; overflow-x: auto; margin: 0 -14px; padding: 0 14px 6px; scroll-snap-type: x mandatory; scrollbar-width: none; }
-    #KiPedScience-{{ section.id }} .kps-grid::-webkit-scrollbar { display: none; }
-    #KiPedScience-{{ section.id }} .kps-card { flex: 0 0 min(62vw, 230px); scroll-snap-align: start; border-radius: 14px; }
+@media (max-width: 749px) {
+  #KiPedScience-{{ section.id }} { padding: 24px 0; }
+  #KiPedScience-{{ section.id }} .kps-shell { width: calc(100% - 24px); }
+  #KiPedScience-{{ section.id }} .kps-head { margin-bottom: 14px; text-align: left; }
+  #KiPedScience-{{ section.id }} .kps-title { font-size: 24px; }
+  #KiPedScience-{{ section.id }} .kps-subtitle { margin-top: 8px; font-size: 11.5px; line-height: 1.5; }
+  #KiPedScience-{{ section.id }} .kps-grid { display: flex; gap: 9px; overflow-x: auto; margin: 0 -12px; padding: 0 12px 6px; scroll-snap-type: x mandatory; scroll-padding-inline: 12px; scrollbar-width: none; overscroll-behavior-inline: contain; touch-action: pan-x pan-y; -webkit-overflow-scrolling: touch; }
+  #KiPedScience-{{ section.id }} .kps-grid::-webkit-scrollbar { display: none; }
+  #KiPedScience-{{ section.id }} .kps-card { flex: 0 0 min(60vw, 224px); scroll-snap-align: start; scroll-snap-stop: always; border-radius: 14px; }
     #KiPedScience-{{ section.id }} .kps-media { aspect-ratio: 16 / 10; }
     #KiPedScience-{{ section.id }} .kps-body { padding: 11px; }
     #KiPedScience-{{ section.id }} .kps-metric { padding: 4px 7px; font-size: 8px; }

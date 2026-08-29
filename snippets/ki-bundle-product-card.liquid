@@ -10,6 +10,26 @@
   elsif product.handle == 'ki-menopoz-bakim-paketi'
     assign subscription_url = '/pages/paket-olustur?preset=menopause'
   endif
+  if bundle_contains == blank
+    case product.handle
+      when 'ki-dongu-destek-paketi'
+        assign bundle_contains = '.ki Balance,.ki flow.care,.ki intimate'
+      when 'ki-hassas-bakim-paketi'
+        assign bundle_contains = '.ki sens.care,.ki intimate'
+      when 'ki-menopoz-bakim-paketi'
+        assign bundle_contains = '.ki Change,.ki 50+.care,.ki intimate'
+      when 'ki-light-ped-paketi-15-adet'
+        assign bundle_contains = '9 Günlük Ped,4 Gündüz Ped,2 Gece Ped'
+      when 'ki-medium-ped-paketi-22-adet'
+        assign bundle_contains = '9 Günlük Ped,9 Gündüz Ped,4 Gece Ped'
+      when 'ki-yogun-gunler-ped-paketi-26-adet'
+        assign bundle_contains = '6 Günlük Ped,12 Gündüz Ped,8 Gece Ped'
+      when 'balance-ve-intimate-bundle'
+        assign bundle_contains = '.ki Balance,.ki intimate'
+      when 'ki-intimate-arkadas-paketi'
+        assign bundle_contains = '2 × .ki intimate'
+    endcase
+  endif
 -%}
 
 <li class="kbd-card">

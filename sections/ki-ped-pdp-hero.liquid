@@ -42,15 +42,19 @@
   }
   #KiPedHero-{{ section.id }} * { box-sizing: border-box; }
   #KiPedHero-{{ section.id }} .kph-shell { width: min(1240px, calc(100% - 40px)); margin: 0 auto; }
-  #KiPedHero-{{ section.id }} .kph-grid { display: grid; grid-template-columns: minmax(0, 1.04fr) minmax(420px, .96fr); gap: 54px; align-items: start; }
-  #KiPedHero-{{ section.id }} .kph-gallery { min-width: 0; }
-  #KiPedHero-{{ section.id }} .kph-main {
-    position: relative; overflow: hidden; aspect-ratio: 4 / 5; border-radius: 26px;
-    background: linear-gradient(145deg, #21184f, #6254b4); border: 1px solid var(--ped-line);
-  }
-  #KiPedHero-{{ section.id }} .kph-slide { position: absolute; inset: 0; opacity: 0; transition: opacity .22s ease; pointer-events: none; }
-  #KiPedHero-{{ section.id }} .kph-slide.is-active { opacity: 1; }
-  #KiPedHero-{{ section.id }} .kph-slide img { width: 100%; height: 100%; object-fit: cover; display: block; }
+#KiPedHero-{{ section.id }} .kph-grid { display: grid; grid-template-columns: minmax(0, 1.04fr) minmax(420px, .96fr); gap: 40px; align-items: start; }
+#KiPedHero-{{ section.id }} .kph-gallery { min-width: 0; }
+#KiPedHero-{{ section.id }} .kph-main {
+  position: relative; display: flex; overflow-x: auto; overflow-y: hidden; aspect-ratio: 4 / 5; border-radius: 26px;
+  scroll-snap-type: x mandatory; scroll-behavior: smooth; scroll-padding-inline: 0;
+  touch-action: pan-x pan-y; -webkit-overflow-scrolling: touch; scrollbar-width: none;
+  overscroll-behavior-inline: contain;
+  background: linear-gradient(145deg, #21184f, #6254b4); border: 1px solid var(--ped-line);
+}
+#KiPedHero-{{ section.id }} .kph-main::-webkit-scrollbar { display: none; }
+#KiPedHero-{{ section.id }} .kph-slide { position: relative; inset: auto; opacity: 1; pointer-events: auto; flex: 0 0 100%; min-width: 100%; scroll-snap-align: start; scroll-snap-stop: always; }
+#KiPedHero-{{ section.id }} .kph-slide.is-active { opacity: 1; }
+#KiPedHero-{{ section.id }} .kph-slide img { width: 100%; height: 100%; object-fit: contain; display: block; }
   #KiPedHero-{{ section.id }} .kph-placeholder { position: absolute; inset: 0; display: grid; place-items: center; color: rgba(255,255,255,.92); text-align: center; padding: 30px; }
   #KiPedHero-{{ section.id }} .kph-placeholder svg { width: 120px; height: 64px; margin: 0 auto 18px; }
   #KiPedHero-{{ section.id }} .kph-placeholder strong { display: block; font-size: 24px; }
@@ -102,19 +106,19 @@
   #KiPedHero-{{ section.id }} .kph-trust-item svg { width: 17px; height: 17px; flex: 0 0 auto; }
   #KiPedHero-{{ section.id }} .kph-status { min-height: 18px; margin: 8px 0 0; color: #47745d; text-align: center; font-size: 12px; font-weight: 700; }
 
-  @media (max-width: 989px) {
-    #KiPedHero-{{ section.id }} { padding: 12px 0 24px; }
-    #KiPedHero-{{ section.id }} .kph-shell { width: min(100% - 28px, 720px); }
-    #KiPedHero-{{ section.id }} .kph-grid { grid-template-columns: 1fr; gap: 16px; }
-    #KiPedHero-{{ section.id }} .kph-info { position: static; }
-    #KiPedHero-{{ section.id }} .kph-main { height: min(92vw, 390px); aspect-ratio: auto; border-radius: 18px; }
-    #KiPedHero-{{ section.id }} .kph-slide img { object-fit: contain; }
-    #KiPedHero-{{ section.id }} .kph-thumbs { gap: 6px; padding-top: 8px; }
-    #KiPedHero-{{ section.id }} .kph-thumb { width: 50px; height: 50px; flex-basis: 50px; border-radius: 9px; }
-    #KiPedHero-{{ section.id }} .kph-eyebrow { margin-bottom: 5px; font-size: 9px; }
-    #KiPedHero-{{ section.id }} .kph-title { font-size: 28px; line-height: 1.05; }
-    #KiPedHero-{{ section.id }} .kph-rating { gap: 5px; margin-top: 8px; font-size: 11px; }
-    #KiPedHero-{{ section.id }} .kph-description { margin-top: 10px; font-size: 12px; line-height: 1.48; }
+@media (max-width: 989px) {
+  #KiPedHero-{{ section.id }} { padding: 8px 0 20px; }
+  #KiPedHero-{{ section.id }} .kph-shell { width: min(100% - 24px, 720px); }
+  #KiPedHero-{{ section.id }} .kph-grid { grid-template-columns: 1fr; gap: 12px; }
+  #KiPedHero-{{ section.id }} .kph-info { position: static; }
+  #KiPedHero-{{ section.id }} .kph-main { height: auto; aspect-ratio: 4 / 5; border-radius: 18px; }
+  #KiPedHero-{{ section.id }} .kph-slide img { object-fit: contain; }
+  #KiPedHero-{{ section.id }} .kph-thumbs { gap: 6px; padding-top: 8px; }
+  #KiPedHero-{{ section.id }} .kph-thumb { width: 46px; height: 46px; flex-basis: 46px; border-radius: 9px; }
+  #KiPedHero-{{ section.id }} .kph-eyebrow { margin-bottom: 5px; font-size: 9px; }
+  #KiPedHero-{{ section.id }} .kph-title { font-size: 26px; line-height: 1.05; }
+  #KiPedHero-{{ section.id }} .kph-rating { gap: 5px; margin-top: 8px; font-size: 11px; }
+  #KiPedHero-{{ section.id }} .kph-description { margin-top: 10px; font-size: 11.5px; line-height: 1.42; }
     #KiPedHero-{{ section.id }} .kph-purchase-title { margin: 14px 0 7px; font-size: 11px; }
     #KiPedHero-{{ section.id }} .kph-options { gap: 6px; }
     #KiPedHero-{{ section.id }} .kph-actions { gap: 7px; margin-top: 10px; }
@@ -350,13 +354,35 @@
       option.addEventListener('click', function () { selectOption(option); });
     });
 
-    root.querySelectorAll('[data-kph-thumb]').forEach(function (thumb) {
-      thumb.addEventListener('click', function () {
-        var index = thumb.getAttribute('data-kph-thumb');
-        root.querySelectorAll('[data-kph-slide]').forEach(function (slide) { slide.classList.toggle('is-active', slide.getAttribute('data-kph-slide') === index); });
-        root.querySelectorAll('[data-kph-thumb]').forEach(function (item) { item.classList.toggle('is-active', item === thumb); });
-      });
+  var gallery = root.querySelector('[data-kph-main]');
+  var thumbs = Array.prototype.slice.call(root.querySelectorAll('[data-kph-thumb]'));
+  var galleryFrame = null;
+
+  function setActiveThumb(index) {
+    thumbs.forEach(function (item, itemIndex) {
+      var isActive = itemIndex === index;
+      item.classList.toggle('is-active', isActive);
+      item.setAttribute('aria-current', isActive ? 'true' : 'false');
     });
+  }
+
+  thumbs.forEach(function (thumb, index) {
+    thumb.addEventListener('click', function () {
+      setActiveThumb(index);
+      if (gallery) gallery.scrollTo({ left: gallery.clientWidth * index, behavior: 'smooth' });
+    });
+  });
+
+  if (gallery && thumbs.length > 1) {
+    gallery.addEventListener('scroll', function () {
+      if (galleryFrame) return;
+      galleryFrame = requestAnimationFrame(function () {
+        galleryFrame = null;
+        var index = gallery.clientWidth ? Math.round(gallery.scrollLeft / gallery.clientWidth) : 0;
+        setActiveThumb(index);
+      });
+    }, { passive: true });
+  }
 
     atc.addEventListener('click', function () {
       if (!selected || atc.disabled) return;

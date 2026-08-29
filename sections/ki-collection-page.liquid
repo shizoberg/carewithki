@@ -21,7 +21,7 @@
   --p: #493d9a;
   --lil: #dad2ff;
   --pur: #b2a5ff;
-  --bg: #f8f8f6;
+  --bg: #fff;
   --txt: #1a1340;
   --mut: #6b6b8a;
   --badge: {{ badge_clr }};
@@ -35,6 +35,11 @@
   padding: 42px 24px;
   position: relative;
   overflow: hidden;
+  width: min(1320px, calc(100% - 40px));
+  margin: 20px auto 0;
+  border: 1px solid rgba(73, 61, 154, .12);
+  border-radius: 28px;
+  box-shadow: 0 16px 44px rgba(33, 24, 79, .12);
 }
 .kicol-{{ section.id }} .kicol-banner::before {
   content: '';
@@ -218,6 +223,13 @@
   display: -webkit-box; -webkit-line-clamp: 2;
   -webkit-box-orient: vertical; overflow: hidden;
 }
+.kicol-{{ section.id }} .kicol-card__bundle-tags {
+  display: flex; flex-wrap: wrap; gap: 5px; margin: 5px 0 3px;
+}
+.kicol-{{ section.id }} .kicol-card__bundle-tag {
+  display: inline-flex; padding: 4px 7px; border-radius: 999px;
+  background: #f1effb; color: var(--p); font-size: 9px; font-weight: 750; line-height: 1.2;
+}
 .kicol-{{ section.id }} .kicol-card__footer {
   display: flex; align-items: center;
   justify-content: space-between;
@@ -286,7 +298,12 @@
 
 /* ── MOBILE ── */
 @media (max-width: 749px) {
-  .kicol-{{ section.id }} .kicol-banner { padding: 30px 16px 24px; }
+  .kicol-{{ section.id }} .kicol-banner {
+    width: calc(100% - 24px);
+    margin: 12px auto 0;
+    border-radius: 20px;
+    padding: 26px 18px 22px;
+  }
   .kicol-{{ section.id }} .kicol-banner__inner { grid-template-columns: 1fr; gap: 22px; }
   .kicol-{{ section.id }} .kicol-banner__title { font-size: 30px; }
   .kicol-{{ section.id }} .kicol-banner__visual { min-height: 128px; justify-content: flex-start; }
@@ -391,6 +408,25 @@
           {%- for product in source_collection.products -%}
             {%- if hidden_handles contains product.handle -%}{%- continue -%}{%- endif -%}
             {%- assign cv = product.selected_or_first_available_variant -%}
+            {%- assign bundle_contents = blank -%}
+            {%- case product.handle -%}
+              {%- when 'ki-dongu-destek-paketi' -%}
+                {%- assign bundle_contents = '.ki Balance,.ki flow.care,.ki intimate' -%}
+              {%- when 'ki-hassas-bakim-paketi' -%}
+                {%- assign bundle_contents = '.ki sens.care,.ki intimate' -%}
+              {%- when 'ki-menopoz-bakim-paketi' -%}
+                {%- assign bundle_contents = '.ki Change,.ki 50+.care,.ki intimate' -%}
+              {%- when 'ki-light-ped-paketi-15-adet' -%}
+                {%- assign bundle_contents = '9 Günlük Ped,4 Gündüz Ped,2 Gece Ped' -%}
+              {%- when 'ki-medium-ped-paketi-22-adet' -%}
+                {%- assign bundle_contents = '9 Günlük Ped,9 Gündüz Ped,4 Gece Ped' -%}
+              {%- when 'ki-yogun-gunler-ped-paketi-26-adet' -%}
+                {%- assign bundle_contents = '6 Günlük Ped,12 Gündüz Ped,8 Gece Ped' -%}
+              {%- when 'balance-ve-intimate-bundle' -%}
+                {%- assign bundle_contents = '.ki Balance,.ki intimate' -%}
+              {%- when 'ki-intimate-arkadas-paketi' -%}
+                {%- assign bundle_contents = '2 × .ki intimate' -%}
+            {%- endcase -%}
             <li class="kicol-card">
               <a href="{{ product.url }}" class="kicol-card__img-wrap">
                 {% render 'ki-product-card-media', product: product, image_class: 'kicol-card__img', image_width: 600, placeholder_name: 'product-1' %}
@@ -406,6 +442,14 @@
                 <a href="{{ product.url }}" class="kicol-card__title">{{ product.title | escape }}</a>
                 {%- if section.settings.show_description and product.description != blank -%}
                   <p class="kicol-card__desc">{{ product.description | strip_html }}</p>
+                {%- endif -%}
+                {%- if bundle_contents != blank -%}
+                  <div class="kicol-card__bundle-tags" aria-label="Paket içeriği">
+                    {%- assign bundle_items = bundle_contents | split: ',' -%}
+                    {%- for bundle_item in bundle_items -%}
+                      <span class="kicol-card__bundle-tag">✓ {{ bundle_item | strip | escape }}</span>
+                    {%- endfor -%}
+                  </div>
                 {%- endif -%}
                 <div class="kicol-card__footer">
                   <div class="kicol-card__prices">

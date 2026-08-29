@@ -92,7 +92,7 @@
             {%- comment -%} ═══ /carewithki abonelik nav ═══ {%- endcomment -%}
 
             <div class="ki-mc-grid">
-              <a href="{{ mega_block.settings.card1_url | default: '/collections/paketler' }}" class="ki-mc">
+              <a href="{{ mega_block.settings.card1_url | default: '/collections/bundle' }}" class="ki-mc">
                 <div class="ki-mc__media">
                   {%- if mega_block.settings.card1_image != blank -%}
                     {{ mega_block.settings.card1_image | image_url: width: 400 | image_tag: loading: 'eager', alt: mega_block.settings.card1_label }}
