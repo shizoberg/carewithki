@@ -216,7 +216,7 @@
           "label": "İndirim rozeti renk şeması"
         },
         "sold_out_badge_color_scheme": {
-          "label": "Tükendi rozeti renk şeması"
+          "label": "Satışa kapalı rozeti renk şeması"
         }
       }
     },

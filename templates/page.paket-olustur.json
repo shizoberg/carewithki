@@ -272,7 +272,7 @@
             "badge": "",
             "step": 1,
             "unit": "şişe",
-            "demo_price": 145
+            "demo_price": 1250
           }
         },
         "p-jel-sens": {
@@ -285,7 +285,7 @@
             "badge": "",
             "step": 1,
             "unit": "şişe",
-            "demo_price": 155
+            "demo_price": 1250
           }
         },
         "p-jel-flow": {
@@ -298,7 +298,7 @@
             "badge": "",
             "step": 1,
             "unit": "şişe",
-            "demo_price": 165
+            "demo_price": 1250
           }
         },
         "p-jel-50": {
@@ -311,7 +311,7 @@
             "badge": "",
             "step": 1,
             "unit": "şişe",
-            "demo_price": 175
+            "demo_price": 1250
           }
         },
         "cat-ritual": {

@@ -68,7 +68,7 @@
         <div class="kicbp-price-box">
           <div class="kicbp-price-row"><div><span class="kicbp-price-label">Tek seferlik paket fiyatı</span><strong class="kicbp-price">{{ bundle_variant.price | money }}</strong></div><div class="kicbp-sub-price"><span>Abonelikte yaklaşık</span><strong>{{ subscription_price | money }}</strong></div></div>
           <div class="kicbp-actions">
-            {%- form 'product', product -%}<input type="hidden" name="id" value="{{ bundle_variant.id }}"><button class="kicbp-atc" type="submit"{% unless bundle_variant.available %} disabled{% endunless %}>{% if bundle_variant.available %}Paketi Sepete Ekle{% else %}Stokta Yok{% endif %}</button>{%- endform -%}
+            {%- form 'product', product -%}<input type="hidden" name="id" value="{{ bundle_variant.id }}"><button class="kicbp-atc" type="submit"{% unless bundle_variant.available %} disabled{% endunless %}>{% if bundle_variant.available %}Paketi Sepete Ekle{% else %}Satışa kapalı{% endif %}</button>{%- endform -%}
             {%- if preset_key != blank -%}<a class="kicbp-subscribe" href="/pages/paket-olustur?preset={{ preset_key | url_encode }}">Abone ol · Paketi hazır seçili aç →</a>{%- endif -%}
           </div>
           <p class="kicbp-note">Tek seferlik alımda bu paket ürün olarak sepete eklenir. Abonelikte içeriği ve gönderim sıklığını değiştirebilirsin.</p>

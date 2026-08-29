@@ -1853,12 +1853,12 @@
                                   <s data-ki-pack-price-original>₺{{ active_price | money_without_currency }}</s>
                                   <br><span class="ki-pack__item-discount">Abonelikte %{{ subscription_discount }} indirim</span>
                                 {%- else -%}
-                                  <span data-ki-pack-price-value>{% if active_price > 0 %}₺{{ active_price | money_without_currency }}{% else %}Yakında{% endif %}</span>
+                                  <span data-ki-pack-price-value>{% if active_price > 0 %}₺{{ active_price | money_without_currency }}{% else %}—{% endif %}</span>
                                 {%- endif -%}
                                 {%- if itemBlock.settings.step != blank and itemBlock.settings.step > 1 -%}
                                   <small data-ki-pack-price-unit>/ {{ itemBlock.settings.step }} {{ itemBlock.settings.unit }}</small>
                                 {%- endif -%}
-                                <br><span class="ki-pack__item-discount" data-ki-pack-availability-text{% if v.available %} hidden{% endif %}>Şu anda stokta yok</span>
+                                <br><span class="ki-pack__item-discount" data-ki-pack-availability-text{% if v.available %} hidden{% endif %}>Satışa kapalı</span>
                               </p>
                             </div>
                             <div class="ki-pack__stepper">
@@ -1914,7 +1914,7 @@
                                 >{{ itemBlock.settings.short }}</p>
                               {%- endif -%}
                               <p class="ki-pack__item-price">
-                                Yakında
+                                —
                               </p>
                             </div>
                             <div class="ki-pack__stepper">
@@ -2803,7 +2803,7 @@
           var priceValue = item.querySelector('[data-ki-pack-price-value]');
           var discountRate = subscriptionEnabled ? (parseFloat(item.getAttribute('data-ki-pack-discount')) || 0) : 0;
           var discountedPrice = Math.round(price * (100 - discountRate)) / 100;
-          if (priceValue) priceValue.textContent = price > 0 ? fmt(discountedPrice) : 'Yakında';
+          if (priceValue) priceValue.textContent = price > 0 ? fmt(discountedPrice) : '—';
           var originalPriceValue = item.querySelector('[data-ki-pack-price-original]');
           if (originalPriceValue) originalPriceValue.textContent = price > 0 ? fmt(price) : '';
           var priceUnit = item.querySelector('[data-ki-pack-price-unit]');
@@ -3199,10 +3199,10 @@
         { "type": "product",  "settings": { "category_key": "supplement", "step": 1, "unit": "kutu", "name_override": ".ki Change · Kapsül", "short": "Menopoz dönemini destekler · 30 kapsül", "demo_price": 449 } },
 
         { "type": "category", "settings": { "key": "gel", "label": "İntim Yıkama Jelleri", "description": "Daily · Sens · Flow · 50+ — ihtiyacına göre intim bakım desteği", "hint": "Flow üriner sistem desteği için, 50+ menopoz dönemine özel bakım için tercih edilebilir." } },
-        { "type": "product",  "settings": { "category_key": "gel", "step": 1, "unit": "şişe", "name_override": "İntim Yıkama Jeli · Daily", "short": "Günlük pH dengeli · 200 ml", "demo_price": 145 } },
-        { "type": "product",  "settings": { "category_key": "gel", "step": 1, "unit": "şişe", "name_override": "İntim Yıkama Jeli · Sens",  "short": "Hassas ciltler için yatıştırıcı · 200 ml", "demo_price": 155 } },
-        { "type": "product",  "settings": { "category_key": "gel", "step": 1, "unit": "şişe", "name_override": "İntim Yıkama Jeli · Flow",  "short": "Üriner sistem desteği için · 200 ml", "demo_price": 165 } },
-        { "type": "product",  "settings": { "category_key": "gel", "step": 1, "unit": "şişe", "name_override": "İntim Yıkama Jeli · 50+",   "short": "Menopoz dönemine özel bakım · 200 ml", "demo_price": 175 } },
+        { "type": "product",  "settings": { "category_key": "gel", "step": 1, "unit": "şişe", "name_override": "İntim Yıkama Jeli · Daily", "short": "Günlük pH dengeli · 200 ml", "demo_price": 1250 } },
+        { "type": "product",  "settings": { "category_key": "gel", "step": 1, "unit": "şişe", "name_override": "İntim Yıkama Jeli · Sens",  "short": "Hassas ciltler için yatıştırıcı · 200 ml", "demo_price": 1250 } },
+        { "type": "product",  "settings": { "category_key": "gel", "step": 1, "unit": "şişe", "name_override": "İntim Yıkama Jeli · Flow",  "short": "Üriner sistem desteği için · 200 ml", "demo_price": 1250 } },
+        { "type": "product",  "settings": { "category_key": "gel", "step": 1, "unit": "şişe", "name_override": "İntim Yıkama Jeli · 50+",   "short": "Menopoz dönemine özel bakım · 200 ml", "demo_price": 1250 } },
 
         { "type": "category", "settings": { "key": "ritual", "label": "İntim Bakım Spreyi", "description": "İntim bölge için pratik bakım ve ferahlık desteği", "hint": "İntim Bakım Spreyi, intim bölge bakım rutinini gün içinde pratik şekilde destekler." } },
         { "type": "product",  "settings": { "category_key": "ritual", "step": 1, "unit": "şişe", "name_override": "İntim Bakım Spreyi", "short": "İntim bölge bakım desteği · 100 ml", "demo_price": 139 } },

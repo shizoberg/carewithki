@@ -291,8 +291,8 @@
                 <span class="kph-option-meta">{{ block.settings.dimension | escape }} · {{ display_pack_count | escape }} · {{ block.settings.short_description | escape }}</span>
               </span>
               <span class="kph-option-price">
-                {%- if option_product != blank -%}{{ option_product.price | money }}{%- else -%}Yakında{%- endif -%}
-                <small>{% if option_variant.available %}Stokta{% else %}Yakında{% endif %}</small>
+                {%- if option_product != blank -%}{{ option_product.price | money }}{%- else -%}—{%- endif -%}
+                {% if option_variant.available %}<small>Stokta</small>{% endif %}
               </span>
             </button>
           {%- endfor -%}
@@ -345,7 +345,7 @@
       var variantId = option.getAttribute('data-variant-id') || '';
       var handle = option.getAttribute('data-product-handle') || '';
       atc.disabled = !available || !variantId;
-      atcLabel.textContent = available ? 'Sepete Ekle · ' + name + (price ? ' · ' + price : '') : 'Şu anda stokta yok';
+      atcLabel.textContent = available ? 'Sepete Ekle · ' + name + (price ? ' · ' + price : '') : 'Satışa kapalı';
       subscribe.href = '/pages/paket-olustur?abone=' + encodeURIComponent(variantId) + '&product=' + encodeURIComponent(handle);
       status.textContent = '';
     }
