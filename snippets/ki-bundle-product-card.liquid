@@ -14,13 +14,7 @@
 
 <li class="kbd-card">
   <a href="{{ product.url }}" class="kbd-card__hero" aria-label="{{ product.title | escape }}">
-    {%- if product.featured_image -%}
-      {{ product.featured_image | image_url: width: 900 | image_tag: class: 'kbd-card__hero-img', loading: 'lazy', alt: product.title }}
-    {%- elsif product.handle == 'ki-dongu-destek-paketi' or product.handle == 'ki-hassas-bakim-paketi' or product.handle == 'ki-menopoz-bakim-paketi' -%}
-      {% render 'ki-care-bundle-collage', product: product %}
-    {%- else -%}
-      {{ 'product-2' | placeholder_svg_tag: 'kbd-card__hero-img kbd-card__placeholder' }}
-    {%- endif -%}
+    {% render 'ki-product-card-media', product: product, image_class: 'kbd-card__hero-img', image_width: 900, placeholder_name: 'product-2' %}
     {%- if bundle_variant.compare_at_price > bundle_variant.price -%}
       {%- assign saving_percent = bundle_variant.compare_at_price | minus: bundle_variant.price | times: 100 | divided_by: bundle_variant.compare_at_price -%}
       <span class="kbd-card__save">%{{ saving_percent }} avantaj</span>

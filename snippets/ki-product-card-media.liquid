@@ -1,0 +1,45 @@
+{%- liquid
+  assign image_class = image_class | default: 'ki-product-card__image'
+  assign image_width = image_width | default: 700
+  assign placeholder_name = placeholder_name | default: 'product-1'
+  assign media_image = image | default: product.featured_image
+  assign fallback_asset = ''
+
+  case product.handle
+    when 'ki-hijyenik-gunduz-ped'
+      assign fallback_asset = 'ki-ped-gunluk-01.webp'
+    when 'ki-normal-ped'
+      assign fallback_asset = 'ki-ped-gunduz-01.webp'
+    when 'ki-hijyenik-gece-ped'
+      assign fallback_asset = 'ki-ped-gece-01.webp'
+    when 'ki-gunluk-ped-5li'
+      assign fallback_asset = 'ki-ped-gunluk-5li.webp'
+    when 'ki-gunduz-ped-5li'
+      assign fallback_asset = 'ki-ped-gunduz-5li.webp'
+    when 'ki-gece-ped-5li'
+      assign fallback_asset = 'ki-ped-gece-5li.webp'
+    when 'ki-light-ped-paketi-15-adet'
+      assign fallback_asset = 'ki-ped-pack-light.png'
+    when 'ki-medium-ped-paketi-22-adet'
+      assign fallback_asset = 'ki-ped-pack-medium.png'
+    when 'ki-yogun-gunler-ped-paketi-26-adet'
+      assign fallback_asset = 'ki-ped-pack-intense.png'
+  endcase
+-%}
+
+{%- if media_image -%}
+  {{ media_image | image_url: width: image_width | image_tag: class: image_class, loading: 'lazy', alt: product.title }}
+{%- elsif fallback_asset != blank -%}
+  <img
+    src="{{ fallback_asset | asset_url }}"
+    class="{{ image_class }}"
+    loading="lazy"
+    width="1080"
+    height="1350"
+    alt="{{ product.title | escape }}"
+  >
+{%- elsif product.handle == 'ki-dongu-destek-paketi' or product.handle == 'ki-hassas-bakim-paketi' or product.handle == 'ki-menopoz-bakim-paketi' -%}
+  {% render 'ki-care-bundle-collage', product: product %}
+{%- else -%}
+  {{ placeholder_name | placeholder_svg_tag: image_class }}
+{%- endif -%}

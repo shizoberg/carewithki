@@ -104,13 +104,7 @@
         {%- assign pill_list = ppills | split: ',' -%}
         <li class="kc-card">
           <a href="{{ product.url }}" class="kc-card__media">
-            {%- if product.featured_image -%}
-              {{ product.featured_image | image_url: width: 700 | image_tag: class: 'kc-card__img', loading: 'lazy', alt: product.title }}
-            {%- elsif product.handle == 'ki-dongu-destek-paketi' or product.handle == 'ki-hassas-bakim-paketi' or product.handle == 'ki-menopoz-bakim-paketi' -%}
-              {% render 'ki-care-bundle-collage', product: product %}
-            {%- else -%}
-              {{ 'product-1' | placeholder_svg_tag: 'kc-card__img' }}
-            {%- endif -%}
+            {% render 'ki-product-card-media', product: product, image_class: 'kc-card__img', image_width: 700, placeholder_name: 'product-1' %}
             {%- if cv.compare_at_price > cv.price -%}{%- assign sp = cv.compare_at_price | minus: cv.price | times: 100 | divided_by: cv.compare_at_price -%}<span class="kc-card__discount">%{{ sp }}</span>{%- endif -%}
             {%- if pbadge != blank -%}<span class="kc-card__badge">{{ pbadge | escape }}</span>{%- endif -%}
           </a>

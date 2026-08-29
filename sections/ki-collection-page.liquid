@@ -393,13 +393,7 @@
             {%- assign cv = product.selected_or_first_available_variant -%}
             <li class="kicol-card">
               <a href="{{ product.url }}" class="kicol-card__img-wrap">
-                {%- if product.featured_image -%}
-                  {{ product.featured_image | image_url: width: 600 | image_tag: class: 'kicol-card__img', loading: 'lazy', alt: product.title }}
-                {%- elsif product.handle == 'ki-dongu-destek-paketi' or product.handle == 'ki-hassas-bakim-paketi' or product.handle == 'ki-menopoz-bakim-paketi' -%}
-                  {% render 'ki-care-bundle-collage', product: product %}
-                {%- else -%}
-                  {{ 'product-1' | placeholder_svg_tag: 'kicol-card__img' }}
-                {%- endif -%}
+                {% render 'ki-product-card-media', product: product, image_class: 'kicol-card__img', image_width: 600, placeholder_name: 'product-1' %}
                 {%- if cv.compare_at_price > cv.price -%}
                   {%- assign save_pct = cv.compare_at_price | minus: cv.price | times: 100 | divided_by: cv.compare_at_price -%}
                   <span class="kicol-card__badge">%{{ save_pct }} İndirim</span>

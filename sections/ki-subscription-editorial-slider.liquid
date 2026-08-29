@@ -27,6 +27,8 @@
   #KiEditorialSlider-{{ section.id }} .kes-slide--artwork {
     position: relative;
     display: block;
+    max-width: 1250px;
+    margin: 0 auto;
   }
   #KiEditorialSlider-{{ section.id }} .kes-slide--artwork .kes-copy {
     position: absolute;
@@ -67,6 +69,10 @@
   }
   #KiEditorialSlider-{{ section.id }} .kes-slide--artwork .kes-media {
     width: 100%;
+    aspect-ratio: 2 / 1;
+  }
+  #KiEditorialSlider-{{ section.id }} .kes-slide--artwork .kes-media > img {
+    object-fit: cover;
   }
   #KiEditorialSlider-{{ section.id }} .kes-slide--artwork .kes-proof { display: none; }
   #KiEditorialSlider-{{ section.id }} .kes-copy { padding: 18px 0 18px 10px; }
@@ -217,6 +223,8 @@
       display: grid;
       grid-template-columns: 1fr;
       gap: 14px;
+      max-width: none;
+      margin: 0;
     }
     #KiEditorialSlider-{{ section.id }} .kes-slide--artwork .kes-copy {
       position: static;
@@ -252,16 +260,18 @@
     }
     #KiEditorialSlider-{{ section.id }} .kes-slide--artwork .kes-media {
       grid-row: 2;
-      aspect-ratio: 4 / 3;
+      aspect-ratio: 16 / 9;
+      border-radius: 16px;
     }
     #KiEditorialSlider-{{ section.id }} .kes-slide--artwork .kes-media > img {
-      position: relative;
-      width: 178%;
-      max-width: none;
+      position: static;
+      width: 100%;
+      height: 100%;
+      max-width: 100%;
       object-fit: cover;
     }
-    #KiEditorialSlider-{{ section.id }} .kes-slide--focus-left .kes-media > img { left: 0; }
-    #KiEditorialSlider-{{ section.id }} .kes-slide--focus-right .kes-media > img { left: -78%; }
+    #KiEditorialSlider-{{ section.id }} .kes-slide--focus-left .kes-media > img { object-position: left center; }
+    #KiEditorialSlider-{{ section.id }} .kes-slide--focus-right .kes-media > img { object-position: right center; }
     #KiEditorialSlider-{{ section.id }} .kes-copy { padding: 2px 4px 0; }
     #KiEditorialSlider-{{ section.id }} .kes-eyebrow { margin-bottom: 8px; font-size: 8px; }
     #KiEditorialSlider-{{ section.id }} .kes-title { max-width: 350px; font-size: clamp(31px, 9.2vw, 40px); line-height: 1; }
@@ -414,7 +424,7 @@
     { "type": "color", "id": "background", "label": "Arka plan", "default": "#ffffff" },
     { "type": "color", "id": "text_color", "label": "Metin", "default": "#211a45" },
     { "type": "color", "id": "accent_color", "label": "Vurgu", "default": "#493d9a" },
-    { "type": "range", "id": "max_width", "label": "Maksimum genişlik", "min": 1000, "max": 1800, "step": 50, "unit": "px", "default": 1450 },
+    { "type": "range", "id": "max_width", "label": "Maksimum genişlik", "min": 1000, "max": 1800, "step": 50, "unit": "px", "default": 1250 },
     { "type": "text", "id": "benefit_one", "label": "Alt şerit 1", "default": "%15 abonelik avantajı" },
     { "type": "text", "id": "benefit_two", "label": "Alt şerit 2", "default": "Kişiselleştirilebilir" },
     { "type": "text", "id": "benefit_three", "label": "Alt şerit 3", "default": "Eczacı onaylı" },

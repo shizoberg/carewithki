@@ -292,12 +292,14 @@ cart-items .cart__warnings a.button::after { display:none !important; }
                 {%- for item in cart.items -%}
                   <tr class="cart-item{% if item.parent_relationship.parent != null %} cart-item__nested-line{% endif %}" id="CartItem-{{ item.index | plus: 1 }}">
                     <td class="cart-item__media">
-                      {% if item.image %}
-                        <a href="{{ item.url }}" class="cart-item__link" aria-hidden="true" tabindex="-1"> </a>
-                        <div class="cart-item__image-container gradient{% if item.parent_relationship.parent == null %} global-media-settings{% endif %}">
-                          <img src="{{ item.image | image_url: width: 300 }}" class="cart-item__image{% if item.parent_relationship.parent != null %} global-media-settings{% endif %}" alt="{{ item.image.alt | escape }}" loading="lazy" width="150" height="{{ 150 | divided_by: item.image.aspect_ratio | ceil }}">
-                        </div>
-                      {% endif %}
+                      {%- assign cart_item_image_class = 'cart-item__image' -%}
+                      {%- if item.parent_relationship.parent != null -%}
+                        {%- assign cart_item_image_class = cart_item_image_class | append: ' global-media-settings' -%}
+                      {%- endif -%}
+                      <a href="{{ item.url }}" class="cart-item__link" aria-hidden="true" tabindex="-1"> </a>
+                      <div class="cart-item__image-container gradient{% if item.parent_relationship.parent == null %} global-media-settings{% endif %}">
+                        {% render 'ki-product-card-media', product: item.product, image: item.image, image_class: cart_item_image_class, image_width: 300, placeholder_name: 'product-1' %}
+                      </div>
                     </td>
 
                     <td class="cart-item__details">
