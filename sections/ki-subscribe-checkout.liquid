@@ -517,6 +517,45 @@
     }
     renderSummary(pack);
 
+    function publishSubscriptionCustomerEvent(eventName, data) {
+      var publish = function (attempt) {
+        if (window.kiAnalytics && window.kiAnalytics.publishCustomerEvent) {
+          window.kiAnalytics.publishCustomerEvent(eventName, data || {});
+          return;
+        }
+        if (attempt < 30) setTimeout(function () { publish(attempt + 1); }, 250);
+      };
+      publish(0);
+    }
+
+    function packCustomerEventData(source) {
+      var items = pack && pack.boxItems ? pack.boxItems : [];
+      return {
+        content_name: (pack && pack.packName) || 'Kendi Bakım Paketim',
+        content_type: 'product',
+        content_ids: items.map(function (item) { return item.shopifyVariantGid; }).filter(Boolean),
+        contents: items.filter(function (item) { return item.shopifyVariantGid; }).map(function (item) {
+          return { id: item.shopifyVariantGid, quantity: Number(item.quantity || 1), item_price: Number(item.price || 0) };
+        }),
+        value: Number((pack && pack.totalPrice) || 0),
+        currency: (window.kiConfig && window.kiConfig.currency) || 'TRY',
+        interval_count: Number((pack && pack.intervalCount) || 2),
+        flow_id: (pack && pack.trackingFlowId) || '',
+        source: source
+      };
+    }
+
+    /* E-posta girişi tamamlanıp özel abonelik checkout'u açıldığında bir kez. */
+    if (isLoggedIn && pack && pack.boxItems && pack.boxItems.length) {
+      var checkoutEventKey = 'ki_meta_checkout_' + (pack.trackingFlowId || 'current');
+      var checkoutAlreadyPublished = false;
+      try { checkoutAlreadyPublished = sessionStorage.getItem(checkoutEventKey) === '1'; } catch (e) {}
+      if (!checkoutAlreadyPublished) {
+        publishSubscriptionCustomerEvent('carewithki:subscription_initiate_checkout', packCustomerEventData('subscription_checkout'));
+        try { sessionStorage.setItem(checkoutEventKey, '1'); } catch (e) {}
+      }
+    }
+
     function getLoginRedirectUrl() {
       var sourceUrl = new URL(storefrontLoginUrl, window.location.origin);
       var loginUrl = new URL('/customer_authentication/login', window.location.origin);
@@ -653,6 +692,14 @@
       ctaEl.disabled = true;
       ctaEl.textContent = 'Yönlendiriliyor…';
       setProgress(4);
+
+      var paymentEventKey = 'ki_meta_payment_' + (pack.trackingFlowId || 'current');
+      var paymentAlreadyPublished = false;
+      try { paymentAlreadyPublished = sessionStorage.getItem(paymentEventKey) === '1'; } catch (e) {}
+      if (!paymentAlreadyPublished) {
+        publishSubscriptionCustomerEvent('carewithki:subscription_add_payment_info', packCustomerEventData('iyzico_payment_step'));
+        try { sessionStorage.setItem(paymentEventKey, '1'); } catch (e) {}
+      }
 
       // Form & summary state'ini güvenli şekilde restore edebilmek için fonksiyon
       function restoreForm() {

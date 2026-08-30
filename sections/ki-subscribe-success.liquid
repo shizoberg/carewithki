@@ -69,6 +69,36 @@
 
 <script>
   (function () {
+    /* Ödeme callback'i başarı sayfasına ulaştığında Meta Purchase köprüsünü bir
+       kez yayınla. Paket verisi yayınlandıktan sonra temizlenir; kart/iletişim
+       bilgileri event payload'ına dahil edilmez. */
+    try {
+      var purchasedPackJson = sessionStorage.getItem('ki_pack');
+      var purchasedPack = purchasedPackJson ? JSON.parse(purchasedPackJson) : null;
+      if (purchasedPack && purchasedPack.boxItems && purchasedPack.boxItems.length) {
+        var publishPurchase = function (attempt) {
+          if (window.kiAnalytics && window.kiAnalytics.publishCustomerEvent) {
+            window.kiAnalytics.publishCustomerEvent('carewithki:subscription_purchase', {
+              content_name: purchasedPack.packName || 'Kendi Bakım Paketim',
+              content_type: 'product',
+              content_ids: purchasedPack.boxItems.map(function (item) { return item.shopifyVariantGid; }).filter(Boolean),
+              contents: purchasedPack.boxItems.filter(function (item) { return item.shopifyVariantGid; }).map(function (item) {
+                return { id: item.shopifyVariantGid, quantity: Number(item.quantity || 1), item_price: Number(item.price || 0) };
+              }),
+              value: Number(purchasedPack.totalPrice || 0),
+              currency: (window.kiConfig && window.kiConfig.currency) || 'TRY',
+              interval_count: Number(purchasedPack.intervalCount || 2),
+              flow_id: purchasedPack.trackingFlowId || '',
+              source: 'iyzico_subscription_success'
+            });
+            return;
+          }
+          if (attempt < 30) setTimeout(function () { publishPurchase(attempt + 1); }, 250);
+        };
+        publishPurchase(0);
+      }
+    } catch (e) {}
+
     /* 1) Başarılı abonelik sonrası eski pack data'yı temizle — geri tuşuyla
        checkout sayfasına dönüldüğünde stale data çakışmasın. */
     try {

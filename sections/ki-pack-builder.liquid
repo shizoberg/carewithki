@@ -3021,9 +3021,29 @@
             sellingPlanId: sellingPlanId || '',
             intervalCount: intervalMonths,
             packName: packName,
+            trackingFlowId: 'sub-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 10),
             referralCode: await validateReferralCode(),
             source: 'ki-pack-builder'
           };
+          trackPack('SUBSCRIPTION_PACKAGE_ADDED', {
+            value: Number(payload.totalPrice || 0),
+            metadata: { source: 'pack-builder', itemCount: boxItems.length, intervalCount: intervalMonths }
+          });
+          if (window.kiAnalytics && window.kiAnalytics.publishCustomerEvent) {
+            window.kiAnalytics.publishCustomerEvent('carewithki:subscription_add_to_cart', {
+              content_name: packName,
+              content_type: 'product',
+              content_ids: boxItems.map(function (item) { return item.shopifyVariantGid; }).filter(Boolean),
+              contents: boxItems.filter(function (item) { return item.shopifyVariantGid; }).map(function (item) {
+                return { id: item.shopifyVariantGid, quantity: Number(item.quantity || 1), item_price: Number(item.price || 0) };
+              }),
+              value: Number(payload.totalPrice || 0),
+              currency: (window.kiConfig && window.kiConfig.currency) || 'TRY',
+              interval_count: intervalMonths,
+              flow_id: payload.trackingFlowId,
+              source: 'subscription_pack_builder'
+            });
+          }
           try { sessionStorage.setItem('ki_pack', JSON.stringify(payload)); } catch (storageError) {}
           if (!customerLoggedIn) {
             var sourceLoginUrl = new URL(storefrontLoginUrl, window.location.origin);

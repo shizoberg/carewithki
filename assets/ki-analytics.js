@@ -52,7 +52,29 @@
     }).catch(function () {});
   }
 
-  window.kiAnalytics = { track: track, getSessionId: sessionId };
+  /*
+   * Shopify Customer Events köprüsü. Özel abonelik akışı Shopify sepeti ve
+   * checkout'u dışında çalıştığı için standart commerce event'leri otomatik
+   * oluşmaz. Bu yardımcı yalnızca carewithki:* isimli özel event'leri Shopify
+   * pixel veri katmanına yayınlar; Meta eşlemesi Shopify Customer Events'teki
+   * ayrı custom pixel tarafından yapılır.
+   */
+  function publishCustomerEvent(eventName, data, attempt) {
+    if (!allowed()) return;
+    var tries = Number(attempt || 0);
+    try {
+      if (window.Shopify && Shopify.analytics && typeof Shopify.analytics.publish === 'function') {
+        var result = Shopify.analytics.publish(eventName, data || {});
+        if (result && typeof result.catch === 'function') result.catch(function () {});
+        return;
+      }
+    } catch (error) { return; }
+    if (tries < 30) {
+      setTimeout(function () { publishCustomerEvent(eventName, data, tries + 1); }, 250);
+    }
+  }
+
+  window.kiAnalytics = { track: track, getSessionId: sessionId, publishCustomerEvent: publishCustomerEvent };
 
   track('PAGE_VIEW');
   if (context.pageType === 'product') {
