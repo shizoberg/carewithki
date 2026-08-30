@@ -78,6 +78,29 @@
     </div>
   </div>
 </section>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {%- assign faq_schema_index = 0 -%}
+    {%- for block in section.blocks -%}
+      {%- if block.type == 'faq' and block.settings.question != blank and block.settings.answer != blank -%}
+        {%- if faq_schema_index > 0 -%},{%- endif -%}
+        {
+          "@type": "Question",
+          "name": {{ block.settings.question | strip_html | strip_newlines | json }},
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": {{ block.settings.answer | strip_html | strip_newlines | json }}
+          }
+        }
+        {%- assign faq_schema_index = faq_schema_index | plus: 1 -%}
+      {%- endif -%}
+    {%- endfor -%}
+  ]
+}
+</script>
 {% schema %}
 {
   "name": "FAQ split (.ki)",

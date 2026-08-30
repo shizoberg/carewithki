@@ -752,6 +752,48 @@
             "question": "Modern Takviye Edici Gıdalarımız Ne Değildir?",
             "answer": "<p>İlaç değildir. Hormon içermez. Tedavi edici amaç taşımaz.</p>"
           }
+        },
+        "faq_pharmacist_brand": {
+          "type": "faq",
+          "settings": {
+            "question": ".ki bir eczacı markası mı?",
+            "answer": "<p>Evet. <strong>.ki, kadın sağlığı ve kişisel bakım ihtiyaçlarını eczacı bakış açısıyla ele alan bir eczacı markasıdır.</strong> Ürünlerimizi geliştirirken anlaşılır içerik, doğru kullanım bilgisi ve günlük hayata kolayca uyum sağlayan çözümler sunmayı önemsiyoruz.</p>"
+          }
+        },
+        "faq_pads_difference": {
+          "type": "faq",
+          "settings": {
+            "question": ".ki ped çeşitleri arasındaki fark nedir?",
+            "answer": "<p>.ki Günlük Ped günlük kullanım ve hafif akış için; .ki Gündüz Pedi gün içindeki adet dönemi kullanımı için; .ki Gece Pedi ise daha uzun yapısıyla gece boyunca daha geniş koruma alanı sunmak için tasarlanmıştır. İhtiyacına ve akış yoğunluğuna göre tek bir çeşidi ya da farklı pedleri birlikte tercih edebilirsin.</p>"
+          }
+        },
+        "faq_pads_choice": {
+          "type": "faq",
+          "settings": {
+            "question": "Hangi .ki pedi seçmeliyim?",
+            "answer": "<p>Günlük kullanım için 155 mm .ki Günlük Ped, gün içindeki adet dönemi kullanımı için 245 mm .ki Gündüz Pedi, gece veya daha geniş koruma alanı ihtiyacı için 335 mm .ki Gece Pedi tercih edebilirsin. Kullanım sıklığın kişisel ihtiyacına ve akış yoğunluğuna göre değişebilir.</p>"
+          }
+        },
+        "faq_subscription_how": {
+          "type": "faq",
+          "settings": {
+            "question": ".ki abonelik sistemi nasıl çalışır?",
+            "answer": "<p>İhtiyacına uygun hazır paketi seçebilir veya kendi bakım paketini oluşturabilirsin. Hesabına giriş yaptıktan sonra teslimat ve ödeme bilgilerini tamamlarsın; seçtiğin paket belirlenen teslimat döneminde düzenli olarak hazırlanır ve adresine gönderilir.</p>"
+          }
+        },
+        "faq_subscription_contents": {
+          "type": "faq",
+          "settings": {
+            "question": "Abonelik paketimin içeriğini ve teslimat bilgilerini görebilir miyim?",
+            "answer": "<p>Evet. Abonelik öncesinde paketteki ürünleri, adetleri, toplam tutarı ve teslimat dönemini görebilirsin. Aboneliğin başladıktan sonra paket ve teslimat detaylarını hesabındaki abonelik alanından takip edebilirsin.</p>"
+          }
+        },
+        "faq_subscription_manage": {
+          "type": "faq",
+          "settings": {
+            "question": ".ki aboneliğimi duraklatabilir veya iptal edebilir miyim?",
+            "answer": "<p>Evet. Hesabındaki abonelik alanından paketini takip edebilir, uygun seçenekler üzerinden duraklatabilir veya iptal edebilirsin. Yardıma ihtiyaç duyarsan WhatsApp destek hattımızdan ekibimize ulaşabilirsin.</p>"
+          }
         }
       },
       "block_order": [
@@ -759,7 +801,13 @@
         "faq_FMeHJM",
         "faq_HUaRG7",
         "faq_RcKGqh",
-        "faq_qNNwR8"
+        "faq_qNNwR8",
+        "faq_pharmacist_brand",
+        "faq_pads_difference",
+        "faq_pads_choice",
+        "faq_subscription_how",
+        "faq_subscription_contents",
+        "faq_subscription_manage"
       ],
       "name": "FAQ split",
       "settings": {
