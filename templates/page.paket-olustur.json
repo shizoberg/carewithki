@@ -174,7 +174,7 @@
           "type": "product",
           "settings": {
             "product": "ki-hijyenik-gunduz-ped",
-            "loose_product": "ki-gunluk-ped-5li",
+            "loose_product": "ki-gunluk-premium-hijyenik-ped-10-adet",
             "category_key": "ped",
             "name_override": ".ki Günlük Ped",
             "short": "155 mm · 10 adet",
@@ -190,7 +190,7 @@
           "type": "product",
           "settings": {
             "product": "ki-normal-ped",
-            "loose_product": "ki-gunduz-ped-5li",
+            "loose_product": "ki-gunduz-premium-hijyenik-ped-10-adet",
             "category_key": "ped",
             "name_override": ".ki Gündüz Pedi",
             "short": "245 mm · 10 adet",
