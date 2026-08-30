@@ -2294,6 +2294,8 @@
     var idleText = {{ section.settings.cta_idle | default: 'Önce ürün ekle' | json }};
     var emptyText = {{ section.settings.empty_message | default: 'Üst taraftan ürün ekleyerek paketini oluştur.' | json }};
     var subscriptionEnabled = {{ settings.subscription_enabled | default: false | json }};
+    var customerLoggedIn = {% if customer %}true{% else %}false{% endif %};
+    var storefrontLoginUrl = {{ routes.storefront_login_url | default: routes.account_login_url | json }};
     var subscriptionShippingFee = {{ section.settings.subscription_shipping_fee | default: 59 }};
     var subscriptionFreeShippingThreshold = {{ section.settings.subscription_free_shipping_threshold | default: 800 }};
     subscriptionShippingFee = Math.max(0, Number(subscriptionShippingFee) || 0);
@@ -3022,6 +3024,19 @@
             referralCode: await validateReferralCode(),
             source: 'ki-pack-builder'
           };
+          try { sessionStorage.setItem('ki_pack', JSON.stringify(payload)); } catch (storageError) {}
+          if (!customerLoggedIn) {
+            var sourceLoginUrl = new URL(storefrontLoginUrl, window.location.origin);
+            var loginUrl = new URL('/customer_authentication/login', window.location.origin);
+            ['locale', 'region_country', 'ui_hint'].forEach(function (key) {
+              var value = sourceLoginUrl.searchParams.get(key);
+              if (value) loginUrl.searchParams.set(key, value);
+            });
+            var checkoutPath = new URL(checkoutUrl, window.location.origin).pathname;
+            loginUrl.searchParams.set('return_to', checkoutPath + '?resume_subscription=1');
+            window.location.assign(loginUrl.toString());
+            return;
+          }
           var encoded = encodeURIComponent(btoa(unescape(encodeURIComponent(JSON.stringify(payload)))));
           var sep = checkoutUrl.indexOf('?') === -1 ? '?' : '&';
           window.location.href = checkoutUrl + sep + 'pack=' + encoded;
