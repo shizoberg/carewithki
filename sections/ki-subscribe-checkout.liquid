@@ -76,30 +76,41 @@
     }
     #ki-{{ section.id }} .ki-sc__error.is-visible { display: block; }
 
-    /* Guest user login info banner */
-    #ki-{{ section.id }} .ki-sc__login-info {
-      display: flex; align-items: flex-start; gap: 12px;
-      background: var(--ki-secondary, #f4ede1);
-      border: 1px solid rgba(58,45,110,.15);
-      border-radius: 12px;
-      padding: 14px 16px;
-      margin-bottom: 16px;
+    #ki-{{ section.id }} .ki-sc__steps {
+      display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px;
+      margin: 0 0 18px; padding: 0; list-style: none;
     }
-    #ki-{{ section.id }} .ki-sc__login-info-icon {
-      width: 32px; height: 32px;
-      display: grid; place-items: center;
-      background: var(--ki-primary, #3a2d6e);
-      color: var(--ki-primary-fg, #fff);
-      border-radius: 999px;
-      flex-shrink: 0;
+    #ki-{{ section.id }} .ki-sc__step {
+      display: grid; grid-template-columns: 34px minmax(0, 1fr); gap: 11px; align-items: start;
+      background: #f7f5ff; border: 1px solid #ded8f4; border-radius: 14px; padding: 14px;
     }
-    #ki-{{ section.id }} .ki-sc__login-info-text {
-      display: flex; flex-direction: column; gap: 4px;
-      font-size: 13px; line-height: 1.4;
-      color: var(--ki-primary, #3a2d6e);
+    #ki-{{ section.id }} .ki-sc__step-no {
+      width: 34px; height: 34px; display: grid; place-items: center;
+      border-radius: 999px; background: var(--ki-primary, #3a2d6e); color: #fff;
+      font-size: 13px; font-weight: 800;
     }
-    #ki-{{ section.id }} .ki-sc__login-info-text strong { font-weight: 700; }
-    #ki-{{ section.id }} .ki-sc__login-info-text span { color: var(--ki-muted, #5a5a5a); font-size: 12.5px; }
+    #ki-{{ section.id }} .ki-sc__step-copy { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+    #ki-{{ section.id }} .ki-sc__step-copy strong { color: var(--ki-primary, #3a2d6e); font-size: 13px; line-height: 1.35; }
+    #ki-{{ section.id }} .ki-sc__step-copy span { color: #6d6876; font-size: 12px; line-height: 1.45; }
+    #ki-{{ section.id }} .ki-sc__step.is-complete { background: #eef9f3; border-color: #cdebdc; }
+    #ki-{{ section.id }} .ki-sc__step.is-complete .ki-sc__step-no { background: #287655; }
+
+    #ki-{{ section.id }} .ki-sc__support {
+      display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap;
+      margin-top: 16px; padding: 15px 16px; border-radius: 14px;
+      background: #eef9f3; border: 1px solid #cdebdc;
+    }
+    #ki-{{ section.id }} .ki-sc__support-copy { display: flex; flex-direction: column; gap: 3px; }
+    #ki-{{ section.id }} .ki-sc__support-copy strong { color: #235f47; font-size: 13px; }
+    #ki-{{ section.id }} .ki-sc__support-copy a { color: #1f684a; font-size: 14px; font-weight: 750; text-decoration: none; }
+    #ki-{{ section.id }} .ki-sc__support-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+    #ki-{{ section.id }} .ki-sc__support-btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+      min-height: 40px; padding: 9px 13px; border-radius: 999px;
+      background: #fff; border: 1px solid #b9dfcb; color: #235f47;
+      font-size: 12px; font-weight: 750; text-decoration: none;
+    }
+    #ki-{{ section.id }} .ki-sc__support-btn--wa { background: #287655; border-color: #287655; color: #fff; }
 
     #ki-{{ section.id }} .ki-sc__iyzico {
       background: #fff; border: 1px solid var(--ki-border, rgba(0,0,0,.08));
@@ -136,6 +147,10 @@
         margin-top: 6px;
       }
       #ki-{{ section.id }} .ki-sc__form { scroll-margin-bottom: 100px; }
+      #ki-{{ section.id }} .ki-sc__steps { grid-template-columns: 1fr; }
+      #ki-{{ section.id }} .ki-sc__support { align-items: stretch; }
+      #ki-{{ section.id }} .ki-sc__support-actions { width: 100%; }
+      #ki-{{ section.id }} .ki-sc__support-btn { flex: 1; }
     }
   </style>
 
@@ -176,17 +191,24 @@
 
     <div class="ki-sc__error" data-ki-sc-error></div>
 
-    {%- unless customer -%}
-      <div class="ki-sc__login-info">
-        <div class="ki-sc__login-info-icon" aria-hidden="true">
-          {% render 'ki-icon', name: 'user', size: 16 %}
-        </div>
-        <div class="ki-sc__login-info-text">
-          <strong>Aboneliği takip edebilmen için Shopify hesabına giriş yapman gerek.</strong>
-          <span>Bilgileri doldur, "Ödemeye Geç" → giriş ekranı açılır, giriş sonrası ödeme sayfasına dönülür.</span>
-        </div>
-      </div>
-    {%- endunless -%}
+    <ol class="ki-sc__steps" aria-label="Abonelik adımları">
+      <li class="ki-sc__step">
+        <span class="ki-sc__step-no">1</span>
+        <span class="ki-sc__step-copy"><strong>Telefonunu ve adresini doldur</strong><span>Girdiğin teslimat bilgileri giriş sırasında korunur.</span></span>
+      </li>
+      <li class="ki-sc__step">
+        <span class="ki-sc__step-no">2</span>
+        <span class="ki-sc__step-copy"><strong>“Ödemeye Geç”e dokun</strong><span>Bilgilerin kontrol edilir ve güvenli giriş ekranı açılır.</span></span>
+      </li>
+      <li class="ki-sc__step{% if customer %} is-complete{% endif %}">
+        <span class="ki-sc__step-no">{% if customer %}✓{% else %}3{% endif %}</span>
+        <span class="ki-sc__step-copy"><strong>Hesabına giriş yap</strong><span>Ad, soyad ve e-posta hesabından otomatik gelir; telefonun ve adresin değişmez.</span></span>
+      </li>
+      <li class="ki-sc__step">
+        <span class="ki-sc__step-no">4</span>
+        <span class="ki-sc__step-copy"><strong>Ödemeni tamamla</strong><span>Paketini profilinden takip edebilir, kolayca duraklatabilir veya iptal edebilirsin.</span></span>
+      </li>
+    </ol>
 
     <style>
       #ki-{{ section.id }} .ki-sc__ro-note{font-size:12px;color:#6b6b6b;background:#f6f4ff;border:1px solid #e6e0ff;border-radius:8px;padding:8px 10px;margin-bottom:12px}
@@ -204,20 +226,26 @@
     </style>
 
     <form class="ki-sc__form" data-ki-sc-form>
-      <p class="ki-sc__ro-note">Kişisel bilgilerin Shopify hesabından gelir. Değiştirmek için hesabını kullan.</p>
+      <p class="ki-sc__ro-note">
+        {%- if customer -%}
+          Ad, soyad ve e-posta hesabından gelir. Telefonunu ve teslimat adresini aşağıdan kontrol edebilirsin.
+        {%- else -%}
+          Ad, soyad ve e-posta giriş yaptıktan sonra hesabından otomatik gelir. Burada girdiğin telefon ve adres giriş sırasında silinmez.
+        {%- endif -%}
+      </p>
       <div class="ki-sc__field-row" style="display:flex;gap:12px;flex-wrap:wrap">
         <div class="ki-sc__field" style="flex:1;min-width:120px">
           <label for="ki-sc-firstname">İsim</label>
-          <input id="ki-sc-firstname" name="firstName" type="text" readonly autocomplete="given-name">
+          <input id="ki-sc-firstname" name="firstName" type="text" readonly autocomplete="given-name" placeholder="Giriş sonrası hesabından gelir">
         </div>
         <div class="ki-sc__field" style="flex:1;min-width:120px">
           <label for="ki-sc-lastname">Soyisim</label>
-          <input id="ki-sc-lastname" name="lastName" type="text" readonly autocomplete="family-name">
+          <input id="ki-sc-lastname" name="lastName" type="text" readonly autocomplete="family-name" placeholder="Giriş sonrası hesabından gelir">
         </div>
       </div>
       <div class="ki-sc__field">
         <label for="ki-sc-email">E-posta</label>
-        <input id="ki-sc-email" name="email" type="email" readonly autocomplete="email">
+        <input id="ki-sc-email" name="email" type="email" readonly autocomplete="email" placeholder="Giriş sonrası hesabından gelir">
       </div>
       <div class="ki-sc__field">
         <label for="ki-sc-phone">Telefon</label>
@@ -270,6 +298,17 @@
       <button type="submit" class="ki-sc__cta" data-ki-sc-cta>Ödemeye Geç</button>
     </form>
 
+    <aside class="ki-sc__support" aria-label="Abonelik desteği">
+      <div class="ki-sc__support-copy">
+        <strong>Bir adımda takıldın mı? Yanındayız.</strong>
+        <a href="tel:+905335745535">+90 533 574 55 35</a>
+      </div>
+      <div class="ki-sc__support-actions">
+        <a class="ki-sc__support-btn ki-sc__support-btn--wa" href="https://wa.me/905335745535?text=Merhaba%2C%20abonelik%20%C3%B6demesi%20hakk%C4%B1nda%20destek%20almak%20istiyorum." target="_blank" rel="noopener">WhatsApp’tan yaz</a>
+        <a class="ki-sc__support-btn" href="tel:+905335745535">Hemen ara</a>
+      </div>
+    </aside>
+
     <div class="ki-sc__iyzico" data-ki-sc-iyzico hidden>
       {%- comment -%}
         iyzico checkout form v2 hedef div'i — SDK bundle.js bu div'i bulup
@@ -295,6 +334,8 @@
     var ctaEl = root.querySelector('[data-ki-sc-cta]');
     var errEl = root.querySelector('[data-ki-sc-error]');
     var iyzicoEl = root.querySelector('[data-ki-sc-iyzico]');
+    var checkoutDraftKey = 'ki_subscribe_checkout_draft_v1';
+    var pendingSubmitKey = 'ki_subscribe_pending_submit_v1';
 
     /* Page init: form görünür + iyzico gizli — herhangi bir önceki state'i temizle */
     formEl.style.display = '';
@@ -333,20 +374,21 @@
       return '0' + d.slice(0,3) + ' ' + d.slice(3,6) + ' ' + d.slice(6,8) + ' ' + d.slice(8,10);
     }
 
-    /* Salt-okunur kişisel bilgileri Shopify'dan doldur */
+    var fnInput = formEl.querySelector('[name="firstName"]');
+    var lnInput = formEl.querySelector('[name="lastName"]');
+    var emailInput = formEl.querySelector('[name="email"]');
+    var phoneInput = formEl.querySelector('[name="phone"]');
+
+    /* Salt-okunur kişisel bilgileri hesaptan doldur */
     if (isLoggedIn) {
-      var fnInput = formEl.querySelector('[name="firstName"]');
-      var lnInput = formEl.querySelector('[name="lastName"]');
-      var emailInput = formEl.querySelector('[name="email"]');
-      var phoneInput = formEl.querySelector('[name="phone"]');
       if (fnInput) fnInput.value = customerFirstName;
       if (lnInput) lnInput.value = customerLastName;
       if (emailInput) emailInput.value = customerEmail;
       if (phoneInput && customerPhone) phoneInput.value = fmtTrPhone(customerPhone);
-      if (phoneInput) phoneInput.addEventListener('blur', function () {
-        if (phoneInput.value.trim()) phoneInput.value = fmtTrPhone(phoneInput.value);
-      });
     }
+    if (phoneInput) phoneInput.addEventListener('blur', function () {
+      if (phoneInput.value.trim()) phoneInput.value = fmtTrPhone(phoneInput.value);
+    });
 
     /* Adres kartları + yeni adres paneli */
     var addrCardsEl = root.querySelector('[data-ki-sc-addr-cards]');
@@ -367,6 +409,29 @@
     });
     if (savedRadios.length > 0) { savedRadios[0].checked = true; showNewAddr(false); }
     else { showNewAddr(true); }
+
+    /* Giriş yönlendirmesinde telefon ve yeni adres kaybolmasın. */
+    var pendingSubmit = false;
+    var restoredDraft = null;
+    try {
+      pendingSubmit = sessionStorage.getItem(pendingSubmitKey) === '1';
+      var storedDraft = sessionStorage.getItem(checkoutDraftKey);
+      if (storedDraft) restoredDraft = JSON.parse(storedDraft);
+    } catch (e) {}
+
+    if (restoredDraft) {
+      if (phoneInput && restoredDraft.phone) phoneInput.value = fmtTrPhone(restoredDraft.phone);
+      for (var rd = 0; rd < savedRadios.length; rd++) savedRadios[rd].checked = false;
+      showNewAddr(true);
+      var draftAddress = formEl.querySelector('[name="na_address"]');
+      var draftCity = formEl.querySelector('[name="na_city"]');
+      var draftProvince = formEl.querySelector('[name="na_province"]');
+      var draftZip = formEl.querySelector('[name="na_zip"]');
+      if (draftAddress) draftAddress.value = restoredDraft.address || '';
+      if (draftCity) draftCity.value = restoredDraft.city || '';
+      if (draftProvince) draftProvince.value = restoredDraft.province || '';
+      if (draftZip) draftZip.value = restoredDraft.zip || '';
+    }
 
     function fmtMoney(n) {
       return '₺' + Number(n).toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
@@ -438,20 +503,39 @@
     }
     renderSummary(pack);
 
+    function storePendingCheckout(draft) {
+      try {
+        sessionStorage.setItem(checkoutDraftKey, JSON.stringify(draft));
+        sessionStorage.setItem(pendingSubmitKey, '1');
+      } catch (e) {}
+    }
+
+    function clearPendingCheckout() {
+      pendingSubmit = false;
+      try {
+        sessionStorage.removeItem(checkoutDraftKey);
+        sessionStorage.removeItem(pendingSubmitKey);
+      } catch (e) {}
+    }
+
+    function getLoginRedirectUrl() {
+      var sourceUrl = new URL(storefrontLoginUrl, window.location.origin);
+      var loginUrl = new URL('/customer_authentication/login', window.location.origin);
+      ['locale', 'region_country', 'ui_hint'].forEach(function (key) {
+        var value = sourceUrl.searchParams.get(key);
+        if (value) loginUrl.searchParams.set(key, value);
+      });
+      /* Shopify return_to yalnızca relative URL kabul eder. Paket sessionStorage'da. */
+      loginUrl.searchParams.set('return_to', window.location.pathname + '?resume_subscription=1');
+      return loginUrl.toString();
+    }
+
     async function submitForm() {
       errEl.classList.remove('is-visible');
 
       var apiBase = (window.kiConfig && window.kiConfig.subscriptionApiBase) || '';
       if (!apiBase) { showError('API yapılandırılmamış (Theme settings → Subscription API → API base URL).'); return; }
       if (!pack || !pack.boxItems || !pack.boxItems.length) { showError('Paket bilgisi yok. Paket sayfasına geri dön ve tekrar dene.'); return; }
-
-      /* Login şart — kişisel bilgiler ve adresler Shopify hesabından gelir */
-      if (!isLoggedIn) {
-        ctaEl.disabled = true;
-        ctaEl.textContent = 'Giriş yap...';
-        window.location.href = storefrontLoginUrl;
-        return;
-      }
 
       var data = new FormData(formEl);
       var firstName = (data.get('firstName') || customerFirstName || '').trim();
@@ -479,15 +563,24 @@
         zip = (data.get('na_zip') || '').trim();
       }
 
-      /* Doğrulama */
-      if (name.length < 2) { showError('İsim/soyisim Shopify hesabından gelir; eksikse hesabını güncelle.'); return; }
-      if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { showError('E-posta Shopify hesabından gelir.'); return; }
+      /* Telefon ve adres önce doğrulanır; misafir kullanıcı için girişte korunur. */
       if (!isValidTrPhone(phone)) { showError('Geçerli bir telefon gir (05XX XXX XX XX).'); return; }
       if (address.length < 5) { showError('Bir teslimat adresi seç ya da yeni adres gir.'); return; }
       if (referralCode && !/^\d{4}$/.test(referralCode)) {
         showError('Referans kodu dört haneli olmalıdır.');
         return;
       }
+
+      if (!isLoggedIn) {
+        storePendingCheckout({ phone: phone, address: address, city: city, province: province, zip: zip });
+        ctaEl.disabled = true;
+        ctaEl.textContent = 'Giriş ekranına yönlendiriliyor…';
+        window.location.assign(getLoginRedirectUrl());
+        return;
+      }
+
+      if (name.length < 2) { showError('Hesabındaki ad ve soyad eksik. Lütfen profil bilgilerini tamamla.'); return; }
+      if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { showError('Hesabındaki e-posta bilgisi eksik veya geçersiz.'); return; }
 
       var payload = {
         name: name, email: email, phone: phone, address: address,
@@ -550,6 +643,7 @@
         addInput('returnUrl', window.location.href);
 
         document.body.appendChild(f);
+        clearPendingCheckout();
         f.submit();
       }
 
@@ -580,6 +674,7 @@
         if (!html || String(html).trim().length < 20) {
           throw new Error('Ödeme formu alınamadı (backend boş response döndü). Lütfen tekrar dene.');
         }
+        clearPendingCheckout();
 
         /* iyzico v2 SDK akışı:
              1. iyzicoEl içinde önceden var olan #iyzipay-checkout-form div'i hedef
