@@ -69,9 +69,9 @@
 {%- comment -%} ===== URUN SAYFASI: "Abone Ol" butonu enjeksiyonu ===== {%- endcomment -%}
 {%- if request.page_type == 'product' -%}
   {%- assign ki_pdp_variant = product.selected_or_first_available_variant -%}
-  {%- assign ki_pack_handles = '|ki-hijyenik-gunduz-ped|ki-normal-ped|ki-hijyenik-gece-ped|ki-gunluk-ped-5li|ki-gunduz-ped-5li|ki-gece-ped-5li|ki-light-ped-paketi-15-adet|ki-medium-ped-paketi-22-adet|ki-yogun-gunler-ped-paketi-26-adet|ki-dongu-destek-paketi|ki-hassas-bakim-paketi|ki-menopoz-bakim-paketi|balance-your-cycle|change-is-good|ki-daily-care-intim-bakim-jeli|ki-sens-care-intim-bakim-jeli|ki-flow-care-intim-bakim-jeli|ki-50-care-intim-bakim-jeli|ki-intimate-intim-bakim-spreyi|' -%}
+  {%- assign ki_pack_handles = '|ki-hijyenik-gunduz-ped|ki-normal-ped|ki-hijyenik-gece-ped|ki-gunluk-ped-5li|ki-gunluk-premium-hijyenik-ped-10-adet|ki-gunduz-ped-5li|ki-gunduz-premium-hijyenik-ped-10-adet|ki-gece-ped-5li|ki-gece-premium-hijyenik-ped-8-adet|ki-light-ped-paketi-15-adet|ki-medium-ped-paketi-22-adet|ki-yogun-gunler-ped-paketi-26-adet|ki-dongu-destek-paketi|ki-hassas-bakim-paketi|ki-menopoz-bakim-paketi|balance-your-cycle|change-is-good|ki-daily-care-intim-bakim-jeli|ki-sens-care-intim-bakim-jeli|ki-flow-care-intim-bakim-jeli|ki-50-care-intim-bakim-jeli|ki-intimate-intim-bakim-spreyi|' -%}
   {%- assign ki_product_handle_token = '|' | append: product.handle | append: '|' -%}
-  {%- if ki_pack_handles contains ki_product_handle_token and ki_pdp_variant.available -%}
+  {%- if ki_pack_handles contains ki_product_handle_token and ki_pdp_variant != blank -%}
   <style>
     .ki-pdp-subscribe-btn{
       display:flex;align-items:center;justify-content:center;gap:9px;

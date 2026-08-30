@@ -463,9 +463,7 @@
                   </a>
                 </div>
                 <div class="kicol-card__actions">
-                  <button type="button" class="kicol-card__atc" data-kicol-add="{{ cv.id }}"{% unless cv.available %} disabled{% endunless %}>
-                    {%- if cv.available -%}Sepete Ekle{%- else -%}Satışa kapalı{%- endif -%}
-                  </button>
+                  <button type="button" class="kicol-card__atc" data-kicol-add="{{ cv.id }}">Sepete Ekle</button>
                   {% render 'ki-subscribe-link', product: product, class: 'kicol-card__subscribe' %}
                 </div>
               </div>

@@ -11,6 +11,9 @@
   if product.handle contains '-5li'
     assign is_five_pack = true
   endif
+  if product.handle == 'ki-gunluk-premium-hijyenik-ped-10-adet' or product.handle == 'ki-gunduz-premium-hijyenik-ped-10-adet' or product.handle == 'ki-gece-premium-hijyenik-ped-8-adet'
+    assign is_five_pack = true
+  endif
   assign gallery_csv = blank
   case product.handle
     when 'ki-hijyenik-gunduz-ped'
@@ -19,11 +22,11 @@
       assign gallery_csv = 'ki-ped-gunduz-01.webp,ki-ped-gunduz-02.webp,ki-ped-gunduz-03.webp,ki-ped-gunduz-04.webp,ki-ped-gunduz-05.webp,ki-ped-gunduz-06.webp,ki-ped-gunduz-07.webp,ki-ped-gunduz-08.webp'
     when 'ki-hijyenik-gece-ped'
       assign gallery_csv = 'ki-ped-gece-01.webp,ki-ped-gece-02.webp,ki-ped-gece-03.webp,ki-ped-gece-04.webp,ki-ped-gece-05.webp,ki-ped-gece-06.webp'
-    when 'ki-gunluk-ped-5li'
+    when 'ki-gunluk-ped-5li', 'ki-gunluk-premium-hijyenik-ped-10-adet'
       assign gallery_csv = 'ki-ped-gunluk-5li.webp'
-    when 'ki-gunduz-ped-5li'
+    when 'ki-gunduz-ped-5li', 'ki-gunduz-premium-hijyenik-ped-10-adet'
       assign gallery_csv = 'ki-ped-gunduz-5li.webp'
-    when 'ki-gece-ped-5li'
+    when 'ki-gece-ped-5li', 'ki-gece-premium-hijyenik-ped-8-adet'
       assign gallery_csv = 'ki-ped-gece-5li.webp'
   endcase
   assign gallery_assets = gallery_csv | split: ','
@@ -229,10 +232,19 @@
                 case block.settings.size_type
                   when 'small'
                     assign option_product = all_products['ki-gunluk-ped-5li']
+                    if option_product == blank
+                      assign option_product = all_products['ki-gunluk-premium-hijyenik-ped-10-adet']
+                    endif
                   when 'medium'
                     assign option_product = all_products['ki-gunduz-ped-5li']
+                    if option_product == blank
+                      assign option_product = all_products['ki-gunduz-premium-hijyenik-ped-10-adet']
+                    endif
                   when 'large'
                     assign option_product = all_products['ki-gece-ped-5li']
+                    if option_product == blank
+                      assign option_product = all_products['ki-gece-premium-hijyenik-ped-8-adet']
+                    endif
                 endcase
               else
                 assign option_product = block.settings.product
@@ -273,7 +285,7 @@
               data-product-handle="{{ option_product.handle | escape }}"
               data-product-name="{{ block.settings.name | default: option_product.title | escape }}"
               data-product-price="{% if option_product != blank %}{{ option_product.price | money | escape }}{% endif %}"
-              data-available="{% if option_variant.available %}true{% else %}false{% endif %}"
+              data-available="true"
               {{ block.shopify_attributes }}
             >
               <span class="kph-option-media">
@@ -292,14 +304,14 @@
               </span>
               <span class="kph-option-price">
                 {%- if option_product != blank -%}{{ option_product.price | money }}{%- else -%}—{%- endif -%}
-                {% if option_variant.available %}<small>Stokta</small>{% endif %}
+                <small>Stokta</small>
               </span>
             </button>
           {%- endfor -%}
         </div>
 
         <div class="kph-actions">
-          <button type="button" class="kph-atc" data-kph-atc{% unless current_variant.available %} disabled{% endunless %}>
+          <button type="button" class="kph-atc" data-kph-atc{% if current_variant == blank %} disabled{% endif %}>
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><path d="M3 6h18M16 10a4 4 0 0 1-8 0"/></svg>
             <span data-kph-atc-label>{{ section.settings.cta_label | default: 'Sepete Ekle' }}</span>
           </button>
@@ -339,13 +351,13 @@
       if (!option) return;
       selected = option;
       options.forEach(function (item) { item.classList.toggle('is-selected', item === option); });
-      var available = option.getAttribute('data-available') === 'true';
+      var available = Boolean(option.getAttribute('data-variant-id'));
       var name = option.getAttribute('data-product-name') || 'Ped';
       var price = option.getAttribute('data-product-price') || '';
       var variantId = option.getAttribute('data-variant-id') || '';
       var handle = option.getAttribute('data-product-handle') || '';
       atc.disabled = !available || !variantId;
-      atcLabel.textContent = available ? 'Sepete Ekle · ' + name + (price ? ' · ' + price : '') : 'Satışa kapalı';
+      atcLabel.textContent = available ? 'Sepete Ekle · ' + name + (price ? ' · ' + price : '') : 'Ürün seç';
       subscribe.href = '/pages/paket-olustur?abone=' + encodeURIComponent(variantId) + '&product=' + encodeURIComponent(handle);
       status.textContent = '';
     }

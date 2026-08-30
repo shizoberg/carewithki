@@ -1729,6 +1729,9 @@
                             {%- if loose_product == blank -%}
                               {%- assign loose_product = all_products['ki-gunluk-ped-5li'] -%}
                             {%- endif -%}
+                            {%- if loose_product == blank -%}
+                              {%- assign loose_product = all_products['ki-gunluk-premium-hijyenik-ped-10-adet'] -%}
+                            {%- endif -%}
                           {%- when 'medium' -%}
                             {%- if box_product == blank -%}
                               {%- assign box_product = all_products['ki-normal-ped'] -%}
@@ -1736,12 +1739,18 @@
                             {%- if loose_product == blank -%}
                               {%- assign loose_product = all_products['ki-gunduz-ped-5li'] -%}
                             {%- endif -%}
+                            {%- if loose_product == blank -%}
+                              {%- assign loose_product = all_products['ki-gunduz-premium-hijyenik-ped-10-adet'] -%}
+                            {%- endif -%}
                           {%- when 'large' -%}
                             {%- if box_product == blank -%}
                               {%- assign box_product = all_products['ki-hijyenik-gece-ped'] -%}
                             {%- endif -%}
                             {%- if loose_product == blank -%}
                               {%- assign loose_product = all_products['ki-gece-ped-5li'] -%}
+                            {%- endif -%}
+                            {%- if loose_product == blank -%}
+                              {%- assign loose_product = all_products['ki-gece-premium-hijyenik-ped-8-adet'] -%}
                             {%- endif -%}
                         {%- endcase -%}
                         {%- assign p = box_product -%}
@@ -1777,7 +1786,7 @@
                           {%- assign active_price = v.price | default: 0 -%}
                           {%- assign subscription_discount_amount = active_price | times: subscription_discount | divided_by: 100 -%}
                           {%- assign subscription_price = active_price | minus: subscription_discount_amount -%}
-                          <div class="ki-pack__item{% unless v.available %} is-unavailable{% endunless %}"
+                          <div class="ki-pack__item"
                                data-ki-pack-item="{{ itemBlock.id }}"
                                data-ki-pack-cat-key="{{ catBlock.settings.key }}"
                                data-ki-pack-product-handle="{{ display_product.handle }}"
@@ -1785,17 +1794,17 @@
                                data-ki-pack-loose-product-handle="{{ loose_product.handle }}"
                                data-ki-pack-loose-variant-id="{{ loose_variant.id }}"
                                data-ki-pack-loose-price="{{ loose_variant.price | divided_by: 100.0 }}"
-                               data-ki-pack-loose-available="{{ loose_variant.available }}"
+                               data-ki-pack-loose-available="true"
                                data-ki-pack-box-product-handle="{{ box_product.handle }}"
                                data-ki-pack-box-variant-id="{{ box_variant.id }}"
                                data-ki-pack-box-price="{{ box_variant.price | divided_by: 100.0 }}"
-                               data-ki-pack-box-available="{{ box_variant.available }}"
+                               data-ki-pack-box-available="true"
                                data-ki-pack-step="{{ itemBlock.settings.step | default: 1 }}"
                                data-ki-pack-loose-step="{{ itemBlock.settings.step | default: 1 }}"
                                data-ki-pack-box-step="{{ itemBlock.settings.box_step | default: 1 }}"
                                data-ki-pack-price="{{ v.price | divided_by: 100.0 }}"
                                data-ki-pack-discount="{{ subscription_discount }}"
-                               data-ki-pack-available="{{ v.available }}"
+                               data-ki-pack-available="true"
                                data-ki-pack-unit="{{ itemBlock.settings.unit | default: 'adet' }}"
                                data-ki-pack-loose-unit="{{ itemBlock.settings.unit | default: 'adet' }}"
                                data-ki-pack-box-unit="{{ itemBlock.settings.box_unit | default: 'kutu' }}"
@@ -1858,7 +1867,6 @@
                                 {%- if itemBlock.settings.step != blank and itemBlock.settings.step > 1 -%}
                                   <small data-ki-pack-price-unit>/ {{ itemBlock.settings.step }} {{ itemBlock.settings.unit }}</small>
                                 {%- endif -%}
-                                <br><span class="ki-pack__item-discount" data-ki-pack-availability-text{% if v.available %} hidden{% endif %}>Satışa kapalı</span>
                               </p>
                             </div>
                             <div class="ki-pack__stepper">
@@ -1866,7 +1874,7 @@
                                 {% render 'ki-icon', name: 'minus', size: 14 %}
                               </button>
                               <span class="ki-pack__step-qty" data-ki-pack-qty>0</span>
-                              <button type="button" class="ki-pack__step-plus" data-ki-pack-plus aria-label="Arttır"{% unless v.available %} disabled{% endunless %}>
+                              <button type="button" class="ki-pack__step-plus" data-ki-pack-plus aria-label="Arttır">
                                 {% render 'ki-icon', name: 'plus', size: 14 %}
                               </button>
                             </div>
@@ -1940,19 +1948,16 @@
                           {%- assign preset_product_count = preset_product_count | plus: 1 -%}
                           {%- assign preset_product_1_total = preset_product_1.price | times: itemBlock.settings.qty_1 -%}
                           {%- assign preset_total = preset_total | plus: preset_product_1_total -%}
-                          {%- unless preset_product_1.available -%}{%- assign preset_available = false -%}{%- endunless -%}
                         {%- endif -%}
                         {%- if preset_product_2 != blank -%}
                           {%- assign preset_product_count = preset_product_count | plus: 1 -%}
                           {%- assign preset_product_2_total = preset_product_2.price | times: itemBlock.settings.qty_2 -%}
                           {%- assign preset_total = preset_total | plus: preset_product_2_total -%}
-                          {%- unless preset_product_2.available -%}{%- assign preset_available = false -%}{%- endunless -%}
                         {%- endif -%}
                         {%- if preset_product_3 != blank -%}
                           {%- assign preset_product_count = preset_product_count | plus: 1 -%}
                           {%- assign preset_product_3_total = preset_product_3.price | times: itemBlock.settings.qty_3 -%}
                           {%- assign preset_total = preset_total | plus: preset_product_3_total -%}
-                          {%- unless preset_product_3.available -%}{%- assign preset_available = false -%}{%- endunless -%}
                         {%- endif -%}
                         {%- assign preset_discount = section.settings.subscription_discount_percent | default: 15 -%}
                         {%- assign preset_discount_amount = preset_total | times: preset_discount | divided_by: 100 -%}
@@ -2789,7 +2794,7 @@
           var variantId = item.getAttribute('data-ki-pack-' + modePrefix + '-variant-id') || '';
           var productHandle = item.getAttribute('data-ki-pack-' + modePrefix + '-product-handle') || '';
           var price = parseFloat(item.getAttribute('data-ki-pack-' + modePrefix + '-price')) || 0;
-          var available = item.getAttribute('data-ki-pack-' + modePrefix + '-available') === 'true';
+          var available = Boolean(variantId);
           item.setAttribute('data-ki-pack-step', step);
           item.setAttribute('data-ki-pack-unit', unit);
           item.setAttribute('data-ki-pack-variant-id', variantId);
@@ -2797,7 +2802,7 @@
           item.setAttribute('data-ki-pack-price', price);
           item.setAttribute('data-ki-pack-available', available ? 'true' : 'false');
           item.setAttribute('data-ki-pack-selection-mode', mode === 'box' ? 'pad_box' : 'loose_pads');
-          item.classList.toggle('is-unavailable', !available);
+          item.classList.remove('is-unavailable');
           var plusButton = item.querySelector('[data-ki-pack-plus]');
           if (plusButton) plusButton.disabled = !available;
           var priceValue = item.querySelector('[data-ki-pack-price-value]');
@@ -2814,7 +2819,7 @@
             if (modeShortText) modeShort.textContent = modeShortText;
           }
           var availabilityText = item.querySelector('[data-ki-pack-availability-text]');
-          if (availabilityText) availabilityText.hidden = available;
+          if (availabilityText) availabilityText.hidden = true;
           var modeImage = item.querySelector('[data-ki-pack-mode-image]');
           if (modeImage) {
             var imageSource = modeImage.getAttribute('data-ki-pack-' + modePrefix + '-src');

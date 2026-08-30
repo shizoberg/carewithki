@@ -133,9 +133,9 @@
             {%- form 'product', product -%}
               <input type="hidden" name="id" value="{{ bundle_variant.id }}">
               <input type="hidden" name="quantity" value="1">
-              <button class="kicbp-atc" type="submit"{% unless bundle_variant.available %} disabled{% endunless %}>{% if bundle_variant.available %}Paketi Sepete Ekle{% else %}Stokta Yok{% endif %}</button>
+              <button class="kicbp-atc" type="submit">Paketi Sepete Ekle</button>
             {%- endform -%}
-            {%- if bundle_variant.available -%}<a class="kicbp-subscribe" href="{{ subscription_url }}">Pakete Abone Ol · %{{ subscription_discount }} avantaj →</a>{%- endif -%}
+            <a class="kicbp-subscribe" href="{{ subscription_url }}">Pakete Abone Ol · %{{ subscription_discount }} avantaj →</a>
           </div>
           <p class="kicbp-note">Tek seferlik alımda paket sepete eklenir. Abonelikte gönderim sıklığını dilediğin zaman değiştirebilir, duraklatabilir veya iptal edebilirsin.</p>
         </div>
