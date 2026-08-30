@@ -718,41 +718,6 @@
     "faq_split_9ifbm9": {
       "type": "faq-split",
       "blocks": {
-        "faq_NNgzde": {
-          "type": "faq",
-          "settings": {
-            "question": ".ki Balance Your Cycle Modern Takviye Gıdası Nedir?",
-            "answer": "<p><strong>.ki Balance Your Cycle</strong>, kadın döngüsünü desteklemek üzere formüle edilmiş bir takviye edici gıdadır.</p>"
-          }
-        },
-        "faq_FMeHJM": {
-          "type": "faq",
-          "settings": {
-            "question": ".ki Change is Good Modern Takviye Gıdası Nedir?",
-            "answer": "<p>Kadınların ilerleyen yaş dönemindeki ihtiyaçlarını desteklemek üzere formüle edilmiş bir takviye edici gıdadır.</p>"
-          }
-        },
-        "faq_HUaRG7": {
-          "type": "faq",
-          "settings": {
-            "question": ".ki Balance Your Cycle Modern Takviye Gıdası Kimler İçin Uygun?",
-            "answer": "<p>Döngüsünü desteklemek isteyen 18 yaş üstü kadınların kullanımına uygundur.</p>"
-          }
-        },
-        "faq_RcKGqh": {
-          "type": "faq",
-          "settings": {
-            "question": ".ki Change is Good Modern Takviye Gıdası Kimler için Uygun?",
-            "answer": "<p>İleriki yaş dönemindeki yetişkin kadınlar için uygundur.</p>"
-          }
-        },
-        "faq_qNNwR8": {
-          "type": "faq",
-          "settings": {
-            "question": "Modern Takviye Edici Gıdalarımız Ne Değildir?",
-            "answer": "<p>İlaç değildir. Hormon içermez. Tedavi edici amaç taşımaz.</p>"
-          }
-        },
         "faq_pharmacist_brand": {
           "type": "faq",
           "settings": {
@@ -797,11 +762,6 @@
         }
       },
       "block_order": [
-        "faq_NNgzde",
-        "faq_FMeHJM",
-        "faq_HUaRG7",
-        "faq_RcKGqh",
-        "faq_qNNwR8",
         "faq_pharmacist_brand",
         "faq_pads_difference",
         "faq_pads_choice",
