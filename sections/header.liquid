@@ -258,7 +258,7 @@
     {%- if section.settings.menu != blank -%}{%- render 'header-drawer' -%}{%- endif -%}
     {%- if section.settings.logo_position == 'top-center' or section.settings.menu == blank -%}{%- render 'header-search', input_id: 'Search-In-Modal-1' -%}{%- endif -%}
     {%- assign header_logo = section.settings.header_logo | default: settings.logo -%}
-    {%- if request.page_type == 'index' -%}<h1 class="header__heading">{%- else -%}<div class="header__heading">{%- endif -%}
+    <div class="header__heading">
       <a href="{{ routes.root_url }}" class="header__heading-link link link--text focus-inset">
         {%- if header_logo != blank -%}
           <div class="header__heading-logo-wrapper">
@@ -270,7 +270,7 @@
           </div>
         {%- else -%}<span class="h2">{{ shop.name }}</span>{%- endif -%}
       </a>
-    {%- if request.page_type == 'index' -%}</h1>{%- else -%}</div>{%- endif -%}
+    </div>
     {%- if section.settings.menu != blank -%}
       {%- if section.settings.menu_type_desktop == 'mega' -%}{%- render 'ki-mega-menu' -%}
       {%- elsif section.settings.menu_type_desktop == 'dropdown' -%}{%- render 'header-dropdown-menu' -%}
@@ -337,8 +337,45 @@
   customElements.define('sticky-header', StickyHeader);
 {% endjavascript %}
 
-<script type="application/ld+json">{ "@context": "http://schema.org", "@type": "Organization", "name": {{ shop.name | json }}{% if settings.logo %}, "logo": {{ settings.logo | image_url: width: 500 | prepend: "https:" | json }}{% endif %}, "sameAs": [{{ settings.social_twitter_link | json }},{{ settings.social_facebook_link | json }},{{ settings.social_pinterest_link | json }},{{ settings.social_instagram_link | json }},{{ settings.social_tiktok_link | json }},{{ settings.social_tumblr_link | json }},{{ settings.social_snapchat_link | json }},{{ settings.social_youtube_link | json }},{{ settings.social_vimeo_link | json }}], "url": {{ request.origin | append: page.url | json }} }</script>
-{%- if request.page_type == 'index' -%}{% assign potential_action_target = request.origin | append: routes.search_url | append: '?q={search_term_string}' %}<script type="application/ld+json">{ "@context": "http://schema.org", "@type": "WebSite", "name": {{ shop.name | json }}, "potentialAction": { "@type": "SearchAction", "target": {{ potential_action_target | json }}, "query-input": "required name=search_term_string" }, "url": {{ request.origin | append: page.url | json }} }</script>{%- endif -%}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "@id": "https://www.carewithki.com/#organization",
+  "name": ".ki",
+  "alternateName": "carewithki",
+  "legalName": "Ki İlaç Sanayi ve Ticaret Limited Şirketi",
+  "url": "https://www.carewithki.com/",
+  "email": "help@carewithki.com",
+  "telephone": "+90 533 574 55 35"{% if settings.logo %},
+  "logo": {{ settings.logo | image_url: width: 500 | prepend: "https:" | json }}{% endif %},
+  "sameAs": [
+    "https://www.instagram.com/carewithki",
+    "https://www.tiktok.com/@carewithki",
+    "https://youtube.com/@carewithki",
+    "https://www.trendyol.com/magaza/ki-shop-m-1205638"
+  ]
+}
+</script>
+{%- if request.page_type == 'index' -%}
+  {% assign potential_action_target = request.origin | append: routes.search_url | append: '?q={search_term_string}' %}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "@id": "https://www.carewithki.com/#website",
+    "name": ".ki",
+    "alternateName": "carewithki",
+    "url": "https://www.carewithki.com/",
+    "publisher": { "@id": "https://www.carewithki.com/#organization" },
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": {{ potential_action_target | json }},
+      "query-input": "required name=search_term_string"
+    }
+  }
+  </script>
+{%- endif -%}
 
 {% schema %}
 {

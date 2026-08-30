@@ -7,17 +7,28 @@
 {%- liquid
   assign ki_seo_title = seo_title | default: page_title
   assign ki_seo_description = seo_description | default: page_description
-  assign ki_seo_keywords = '.ki, carewithki, ki ped, .ki ped, hijyenik ped, günlük ped, gündüz ped, gece ped, ped paketi, ped aboneliği, kadın sağlığı, intim bakım, PMS desteği, menopoz desteği'
   assign ki_ped_bundle_handles = '|ki-light-ped-paketi-15-adet|ki-medium-ped-paketi-22-adet|ki-yogun-gunler-ped-paketi-26-adet|'
+  assign ki_noindex_page_handles = '|spurit-invoices-cancelled|spurit-reminders-cancelled|spurit-notifications-cancelled|spurit-merchant-notifications-cancelled|'
   assign ki_product_token = ''
+  assign ki_page_token = ''
+  assign ki_noindex = false
   if product
     assign ki_product_token = '|' | append: product.handle | append: '|'
+  endif
+  if page
+    assign ki_page_token = '|' | append: page.handle | append: '|'
+  endif
+  if request.page_type == 'product' and product.handle == 'ki-test-urun'
+    assign ki_noindex = true
+  elsif request.page_type == 'page' and ki_noindex_page_handles contains ki_page_token
+    assign ki_noindex = true
   endif
 -%}
 
 <meta name="author" content=".ki">
-<meta name="keywords" content="{{ ki_seo_keywords | escape }}">
-{%- if request.page_type == 'index' or request.page_type == 'product' or request.page_type == 'collection' or request.page_type == 'page' or request.page_type == 'article' -%}
+{%- if ki_noindex -%}
+  <meta name="robots" content="noindex,nofollow">
+{%- elsif request.page_type == 'index' or request.page_type == 'product' or request.page_type == 'collection' or request.page_type == 'page' or request.page_type == 'article' -%}
   <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
 {%- endif -%}
 
@@ -26,9 +37,21 @@
     assign ki_seo_variant = product.selected_or_first_available_variant
     assign ki_availability = 'https://schema.org/OutOfStock'
     assign ki_structured_fallback_asset = ''
+    assign ki_gtin_property = ''
     if ki_seo_variant.available
       assign ki_availability = 'https://schema.org/InStock'
     endif
+    assign ki_barcode_size = ki_seo_variant.barcode | size
+    case ki_barcode_size
+      when 8
+        assign ki_gtin_property = 'gtin8'
+      when 12
+        assign ki_gtin_property = 'gtin12'
+      when 13
+        assign ki_gtin_property = 'gtin13'
+      when 14
+        assign ki_gtin_property = 'gtin14'
+    endcase
     case product.handle
       when 'ki-light-ped-paketi-15-adet'
         assign ki_structured_fallback_asset = 'ki-ped-pack-light.png'
@@ -46,10 +69,11 @@
     "name": {{ product.title | json }},
     "description": {{ ki_seo_description | json }},
     "brand": { "@type": "Brand", "name": ".ki" },
-    "manufacturer": { "@type": "Organization", "name": ".ki", "url": {{ shop.url | json }} },
-    "sku": {{ ki_seo_variant.sku | default: ki_seo_variant.id | json }},
+    "manufacturer": { "@id": "https://www.carewithki.com/#organization" }{% if ki_seo_variant.sku != blank %},
+    "sku": {{ ki_seo_variant.sku | json }}{% endif %}{% if ki_gtin_property != blank %},
+    {{ ki_gtin_property | json }}: {{ ki_seo_variant.barcode | json }}{% endif %},
     "url": {{ canonical_url | json }},
-    "category": {{ product.type | default: 'Kadın sağlığı ve kişisel bakım' | json }},
+    "category": {{ product.type | default: 'Kadın sağlığı ve kişisel bakım' | json }}{% if product.images.size > 0 or ki_structured_fallback_asset != blank %},
     "image": [
       {%- if product.images.size > 0 -%}
         {%- for product_image in product.images limit: 6 -%}
@@ -58,7 +82,7 @@
       {%- elsif ki_structured_fallback_asset != blank -%}
         {{ ki_structured_fallback_asset | asset_url | prepend: 'https:' | json }}
       {%- endif -%}
-    ],
+    ]{% endif %},
     "offers": {
       "@type": "Offer",
       "priceCurrency": {{ cart.currency.iso_code | default: shop.currency | json }},
@@ -66,7 +90,7 @@
       "availability": {{ ki_availability | json }},
       "itemCondition": "https://schema.org/NewCondition",
       "url": {{ canonical_url | json }},
-      "seller": { "@type": "Organization", "name": ".ki" }
+      "seller": { "@id": "https://www.carewithki.com/#organization" }
     }
   }
   </script>

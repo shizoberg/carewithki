@@ -184,13 +184,7 @@
       <div class="kh3-panel">
         <div class="kh3-text-wrap">
           {%- if block.settings.badge != blank -%}<div class="kh3-badge">{{ block.settings.badge | escape }}</div>{%- endif -%}
-          {%- if block.settings.title != blank -%}
-            {%- if forloop.first -%}
-              <h1 class="kh3-title">{{ block.settings.title }}</h1>
-            {%- else -%}
-              <h2 class="kh3-title">{{ block.settings.title }}</h2>
-            {%- endif -%}
-          {%- endif -%}
+          {%- if block.settings.title != blank -%}<h2 class="kh3-title">{{ block.settings.title }}</h2>{%- endif -%}
           {%- if block.settings.description != blank -%}<p class="kh3-desc">{{ block.settings.description | escape }}</p>{%- endif -%}
           {%- if block.settings.show_proof -%}
           <div class="kh3-proof">
@@ -493,7 +487,7 @@
       {"type":"image_picker","id":"image","label":"Gorsel"},
       {"type":"header","content":"Icerik"},
       {"type":"text","id":"badge","label":"Rozet"},
-      {"type":"richtext","id":"title","label":"Baslik","default":"<p>Dongunun <em>her gununude</em> dengede kal.</p>"},
+      {"type":"richtext","id":"title","label":"Baslik","default":"<p>Döngünün <em>her gününde</em> dengede kal.</p>"},
       {"type":"textarea","id":"description","label":"Aciklama"},
       {"type":"text","id":"button_text","label":"Buton metni","default":"Urunu Incele"},
       {"type":"url","id":"button_link","label":"Buton linki"},

@@ -277,7 +277,7 @@
           "settings": {
             "image": "shopify://shop_images/2_045bfe31-af15-4fb1-8c7d-8764a255192a.jpg",
             "title": ".ki Balance",
-            "description": "Döngü Dönemi Taviyesi",
+            "description": "Döngü Dönemi Takviyesi",
             "card_product": "balance-your-cycle",
             "card_link": "",
             "cta_label": "İncele"
@@ -539,7 +539,7 @@
           "type": "item",
           "settings": {
             "title": "FDA ve GMP  Onaylı",
-            "content": "<p>Büтün ürünlerimiz FDA onaylı tesiste geliştirilmiş ve üretilmiştir.</p>"
+            "content": "<p>Bütün ürünlerimiz FDA onaylı tesiste geliştirilmiş ve üretilmiştir.</p>"
           }
         },
         "item_gPa9Vg": {
@@ -581,7 +581,7 @@
       "name": "Quality accordion + media (scoped)",
       "settings": {
         "heading": "Uzman Eczacılar Tarafından Geliştirildi",
-        "body": "<p>Uzman eczacılar tarafından geliştirilen formüllerimiz, kadınların değişen ihtiyaçlarını anlayan bilim temelli bir yaklaşımla hazırlanır. Araştırmadan Íretime uzanan tüm süreçlerimizde kalite, güvenlik ve şeffaflık önceliğimizdir.</p>",
+        "body": "<p>Uzman eczacılar tarafından geliştirilen formüllerimiz, kadınların değişen ihtiyaçlarını anlayan bilim temelli bir yaklaşımla hazırlanır. Araştırmadan üretime uzanan tüm süreçlerimizde kalite, güvenlik ve şeffaflık önceliğimizdir.</p>",
         "aria_label": "Quality details",
         "open_first": true,
         "media_bg_image": "shopify://shop_images/sase3.jpg",

@@ -116,7 +116,13 @@
   <div class="rcs-wrap">
     <div class="rcs-header">
       {%- if section.settings.eyebrow != blank -%}<p class="rcs-eyebrow">{{ section.settings.eyebrow | escape }}</p>{%- endif -%}
-      {%- if section.settings.title != blank -%}<h2 class="rcs-title">{{ section.settings.title | escape }}</h2>{%- endif -%}
+      {%- if section.settings.title != blank -%}
+        {%- if request.page_type == 'index' -%}
+          <h1 class="rcs-title">{{ section.settings.title | escape }}</h1>
+        {%- else -%}
+          <h2 class="rcs-title">{{ section.settings.title | escape }}</h2>
+        {%- endif -%}
+      {%- endif -%}
       {%- if section.settings.description != blank -%}<p class="rcs-desc">{{ section.settings.description | escape }}</p>{%- endif -%}
     </div>
     <div class="rcs-track" id="RcsTrack-{{ section.id }}">

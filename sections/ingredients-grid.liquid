@@ -235,7 +235,13 @@
   <div class="ing__wrap">
     <div class="ing__header">
       {% if section.settings.title != blank %}
-        <h2 class="ing__title">{{ section.settings.title }}</h2>
+        {% if request.page_type == 'collection' and collection.handle == 'ki-bilimi' %}
+          <h1 class="ing__title">{{ section.settings.title }}</h1>
+        {% elsif request.page_type == 'collection' and collection.handle == 'pedler' %}
+          <h1 class="ing__title">.ki Premium Hijyenik Pedler</h1>
+        {% else %}
+          <h2 class="ing__title">{{ section.settings.title }}</h2>
+        {% endif %}
       {% endif %}
 
       {%- assign all_categories = "" -%}
