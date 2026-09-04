@@ -487,7 +487,7 @@
       }
       summaryEl.hidden = false;
       var savings = 0;
-      summaryItemsEl.innerHTML = pack.boxItems.map(function (it) {
+      var renderedItems = pack.boxItems.map(function (it) {
         var qty = Number(it.quantity || 0);
         var price = Number(it.price || 0);
         var originalPrice = Number(it.originalPrice || price);
@@ -495,7 +495,10 @@
         var lineOriginalPrice = qty * originalPrice;
         savings += Math.max(0, lineOriginalPrice - linePrice);
         var priceMarkup = '<strong>' + fmtMoney(linePrice) + '</strong>';
-        if (lineOriginalPrice > linePrice) {
+        if (it.selectionMode === 'shipping' && pack.freeShipping) {
+          savings += linePrice;
+          priceMarkup = '<span class="ki-sc__summary-prices"><s class="ki-sc__summary-original">' + fmtMoney(linePrice) + '</s><strong>Ücretsiz</strong></span>';
+        } else if (lineOriginalPrice > linePrice) {
           priceMarkup = '<span class="ki-sc__summary-prices"><s class="ki-sc__summary-original">' + fmtMoney(lineOriginalPrice) + '</s><strong>' + fmtMoney(linePrice) + '</strong></span>';
         }
         return '<div class="ki-sc__summary-li">' +
@@ -503,7 +506,15 @@
           priceMarkup +
           '</div>';
       }).join('');
-      summaryTotalEl.textContent = fmtMoney(Number(pack.totalPrice || 0));
+      var referralDiscount = Math.max(0, Number(pack.referralDiscountAmount || 0));
+      var shippingDiscount = pack.freeShipping ? Math.max(0, Number(pack.shippingFee || 0)) : 0;
+      var extraReferralDiscount = Math.max(0, referralDiscount - shippingDiscount);
+      if (extraReferralDiscount > 0) {
+        renderedItems += '<div class="ki-sc__summary-li"><span>Referans kodu indirimi</span><strong>−' + fmtMoney(extraReferralDiscount) + '</strong></div>';
+        savings += extraReferralDiscount;
+      }
+      summaryItemsEl.innerHTML = renderedItems;
+      summaryTotalEl.textContent = fmtMoney(Number(pack.displayTotal || pack.totalPrice || 0));
       if (summarySavingsRowEl) summarySavingsRowEl.hidden = savings <= 0;
       if (summarySavingsEl) summarySavingsEl.textContent = fmtMoney(savings);
     }

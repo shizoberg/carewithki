@@ -2307,6 +2307,8 @@
     var referralInput = root.querySelector('[data-ki-pack-referral]');
     var referralStatus = root.querySelector('[data-ki-pack-referral-status]');
     var validatedReferralCode = '';
+    var validatedReferral = null;
+    var referralValidationTimer = null;
     var pharmacistInfoButton = root.querySelector('[data-ki-pack-pharmacist-info]');
     var pharmacistDialog = root.querySelector('[data-ki-pack-pharmacist-dialog]');
     var pharmacistDialogClose = root.querySelector('[data-ki-pack-pharmacist-close]');
@@ -2347,10 +2349,18 @@
       referralInput.addEventListener('input', function () {
         referralInput.value = referralInput.value.replace(/\D/g, '').slice(0, 4);
         validatedReferralCode = '';
+        validatedReferral = null;
+        if (referralValidationTimer) window.clearTimeout(referralValidationTimer);
         referralStatus.className = 'ki-pack__referral-status';
         referralStatus.textContent = referralInput.value.length
           ? 'Kod devam etmeden önce doğrulanacak.'
           : 'Doktorunuzdan veya danışmanınızdan gelen kodu giriniz. Kodunuz yoksa bu alanı boş bırakabilirsiniz.';
+        recalc();
+        if (referralInput.value.length === 4) {
+          referralValidationTimer = window.setTimeout(function () {
+            validateReferralCode().catch(function () {});
+          }, 350);
+        }
       });
     }
 
@@ -2358,7 +2368,7 @@
       if (!referralInput || !referralInput.value) return '';
       var code = referralInput.value.trim();
       if (!/^\d{4}$/.test(code)) throw new Error('Referans kodu 4 haneli olmalıdır.');
-      if (validatedReferralCode === code) return code;
+      if (validatedReferralCode === code && validatedReferral) return code;
       var apiBase = (window.kiConfig && window.kiConfig.subscriptionApiBase) || '';
       if (!apiBase) throw new Error('Referans kodu doğrulama servisi hazır değil.');
       referralStatus.className = 'ki-pack__referral-status';
@@ -2374,11 +2384,15 @@
         throw new Error(referralStatus.textContent);
       }
       validatedReferralCode = code;
-      var referral = result.data || {};
+      validatedReferral = result.data || {};
+      var referral = validatedReferral;
       referralStatus.className = 'ki-pack__referral-status is-valid';
-      referralStatus.textContent = referral.discountPercent > 0
-        ? 'Kod onaylandı · %' + referral.discountPercent + ' referans indirimi'
-        : 'Referans kodu onaylandı.';
+      var benefits = [];
+      if (Number(referral.discountPercent || 0) > 0) benefits.push('%' + referral.discountPercent + ' referans indirimi');
+      if (Number(referral.discountAmount || 0) > 0) benefits.push(fmt(Number(referral.discountAmount)) + ' indirim');
+      if (referral.freeShipping) benefits.push('Kargo ücretsiz');
+      referralStatus.textContent = 'Kod onaylandı' + (benefits.length ? ' · ' + benefits.join(' · ') : '.');
+      recalc();
       return code;
     }
 
@@ -2663,16 +2677,23 @@
       }
 
       var minimumMet = true;
-      var shippingFee = subscriptionEnabled && count > 0 && subtotal < subscriptionFreeShippingThreshold
+      var baseShippingFee = subscriptionEnabled && count > 0 && subtotal < subscriptionFreeShippingThreshold
         ? subscriptionShippingFee
         : 0;
-      var grandTotal = subtotal + shippingFee;
+      var referralPercent = validatedReferral ? Math.max(0, Number(validatedReferral.discountPercent) || 0) : 0;
+      var referralFixedDiscount = validatedReferral ? Math.max(0, Number(validatedReferral.discountAmount) || 0) : 0;
+      var referralDiscount = (subtotal + baseShippingFee) * referralPercent / 100 + referralFixedDiscount;
+      referralDiscount = Math.min(referralDiscount, Math.max(0, subtotal + baseShippingFee - 0.01));
+      var shippingFee = validatedReferral && validatedReferral.freeShipping ? 0 : baseShippingFee;
+      var grandTotal = Math.max(0.01, subtotal + baseShippingFee - referralDiscount);
       var shipText = root.querySelector('[data-ki-pack-ship-text]');
       if (shipText) {
         if (!subscriptionEnabled) {
           shipText.textContent = 'Kargo ödeme adımında hesaplanır';
         } else if (count === 0) {
           shipText.textContent = fmt(subscriptionFreeShippingThreshold) + ' altı kargo ' + fmt(subscriptionShippingFee) + ' · üzeri ücretsiz';
+        } else if (validatedReferral && validatedReferral.freeShipping) {
+          shipText.textContent = 'Kargo ücretsiz 🎉';
         } else if (shippingFee > 0) {
           shipText.textContent = 'Abonelik kargosu ' + fmt(shippingFee) + ' · Ücretsiz kargoya ' + fmt(subscriptionFreeShippingThreshold - subtotal) + ' kaldı';
         } else {
@@ -2688,20 +2709,20 @@
       var shippingProgressPercent = Math.min(100, Math.max(0, subtotal / shippingMax * 100));
       if (shippingProgress) {
         shippingProgress.hidden = !subscriptionEnabled;
-        shippingProgress.classList.toggle('is-free', subscriptionEnabled && count > 0 && subtotal >= subscriptionFreeShippingThreshold);
+        shippingProgress.classList.toggle('is-free', subscriptionEnabled && count > 0 && (subtotal >= subscriptionFreeShippingThreshold || Boolean(validatedReferral && validatedReferral.freeShipping)));
       }
       if (shippingTrack) {
         shippingTrack.setAttribute('aria-valuemax', String(subscriptionFreeShippingThreshold));
         shippingTrack.setAttribute('aria-valuenow', String(Math.min(subtotal, subscriptionFreeShippingThreshold)));
       }
       if (shippingFill) shippingFill.style.width = shippingProgressPercent + '%';
-      if (shippingFreeMarker) shippingFreeMarker.classList.toggle('is-reached', subscriptionEnabled && count > 0 && subtotal >= subscriptionFreeShippingThreshold);
+      if (shippingFreeMarker) shippingFreeMarker.classList.toggle('is-reached', subscriptionEnabled && count > 0 && (subtotal >= subscriptionFreeShippingThreshold || Boolean(validatedReferral && validatedReferral.freeShipping)));
       if (shippingFreeLabel) shippingFreeLabel.textContent = fmt(subscriptionFreeShippingThreshold);
 
       updateFrequencyAvailability(lines);
 
       root.querySelector('[data-ki-pack-subtotal]').textContent = fmt(originalSubtotal);
-      var discountTotal = Math.max(0, originalSubtotal - subtotal);
+      var discountTotal = Math.max(0, originalSubtotal - subtotal) + referralDiscount;
       var discountRow = root.querySelector('[data-ki-pack-discount-row]');
       var discountTotalEl = root.querySelector('[data-ki-pack-discount-total]');
       if (discountRow) discountRow.hidden = discountTotal <= 0;
@@ -2735,7 +2756,8 @@
 
       root.dataset.kiPackLines = JSON.stringify(lines);
       root.dataset.kiPackProductTotal = subtotal.toFixed(2);
-      root.dataset.kiPackShippingFee = shippingFee.toFixed(2);
+      root.dataset.kiPackShippingFee = baseShippingFee.toFixed(2);
+      root.dataset.kiPackReferralDiscount = referralDiscount.toFixed(2);
       root.dataset.kiPackGrandTotal = grandTotal.toFixed(2);
       root.dataset.kiPackMinimumMet = minimumMet ? 'true' : 'false';
     }
@@ -2976,6 +2998,7 @@
       ctaEl.disabled = true;
       try {
         if (mode === 'subscription' && subscriptionEnabled) {
+          var referralCode = await validateReferralCode();
           var checkoutUrl = (window.kiConfig && window.kiConfig.subscriptionCheckoutUrl) || '/pages/paket-checkout';
           var freqEl = root.querySelector('[data-ki-pack-freq]');
           var sellingPlanId = (freqEl && freqEl.value) || (window.kiConfig && window.kiConfig.defaultSellingPlanId);
@@ -3013,16 +3036,21 @@
             });
           }
           var total = productTotal + shippingFee;
+          var displayTotal = parseFloat(root.dataset.kiPackGrandTotal || String(total)) || total;
+          var referralDiscountAmount = parseFloat(root.dataset.kiPackReferralDiscount || '0') || 0;
           var payload = {
             boxItems: boxItems,
             totalPrice: total.toFixed(2),
             productTotal: productTotal.toFixed(2),
             shippingFee: shippingFee.toFixed(2),
+            displayTotal: displayTotal.toFixed(2),
+            referralDiscountAmount: referralDiscountAmount.toFixed(2),
+            freeShipping: Boolean(validatedReferral && validatedReferral.freeShipping),
             sellingPlanId: sellingPlanId || '',
             intervalCount: intervalMonths,
             packName: packName,
             trackingFlowId: 'sub-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 10),
-            referralCode: await validateReferralCode(),
+            referralCode: referralCode,
             source: 'ki-pack-builder'
           };
           trackPack('SUBSCRIPTION_PACKAGE_ADDED', {
