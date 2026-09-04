@@ -1,0 +1,92 @@
+<style>
+.ckhiw{
+  --p:#493d9a;--lil:#dad2ff;--bg:#f8f8f6;
+  background:{{ section.settings.bg_color | default: '#f8f8f6' }};
+  padding:56px 20px;
+  font-family:system-ui,sans-serif;
+}
+.ckhiw__head{text-align:center;margin-bottom:36px;}
+.ckhiw__title{
+  font-size:clamp(22px,5vw,32px);font-weight:800;
+  color:#1a1340;letter-spacing:-.02em;margin:0 0 8px;
+}
+.ckhiw__sub{font-size:14px;color:#6b6b8a;margin:0;}
+.ckhiw__grid{
+  display:grid;grid-template-columns:1fr;
+  gap:14px;max-width:900px;margin:0 auto;
+}
+@media(min-width:640px){.ckhiw__grid{grid-template-columns:repeat(3,1fr);}}
+.ckhiw__card{
+  background:#fff;border-radius:16px;
+  border:1px solid rgba(73,61,154,.08);
+  box-shadow:0 2px 12px rgba(73,61,154,.07);
+  padding:22px 20px;
+  transition:transform .25s,box-shadow .25s;
+}
+.ckhiw__card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(73,61,154,.12);}
+.ckhiw__num{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:28px;height:28px;border-radius:50%;
+  background:var(--p);color:#fff;
+  font-size:11px;font-weight:800;
+  margin-bottom:14px;
+}
+.ckhiw__icon{
+  width:44px;height:44px;border-radius:12px;
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:14px;
+}
+.ckhiw__icon svg{width:22px;height:22px;}
+.ckhiw__card h3{
+  font-size:15px;font-weight:700;
+  color:#1a1340;margin:0 0 8px;
+}
+.ckhiw__desc{font-size:13px;color:#6b6b8a;line-height:1.6;margin:0;}
+</style>
+
+<section class="ckhiw" id="nasil-calisir">
+  <div class="ckhiw__head">
+    <h2 class="ckhiw__title">{{ section.settings.title }}</h2>
+    <p class="ckhiw__sub">{{ section.settings.subtitle }}</p>
+  </div>
+  {%- if section.blocks.size > 0 -%}
+  <div class="ckhiw__grid">
+    {%- for block in section.blocks -%}
+    <div class="ckhiw__card" {{ block.shopify_attributes }}>
+      <div class="ckhiw__num">{{ forloop.index }}</div>
+      <div class="ckhiw__icon" style="background:{{ block.settings.icon_bg }};color:{{ block.settings.icon_color }};">
+        {{ block.settings.icon_svg }}
+      </div>
+      <h3>{{ block.settings.card_title }}</h3>
+      <div class="ckhiw__desc">{{ block.settings.card_desc }}</div>
+    </div>
+    {%- endfor -%}
+  </div>
+  {%- endif -%}
+</section>
+
+{% schema %}
+{
+  "name": "Camp: How It Works",
+  "settings": [
+    {"type":"color","id":"bg_color","label":"Arka Plan","default":"#f8f8f6"},
+    {"type":"text","id":"title","label":"Başlık","default":"Nasıl Çalışır?"},
+    {"type":"text","id":"subtitle","label":"Alt Başlık","default":"Her kampüste iki kişilik dinamik ekipler"}
+  ],
+  "blocks":[{
+    "type":"card","name":"Aşama",
+    "settings":[
+      {"type":"html","id":"icon_svg","label":"SVG İkon","default":"<svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'><path d='M2 12h3l3-9 5 18 3-9h5'/></svg>"},
+      {"type":"color","id":"icon_bg","label":"İkon BG","default":"#e6f8f1"},
+      {"type":"color","id":"icon_color","label":"İkon Rengi","default":"#8fe5c8"},
+      {"type":"text","id":"card_title","label":"Başlık","default":"Sağlık İletişimcisi"},
+      {"type":"richtext","id":"card_desc","label":"Açıklama","default":"<p>PMS ve regl döngüsü hakkında bilimsel bilgi paylaş.</p>"}
+    ]
+  }],
+  "presets":[{"name":"Camp: How It Works","blocks":[
+    {"type":"card","settings":{"card_title":"Sağlık İletişimcisi","icon_bg":"#e6f8f1","icon_color":"#22c55e"}},
+    {"type":"card","settings":{"card_title":"Pazarlama Stratejisti","icon_bg":"#ffeaeb","icon_color":"#ff6666"}},
+    {"type":"card","settings":{"card_title":"drawpms.com'a Yönlendir","icon_bg":"#fffbe1","icon_color":"#f59e0b"}}
+  ]}]
+}
+{% endschema %}

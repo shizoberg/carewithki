@@ -1,0 +1,370 @@
+<style>
+  #shopify-section-{{ section.id }} {
+    --ki-purple-dark: #493d9a;
+    --ki-purple: #b2a5ff;
+    --ki-offwhite: #f8f8f6;
+  }
+
+  .balance-videos {
+    padding: 56px 20px;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  }
+
+  .balance-videos__container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .balance-videos__header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--ki-purple-dark);
+    margin-bottom: 24px;
+  }
+
+  .balance-videos__hint {
+    font-size: 11px;
+    font-weight: 500;
+    color: rgba(26,26,26,0.6);
+    text-transform: none;
+    letter-spacing: normal;
+  }
+
+  .balance-videos__track {
+    display: flex;
+    gap: 16px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none;  /* IE and Edge */
+    padding-bottom: 16px;
+    cursor: grab;
+  }
+  .balance-videos__track::-webkit-scrollbar {
+    display: none;
+  }
+  .balance-videos__track:active {
+    cursor: grabbing;
+  }
+
+  .balance-video-card {
+    flex: 0 0 180px;
+    scroll-snap-align: start;
+    border-radius: 16px;
+    overflow: hidden;
+    aspect-ratio: 3/4;
+    position: relative;
+    background: linear-gradient(to bottom right, var(--ki-purple-dark), #3f347f);
+    transition: transform 0.2s ease;
+  }
+  
+  .balance-video-card:hover {
+    transform: translateY(-2px);
+  }
+
+  /* Optional: background color variants via inline CSS */
+  .balance-video-card__content {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: #fff;
+    padding: 16px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .balance-video-card__play {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 16px;
+    transition: transform 0.2s;
+    border: none;
+    cursor: pointer;
+  }
+  .balance-video-card:hover .balance-video-card__play {
+    transform: scale(1.1);
+  }
+
+  .balance-video-card__play svg {
+    width: 20px;
+    height: 20px;
+    fill: #fff;
+    margin-left: 2px;
+  }
+
+  .balance-video-card__name {
+    font-size: 14px;
+    font-weight: 700;
+  }
+  
+  .balance-video-card__age {
+    font-size: 12px;
+    opacity: 0.7;
+  }
+
+  /* Video Player Overlay */
+  .balance-video-card__player {
+    position: absolute;
+    inset: 0;
+    z-index: 5;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+    background: #000;
+  }
+  .balance-video-card__player.is-playing {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .balance-video-card__player video,
+  .balance-video-card__player iframe {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border: none;
+  }
+
+  /* Reveal */
+  .bv-reveal {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  .bv-reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+</style>
+
+<div class="balance-videos">
+  <div class="balance-videos__container">
+    <div class="balance-videos__header bv-reveal">
+      {{ section.settings.title }}
+      {% if section.settings.hint != blank %}
+        <span class="balance-videos__hint">&mdash; {{ section.settings.hint }}</span>
+      {% endif %}
+    </div>
+
+    <div class="balance-videos__track bv-reveal" id="bv-track-{{ section.id }}" style="transition-delay: 0.1s;">
+      {% for block in section.blocks %}
+        {% assign bg_start = block.settings.bg_color_start | default: '#493d9a' %}
+        {% assign bg_end = block.settings.bg_color_end | default: '#3f347f' %}
+        
+        <div class="balance-video-card" style="background: linear-gradient(to bottom right, {{ bg_start }}, {{ bg_end }});">
+          
+          {% if block.settings.shopify_video != blank %}
+            <div class="balance-video-card__player">
+              {{ block.settings.shopify_video | video_tag: controls: true, playsinline: true, image_size: '400x' }}
+            </div>
+          {% elsif block.settings.external_video != blank %}
+            <div class="balance-video-card__player">
+              {% if block.settings.external_video.type == 'youtube' %}
+                <iframe src="https://www.youtube.com/embed/{{ block.settings.external_video.id }}?enablejsapi=1&rel=0&playsinline=1" class="js-youtube" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+              {% elsif block.settings.external_video.type == 'vimeo' %}
+                <iframe src="https://player.vimeo.com/video/{{ block.settings.external_video.id }}?api=1" class="js-vimeo" allow="autoplay; fullscreen" allowfullscreen></iframe>
+              {% endif %}
+            </div>
+          {% endif %}
+
+          <div class="balance-video-card__content">
+            <button class="balance-video-card__play" type="button" aria-label="Videoyu Oynat">
+              <svg viewBox="0 0 24 24">
+                <polygon points="8,5 20,12 8,19" />
+              </svg>
+            </button>
+            <div class="balance-video-card__name">{{ block.settings.name }}</div>
+            <div class="balance-video-card__age">{{ block.settings.age }}</div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+<script>
+  (function() {
+    function initVideos() {
+      var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+          }
+        });
+      }, { threshold: 0.1 });
+      
+      document.querySelectorAll('#shopify-section-{{ section.id }} .bv-reveal').forEach(function(el) {
+        observer.observe(el);
+      });
+
+      // Simple Drag to scroll logic
+      var track = document.getElementById('bv-track-{{ section.id }}');
+      if (track && !track.hasAttribute('data-initialized')) {
+        track.setAttribute('data-initialized', 'true');
+        var isDown = false;
+        var startX = 0;
+        var scrollLeft = 0;
+
+        track.addEventListener('mousedown', function(e) {
+          isDown = true;
+          startX = e.pageX - track.offsetLeft;
+          scrollLeft = track.scrollLeft;
+        });
+        track.addEventListener('mouseleave', function() {
+          isDown = false;
+        });
+        track.addEventListener('mouseup', function() {
+          isDown = false;
+        });
+        track.addEventListener('mousemove', function(e) {
+          if (!isDown) return;
+          e.preventDefault();
+          var x = e.pageX - track.offsetLeft;
+          var walk = (x - startX) * 1.5;
+          track.scrollLeft = scrollLeft - walk;
+        });
+      }
+
+      // Video Play Logic
+      var cards = document.querySelectorAll('#shopify-section-{{ section.id }} .balance-video-card');
+      cards.forEach(function(card) {
+        var playBtn = card.querySelector('.balance-video-card__play');
+        var playerWrap = card.querySelector('.balance-video-card__player');
+        
+        if (playBtn && playerWrap) {
+          if (!playBtn.hasAttribute('data-vp-initialized')) {
+            playBtn.setAttribute('data-vp-initialized', 'true');
+            playBtn.addEventListener('click', function(e) {
+              e.stopPropagation(); // Prevent drag interference
+              
+              // Pause all others
+              document.querySelectorAll('#shopify-section-{{ section.id }} .balance-video-card__player.is-playing').forEach(function(other) {
+                other.classList.remove('is-playing');
+                var v = other.querySelector('video');
+                if(v) v.pause();
+                var yt = other.querySelector('.js-youtube');
+                if(yt && yt.contentWindow) yt.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
+                var vm = other.querySelector('.js-vimeo');
+                if(vm && vm.contentWindow) vm.contentWindow.postMessage('{"method":"pause"}', '*');
+              });
+
+              // Play this one
+              playerWrap.classList.add('is-playing');
+              var video = playerWrap.querySelector('video');
+              if (video) {
+                video.play().catch(function(){});
+              }
+              var youtube = playerWrap.querySelector('.js-youtube');
+              if (youtube && youtube.contentWindow) {
+                youtube.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
+              }
+              var vimeo = playerWrap.querySelector('.js-vimeo');
+              if (vimeo && vimeo.contentWindow) {
+                vimeo.contentWindow.postMessage('{"method":"play"}', '*');
+              }
+            });
+          }
+        }
+      });
+    }
+
+    initVideos();
+
+    document.addEventListener('shopify:section:load', function(event) {
+      if (event.detail.sectionId === '{{ section.id }}') {
+        initVideos();
+      }
+    });
+
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Balance: Video Slider",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Video Yorumlar"
+    },
+    {
+      "type": "text",
+      "id": "hint",
+      "label": "Hint text",
+      "default": "kaydır"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "video",
+      "name": "Video",
+      "settings": [
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Name",
+          "default": "Ulyana"
+        },
+        {
+          "type": "text",
+          "id": "age",
+          "label": "Age/Info",
+          "default": "21 yaş"
+        },
+        {
+          "type": "color",
+          "id": "bg_color_start",
+          "label": "Gradient Start Color",
+          "default": "#493d9a"
+        },
+        {
+          "type": "color",
+          "id": "bg_color_end",
+          "label": "Gradient End Color",
+          "default": "#3f347f"
+        },
+        {
+          "type": "video",
+          "id": "shopify_video",
+          "label": "Shopify Video (MP4 Upload)"
+        },
+        {
+          "type": "video_url",
+          "id": "external_video",
+          "label": "YouTube / Vimeo URL",
+          "accept": ["youtube", "vimeo"],
+          "info": "Eğer üstteki alana video yüklerseniz bu link yoksayılır."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Balance: Video Slider",
+      "blocks": [
+        { "type": "video", "settings": { "name": "Ulyana", "age": "21 yaş" } },
+        { "type": "video", "settings": { "name": "Simge", "age": "25 yaş", "bg_color_start": "#3a1f7a", "bg_color_end": "#5a3ca0" } },
+        { "type": "video", "settings": { "name": "Ecem", "age": "23 yaş", "bg_color_start": "#1e1250", "bg_color_end": "#3a2080" } },
+        { "type": "video", "settings": { "name": "Aylin", "age": "28 yaş", "bg_color_start": "#2a1560", "bg_color_end": "#4a3290" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

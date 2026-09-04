@@ -1,0 +1,296 @@
+<style>
+  .camp-social {
+    padding-top: 6rem;
+    padding-bottom: 6rem;
+    background-color: {{ section.settings.bg_color }};
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  }
+  .camp-container {
+    width: 100%;
+    margin-right: auto;
+    margin-left: auto;
+    padding-right: 1.5rem;
+    padding-left: 1.5rem;
+    max-width: 1200px;
+  }
+  .camp-sp-header {
+    text-align: center;
+    margin-bottom: 3rem;
+    animation: fadeUp 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  }
+  .camp-sp-title {
+    font-size: clamp(1.875rem, 4vw, 2.5rem);
+    font-weight: 800;
+    color: #1a1a1a;
+    letter-spacing: -0.03em;
+    margin: 0;
+  }
+  .camp-sp-carousel {
+    position: relative;
+    margin-top: 1rem;
+  }
+  .camp-sp-track {
+    display: flex;
+    gap: 1.5rem;
+    overflow-x: auto;
+    padding: 10px 4px 24px 4px;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .camp-sp-track::-webkit-scrollbar {
+    display: none;
+  }
+  .camp-sp-slide {
+    flex: 0 0 calc((100% - 3rem) / 3);
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+  }
+  @media(max-width: 900px) {
+    .camp-sp-slide { flex: 0 0 calc((100% - 1.5rem) / 2); }
+  }
+  @media(max-width: 600px) {
+    .camp-sp-slide { flex: 0 0 85%; }
+  }
+  .camp-sp-card {
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: 1.5rem;
+    box-shadow: 0 4px 6px -1px rgba(61, 48, 153, 0.05), 0 10px 15px -3px rgba(61, 48, 153, 0.1);
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+    animation: fadeUp 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+    height: 100%;
+    cursor: grab;
+    user-select: none;
+  }
+  .camp-sp-card:active {
+    cursor: grabbing;
+  }
+  .camp-sp-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 25px -5px rgba(61, 48, 153, 0.15), 0 20px 40px -10px rgba(61, 48, 153, 0.1);
+  }
+  .camp-sp-nav {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 1rem;
+  }
+  .camp-sp-nav-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 1px solid rgba(61, 48, 153, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    background: transparent;
+    color: #3d3099;
+    transition: all 0.2s ease;
+  }
+  .camp-sp-nav-btn svg { width: 20px; height: 20px; }
+  .camp-sp-nav-btn:hover:not(:disabled) {
+    background: #3d3099;
+    color: #fff;
+    border-color: #3d3099;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(61, 48, 153, 0.25);
+  }
+  .camp-sp-nav-btn:disabled {
+    opacity: 0.35;
+    cursor: default;
+    pointer-events: none;
+  }
+  @media (max-width: 600px) {
+    .camp-sp-nav { display: none; }
+  }
+  .camp-sp-author {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.25rem;
+  }
+  .camp-sp-avatar {
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 9999px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.875rem;
+  }
+  .camp-sp-info p {
+    margin: 0;
+  }
+  .camp-sp-name {
+    font-weight: 600;
+    color: #1a1a1a;
+    font-size: 0.875rem;
+  }
+  .camp-sp-uni {
+    font-size: 0.75rem;
+    color: #666;
+  }
+  .camp-sp-quote {
+    color: #444; /* text-foreground/80 */
+    line-height: 1.6;
+    font-style: italic;
+    margin: 0;
+  }
+</style>
+
+<section class="camp-social" id="sosyal-kanit" data-sp-section="{{ section.id }}">
+  <div class="camp-container">
+    <div class="camp-sp-header">
+      <h2 class="camp-sp-title">{{ section.settings.title }}</h2>
+    </div>
+
+    {%- if section.blocks.size > 0 -%}
+      <div class="camp-sp-carousel">
+        <div class="camp-sp-track" id="spTrack-{{ section.id }}">
+          {%- for block in section.blocks -%}
+            <div class="camp-sp-slide" {{ block.shopify_attributes }}>
+              <div class="camp-sp-card" style="animation-delay: {{ forloop.index | times: 0.1 }}s">
+                <div class="camp-sp-author">
+                  <div class="camp-sp-avatar" style="background-color: {{ block.settings.avatar_bg }}; color: {{ block.settings.avatar_color }};">
+                    {{ block.settings.avatar_text }}
+                  </div>
+                  <div class="camp-sp-info">
+                    <p class="camp-sp-name">{{ block.settings.author_name }}</p>
+                    <p class="camp-sp-uni">{{ block.settings.author_uni }}</p>
+                  </div>
+                </div>
+                <p class="camp-sp-quote">"{{ block.settings.quote_text }}"</p>
+              </div>
+            </div>
+          {%- endfor -%}
+        </div>
+        
+        <div class="camp-sp-nav">
+          <button class="camp-sp-nav-btn" id="spPrev-{{ section.id }}" type="button" aria-label="Önceki">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg>
+          </button>
+          <button class="camp-sp-nav-btn" id="spNext-{{ section.id }}" type="button" aria-label="Sonraki">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </button>
+        </div>
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+<script>
+(function () {
+  var sectionId = {{ section.id | json }};
+  var root = document.querySelector('[data-sp-section="' + sectionId + '"]');
+  if (!root) return;
+  var track = root.querySelector('#spTrack-' + sectionId);
+  if (!track) return;
+
+  var isDown = false;
+  var startX;
+  var scrollLeft;
+
+  track.addEventListener('mousedown', (e) => {
+    isDown = true;
+    startX = e.pageX - track.offsetLeft;
+    scrollLeft = track.scrollLeft;
+    track.style.cursor = 'grabbing';
+  });
+  track.addEventListener('mouseleave', () => {
+    isDown = false;
+    track.style.cursor = 'grab';
+  });
+  track.addEventListener('mouseup', () => {
+    isDown = false;
+    track.style.cursor = 'grab';
+  });
+  track.addEventListener('mousemove', (e) => {
+    if(!isDown) return;
+    e.preventDefault();
+    const x = e.pageX - track.offsetLeft;
+    const walk = (x - startX) * 2;
+    track.scrollLeft = scrollLeft - walk;
+  });
+
+  var prevBtn = root.querySelector('#spPrev-' + sectionId);
+  var nextBtn = root.querySelector('#spNext-' + sectionId);
+  
+  function getScrollAmount() {
+    var slide = track.querySelector('.camp-sp-slide');
+    if (!slide) return 300;
+    var style = window.getComputedStyle(track);
+    var gap = parseFloat(style.gap) || 24;
+    return slide.offsetWidth + gap;
+  }
+
+  if (prevBtn) {
+    prevBtn.addEventListener('click', function() {
+      track.scrollBy({ left: -getScrollAmount(), behavior: 'smooth' });
+    });
+  }
+  if (nextBtn) {
+    nextBtn.addEventListener('click', function() {
+      track.scrollBy({ left: getScrollAmount(), behavior: 'smooth' });
+    });
+  }
+
+  // Update button states
+  function updateNavButtons() {
+    if (prevBtn) {
+      prevBtn.disabled = track.scrollLeft <= 0;
+    }
+    if (nextBtn) {
+      // -1 helps prevent rounding errors causing buttons to stay active forever
+      nextBtn.disabled = track.scrollLeft + track.clientWidth >= track.scrollWidth - 1;
+    }
+  }
+
+  track.addEventListener('scroll', function() {
+    window.requestAnimationFrame(updateNavButtons);
+  });
+  window.addEventListener('resize', function() {
+    window.requestAnimationFrame(updateNavButtons);
+  });
+
+  // Initial call
+  updateNavButtons();
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Camp: Social Proof",
+  "settings": [
+    { "type": "color", "id": "bg_color", "label": "Arka Plan Rengi", "default": "#f2f2fa" },
+    { "type": "text", "id": "title", "label": "Ana Başlık", "default": "Bizden Kareler" }
+  ],
+  "blocks": [
+    {
+      "type": "testimonial",
+      "name": "Görüş Kartı",
+      "settings": [
+        { "type": "text", "id": "avatar_text", "label": "Avatar Harfi", "default": "Z" },
+        { "type": "color", "id": "avatar_bg", "label": "Avatar Arka Planı", "default": "#ff6666" },
+        { "type": "color", "id": "avatar_color", "label": "Avatar Yazı Rengi", "default": "#ffffff" },
+        { "type": "text", "id": "author_name", "label": "Kişi Adı", "default": "Zeynep A." },
+        { "type": "text", "id": "author_uni", "label": "Üniversite", "default": "İstanbul Üniversitesi" },
+        { "type": "textarea", "id": "quote_text", "label": "Yorum Metni", "default": "Kampüste farkındalık yaratmak beni çok mutlu etti. Herkesin drawpms.com'u denemesi lazım!" }
+      ]
+    }
+  ],
+  "presets": [
+    { 
+      "name": "Camp: Social Proof",
+      "blocks": [
+        { "type": "testimonial", "settings": {"avatar_text": "Z", "avatar_bg": "#ff6666", "avatar_color": "#ffffff", "author_name": "Zeynep A.", "author_uni": "İstanbul Üniversitesi"} },
+        { "type": "testimonial", "settings": {"avatar_text": "E", "avatar_bg": "#8fe5c8", "avatar_color": "#1a1a1a", "author_name": "Elif K.", "author_uni": "ODTÜ"} },
+        { "type": "testimonial", "settings": {"avatar_text": "A", "avatar_bg": "#ffe66b", "avatar_color": "#1a1a1a", "author_name": "Ayşe M.", "author_uni": "Boğaziçi Üniversitesi"} },
+        { "type": "testimonial", "settings": {"avatar_text": "S", "avatar_bg": "#3d3099", "avatar_color": "#ffffff", "author_name": "Selin D.", "author_uni": "Ege Üniversitesi"} }
+      ]
+    }
+  ]
+}
+{% endschema %}

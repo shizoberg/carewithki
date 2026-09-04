@@ -1,0 +1,107 @@
+{{ 'customer.css' | asset_url | stylesheet_tag }}
+
+<style>
+.ki-auth {
+  --p: #493d9a; --lil: #dad2ff; --bg: #f8f8f6; --txt: #1a1340; --mut: #6b6b8a;
+  min-height: 100vh; display: flex; align-items: center; justify-content: center;
+  background: var(--bg); padding: 40px 16px;
+}
+.ki-auth__card {
+  background: #fff; border-radius: 20px;
+  border: 1px solid rgba(73,61,154,.1);
+  box-shadow: 0 8px 40px rgba(73,61,154,.1);
+  padding: 44px 40px; width: 100%; max-width: 420px;
+}
+.ki-auth__logo {
+  font-family: 'Raleway',system-ui,sans-serif;
+  font-size: 28px; font-weight: 900; color: var(--p);
+  text-decoration: none; display: block; text-align: center;
+  margin-bottom: 6px; letter-spacing: -.03em;
+}
+.ki-auth__tagline { text-align:center; font-size:12px; color:var(--mut); margin:0 0 28px; }
+.ki-auth__title {
+  font-size: 20px; font-weight: 800; color: var(--txt);
+  margin: 0 0 20px; font-family: 'Raleway',system-ui,sans-serif; text-align:center;
+}
+.ki-field { margin-bottom: 14px; }
+.ki-field input {
+  width: 100%; padding: 13px 14px;
+  border: 1.5px solid rgba(73,61,154,.2); border-radius: 10px;
+  font-size: 14px; color: var(--txt); background: #fff;
+  outline: none; box-sizing: border-box; transition: border-color .2s;
+}
+.ki-field input:focus { border-color: var(--p); }
+.ki-field input::placeholder { color: rgba(73,61,154,.4); }
+.ki-btn {
+  display: flex; align-items: center; justify-content: center;
+  width: 100%; padding: 14px;
+  background: var(--p); color: #fff; font-size: 14px; font-weight: 700;
+  border: none; border-radius: 12px; cursor: pointer;
+  transition: background .2s, transform .15s; text-decoration: none; margin-top: 4px;
+}
+.ki-btn:hover { background: #3b3280; transform: translateY(-1px); }
+.ki-auth__links { display:flex; flex-direction:column; gap:8px; margin-top:14px; }
+.ki-auth__link { text-align:center; font-size:12px; color:var(--mut); text-decoration:none; transition:color .15s; }
+.ki-auth__link:hover { color:var(--p); }
+.ki-auth__link--purple { color:var(--p); font-weight:600; }
+.ki-form-error {
+  background:rgba(225,29,72,.07); border:1px solid rgba(225,29,72,.2);
+  border-radius:8px; padding:10px 12px; font-size:12px; color:#c0143c; margin-bottom:14px;
+}
+@media(max-width:480px){ .ki-auth__card{padding:32px 24px;} }
+</style>
+
+<div class="ki-auth section-{{ section.id }}-padding">
+  <div class="ki-auth__card">
+    <a href="{{ routes.root_url }}" class="ki-auth__logo">.ki</a>
+    <p class="ki-auth__tagline">Kendine iyi bak</p>
+    <h1 class="ki-auth__title">{{ 'customer.register.title' | t }}</h1>
+
+    {%- form 'create_customer', novalidate: 'novalidate' -%}
+      {%- if form.errors -%}
+        <div class="ki-form-error">
+          {%- for field in form.errors -%}
+            <div>{%- if field != 'form' -%}{{ form.errors.translated_fields[field] | capitalize }}: {%- endif -%}{{ form.errors.messages[field] }}</div>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+
+      <div class="ki-field">
+        <input type="text" name="customer[first_name]" id="RegisterForm-FirstName"
+          {% if form.first_name %}value="{{ form.first_name }}"{% endif %}
+          autocomplete="given-name" placeholder="{{ 'customer.register.first_name' | t }}">
+      </div>
+      <div class="ki-field">
+        <input type="text" name="customer[last_name]" id="RegisterForm-LastName"
+          {% if form.last_name %}value="{{ form.last_name }}"{% endif %}
+          autocomplete="family-name" placeholder="{{ 'customer.register.last_name' | t }}">
+      </div>
+      <div class="ki-field">
+        <input type="email" name="customer[email]" id="RegisterForm-email"
+          {% if form.email %}value="{{ form.email }}"{% endif %}
+          autocomplete="email" placeholder="{{ 'customer.register.email' | t }}"
+          {% if form.errors contains 'email' %}aria-invalid="true"{% endif %}>
+      </div>
+      <div class="ki-field">
+        <input type="password" name="customer[password]" id="RegisterForm-password"
+          placeholder="{{ 'customer.register.password' | t }}"
+          {% if form.errors contains 'password' %}aria-invalid="true"{% endif %}>
+      </div>
+      <button class="ki-btn">{{ 'customer.register.submit' | t }}</button>
+      <div class="ki-auth__links">
+        <a href="{{ routes.account_login_url }}" class="ki-auth__link ki-auth__link--purple">← {{ 'customer.login_page.title' | t }}</a>
+      </div>
+    {%- endform -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.main-register.name",
+  "settings": [
+    {"type":"header","content":"t:sections.all.padding.section_padding_heading"},
+    {"type":"range","id":"padding_top","min":0,"max":100,"step":4,"unit":"px","label":"t:sections.all.padding.padding_top","default":0},
+    {"type":"range","id":"padding_bottom","min":0,"max":100,"step":4,"unit":"px","label":"t:sections.all.padding.padding_bottom","default":0}
+  ]
+}
+{% endschema %}

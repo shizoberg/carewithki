@@ -1,0 +1,379 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "settings": {
+        "padding_top": 28,
+        "padding_bottom": 28
+      }
+    },
+    "ki_urgency_bar_WijPT8": {
+      "type": "ki-urgency-bar",
+      "name": ".ki Urgency Bar",
+      "settings": {
+        "icon": "",
+        "message": "Bütün İçerikler Doktorlar ve Eczacılar Tarafından Geliştirilmiştir",
+        "cta_text": "Hemen sipariş ver",
+        "cta_link": "",
+        "bg": "#493d9a",
+        "text": "#ffffff",
+        "pad_x": 24
+      }
+    },
+    "01_as_editorial_hero_9jn3KF": {
+      "type": "01-as-editorial-hero",
+      "blocks": {
+        "slide_jKhN9h": {
+          "type": "slide",
+          "settings": {
+            "image_alt": "",
+            "eyebrow": "Yeni · Döngü Takviyesi",
+            "heading": "<p>Döngünün <em>her gününde</em> dengede kal.</p>",
+            "description": "",
+            "cta1_label": ".ki Balance'ı incele",
+            "cta1_link": "",
+            "cta2_label": "Paketini oluştur",
+            "cta2_link": "",
+            "review_text": "5.0 · 90+ yorum",
+            "trust_text": "2.400+ kadın tercih ediyor"
+          }
+        },
+        "slide_D4LhqN": {
+          "type": "slide",
+          "settings": {
+            "image_alt": "",
+            "eyebrow": "Yeni · Döngü Takviyesi",
+            "heading": "<p>Döngünün <em>her gününde</em> dengede kal.</p>",
+            "description": "",
+            "cta1_label": ".ki Balance'ı incele",
+            "cta1_link": "",
+            "cta2_label": "Paketini oluştur",
+            "cta2_link": "",
+            "review_text": "5.0 · 90+ yorum",
+            "trust_text": "2.400+ kadın tercih ediyor"
+          }
+        },
+        "slide_yKYy66": {
+          "type": "slide",
+          "settings": {
+            "image_alt": "",
+            "eyebrow": "Yeni · Döngü Takviyesi",
+            "heading": "<p>Döngünün <em>her gününde</em> dengede kal.</p>",
+            "description": "",
+            "cta1_label": ".ki Balance'ı incele",
+            "cta1_link": "",
+            "cta2_label": "Paketini oluştur",
+            "cta2_link": "",
+            "review_text": "5.0 · 90+ yorum",
+            "trust_text": "2.400+ kadın tercih ediyor"
+          }
+        }
+      },
+      "block_order": [
+        "slide_jKhN9h",
+        "slide_D4LhqN",
+        "slide_yKYy66"
+      ],
+      "name": "Editorial Hero",
+      "settings": {
+        "bg": "#ffffff",
+        "copy_bg": "#ffffff",
+        "primary_color": "#493d9e",
+        "primary_fg": "#ffffff",
+        "text_color": "#ffffff"
+      }
+    },
+    "02_as_value_strip_M6wLHW": {
+      "type": "02-as-value-strip",
+      "blocks": {
+        "value_Dj3kKD": {
+          "type": "value",
+          "settings": {
+            "title": "Klinik dozaj",
+            "description": "Etkin maddeler bilimsel dozda"
+          }
+        },
+        "value_rKQd36": {
+          "type": "value",
+          "settings": {
+            "title": "Vegan & temiz",
+            "description": "Yapay tatlandırıcı içermez"
+          }
+        },
+        "value_UMN4rL": {
+          "type": "value",
+          "settings": {
+            "title": "GMP sertifikalı",
+            "description": "Bağımsız laboratuvarda test"
+          }
+        },
+        "value_LHMhqr": {
+          "type": "value",
+          "settings": {
+            "title": "Ücretsiz kargo",
+            "description": "Tüm Türkiye'ye, 1-2 iş günü"
+          }
+        },
+        "value_G7mfzV": {
+          "type": "value",
+          "settings": {
+            "title": "Doğal içerikler",
+            "description": "Bitkisel & mineral kaynaklı"
+          }
+        },
+        "value_mKJrUH": {
+          "type": "value",
+          "settings": {
+            "title": "FDA onaylı tesis",
+            "description": "Uluslararası standartlarda üretim"
+          }
+        },
+        "value_C6cEjQ": {
+          "type": "value",
+          "settings": {
+            "title": "30 gün iade",
+            "description": "Koşulsuz memnuniyet garantisi"
+          }
+        }
+      },
+      "block_order": [
+        "value_Dj3kKD",
+        "value_rKQd36",
+        "value_UMN4rL",
+        "value_LHMhqr",
+        "value_G7mfzV",
+        "value_mKJrUH",
+        "value_C6cEjQ"
+      ],
+      "name": "Value Strip",
+      "settings": {
+        "bg": "#ffffff",
+        "icon_bg": "#ffffff",
+        "border_color": "#e5dfd1",
+        "primary_color": "#493d9e",
+        "muted_color": "#5a5a5a",
+        "speed": 35
+      }
+    },
+    "03_as_collection_section_hXXXJw": {
+      "type": "03-as-collection-section",
+      "blocks": {
+        "pack_yx9zff": {
+          "type": "pack",
+          "settings": {
+            "name": "Balance Deneme Paketi",
+            "rating": "4.9",
+            "price": "₺197,50",
+            "link": ""
+          }
+        },
+        "pack_GYkxWQ": {
+          "type": "pack",
+          "settings": {
+            "name": "Tanışma Paketi: .ki ile başla",
+            "rating": "4.7",
+            "price": "₺349,00",
+            "link": ""
+          }
+        },
+        "pack_4JDHKV": {
+          "type": "pack",
+          "settings": {
+            "name": "Aylık Döngü Paketi",
+            "rating": "4.8",
+            "price": "₺499,00",
+            "link": ""
+          }
+        },
+        "pack_ca9NGW": {
+          "type": "pack",
+          "settings": {
+            "name": "Yoğun Destek Paketi",
+            "rating": "4.8",
+            "price": "₺695,00",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "pack_yx9zff",
+        "pack_GYkxWQ",
+        "pack_4JDHKV",
+        "pack_ca9NGW"
+      ],
+      "name": "Collection Cards",
+      "settings": {
+        "heading": "Sana özel oluşturduğumuz paketler",
+        "cta_label": "Kendine özel paket oluştur",
+        "cta_link": "",
+        "bg": "#ffffff",
+        "card_bg": "#ffffff",
+        "primary_color": "#493d9e",
+        "primary_fg": "#ffffff",
+        "text_color": "#1a1a1a"
+      }
+    },
+    "05_as_all_products_TAqrLj": {
+      "type": "05-as-all-products",
+      "blocks": {
+        "tile_WaJCUf": {
+          "type": "tile",
+          "settings": {
+            "image_position": "center",
+            "title": "Pedler",
+            "subtitle": "Günlük · Gündüz · Gece",
+            "price_text": "00₺'den başlayan fiyatlarla",
+            "link": "",
+            "col_span": "2",
+            "row_span": "2"
+          }
+        },
+        "tile_zJMmxY": {
+          "type": "tile",
+          "settings": {
+            "image_position": "center",
+            "title": ".ki Balance",
+            "subtitle": "Regl döngüsü · saşe",
+            "price_text": "00₺'den başlayan fiyatlarla",
+            "link": "",
+            "col_span": "2",
+            "row_span": "1"
+          }
+        },
+        "tile_gzGMty": {
+          "type": "tile",
+          "settings": {
+            "image_position": "center",
+            "title": "Bakım Jelleri",
+            "subtitle": "Daily · Sens · Flow · 50+",
+            "price_text": "00₺'den başlayan fiyatlarla",
+            "link": "",
+            "col_span": "2",
+            "row_span": "1"
+          }
+        },
+        "tile_cpqBjN": {
+          "type": "tile",
+          "settings": {
+            "image_position": "center",
+            "title": ".ki Change",
+            "subtitle": "Menopoz · kapsül",
+            "price_text": "00₺'den başlayan fiyatlarla",
+            "link": "",
+            "col_span": "2",
+            "row_span": "1"
+          }
+        },
+        "tile_rRXcrB": {
+          "type": "tile",
+          "settings": {
+            "image_position": "center",
+            "title": "Sprey",
+            "subtitle": "İntim bakım spreyi",
+            "price_text": "00₺'den başlayan fiyatlarla",
+            "link": "",
+            "col_span": "1",
+            "row_span": "1"
+          }
+        },
+        "tile_bV4ppx": {
+          "type": "tile",
+          "settings": {
+            "image_position": "center",
+            "title": "Yağ",
+            "subtitle": "Cycle Care · 10 ml",
+            "price_text": "00₺'den başlayan fiyatlarla",
+            "link": "",
+            "col_span": "1",
+            "row_span": "1"
+          }
+        }
+      },
+      "block_order": [
+        "tile_WaJCUf",
+        "tile_zJMmxY",
+        "tile_gzGMty",
+        "tile_cpqBjN",
+        "tile_rRXcrB",
+        "tile_bV4ppx"
+      ],
+      "name": "Bento Products",
+      "settings": {
+        "heading": "<p>Kendine iyi bakman için<em>:</em></p>",
+        "bg": "#fffaf3",
+        "primary_color": "#ffffff",
+        "text_color": "#493d9e"
+      }
+    },
+    "06_as_faq_k4DaiN": {
+      "type": "06-as-faq",
+      "blocks": {
+        "qa_if8bAT": {
+          "type": "qa",
+          "settings": {
+            "question": ".ki Balance Your Cycle Modern Takviye Gıdası Nedir?",
+            "answer": ".ki Balance Your Cycle, kadın döngüsünü desteklemek üzere formüle edilmiş bitkisel ekstreler içeren saşe formda bir takviye edici gıdadır."
+          }
+        },
+        "qa_yfMM4b": {
+          "type": "qa",
+          "settings": {
+            "question": ".ki Change is Good Modern Takviye Gıdası Nedir?",
+            "answer": "Kadınların ilerleyen yaş dönemini desteklemek üzere formüle edilmiş kapsül formda bir takviye edici gıdadır."
+          }
+        },
+        "qa_VPTh4r": {
+          "type": "qa",
+          "settings": {
+            "question": "",
+            "answer": ""
+          }
+        },
+        "qa_mHVjaf": {
+          "type": "qa",
+          "settings": {
+            "question": "Modern Takviye Edici Gıdalarımız Ne Değildir?",
+            "answer": "İlaç değildir.\nHormon içermez.\nTedavi edici amaç taşımaz."
+          }
+        }
+      },
+      "block_order": [
+        "qa_if8bAT",
+        "qa_yfMM4b",
+        "qa_VPTh4r",
+        "qa_mHVjaf"
+      ],
+      "name": "FAQ",
+      "settings": {
+        "eyebrow": "Sıkça sorulanlar",
+        "heading": "<p>Bizce senin aklındaki <em>sorular.</em></p>",
+        "cta_text": "Aklındaki başka bir soru mu var?",
+        "cta_label": "Eczacımıza Ulaş",
+        "cta_link": "",
+        "bg": "#ffffff",
+        "primary_color": "#493d9e",
+        "text_color": "#1a1a1a",
+        "line_color": "#dad2c0"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "ki_urgency_bar_WijPT8",
+    "01_as_editorial_hero_9jn3KF",
+    "02_as_value_strip_M6wLHW",
+    "03_as_collection_section_hXXXJw",
+    "05_as_all_products_TAqrLj",
+    "06_as_faq_k4DaiN"
+  ]
+}

@@ -1,0 +1,656 @@
+{% comment %}
+  PDP Hero Pad — .ki Ped ürün üst bölümü
+  Pozisyon: Pedler #1 (en üst)
+  Sol: galeri (4 görsel + thumb), Sağ: buy box + variant builder + abonelik + CTA + free-ship progress
+  3 variant block desteklenir (Günlük / Gündüz / Gece). Her variant: ad, drops, beden, perBox, görsel, badge.
+{% endcomment %}
+
+<section id="pdp-hero-pad-{{ section.id }}" class="section pdp-hero-pad">
+  <style>
+    #pdp-hero-pad-{{ section.id }} {
+      --p-bg: {{ section.settings.bg | default: '#fffaf3' }};
+      --p-card: #ffffff;
+      --p-primary: {{ section.settings.primary_color | default: '#3a2d6e' }};
+      --p-primary-fg: #ffffff;
+      --p-text: #1a1a1a;
+      --p-muted: rgba(26,26,26,.7);
+      --p-rose: {{ section.settings.rose_color | default: '#d96d8a' }};
+      --p-rose-light: {{ section.settings.rose_light | default: '#f6dce4' }};
+      --p-sage: {{ section.settings.sage_color | default: '#7b9d6f' }};
+      --p-secondary: {{ section.settings.secondary_color | default: '#f4ede1' }};
+      --p-border: rgba(0,0,0,.12);
+      --p-star: #f5b400;
+      background: var(--p-bg);
+      font-family: system-ui, -apple-system, sans-serif;
+    }
+
+    #pdp-hero-pad-{{ section.id }} .ph-wrap {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 32px 20px 40px;
+    }
+    #pdp-hero-pad-{{ section.id }} .ph-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 32px;
+      align-items: start;
+    }
+
+    /* Gallery */
+    #pdp-hero-pad-{{ section.id }} .ph-gallery .ph-main {
+      position: relative;
+      border-radius: 24px;
+      overflow: hidden;
+      background: var(--p-rose-light);
+      aspect-ratio: 4/5;
+    }
+    #pdp-hero-pad-{{ section.id }} .ph-main img {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      opacity: 0;
+      transition: opacity .3s ease;
+    }
+    #pdp-hero-pad-{{ section.id }} .ph-main img.is-active { opacity: 1; }
+    #pdp-hero-pad-{{ section.id }} .ph-dots {
+      position: absolute; bottom: 16px; left: 50%;
+      transform: translateX(-50%);
+      display: flex; gap: 6px;
+    }
+    #pdp-hero-pad-{{ section.id }} .ph-dot {
+      width: 8px; height: 8px;
+      border-radius: 999px;
+      background: rgba(58,45,110,.3);
+      border: 0; cursor: pointer;
+      transition: width .3s ease, background .3s ease;
+      padding: 0;
+    }
+    #pdp-hero-pad-{{ section.id }} .ph-dot.is-active {
+      width: 24px;
+      background: var(--p-primary);
+    }
+    #pdp-hero-pad-{{ section.id }} .ph-thumbs {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 12px;
+    }
+    #pdp-hero-pad-{{ section.id }} .ph-thumb {
+      aspect-ratio: 1/1;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 2px solid transparent;
+      opacity: .7;
+      cursor: pointer;
+      transition: opacity .2s ease, border-color .2s ease;
+      padding: 0; background: transparent;
+    }
+    #pdp-hero-pad-{{ section.id }} .ph-thumb img { width: 100%; height: 100%; object-fit: cover; }
+    #pdp-hero-pad-{{ section.id }} .ph-thumb:hover { opacity: 1; }
+    #pdp-hero-pad-{{ section.id }} .ph-thumb.is-active { opacity: 1; border-color: var(--p-primary); }
+
+    /* Buy box */
+    #pdp-hero-pad-{{ section.id }} .ph-title {
+      font-size: 34px; line-height: 1.05;
+      letter-spacing: -.02em;
+      font-weight: 500;
+      color: var(--p-primary);
+      margin: 0;
+    }
+    #pdp-hero-pad-{{ section.id }} .ph-rating {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 13px; color: var(--p-muted);
+      margin-top: 12px;
+    }
+    #pdp-hero-pad-{{ section.id }} .ph-rating .ph-stars { color: var(--p-star); letter-spacing: 2px; }
+    #pdp-hero-pad-{{ section.id }} .ph-rating .ph-num { color: var(--p-primary); font-weight: 600; }
+
+    #pdp-hero-pad-{{ section.id }} .ph-desc {
+      font-size: 15px; line-height: 1.6;
+      color: rgba(26,26,26,.8);
+      margin-top: 20px;
+    }
+
+    #pdp-hero-pad-{{ section.id }} .ph-builder-head {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-top: 28px; margin-bottom: 16px;
+    }
+    #pdp-hero-pad-{{ section.id }} .ph-builder-head h2 {
+      font-size: 20px; font-weight: 500;
+      color: var(--p-primary);
+      margin: 0;
+    }
+    #pdp-hero-pad-{{ section.id }} .ph-helper {
+      background: transparent; border: 0;
+      color: rgba(58,45,110,.8);
+      font-size: 12.5px; font-weight: 600;
+      cursor: pointer;
+    }
+
+    /* Variant cards */
+    #pdp-hero-pad-{{ section.id }} .ph-variants {
+      display: flex; flex-direction: column; gap: 12px;
+    }
+    #pdp-hero-pad-{{ section.id }} .ph-variant {
+      position: relative;
+      display: flex; align-items: center; gap: 16px;
+      padding: 12px;
+      border: 1px solid var(--p-border);
+      border-radius: 16px;
+      background: var(--p-card);
+      transition: border-color .2s, background .2s, box-shadow .2s;
+    }
+    #pdp-hero-pad-{{ section.id }} .ph-variant.is-selected {
+      border-color: var(--p-primary);
+      background: rgba(244,237,225,.6);
+      box-shadow: 0 4px 16px -8px rgba(58,45,110,.3);
+    }
+    #pdp-hero-pad-{{ section.id }} .ph-variant-badge {
+      position: absolute;
+      top: -8px; left: 16px;
+      background: var(--p-primary);
+      color: var(--p-primary-fg);
+      font-size: 10px; font-weight: 700;
+      letter-spacing: .04em;
+      padding: 2px 8px;
+      border-radius: 999px;
+    }
+    #pdp-hero-pad-{{ section.id }} .ph-variant-img {
+      width: 56px; height: 56px;
+      border-radius: 12px;
+      overflow: hidden;
+      background: var(--p-secondary);
+      border: 1px solid rgba(0,0,0,.08);
+      flex-shrink: 0;
+    }
+    #pdp-hero-pad-{{ section.id }} .ph-variant-img img { width: 100%; height: 100%; object-fit: cover; }
+    #pdp-hero-pad-{{ section.id }} .ph-variant-info { flex: 1; min-width: 0; }
+    #pdp-hero-pad-{{ section.id }} .ph-variant-name {
+      font-size: 14.5px; font-weight: 700;
+      color: var(--p-primary);
+      line-height: 1.2;
+      display: flex; align-items: center; gap: 8px;
+      flex-wrap: wrap;
+    }
+    #pdp-hero-pad-{{ section.id }} .ph-drops {
+      display: inline-flex; align-items: center; gap: 1px;
+    }
+    #pdp-hero-pad-{{ section.id }} .ph-drops svg {
+      width: 12px; height: 12px;
+      color: var(--p-border);
+    }
+    #pdp-hero-pad-{{ section.id }} .ph-drops svg.is-on { color: var(--p-rose); }
+    #pdp-hero-pad-{{ section.id }} .ph-variant-short {
+      font-size: 12px; color: var(--p-muted);
+      margin: 2px 0 0;
+    }
+    #pdp-hero-pad-{{ section.id }} .ph-variant-meta {
+      font-size: 11.5px; font-weight: 500;
+      color: rgba(58,45,110,.7);
+      margin: 4px 0 0;
+    }
+
+    #pdp-hero-pad-{{ section.id }} .ph-stepper-wrap {
+      display: flex; flex-direction: column; align-items: flex-end; gap: 4px;
+      flex-shrink: 0;
+    }
+    #pdp-hero-pad-{{ section.id }} .ph-step-meta {
+      font-size: 11px; color: var(--p-muted); font-weight: 500;
+    }
+    #pdp-hero-pad-{{ section.id }} .ph-stepper {
+      display: flex; align-items: center; gap: 4px;
+      background: var(--p-bg);
+      border: 1px solid var(--p-border);
+      border-radius: 999px;
+      padding: 4px;
+    }
+    #pdp-hero-pad-{{ section.id }} .ph-stepper button {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      display: grid; place-items: center;
+      cursor: pointer;
+      border: 0;
+      transition: background .2s, opacity .2s;
+    }
+    #pdp-hero-pad-{{ section.id }} .ph-step-minus { background: transparent; color: var(--p-primary); }
+    #pdp-hero-pad-{{ section.id }} .ph-step-minus:disabled { opacity: .3; cursor: not-allowed; }
+    #pdp-hero-pad-{{ section.id }} .ph-step-plus { background: var(--p-primary); color: var(--p-primary-fg); }
+    #pdp-hero-pad-{{ section.id }} .ph-step-qty {
+      min-width: 28px; text-align: center;
+      font-size: 14px; font-weight: 700;
+      color: var(--p-primary);
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* Subscription */
+    #pdp-hero-pad-{{ section.id }} .ph-sub {
+      margin-top: 20px;
+      padding: 16px;
+      background: rgba(244,237,225,.6);
+      border-radius: 16px;
+    }
+    #pdp-hero-pad-{{ section.id }} .ph-sub-row {
+      display: flex; align-items: flex-start; gap: 12px;
+    }
+    #pdp-hero-pad-{{ section.id }} .ph-sub-row svg.icon {
+      width: 20px; height: 20px;
+      color: var(--p-primary);
+      flex-shrink: 0; margin-top: 2px;
+    }
+    #pdp-hero-pad-{{ section.id }} .ph-sub-row .ph-sub-info { flex: 1; min-width: 0; }
+    #pdp-hero-pad-{{ section.id }} .ph-sub-title {
+      font-size: 15px; font-weight: 700;
+      color: var(--p-primary);
+      line-height: 1.2;
+    }
+    #pdp-hero-pad-{{ section.id }} .ph-sub-desc {
+      font-size: 12.5px; color: var(--p-muted);
+      margin-top: 2px;
+    }
+
+    #pdp-hero-pad-{{ section.id }} .ph-toggle {
+      position: relative; flex-shrink: 0;
+      width: 48px; height: 28px;
+      border-radius: 999px;
+      background: var(--p-border);
+      border: 0; cursor: pointer;
+      transition: background .2s ease;
+    }
+    #pdp-hero-pad-{{ section.id }} .ph-toggle.is-on { background: var(--p-primary); }
+    #pdp-hero-pad-{{ section.id }} .ph-toggle::after {
+      content: '';
+      position: absolute; top: 50%; left: 2px;
+      transform: translateY(-50%);
+      width: 24px; height: 24px;
+      border-radius: 50%;
+      background: var(--p-card);
+      box-shadow: 0 1px 4px rgba(0,0,0,.18);
+      transition: transform .2s ease;
+    }
+    #pdp-hero-pad-{{ section.id }} .ph-toggle.is-on::after { transform: translateY(-50%) translateX(20px); }
+
+    #pdp-hero-pad-{{ section.id }} .ph-totals {
+      margin-top: 16px;
+      display: none;
+      align-items: center; justify-content: space-between;
+      background: var(--p-card);
+      padding: 12px 16px;
+      border-radius: 12px;
+    }
+    #pdp-hero-pad-{{ section.id }} .ph-totals.is-visible { display: flex; }
+    #pdp-hero-pad-{{ section.id }} .ph-totals-label { font-size: 13px; color: var(--p-muted); }
+    #pdp-hero-pad-{{ section.id }} .ph-totals-value {
+      font-size: 15px; font-weight: 800;
+      color: var(--p-primary);
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* CTA */
+    #pdp-hero-pad-{{ section.id }} .ph-cta {
+      margin-top: 20px;
+      width: 100%;
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      background: var(--p-primary);
+      color: var(--p-primary-fg);
+      font-size: 15px; font-weight: 700;
+      padding: 16px 24px;
+      border-radius: 999px;
+      border: 0; cursor: pointer;
+      box-shadow: 0 8px 28px -12px rgba(58,45,110,.5);
+      transition: opacity .2s, background .2s;
+    }
+    #pdp-hero-pad-{{ section.id }} .ph-cta:disabled {
+      opacity: .5; cursor: not-allowed;
+    }
+
+    /* Free shipping progress */
+    #pdp-hero-pad-{{ section.id }} .ph-ship { margin-top: 16px; }
+    #pdp-hero-pad-{{ section.id }} .ph-ship-row {
+      display: flex; align-items: center; justify-content: space-between;
+      font-size: 12px; color: var(--p-muted);
+      margin-bottom: 6px;
+    }
+    #pdp-hero-pad-{{ section.id }} .ph-ship-row .ph-ship-text {
+      display: inline-flex; align-items: center; gap: 6px;
+    }
+    #pdp-hero-pad-{{ section.id }} .ph-ship-row svg { color: var(--p-sage); }
+    #pdp-hero-pad-{{ section.id }} .ph-ship-bar {
+      height: 6px; border-radius: 999px;
+      background: var(--p-secondary);
+      overflow: hidden;
+    }
+    #pdp-hero-pad-{{ section.id }} .ph-ship-fill {
+      height: 100%; width: 0%;
+      background: var(--p-sage);
+      transition: width .5s ease;
+    }
+
+    /* Trust badges */
+    #pdp-hero-pad-{{ section.id }} .ph-trust {
+      display: flex; flex-wrap: wrap; gap: 8px 20px;
+      margin-top: 20px; padding: 0;
+      list-style: none;
+    }
+    #pdp-hero-pad-{{ section.id }} .ph-trust li {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 12px; font-weight: 500;
+      color: rgba(58,45,110,.8);
+    }
+    #pdp-hero-pad-{{ section.id }} .ph-trust svg { width: 14px; height: 14px; color: var(--p-sage); }
+
+    @media (min-width: 640px) {
+      #pdp-hero-pad-{{ section.id }} .ph-wrap { padding: 32px 32px 40px; }
+      #pdp-hero-pad-{{ section.id }} .ph-gallery .ph-main { aspect-ratio: 1/1; }
+      #pdp-hero-pad-{{ section.id }} .ph-title { font-size: 42px; }
+      #pdp-hero-pad-{{ section.id }} .ph-variant { padding: 16px; }
+      #pdp-hero-pad-{{ section.id }} .ph-variant-img { width: 64px; height: 64px; }
+    }
+
+    @media (min-width: 1024px) {
+      #pdp-hero-pad-{{ section.id }} .ph-wrap { padding: 48px 32px 56px; }
+      #pdp-hero-pad-{{ section.id }} .ph-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 48px;
+      }
+      #pdp-hero-pad-{{ section.id }} .ph-buybox { position: sticky; top: 96px; }
+      #pdp-hero-pad-{{ section.id }} .ph-title { font-size: 52px; }
+    }
+  </style>
+
+  <div class="ph-wrap">
+    <div class="ph-grid">
+      <!-- Gallery -->
+      <div class="ph-gallery">
+        <div class="ph-main">
+          {%- for block in section.blocks -%}
+            {%- if block.settings.image != blank -%}
+              {%- if forloop.first -%}
+                {%- assign ph_load = 'eager' -%}
+                {%- assign ph_class = 'is-active' -%}
+              {%- else -%}
+                {%- assign ph_load = 'lazy' -%}
+                {%- assign ph_class = '' -%}
+              {%- endif -%}
+              {{ block.settings.image | image_url: width: 1000 | image_tag:
+                alt: block.settings.name,
+                loading: ph_load,
+                class: ph_class,
+                data-ph-img: forloop.index0 }}
+            {%- endif -%}
+          {%- endfor -%}
+          <div class="ph-dots">
+            {%- for block in section.blocks -%}
+              <button type="button"
+                class="ph-dot {% if forloop.first %}is-active{% endif %}"
+                data-ph-dot="{{ forloop.index0 }}"
+                aria-label="Görsel {{ forloop.index }}"></button>
+            {%- endfor -%}
+          </div>
+        </div>
+        <div class="ph-thumbs">
+          {%- for block in section.blocks -%}
+            {%- if block.settings.image != blank -%}
+              <button type="button"
+                class="ph-thumb {% if forloop.first %}is-active{% endif %}"
+                data-ph-thumb="{{ forloop.index0 }}"
+                aria-label="Mini görsel {{ forloop.index }}">
+                {{ block.settings.image | image_url: width: 200 | image_tag: alt: '', loading: 'lazy' }}
+              </button>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      </div>
+
+      <!-- Buy box -->
+      <div class="ph-buybox">
+        <h1 class="ph-title">{{ section.settings.title | default: '.ki Ped' }}</h1>
+
+        <div class="ph-rating">
+          <span class="ph-stars">★★★★★</span>
+          <span class="ph-num">{{ section.settings.rating | default: '4.9' }}</span>
+          <span>/ 5</span>
+          <span style="opacity:.7">({{ section.settings.review_count | default: '1.240+' }} değerlendirme)</span>
+        </div>
+
+        <p class="ph-desc">{{ section.settings.description | default: 'Soft Cotton & Bamboo Fiber üst yüzey ve nefes alan arka yüzeyle hassas ciltler için tasarlandı. Mugwort (Pelin Otu) infüzyonlu doğal bakım formülü; SLS / SLES içermez.' }}</p>
+
+        <div class="ph-builder-head">
+          <h2>{{ section.settings.builder_title | default: 'Paketimi Oluştur' }}</h2>
+          <button type="button" class="ph-helper">🤔 {{ section.settings.helper_label | default: 'Hangi Ped Bana Uygun?' }}</button>
+        </div>
+
+        <div class="ph-variants">
+          {%- for block in section.blocks -%}
+            <div class="ph-variant" data-ph-variant="{{ block.id }}" {{ block.shopify_attributes }}>
+              {%- if block.settings.badge != blank -%}
+                <span class="ph-variant-badge">{{ block.settings.badge }}</span>
+              {%- endif -%}
+              <div class="ph-variant-img">
+                {%- if block.settings.image != blank -%}
+                  {{ block.settings.image | image_url: width: 200 | image_tag: alt: block.settings.name, loading: 'lazy' }}
+                {%- endif -%}
+              </div>
+              <div class="ph-variant-info">
+                <div class="ph-variant-name">
+                  <span>{{ block.settings.name }}</span>
+                  <span class="ph-drops" aria-label="{{ block.settings.drops }}/4 emicilik">
+                    {%- assign drops = block.settings.drops | plus: 0 -%}
+                    {%- for i in (1..4) -%}
+                      <svg viewBox="0 0 24 24" fill="currentColor" class="{% if forloop.index <= drops %}is-on{% endif %}">
+                        <path d="M12 2.5s7 8.2 7 13a7 7 0 1 1-14 0c0-4.8 7-13 7-13z"/>
+                      </svg>
+                    {%- endfor -%}
+                  </span>
+                </div>
+                <p class="ph-variant-short">{{ block.settings.short }}</p>
+                <p class="ph-variant-meta">{{ block.settings.size }} · {{ block.settings.per_box }} adet / paket</p>
+              </div>
+              <div class="ph-stepper-wrap">
+                <span class="ph-step-meta">+{{ block.settings.per_box }} adet</span>
+                <div class="ph-stepper">
+                  <button type="button" class="ph-step-minus" data-ph-minus aria-label="{{ block.settings.name }} azalt" disabled>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14" stroke-linecap="round"/></svg>
+                  </button>
+                  <span class="ph-step-qty" data-ph-qty data-ph-step="{{ block.settings.per_box }}">0</span>
+                  <button type="button" class="ph-step-plus" data-ph-plus aria-label="{{ block.settings.name }} arttır">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14" stroke-linecap="round"/></svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+          {%- endfor -%}
+        </div>
+
+        <!-- Subscription -->
+        <div class="ph-sub">
+          <div class="ph-sub-row">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 12a9 9 0 1 1-3-6.7L21 8"/><path d="M21 3v5h-5"/>
+            </svg>
+            <div class="ph-sub-info">
+              <div class="ph-sub-title">{{ section.settings.sub_title | default: 'Abonelik ile %10 İndirim' }}</div>
+              <div class="ph-sub-desc">{{ section.settings.sub_desc | default: 'Her ay otomatik gönderim, istediğin zaman iptal' }}</div>
+            </div>
+            <button type="button" class="ph-toggle is-on" role="switch" aria-checked="true" data-ph-toggle></button>
+          </div>
+
+          <div class="ph-totals" data-ph-totals>
+            <span class="ph-totals-label">Toplam paket</span>
+            <span class="ph-totals-value" data-ph-totals-value>0 paket · 0 adet</span>
+          </div>
+        </div>
+
+        <button type="button" class="ph-cta" data-ph-cta disabled>
+          <span data-ph-cta-text>{{ section.settings.cta_idle | default: 'Pedlerini Seç' }}</span>
+        </button>
+
+        <div class="ph-ship">
+          <div class="ph-ship-row">
+            <span class="ph-ship-text">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 3h15v13H1z"/><path d="M16 8h4l3 3v5h-7"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+              <span data-ph-ship-text>{{ section.settings.ship_threshold | default: 30 }} adet daha = ücretsiz kargo</span>
+            </span>
+            <span data-ph-ship-pct style="font-weight:600">0%</span>
+          </div>
+          <div class="ph-ship-bar"><div class="ph-ship-fill" data-ph-ship-fill></div></div>
+        </div>
+
+        <ul class="ph-trust">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10z"/></svg> {{ section.settings.trust_1 | default: 'Mugwort infüzyonlu' }}</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> {{ section.settings.trust_2 | default: 'SLS / SLES içermez' }}</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v18M3 12h18"/></svg> {{ section.settings.trust_3 | default: 'Nefes alan yapı' }}</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  (function () {
+    var root = document.getElementById('pdp-hero-pad-{{ section.id }}');
+    if (!root) return;
+
+    /* Gallery */
+    var imgs = root.querySelectorAll('[data-ph-img]');
+    var thumbs = root.querySelectorAll('[data-ph-thumb]');
+    var dots = root.querySelectorAll('[data-ph-dot]');
+    function setActive(i) {
+      imgs.forEach(function (el, idx) { el.classList.toggle('is-active', idx === i); });
+      thumbs.forEach(function (el, idx) { el.classList.toggle('is-active', idx === i); });
+      dots.forEach(function (el, idx) { el.classList.toggle('is-active', idx === i); });
+    }
+    [thumbs, dots].forEach(function (list) {
+      list.forEach(function (el, idx) {
+        el.addEventListener('click', function () { setActive(idx); });
+      });
+    });
+
+    /* Variants */
+    var variants = root.querySelectorAll('[data-ph-variant]');
+    var threshold = {{ section.settings.ship_threshold | default: 30 }};
+
+    function recalc() {
+      var totalUnits = 0, totalPacks = 0;
+      variants.forEach(function (v) {
+        var qtyEl = v.querySelector('[data-ph-qty]');
+        var qty = parseInt(qtyEl.textContent, 10) || 0;
+        var step = parseInt(qtyEl.getAttribute('data-ph-step'), 10) || 1;
+        totalUnits += qty;
+        totalPacks += qty / step;
+        v.classList.toggle('is-selected', qty > 0);
+        v.querySelector('[data-ph-minus]').disabled = qty === 0;
+      });
+
+      var totalsBox = root.querySelector('[data-ph-totals]');
+      var totalsVal = root.querySelector('[data-ph-totals-value]');
+      if (totalUnits > 0) {
+        totalsBox.classList.add('is-visible');
+        totalsVal.textContent = (Math.round(totalPacks * 10) / 10).toLocaleString('tr-TR') + ' paket · ' + totalUnits + ' adet';
+      } else {
+        totalsBox.classList.remove('is-visible');
+      }
+
+      var cta = root.querySelector('[data-ph-cta]');
+      var ctaTxt = root.querySelector('[data-ph-cta-text]');
+      cta.disabled = totalUnits === 0;
+      ctaTxt.textContent = totalUnits === 0 ? {{ section.settings.cta_idle | default: 'Pedlerini Seç' | json }} : 'Sepete Ekle · ' + totalUnits + ' adet';
+
+      var pct = Math.min(1, totalUnits / threshold);
+      root.querySelector('[data-ph-ship-fill]').style.width = (pct * 100) + '%';
+      root.querySelector('[data-ph-ship-pct]').textContent = Math.round(pct * 100) + '%';
+      root.querySelector('[data-ph-ship-text]').textContent = totalUnits >= threshold
+        ? 'Ücretsiz kargo kazandın 🎉'
+        : (threshold - totalUnits) + ' adet daha = ücretsiz kargo';
+    }
+
+    variants.forEach(function (v) {
+      var qtyEl = v.querySelector('[data-ph-qty]');
+      var step = parseInt(qtyEl.getAttribute('data-ph-step'), 10) || 1;
+      v.querySelector('[data-ph-plus]').addEventListener('click', function () {
+        var n = (parseInt(qtyEl.textContent, 10) || 0) + step;
+        qtyEl.textContent = Math.min(200, n);
+        recalc();
+      });
+      v.querySelector('[data-ph-minus]').addEventListener('click', function () {
+        var n = (parseInt(qtyEl.textContent, 10) || 0) - step;
+        qtyEl.textContent = Math.max(0, n);
+        recalc();
+      });
+    });
+
+    /* Subscription toggle */
+    var toggle = root.querySelector('[data-ph-toggle]');
+    if (toggle) toggle.addEventListener('click', function () {
+      var on = toggle.classList.toggle('is-on');
+      toggle.setAttribute('aria-checked', on ? 'true' : 'false');
+    });
+
+    recalc();
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "PDP Hero Pad",
+  "tag": "section",
+  "class": "pdp-hero-pad",
+  "settings": [
+    { "type": "header", "content": "Ürün Bilgisi" },
+    { "type": "text", "id": "title", "label": "Ürün adı", "default": ".ki Ped" },
+    { "type": "text", "id": "rating", "label": "Puan", "default": "4.9" },
+    { "type": "text", "id": "review_count", "label": "Yorum sayısı", "default": "1.240+" },
+    { "type": "textarea", "id": "description", "label": "Açıklama", "default": "Soft Cotton & Bamboo Fiber üst yüzey ve nefes alan arka yüzeyle hassas ciltler için tasarlandı. Mugwort (Pelin Otu) infüzyonlu doğal bakım formülü; SLS / SLES içermez." },
+
+    { "type": "header", "content": "Builder" },
+    { "type": "text", "id": "builder_title", "label": "Builder başlığı", "default": "Paketimi Oluştur" },
+    { "type": "text", "id": "helper_label", "label": "Yardımcı buton", "default": "Hangi Ped Bana Uygun?" },
+    { "type": "text", "id": "cta_idle", "label": "CTA boş durumda", "default": "Pedlerini Seç" },
+
+    { "type": "header", "content": "Abonelik" },
+    { "type": "text", "id": "sub_title", "label": "Abonelik başlığı", "default": "Abonelik ile %10 İndirim" },
+    { "type": "text", "id": "sub_desc", "label": "Abonelik açıklaması", "default": "Her ay otomatik gönderim, istediğin zaman iptal" },
+
+    { "type": "header", "content": "Kargo" },
+    { "type": "range", "id": "ship_threshold", "label": "Ücretsiz kargo eşiği (adet)", "min": 5, "max": 100, "step": 5, "default": 30 },
+
+    { "type": "header", "content": "Trust badges" },
+    { "type": "text", "id": "trust_1", "label": "Trust 1", "default": "Mugwort infüzyonlu" },
+    { "type": "text", "id": "trust_2", "label": "Trust 2", "default": "SLS / SLES içermez" },
+    { "type": "text", "id": "trust_3", "label": "Trust 3", "default": "Nefes alan yapı" },
+
+    { "type": "header", "content": "Renkler" },
+    { "type": "color", "id": "bg", "label": "Arka plan", "default": "#fffaf3" },
+    { "type": "color", "id": "primary_color", "label": "Primary", "default": "#3a2d6e" },
+    { "type": "color", "id": "secondary_color", "label": "Secondary", "default": "#f4ede1" },
+    { "type": "color", "id": "rose_color", "label": "Rose", "default": "#d96d8a" },
+    { "type": "color", "id": "rose_light", "label": "Rose light", "default": "#f6dce4" },
+    { "type": "color", "id": "sage_color", "label": "Sage", "default": "#7b9d6f" }
+  ],
+  "blocks": [
+    {
+      "type": "variant",
+      "name": "Ped variantı",
+      "limit": 6,
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Görsel" },
+        { "type": "text", "id": "name", "label": "Variant adı", "default": "Günlük Ped" },
+        { "type": "text", "id": "short", "label": "Kısa açıklama", "default": "Hafif akıntı · günlük tazelik" },
+        { "type": "range", "id": "drops", "label": "Emicilik (1-4)", "min": 1, "max": 4, "step": 1, "default": 1 },
+        { "type": "text", "id": "size", "label": "Boyut", "default": "155 mm" },
+        { "type": "number", "id": "per_box", "label": "Paket başına adet", "default": 30 },
+        { "type": "text", "id": "badge", "label": "Rozet (opsiyonel)" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "PDP Hero Pad",
+      "blocks": [
+        { "type": "variant", "settings": { "name": "Günlük Ped", "short": "Hafif akıntı · günlük tazelik", "drops": 1, "size": "155 mm", "per_box": 30 } },
+        { "type": "variant", "settings": { "name": "Gündüz Pedi", "short": "Orta yoğun akış · gündüz koruması", "drops": 3, "size": "245 mm", "per_box": 12, "badge": "EN POPÜLER" } },
+        { "type": "variant", "settings": { "name": "Gece Pedi", "short": "Yoğun gece akışı · uzun koruma", "drops": 4, "size": "335 mm", "per_box": 8 } }
+      ]
+    }
+  ]
+}
+{% endschema %}

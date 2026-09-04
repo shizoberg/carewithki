@@ -1,0 +1,268 @@
+{{ 'section-serbetci.css' | asset_url | stylesheet_tag }}
+
+<div class="serbetci-landing">
+
+  <div class="hero">
+    <div class="hero-inner">
+      <div class="tag">{{ section.settings.hero_tag }}</div>
+      <h1>{{ section.settings.hero_title_light }}<br><strong>{{ section.settings.hero_title_bold }}</strong></h1>
+      <p>{{ section.settings.hero_text }}</p>
+      <a href="{{ section.settings.hero_btn_link }}" class="btn white">{{ section.settings.hero_btn_text }} <span class="arr">&rarr;</span></a>
+    </div>
+  </div>
+
+  <section class="sec">
+    <div class="wrap">
+      <div class="split">
+        <div class="img-box">
+          {%- if section.settings.science_image != blank -%}
+            <img src="{{ section.settings.science_image | image_url: width: 600 }}" alt="{{ section.settings.science_tag }}" width="{{ section.settings.science_image.width }}" height="{{ section.settings.science_image.height }}" loading="lazy" style="width:100%;height:100%;object-fit:cover;border-radius:24px">
+          {%- else -%}
+            {{ section.settings.science_emoji }}
+          {%- endif -%}
+        </div>
+        <div>
+          <div class="sec-tag">{{ section.settings.science_tag }}</div>
+          <h2>{{ section.settings.science_title_light }}<br><strong>{{ section.settings.science_title_bold }}</strong></h2>
+          <p class="body-text">{{ section.settings.science_text_1 }}</p>
+          <p class="body-text">{{ section.settings.science_text_2 }}</p>
+          <div class="pills">
+            {%- for block in section.blocks -%}
+              {%- if block.type == 'pill' -%}
+                <span class="pill" {{ block.shopify_attributes }}>{{ block.settings.pill_text }}</span>
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+        </div>
+      </div>
+      <div class="stats">
+        <div class="stat"><div class="stat-n">{{ section.settings.stat_1_number }}</div><div class="stat-l">{{ section.settings.stat_1_label }}</div></div>
+        <div class="stat"><div class="stat-n">{{ section.settings.stat_2_number }}</div><div class="stat-l">{{ section.settings.stat_2_label }}</div></div>
+        <div class="stat"><div class="stat-n">{{ section.settings.stat_3_number }}</div><div class="stat-l">{{ section.settings.stat_3_label }}</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec alt">
+    <div class="wrap">
+      <div class="split" style="gap:48px">
+        <div>
+          <div class="sec-tag">{{ section.settings.steps_tag }}</div>
+          <h2>{{ section.settings.steps_title_light }}<br><strong>{{ section.settings.steps_title_bold }}</strong></h2>
+          <p class="body-text">{{ section.settings.steps_text }}</p>
+        </div>
+        <div class="steps">
+          {%- assign step_num = 0 -%}
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'step' -%}
+              {%- assign step_num = step_num | plus: 1 -%}
+              <div class="step" {{ block.shopify_attributes }}>
+                <div class="step-n">{{ step_num }}</div>
+                <div><h4>{{ block.settings.step_title }}</h4><p>{{ block.settings.step_text }}</p></div>
+              </div>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap">
+      <div style="text-align:center;max-width:540px;margin:0 auto 44px">
+        <div class="sec-tag">{{ section.settings.benefits_tag }}</div>
+        <h2>{{ section.settings.benefits_title_light }}<br><strong>{{ section.settings.benefits_title_bold }}</strong></h2>
+      </div>
+      <div class="grid2">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'benefit' -%}
+            <div class="bcard" {{ block.shopify_attributes }}>
+              <div class="ico">{{ block.settings.benefit_icon }}</div>
+              <h3>{{ block.settings.benefit_title }}</h3>
+              <p>{{ block.settings.benefit_text }}</p>
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </section>
+
+  <section class="sec alt">
+    <div class="wrap-sm">
+      <div class="quote-wrap">
+        <div class="avatar">{{ section.settings.quote_avatar }}</div>
+        <div>
+          <div class="sec-tag" style="margin-bottom:8px">{{ section.settings.quote_tag }}</div>
+          <blockquote>"{{ section.settings.quote_text }}"</blockquote>
+          <cite>{{ section.settings.quote_author }}</cite>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="serbetci-cta">
+    <div class="wrap">
+      <div class="cta-box">
+        <div class="sec-tag" style="color:rgba(255,255,255,.55);margin-bottom:8px">{{ section.settings.cta_tag }}</div>
+        <h2>{{ section.settings.cta_title }}</h2>
+        <p>{{ section.settings.cta_text }}</p>
+        <a href="{{ section.settings.cta_btn_link }}" class="btn white">{{ section.settings.cta_btn_text }} <span class="arr">&rarr;</span></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec alt">
+    <div class="wrap-sm">
+      <div style="text-align:center;margin-bottom:40px">
+        <div class="sec-tag">{{ section.settings.faq_tag }}</div>
+        <h2>{{ section.settings.faq_title_light }} <strong>{{ section.settings.faq_title_bold }}</strong></h2>
+      </div>
+      <div class="faq-list" data-faq-group="serbetci">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'faq' -%}
+            <div class="faq-item" {{ block.shopify_attributes }}>
+              <button class="faq-btn" type="button">{{ block.settings.faq_question }}<span class="faq-ico">+</span></button>
+              <div class="faq-body"><p>{{ block.settings.faq_answer }}</p></div>
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<script>
+(function(){
+  document.querySelectorAll('.serbetci-landing .faq-btn').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var body = this.nextElementSibling;
+      var ico = this.querySelector('.faq-ico');
+      var isOpen = body.classList.contains('open');
+      this.closest('.faq-list').querySelectorAll('.faq-body.open').forEach(function(el){
+        el.classList.remove('open');
+        el.previousElementSibling.querySelector('.faq-ico').textContent = '+';
+      });
+      if(!isOpen){ body.classList.add('open'); ico.textContent = '\u2212'; }
+    });
+  });
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Serbetci Otu Landing",
+  "settings": [
+    { "type": "header", "content": "Hero Alani" },
+    { "type": "text", "id": "hero_tag", "label": "Hero Etiket", "default": "🌿 Hammadde Serisi" },
+    { "type": "text", "id": "hero_title_light", "label": "Hero Baslik (ince)", "default": "Serbetci Otu:" },
+    { "type": "text", "id": "hero_title_bold", "label": "Hero Baslik (kalin)", "default": "Menopozda Huzuru Bul" },
+    { "type": "textarea", "id": "hero_text", "label": "Hero Aciklama", "default": "Biranin yapisinda taninan bu bitki, menopoz doneminde uyku kalitesi ve sinirlilik uzerinde guclu bir etki gosteriyor." },
+    { "type": "text", "id": "hero_btn_text", "label": "Hero Buton Yazi", "default": "Change is Good ile Tanis" },
+    { "type": "url", "id": "hero_btn_link", "label": "Hero Buton Link" },
+
+    { "type": "header", "content": "Bilim Bolumu" },
+    { "type": "text", "id": "science_tag", "label": "Bolum Etiketi", "default": "Bilim Ne Diyor?" },
+    { "type": "text", "id": "science_title_light", "label": "Baslik (ince)", "default": "Beklenmedik Bir" },
+    { "type": "text", "id": "science_title_bold", "label": "Baslik (kalin)", "default": "Kadin Muttefiki" },
+    { "type": "textarea", "id": "science_text_1", "label": "Paragraf 1", "default": "Serbetci Otu (Humulus Lupulus), bira yapiminda kullanilan bitkinin cicekli konilerinden elde edilir. Menopoz arastirmalarindaki en ilginc bilesenlerinden biri olan 8-Prenilnaringenin (8-PN), bilinen en guclu fitoostrojenlerden biridir." },
+    { "type": "textarea", "id": "science_text_2", "label": "Paragraf 2", "default": "Fitoostrojenler, vucudun ostrojen reseptorlerine zayif bicimde baglanarak menopoz doneminde azalan ostrojenin bazi etkilerini hafifce taklit eder. Bu sayede sicak basmasi, uyku bozuklugu ve sinirlilik gibi semptomlar uzerinde olumlu etkiler gozlemlenir." },
+    { "type": "text", "id": "science_emoji", "label": "Emoji (gorsel yoksa)", "default": "🍺" },
+    { "type": "image_picker", "id": "science_image", "label": "Bolum Gorseli" },
+
+    { "type": "header", "content": "Istatistikler" },
+    { "type": "text", "id": "stat_1_number", "label": "Istatistik 1 Sayi", "default": "8-PN" },
+    { "type": "text", "id": "stat_1_label", "label": "Istatistik 1 Aciklama", "default": "Bilinen en guclu bitkisel fitoostrojen" },
+    { "type": "text", "id": "stat_2_number", "label": "Istatistik 2 Sayi", "default": "%36" },
+    { "type": "text", "id": "stat_2_label", "label": "Istatistik 2 Aciklama", "default": "Uyku kalitesinde iyilesme (calisma)" },
+    { "type": "text", "id": "stat_3_number", "label": "Istatistik 3 Sayi", "default": "6-12." },
+    { "type": "text", "id": "stat_3_label", "label": "Istatistik 3 Aciklama", "default": "Haftada belirgin etki baslangici" },
+
+    { "type": "header", "content": "Adimlar Bolumu" },
+    { "type": "text", "id": "steps_tag", "label": "Bolum Etiketi", "default": "Etki Mekanizmasi" },
+    { "type": "text", "id": "steps_title_light", "label": "Baslik (ince)", "default": "Adim Adim" },
+    { "type": "text", "id": "steps_title_bold", "label": "Baslik (kalin)", "default": "Nasil Etki Eder?" },
+    { "type": "text", "id": "steps_text", "label": "Aciklama", "default": "Serbetci Otu'nun menopoz semptomlari uzerindeki etkisi." },
+
+    { "type": "header", "content": "Faydalar Bolumu" },
+    { "type": "text", "id": "benefits_tag", "label": "Bolum Etiketi", "default": "Ne Saglar?" },
+    { "type": "text", "id": "benefits_title_light", "label": "Baslik (ince)", "default": "Serbetci Otu'nun" },
+    { "type": "text", "id": "benefits_title_bold", "label": "Baslik (kalin)", "default": "4 Temel Faydasi" },
+
+    { "type": "header", "content": "Eczaci Notu" },
+    { "type": "text", "id": "quote_avatar", "label": "Avatar Harfi", "default": "A" },
+    { "type": "text", "id": "quote_tag", "label": "Etiket", "default": "Eczaci Notu" },
+    { "type": "textarea", "id": "quote_text", "label": "Alinti Metni", "default": "Serbetci Otu, Change is Good formulunde ozellikle uyku ve anksiyete semptomlarina odaklanan bilesendir." },
+    { "type": "text", "id": "quote_author", "label": "Yazar", "default": "ARIN ALAN - Eczaci, .ki Bitki Bilimi Sorumlusu" },
+
+    { "type": "header", "content": "CTA Bolumu" },
+    { "type": "text", "id": "cta_tag", "label": "CTA Etiket", "default": "Change is Good" },
+    { "type": "text", "id": "cta_title", "label": "CTA Baslik", "default": "Serbetci Otu, Change is Good'un Uyku & Huzur Bilesenidir" },
+    { "type": "textarea", "id": "cta_text", "label": "CTA Aciklama", "default": "Karayilan Otu ve Cin Melek Otu ile birlikte formule edilen Change is Good - menopozun farkli semptomlarina farkli mekanizmalarla etki eden butunsel bir destek." },
+    { "type": "text", "id": "cta_btn_text", "label": "Buton Yazi", "default": "Urunu Incele" },
+    { "type": "url", "id": "cta_btn_link", "label": "Buton Link" },
+
+    { "type": "header", "content": "SSS Bolumu" },
+    { "type": "text", "id": "faq_tag", "label": "SSS Etiket", "default": "Sikca Sorulan Sorular" },
+    { "type": "text", "id": "faq_title_light", "label": "Baslik (ince)", "default": "Merak" },
+    { "type": "text", "id": "faq_title_bold", "label": "Baslik (kalin)", "default": "Ettiklerin" }
+  ],
+  "blocks": [
+    {
+      "type": "pill",
+      "name": "Etiket (Pill)",
+      "settings": [
+        { "type": "text", "id": "pill_text", "label": "Etiket Metni", "default": "🌸 Fitoostrojen" }
+      ]
+    },
+    {
+      "type": "step",
+      "name": "Adim",
+      "settings": [
+        { "type": "text", "id": "step_title", "label": "Adim Basligi", "default": "Adim Basligi" },
+        { "type": "textarea", "id": "step_text", "label": "Adim Aciklamasi", "default": "Adim aciklamasi buraya gelecek." }
+      ]
+    },
+    {
+      "type": "benefit",
+      "name": "Fayda Karti",
+      "settings": [
+        { "type": "text", "id": "benefit_icon", "label": "Ikon (emoji)", "default": "😴" },
+        { "type": "text", "id": "benefit_title", "label": "Baslik", "default": "Fayda Basligi" },
+        { "type": "textarea", "id": "benefit_text", "label": "Aciklama", "default": "Fayda aciklamasi buraya gelecek." }
+      ]
+    },
+    {
+      "type": "faq",
+      "name": "SSS Maddesi",
+      "settings": [
+        { "type": "text", "id": "faq_question", "label": "Soru", "default": "Soru buraya?" },
+        { "type": "textarea", "id": "faq_answer", "label": "Cevap", "default": "Cevap buraya gelecek." }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Serbetci Otu Landing",
+      "blocks": [
+        { "type": "pill", "settings": { "pill_text": "🌸 Fitoostrojen (8-PN)" } },
+        { "type": "pill", "settings": { "pill_text": "😴 Uyku Kalitesi" } },
+        { "type": "pill", "settings": { "pill_text": "🧘 Anksiyete Azalmasi" } },
+        { "type": "pill", "settings": { "pill_text": "🌡️ Sicak Basmasi Destegi" } },
+        { "type": "step", "settings": { "step_title": "Fitoostrojen Salinimi", "step_text": "8-PN bilesigi sindirim sistemi tarafindan absorbe edilir ve dolasima gecer." } },
+        { "type": "step", "settings": { "step_title": "Ostrojen Reseptorlerine Baglanir", "step_text": "Ostrojen reseptorlerine zayif bicimde baglanir; azalan ostrojenin etkisini hafifce destekler." } },
+        { "type": "step", "settings": { "step_title": "Merkezi Sinir Sistemi Sakinlesir", "step_text": "GABA-A reseptorleri uzerindeki etkisiyle anksiyete azalir, uyku baslangici kolaylasir." } },
+        { "type": "step", "settings": { "step_title": "Semptom Yuku Hafifler", "step_text": "Gece terlemesi, uyku kesintileri ve gunduz sinirlilik belirgin sekilde azalir." } },
+        { "type": "benefit", "settings": { "benefit_icon": "😴", "benefit_title": "Uyku Kalitesi", "benefit_text": "GABA-A aktivasyonu sayesinde uyku baslangici kolaylasir, gece uyanmalari azalir." } },
+        { "type": "benefit", "settings": { "benefit_icon": "🌡️", "benefit_title": "Sicak Basmasina Destek", "benefit_text": "Fitoostrojen etkisiyle isi duzenleme mekanizmasi stabilize edilir." } },
+        { "type": "benefit", "settings": { "benefit_icon": "🧘", "benefit_title": "Sinirlilik & Anksiyete", "benefit_text": "GABA sistemi uzerindeki sakinlestirici etki, menopoza eslik eden sinirlilik ve anksiyeteyi hafifletir." } },
+        { "type": "benefit", "settings": { "benefit_icon": "✨", "benefit_title": "Genel Konfor", "benefit_text": "Uyku, isi ve ruh hali semptomlarina ayni anda etki ederek yasam kalitesini artirir." } },
+        { "type": "faq", "settings": { "faq_question": "Fitoostrojen guvenli mi?", "faq_answer": "Fitoostrojenler, vucudun kendi ostrojeninden cok daha zayif etki gosterir. Genel populasyon icin guvenli kabul edilmektedir." } },
+        { "type": "faq", "settings": { "faq_question": "Uyku uzerindeki etkisi ne zaman hissedilir?", "faq_answer": "Ilk 2-4 haftalik duzenli kullanimda uyku baslangicinin kolaylastigini hisseden kullanicilar olmakla birlikte tam etki icin 6-12 hafta onerilmektedir." } },
+        { "type": "faq", "settings": { "faq_question": "Birayla iliskisi var mi?", "faq_answer": "Serbetci Otu bitkisi bira uretiminde kullanilir ancak Change is Good'da kullanilan form standardize edilmis bitki ozudur. Alkol icermez." } },
+        { "type": "faq", "settings": { "faq_question": "Change is Good'da baska ne var?", "faq_answer": "Change is Good; Serbetci Otu'nun yani sira Karayilan Otu ve Cin Melek Otu icerir. Uc bitki birbirini tamamlayacak sekilde formule edilmistir." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

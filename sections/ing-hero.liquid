@@ -1,0 +1,201 @@
+<style>
+  .ing-hero {
+    min-height: 85vh;
+    display: flex;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    color: #121212;
+    font-family: 'Raleway', 'Segoe UI', system-ui, sans-serif;
+    background: {{ section.settings.bg_color }};
+  }
+  .ing-hero-bg-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+    opacity: {{ section.settings.bg_opacity }};
+  }
+  .ing-hero-gradient {
+    position: absolute;
+    inset: 0;
+    background: {{ section.settings.bg_gradient }};
+    z-index: 1;
+  }
+  .ing-hero-inner {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 80px 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 60px;
+  }
+  .ing-hero-content {
+    flex: 1;
+    max-width: 800px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .ing-hero-visual {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+  }
+  .ing-hero-visual img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 32px;
+    box-shadow: 0 24px 48px rgba(73, 61, 154, 0.15);
+    transform: translateY(0);
+    animation: float 6s ease-in-out infinite;
+  }
+  @keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-15px); }
+    100% { transform: translateY(0px); }
+  }
+  .ing-hero .tag {
+    display: inline-block;
+    color: #493D9A;
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .ing-hero h1 {
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
+    font-weight: 300;
+    line-height: 1.05;
+    margin-top: 0;
+    margin-bottom: 20px;
+    letter-spacing: -0.02em;
+    color: {{ section.settings.text_color }};
+  }
+  .ing-hero h1 strong {
+    font-weight: 800;
+  }
+  .ing-hero-text {
+    font-size: clamp(1.05rem, 2vw, 1.15rem);
+    color: {{ section.settings.text_color }};
+    opacity: 0.85;
+    margin-bottom: 36px;
+    line-height: 1.6;
+  }
+  .ing-hero-text p {
+    margin-top: 0;
+    margin-bottom: 16px;
+  }
+  .ing-hero .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    background: #493D9A;
+    color: #fff;
+    font-family: inherit;
+    font-size: 16px;
+    font-weight: 700;
+    padding: 16px 36px;
+    border-radius: 999px;
+    text-decoration: none;
+    transition: all .25s ease;
+    box-shadow: 0 10px 24px rgba(73, 61, 154, 0.3);
+  }
+  .ing-hero .btn:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 16px 32px rgba(73, 61, 154, 0.4);
+  }
+  .ing-hero .btn .arr {
+    transition: transform .25s ease;
+  }
+  .ing-hero .btn:hover .arr {
+    transform: translateX(5px);
+  }
+
+  
+  @media(max-width: 900px) {
+    .ing-hero-inner {
+      padding-top: 60px;
+      padding-bottom: 60px;
+      gap: 40px;
+    }
+    .ing-hero-visual img {
+      width: 80%;
+      border-radius: 20px;
+    }
+  }
+</style>
+
+<div class="ing-hero" id="{{ section.id }}">
+  {%- if section.settings.bg_image != blank -%}
+    {{ section.settings.bg_image | image_url: width: 2000 | image_tag: class: 'ing-hero-bg-img', loading: 'lazy', alt: '' }}
+  {%- endif -%}
+  <div class="ing-hero-gradient"></div>
+
+  <div class="ing-hero-inner">
+    <div class="ing-hero-content">
+      
+      {%- if section.settings.tag != blank -%}
+        <div class="tag">{{ section.settings.tag }}</div>
+      {%- endif -%}
+      
+      <h1>{{ section.settings.title_light }}<br><strong>{{ section.settings.title_bold }}</strong></h1>
+      
+      {%- if section.settings.text != blank -%}
+        <div class="ing-hero-text">{{ section.settings.text }}</div>
+      {%- endif -%}
+      
+      {%- if section.settings.btn_text != blank -%}
+        <a href="{{ section.settings.btn_link }}" class="btn">
+          {{ section.settings.btn_text }} <span class="arr">&rarr;</span>
+        </a>
+      {%- endif -%}
+
+
+    </div>
+
+    {%- if section.settings.hero_image != blank -%}
+    <div class="ing-hero-visual">
+      {{ section.settings.hero_image | image_url: width: 1000 | image_tag: alt: section.settings.title_bold, fetchpriority: 'high' }}
+    </div>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Ing: Premium Hero",
+  "settings": [
+    { "type": "color", "id": "bg_color", "label": "Arka Plan Rengi", "default": "#F8F7FC" },
+    { "type": "text", "id": "bg_gradient", "label": "Arka Plan CSS Degrade (Opsiyonel)", "default": "linear-gradient(135deg, rgba(248,247,252,1) 0%, rgba(218,210,255,0.4) 100%)" },
+    { "type": "image_picker", "id": "bg_image", "label": "Arka Plan Fotoğrafı (Opsiyonel)" },
+    { "type": "range", "id": "bg_opacity", "min": 0, "max": 1, "step": 0.1, "label": "Arka Plan Fotoğraf Opasite", "default": 0.1 },
+    { "type": "color", "id": "text_color", "label": "Metin Rengi", "default": "#121212" },
+
+    { "type": "header", "content": "İçerik" },
+    { "type": "text", "id": "tag", "label": "Etiket", "default": "Hammadde Sırrı" },
+    { "type": "text", "id": "title_light", "label": "Başlık (İnce)", "default": "Doğanın Gücü:" },
+    { "type": "text", "id": "title_bold", "label": "Başlık (Kalın)", "default": "Çin Melek Otu" },
+    { "type": "richtext", "id": "text", "label": "Açıklama", "default": "<p>Doğal içeriklerin arkasındaki bilimi keşfedin. Günlük rutininize katacağınız bu mucize ile tanışın.</p>" },
+    { "type": "text", "id": "btn_text", "label": "Buton Yazı", "default": "Formülü İncele" },
+    { "type": "url", "id": "btn_link", "label": "Buton Link" },
+    { "type": "image_picker", "id": "hero_image", "label": "Etkileşimli Görsel (Sağ Kısım)" }
+  ],
+  "presets": [
+    { 
+      "name": "Ing: Premium Hero"
+    }
+  ]
+}
+{% endschema %}

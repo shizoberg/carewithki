@@ -1,0 +1,144 @@
+{% comment %}
+  .ki Account Top Nav (scoped) — Brand Kit
+  Logo + Tabs (Siparişler / Abonelikler / Profil) + avatar.
+  Active tab underline. Mobile: tabs stack below.
+
+  Brand kit:
+    #493d9a / #f8f8f6 / #b2a5ff / #dad2ff
+{% endcomment %}
+
+<section id="mshnav-{{ section.id }}" class="section">
+  <style>
+    #mshnav-{{ section.id }}{
+      --ki-purple-dark: #493d9a;
+      --ki-offwhite: #f8f8f6;
+      --ki-purple: #b2a5ff;
+      --ki-lilac: #dad2ff;
+
+      --bg: {{ section.settings.bg | default: '#ffffff' }};
+      --text: {{ section.settings.text | default: '#1a1a1a' }};
+      --muted: {{ section.settings.muted | default: 'rgba(26,26,26,.64)' }};
+      --line: rgba(73,61,154,.14);
+
+      --maxw: {{ section.settings.max_width | default: 1400 }}px;
+      --px: {{ section.settings.pad_x | default: 32 }}px;
+
+      background: var(--bg); color: var(--text);
+      border-bottom: 1px solid var(--line);
+    }
+    #mshnav-{{ section.id }} .mshnav__wrap{
+      max-width: var(--maxw); margin: 0 auto; padding: 0 var(--px);
+      display: flex; align-items: center; justify-content: space-between; height: 64px; gap: 24px;
+    }
+    #mshnav-{{ section.id }} .mshnav__left{ display: flex; align-items: center; gap: 32px; }
+    #mshnav-{{ section.id }} .mshnav__logo{
+      font-weight: 800; font-size: 24px; letter-spacing: -0.03em;
+      color: var(--ki-purple-dark); text-decoration: none;
+    }
+    #mshnav-{{ section.id }} .mshnav__tabs{
+      display: none; align-items: center; gap: 4px; list-style: none; margin: 0; padding: 0;
+    }
+    @media (min-width: 768px){ #mshnav-{{ section.id }} .mshnav__tabs{ display: flex; } }
+    #mshnav-{{ section.id }} .mshnav__tab{
+      position: relative; padding: 8px 14px; border-radius: 8px; font-size: 14px; font-weight: 500;
+      color: var(--muted); text-decoration: none; display: inline-flex; align-items: center;
+      transition: color .2s;
+    }
+    #mshnav-{{ section.id }} .mshnav__tab:hover{ color: var(--text); }
+    #mshnav-{{ section.id }} .mshnav__tab--active{ color: var(--ki-purple-dark); }
+    #mshnav-{{ section.id }} .mshnav__tab--active::after{
+      content: ""; position: absolute; left: 12px; right: 12px; bottom: -21px; height: 2px;
+      border-radius: 999px; background: var(--ki-purple-dark);
+    }
+    #mshnav-{{ section.id }} .mshnav__badge{
+      margin-left: 8px; height: 20px; min-width: 20px; padding: 0 6px; border-radius: 999px;
+      display: inline-flex; align-items: center; justify-content: center;
+      background: var(--ki-purple-dark); color: #fff; font-size: 11px; font-weight: 650;
+    }
+    #mshnav-{{ section.id }} .mshnav__avatar{
+      height: 36px; width: 36px; border-radius: 999px; border: 1px solid var(--line);
+      display: grid; place-items: center; font-size: 14px; font-weight: 500; color: var(--text);
+      background: #fff;
+    }
+    #mshnav-{{ section.id }} .mshnav__mobile{
+      display: flex; gap: 4px; overflow-x: auto; padding: 0 var(--px) 12px;
+      max-width: var(--maxw); margin: 0 auto;
+    }
+    @media (min-width: 768px){ #mshnav-{{ section.id }} .mshnav__mobile{ display: none; } }
+    #mshnav-{{ section.id }} a:focus-visible{
+      outline: 2px solid var(--ki-purple-dark); outline-offset: 3px; border-radius: 8px;
+    }
+    @media (max-width: 750px){
+      #mshnav-{{ section.id }} .mshnav__wrap{ padding: 0 16px; height: 60px; }
+    }
+  </style>
+
+  <div class="mshnav__wrap">
+    <div class="mshnav__left">
+      <a href="{{ section.settings.logo_link | default: '/' }}" class="mshnav__logo">
+        {{ section.settings.logo_text | default: '.ki' }}
+      </a>
+      <ul class="mshnav__tabs">
+        {% for block in section.blocks %}
+          <li>
+            <a href="{{ block.settings.href }}" class="mshnav__tab {% if block.settings.active %}mshnav__tab--active{% endif %}" {{ block.shopify_attributes }}>
+              {{ block.settings.label }}
+              {% if block.settings.badge != blank and block.settings.badge != 0 %}
+                <span class="mshnav__badge">{{ block.settings.badge }}</span>
+              {% endif %}
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+    <div class="mshnav__avatar" aria-label="Hesap avatarı">{{ section.settings.avatar_initial | default: 'B' }}</div>
+  </div>
+
+  <div class="mshnav__mobile" role="tablist">
+    {% for block in section.blocks %}
+      <a href="{{ block.settings.href }}" class="mshnav__tab {% if block.settings.active %}mshnav__tab--active{% endif %}">
+        {{ block.settings.label }}
+      </a>
+    {% endfor %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "MSH · Top nav",
+  "settings": [
+    { "type": "text", "id": "logo_text", "label": "Logo text", "default": ".ki" },
+    { "type": "url", "id": "logo_link", "label": "Logo link" },
+    { "type": "text", "id": "avatar_initial", "label": "Avatar initial", "default": "B" },
+
+    { "type": "header", "content": "Style" },
+    { "type": "color", "id": "bg", "label": "Background", "default": "#ffffff" },
+    { "type": "color", "id": "text", "label": "Text", "default": "#1a1a1a" },
+    { "type": "color", "id": "muted", "label": "Muted", "default": "#493d9a" },
+    { "type": "range", "id": "max_width", "label": "Max width (px)", "min": 1000, "max": 1600, "step": 10, "default": 1400 },
+    { "type": "range", "id": "pad_x", "label": "Horizontal padding (px)", "min": 12, "max": 80, "step": 2, "default": 32 }
+  ],
+  "blocks": [
+    {
+      "type": "tab",
+      "name": "Tab",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Label", "default": "Abonelikler" },
+        { "type": "url", "id": "href", "label": "Link" },
+        { "type": "text", "id": "badge", "label": "Badge (count)" },
+        { "type": "checkbox", "id": "active", "label": "Active", "default": false }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "MSH · Top nav",
+      "blocks": [
+        { "type": "tab", "settings": { "label": "Siparişler" } },
+        { "type": "tab", "settings": { "label": "Abonelikler", "badge": "1", "active": true } },
+        { "type": "tab", "settings": { "label": "Profil" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

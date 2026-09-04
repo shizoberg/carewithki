@@ -1,0 +1,31 @@
+/* =============================================
+   .ki PDP Custom Styles v7
+   - Sadece thumbnail + dot stilleri
+   - main-product section yok, ki-pdp-hero her seyi yapiyor
+   ============================================= */
+
+/* --- THUMBNAIL --- */
+.thumbnail-list { gap: 8px !important; padding: 8px 4px !important; }
+.thumbnail {
+  border-radius: 10px !important;
+  border: 2px solid transparent !important;
+  overflow: hidden !important;
+  opacity: 0.55 !important;
+  transform: scale(0.95) !important;
+  transition: all 0.18s !important;
+  padding: 0 !important;
+  background: transparent !important;
+}
+.thumbnail:hover { opacity: 0.8 !important; transform: scale(0.97) !important; border-color: rgba(73,61,154,0.4) !important; }
+.thumbnail[aria-current="true"] { border-color: #493d9a !important; opacity: 1 !important; transform: scale(1) !important; }
+.thumbnail-slider .slider-button { display: none !important; }
+.product__media-list ~ .slider-buttons,
+.slider-mobile-gutter > .slider-buttons { display: none !important; }
+
+/* --- BUYUTEC GIZLE --- */
+.product__media-icon, [class*="media-icon"],
+.product__media-toggle, .product__media-zoom,
+.product__media-zoom-in, .product__modal-opener { display: none !important; }
+
+/* --- KART --- */
+[id^='KiOpts'] .kipdp-opt { will-change: transform, border-color, background; }

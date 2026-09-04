@@ -1,0 +1,462 @@
+{%- style -%}
+  #KiEditorialSlider-{{ section.id }} {
+    --ki-slider-bg: {{ section.settings.background }};
+    --ki-slider-text: {{ section.settings.text_color }};
+    --ki-slider-accent: {{ section.settings.accent_color }};
+    padding: 28px 18px 20px;
+    overflow: hidden;
+    background: var(--ki-slider-bg);
+  }
+  #KiEditorialSlider-{{ section.id }} .kes-shell {
+    width: min({{ section.settings.max_width }}px, 100%);
+    margin: 0 auto;
+  }
+  #KiEditorialSlider-{{ section.id }} .kes-viewport { overflow: hidden; }
+  #KiEditorialSlider-{{ section.id }} .kes-track {
+    display: flex;
+    transition: transform .28s ease;
+    will-change: transform;
+  }
+  #KiEditorialSlider-{{ section.id }} .kes-slide {
+    min-width: 100%;
+    display: grid;
+    grid-template-columns: minmax(300px, .72fr) minmax(0, 1.28fr);
+    align-items: center;
+    gap: clamp(28px, 5vw, 74px);
+  }
+  #KiEditorialSlider-{{ section.id }} .kes-slide--artwork {
+    position: relative;
+    display: block;
+    max-width: 1250px;
+    margin: 0 auto;
+  }
+  #KiEditorialSlider-{{ section.id }} .kes-slide--artwork .kes-copy {
+    position: absolute;
+    z-index: 2;
+    left: clamp(28px, 4vw, 64px);
+    bottom: clamp(24px, 3.2vw, 48px);
+    padding: 0;
+    pointer-events: none;
+  }
+  #KiEditorialSlider-{{ section.id }} .kes-slide--artwork .kes-eyebrow,
+  #KiEditorialSlider-{{ section.id }} .kes-slide--artwork .kes-title,
+  #KiEditorialSlider-{{ section.id }} .kes-slide--artwork .kes-description {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+  #KiEditorialSlider-{{ section.id }} .kes-slide--artwork .kes-actions {
+    margin: 0;
+    pointer-events: auto;
+  }
+  #KiEditorialSlider-{{ section.id }} .kes-slide--artwork .kes-button {
+    background: #fff;
+    color: var(--ki-slider-accent);
+    box-shadow: 0 10px 24px rgba(20,14,52,.18);
+  }
+  #KiEditorialSlider-{{ section.id }} .kes-slide--artwork .kes-button--secondary {
+    border-color: rgba(255,255,255,.82);
+    background: rgba(30,23,77,.24);
+    color: #fff;
+    box-shadow: none;
+    backdrop-filter: blur(6px);
+  }
+  #KiEditorialSlider-{{ section.id }} .kes-slide--artwork .kes-media {
+    width: 100%;
+    aspect-ratio: 2 / 1;
+  }
+  #KiEditorialSlider-{{ section.id }} .kes-slide--artwork .kes-media > img {
+    object-fit: cover;
+  }
+  #KiEditorialSlider-{{ section.id }} .kes-slide--artwork .kes-proof { display: none; }
+  #KiEditorialSlider-{{ section.id }} .kes-copy { padding: 18px 0 18px 10px; }
+  #KiEditorialSlider-{{ section.id }} .kes-eyebrow {
+    margin: 0 0 12px;
+    color: var(--ki-slider-accent);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+  }
+  #KiEditorialSlider-{{ section.id }} .kes-title {
+    max-width: 560px;
+    margin: 0;
+    color: var(--ki-slider-text);
+    font-family: var(--ki-font-primary, 'Raleway', sans-serif);
+    font-size: clamp(38px, 4.2vw, 68px);
+    font-weight: 650;
+    letter-spacing: -.045em;
+    line-height: .98;
+  }
+  #KiEditorialSlider-{{ section.id }} .kes-description {
+    max-width: 520px;
+    margin: 18px 0 0;
+    color: #625e69;
+    font-size: 16px;
+    line-height: 1.45;
+  }
+  #KiEditorialSlider-{{ section.id }} .kes-actions {
+    margin-top: 22px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  #KiEditorialSlider-{{ section.id }} .kes-button {
+    min-height: 48px;
+    padding: 0 21px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    border-radius: 999px;
+    background: var(--ki-slider-accent);
+    color: #fff;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 800;
+  }
+  #KiEditorialSlider-{{ section.id }} .kes-button--secondary {
+    border: 1px solid var(--ki-slider-accent);
+    background: transparent;
+    color: var(--ki-slider-accent);
+  }
+  #KiEditorialSlider-{{ section.id }} .kes-button svg { width: 17px; height: 17px; }
+  #KiEditorialSlider-{{ section.id }} .kes-media {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    border-radius: 24px;
+    background: #211a4d;
+  }
+  #KiEditorialSlider-{{ section.id }} .kes-media img,
+  #KiEditorialSlider-{{ section.id }} .kes-media video {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: contain;
+    object-position: center;
+  }
+  #KiEditorialSlider-{{ section.id }} .kes-media video { object-fit: cover; }
+  #KiEditorialSlider-{{ section.id }} .kes-media-placeholder {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    place-items: center;
+    color: rgba(255,255,255,.76);
+    font-size: 13px;
+    font-weight: 700;
+  }
+  #KiEditorialSlider-{{ section.id }} .kes-proof {
+    position: absolute;
+    right: 18px;
+    bottom: 18px;
+    max-width: calc(100% - 36px);
+    padding: 10px 14px;
+    border-radius: 14px;
+    background: rgba(255,255,255,.94);
+    color: #33286f;
+    box-shadow: 0 10px 24px rgba(20,14,52,.14);
+    font-size: 11px;
+    font-weight: 750;
+    line-height: 1.25;
+  }
+  #KiEditorialSlider-{{ section.id }} .kes-controls {
+    margin-top: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  #KiEditorialSlider-{{ section.id }} .kes-arrow {
+    width: 40px;
+    height: 40px;
+    display: grid;
+    place-items: center;
+    border: 1px solid #d8d2e7;
+    border-radius: 50%;
+    background: transparent;
+    color: var(--ki-slider-text);
+    cursor: pointer;
+  }
+  #KiEditorialSlider-{{ section.id }} .kes-arrow svg { width: 18px; height: 18px; }
+  #KiEditorialSlider-{{ section.id }} .kes-count {
+    min-width: 48px;
+    color: var(--ki-slider-text);
+    font-size: 13px;
+    font-weight: 750;
+    text-align: center;
+  }
+  #KiEditorialSlider-{{ section.id }} .kes-benefits {
+    margin-top: 18px;
+    padding: 11px 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    overflow: hidden;
+    border-radius: 12px;
+    background: var(--ki-slider-accent);
+    color: #fff;
+    font-size: 10px;
+    font-weight: 750;
+    letter-spacing: .03em;
+    white-space: nowrap;
+  }
+  #KiEditorialSlider-{{ section.id }} .kes-benefits span + span::before {
+    margin-right: 20px;
+    color: rgba(255,255,255,.65);
+    content: '•';
+  }
+
+  @media (max-width: 749px) {
+    #KiEditorialSlider-{{ section.id }} { padding: 18px 12px 12px; }
+    #KiEditorialSlider-{{ section.id }} .kes-slide {
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    #KiEditorialSlider-{{ section.id }} .kes-slide--artwork {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+      max-width: none;
+      margin: 0;
+    }
+    #KiEditorialSlider-{{ section.id }} .kes-slide--artwork .kes-copy {
+      position: static;
+      grid-row: 1;
+      padding: 2px 4px 0;
+      pointer-events: auto;
+    }
+    #KiEditorialSlider-{{ section.id }} .kes-slide--artwork .kes-eyebrow,
+    #KiEditorialSlider-{{ section.id }} .kes-slide--artwork .kes-title,
+    #KiEditorialSlider-{{ section.id }} .kes-slide--artwork .kes-description {
+      position: static;
+      width: auto;
+      height: auto;
+      margin: revert;
+      overflow: visible;
+      clip: auto;
+      white-space: normal;
+    }
+    #KiEditorialSlider-{{ section.id }} .kes-slide--artwork .kes-eyebrow { margin: 0 0 8px; }
+    #KiEditorialSlider-{{ section.id }} .kes-slide--artwork .kes-title { margin: 0; }
+    #KiEditorialSlider-{{ section.id }} .kes-slide--artwork .kes-description { margin: 10px 0 0; }
+    #KiEditorialSlider-{{ section.id }} .kes-slide--artwork .kes-actions { margin-top: 14px; }
+    #KiEditorialSlider-{{ section.id }} .kes-slide--artwork .kes-button {
+      background: var(--ki-slider-accent);
+      color: #fff;
+      box-shadow: none;
+    }
+    #KiEditorialSlider-{{ section.id }} .kes-slide--artwork .kes-button--secondary {
+      border-color: var(--ki-slider-accent);
+      background: transparent;
+      color: var(--ki-slider-accent);
+      backdrop-filter: none;
+    }
+    #KiEditorialSlider-{{ section.id }} .kes-slide--artwork .kes-media {
+      grid-row: 2;
+      aspect-ratio: 16 / 9;
+      border-radius: 16px;
+    }
+    #KiEditorialSlider-{{ section.id }} .kes-slide--artwork .kes-media > img {
+      position: static;
+      width: 100%;
+      height: 100%;
+      max-width: 100%;
+      object-fit: cover;
+    }
+    #KiEditorialSlider-{{ section.id }} .kes-slide--focus-left .kes-media > img { object-position: left center; }
+    #KiEditorialSlider-{{ section.id }} .kes-slide--focus-right .kes-media > img { object-position: right center; }
+    #KiEditorialSlider-{{ section.id }} .kes-copy { padding: 2px 4px 0; }
+    #KiEditorialSlider-{{ section.id }} .kes-eyebrow { margin-bottom: 8px; font-size: 8px; }
+    #KiEditorialSlider-{{ section.id }} .kes-title { max-width: 350px; font-size: clamp(31px, 9.2vw, 40px); line-height: 1; }
+    #KiEditorialSlider-{{ section.id }} .kes-description { margin-top: 10px; font-size: 13px; line-height: 1.4; }
+    #KiEditorialSlider-{{ section.id }} .kes-actions { margin-top: 14px; gap: 8px; }
+    #KiEditorialSlider-{{ section.id }} .kes-button { min-height: 39px; padding: 0 15px; font-size: 11px; }
+    #KiEditorialSlider-{{ section.id }} .kes-media { border-radius: 18px; }
+    #KiEditorialSlider-{{ section.id }} .kes-proof { right: 10px; bottom: 10px; padding: 8px 10px; font-size: 8.5px; }
+    #KiEditorialSlider-{{ section.id }} .kes-controls { margin-top: 11px; gap: 7px; }
+    #KiEditorialSlider-{{ section.id }} .kes-arrow { width: 34px; height: 34px; }
+    #KiEditorialSlider-{{ section.id }} .kes-count { min-width: 42px; font-size: 11px; }
+    #KiEditorialSlider-{{ section.id }} .kes-benefits {
+      margin: 12px -12px 0;
+      padding: 9px 12px;
+      justify-content: flex-start;
+      gap: 14px;
+      border-radius: 0;
+      font-size: 8px;
+    }
+    #KiEditorialSlider-{{ section.id }} .kes-benefits span + span::before { margin-right: 14px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #KiEditorialSlider-{{ section.id }} .kes-track { transition: none; }
+  }
+{%- endstyle -%}
+
+<section id="KiEditorialSlider-{{ section.id }}" data-ki-editorial-slider>
+  <div class="kes-shell">
+    <div class="kes-viewport">
+      <div class="kes-track" data-kes-track>
+        {%- for block in section.blocks -%}
+          {%- liquid
+            assign slide_product = block.settings.product
+            assign slide_video = block.settings.video
+            assign slide_image = block.settings.image
+            assign fallback_asset = block.settings.fallback_asset | strip
+            assign is_editorial_artwork = false
+            assign mobile_focus = 'left'
+            if slide_video == blank and slide_image == blank and fallback_asset contains 'ki-home-hero-'
+              assign is_editorial_artwork = true
+              if fallback_asset contains 'pads' or fallback_asset contains 'gels'
+                assign mobile_focus = 'right'
+              endif
+            endif
+            if slide_image == blank and fallback_asset == blank and slide_product != blank
+              assign slide_image = slide_product.featured_image
+            endif
+            assign slide_link = block.settings.button_link
+            if slide_link == blank and slide_product != blank
+              assign slide_link = slide_product.url
+            endif
+            if slide_link == blank
+              assign slide_link = '/pages/paket-olustur'
+            endif
+          -%}
+          <article class="kes-slide{% if is_editorial_artwork %} kes-slide--artwork kes-slide--focus-{{ mobile_focus }}{% endif %}" data-kes-slide aria-hidden="{% if forloop.first %}false{% else %}true{% endif %}" {{ block.shopify_attributes }}>
+            <div class="kes-copy">
+              {%- if block.settings.eyebrow != blank -%}<p class="kes-eyebrow">{{ block.settings.eyebrow | escape }}</p>{%- endif -%}
+              <h2 class="kes-title">{{ block.settings.title | escape }}</h2>
+              {%- if block.settings.description != blank -%}<p class="kes-description">{{ block.settings.description | escape }}</p>{%- endif -%}
+              <div class="kes-actions">
+                <a class="kes-button" href="{{ slide_link }}">
+                  {{ block.settings.button_label | escape }}
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                </a>
+                {%- if block.settings.secondary_button_label != blank and block.settings.secondary_button_link != blank -%}
+                  <a class="kes-button kes-button--secondary" href="{{ block.settings.secondary_button_link }}">
+                    {{ block.settings.secondary_button_label | escape }}
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                  </a>
+                {%- endif -%}
+              </div>
+            </div>
+            <a class="kes-media" href="{{ slide_link }}" aria-label="{{ block.settings.title | escape }}">
+              {%- if slide_video != blank -%}
+                {{ slide_video | video_tag: autoplay: false, loop: true, muted: true, controls: false, playsinline: true, preload: 'metadata' }}
+              {%- elsif slide_image != blank -%}
+                {{ slide_image | image_url: width: 1800 | image_tag: widths: '600, 900, 1200, 1500, 1800', sizes: '(max-width: 749px) calc(100vw - 24px), 62vw', loading: 'eager', fetchpriority: 'high', alt: block.settings.title }}
+              {%- elsif fallback_asset != blank -%}
+                <img src="{{ fallback_asset | asset_url }}" loading="eager" fetchpriority="high" alt="{{ block.settings.title | escape }}" width="1800" height="1013">
+              {%- else -%}
+                <span class="kes-media-placeholder">Görseli tema editöründen ekleyebilirsin.</span>
+              {%- endif -%}
+              {%- if block.settings.show_certifications -%}
+                {% render 'ki-ped-certifications', context: 'media', label: 'ISO · CE · FDA · Intertek' %}
+              {%- endif -%}
+              {%- if block.settings.proof_text != blank -%}<span class="kes-proof">{{ block.settings.proof_text | escape }}</span>{%- endif -%}
+            </a>
+          </article>
+        {%- endfor -%}
+      </div>
+    </div>
+
+    {%- if section.blocks.size > 1 -%}
+      <div class="kes-controls" aria-label="Slider kontrolleri">
+        <button class="kes-arrow" type="button" data-kes-prev aria-label="Önceki"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg></button>
+        <span class="kes-count" data-kes-count>1 / {{ section.blocks.size }}</span>
+        <button class="kes-arrow" type="button" data-kes-next aria-label="Sonraki"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></button>
+      </div>
+    {%- endif -%}
+
+    <div class="kes-benefits" aria-label="Abonelik avantajları">
+      <span>{{ section.settings.benefit_one | escape }}</span>
+      <span>{{ section.settings.benefit_two | escape }}</span>
+      <span>{{ section.settings.benefit_three | escape }}</span>
+      <span>{{ section.settings.benefit_four | escape }}</span>
+    </div>
+  </div>
+</section>
+
+<script>
+  (() => {
+    const root = document.getElementById('KiEditorialSlider-{{ section.id }}');
+    if (!root || root.dataset.ready === 'true') return;
+    root.dataset.ready = 'true';
+    const track = root.querySelector('[data-kes-track]');
+    const slides = [...root.querySelectorAll('[data-kes-slide]')];
+    const count = root.querySelector('[data-kes-count]');
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let index = 0;
+    const render = () => {
+      track.style.transform = `translateX(-${index * 100}%)`;
+      slides.forEach((slide, slideIndex) => {
+        const active = slideIndex === index;
+        slide.setAttribute('aria-hidden', active ? 'false' : 'true');
+        const video = slide.querySelector('video');
+        if (!video) return;
+        if (active && !reduceMotion) {
+          const playPromise = video.play();
+          if (playPromise) playPromise.catch(() => {});
+        } else {
+          video.pause();
+        }
+      });
+      if (count) count.textContent = `${index + 1} / ${slides.length}`;
+    };
+    root.querySelector('[data-kes-prev]')?.addEventListener('click', () => { index = (index - 1 + slides.length) % slides.length; render(); });
+    root.querySelector('[data-kes-next]')?.addEventListener('click', () => { index = (index + 1) % slides.length; render(); });
+    render();
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Sade Abonelik Slider",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    { "type": "color", "id": "background", "label": "Arka plan", "default": "#ffffff" },
+    { "type": "color", "id": "text_color", "label": "Metin", "default": "#211a45" },
+    { "type": "color", "id": "accent_color", "label": "Vurgu", "default": "#493d9a" },
+    { "type": "range", "id": "max_width", "label": "Maksimum genişlik", "min": 1000, "max": 1800, "step": 50, "unit": "px", "default": 1250 },
+    { "type": "text", "id": "benefit_one", "label": "Alt şerit 1", "default": "%15 abonelik avantajı" },
+    { "type": "text", "id": "benefit_two", "label": "Alt şerit 2", "default": "Kişiselleştirilebilir" },
+    { "type": "text", "id": "benefit_three", "label": "Alt şerit 3", "default": "Eczacı onaylı" },
+    { "type": "text", "id": "benefit_four", "label": "Alt şerit 4", "default": "Dilediğin zaman değiştir" }
+  ],
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "Slayt",
+      "limit": 6,
+      "settings": [
+        { "type": "product", "id": "product", "label": "Ürün" },
+        { "type": "video", "id": "video", "label": "16:9 video", "info": "Video seçilirse görsel yerine sessiz ve döngüde oynatılır." },
+        { "type": "image_picker", "id": "image", "label": "16:9 görsel", "info": "Boş bırakılırsa ürünün kapak görseli kullanılır." },
+        { "type": "text", "id": "fallback_asset", "label": "Tema içi yedek görsel dosyası", "info": "Örn: ki-ped-gunduz-01.webp. Ürün ve özel görsel bulunmazsa kullanılır." },
+        { "type": "text", "id": "eyebrow", "label": "Üst etiket", "default": "ABONELİK · SANA ÖZEL" },
+        { "type": "text", "id": "title", "label": "Başlık", "default": "Bakım rutinin kapına gelsin." },
+        { "type": "textarea", "id": "description", "label": "Açıklama", "default": "İhtiyacın olan ürünleri seç, gönderim sıklığını belirle; gerisini bize bırak." },
+        { "type": "text", "id": "button_label", "label": "Buton", "default": "Hemen Abone Ol" },
+        { "type": "url", "id": "button_link", "label": "Buton bağlantısı" },
+        { "type": "text", "id": "secondary_button_label", "label": "İkinci buton" },
+        { "type": "url", "id": "secondary_button_link", "label": "İkinci buton bağlantısı" },
+        { "type": "checkbox", "id": "show_certifications", "label": "Ped sertifika şeridini göster", "default": false },
+        { "type": "text", "id": "proof_text", "label": "Görsel üzeri not", "default": "Eczacılar tarafından geliştirildi" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Sade Abonelik Slider",
+      "blocks": [{ "type": "slide" }, { "type": "slide" }, { "type": "slide" }]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,890 @@
+{% comment %}
+  ki-subscribe-checkout — Shopify üzerinden abonelik checkout'u (Next.js'siz).
+  Akış:
+  1. URL'den ?pack=<base64> oku → boxItems + totalPrice + sellingPlanId
+  2. Paket özeti + ad/email/tel/adres formu göster
+  3. Submit'te POST {kiConfig.subscriptionApiBase}/api/subscribe/init
+  4. Dönen htmlContent (iyzico ödeme formu) sayfaya inject edilir
+  5. iyzico ödeme tamamlanınca backend callback → /pages/abonelik-basarili'ye redirect
+{% endcomment %}
+
+<section id="ki-{{ section.id }}" class="ki-section ki-subscribe-checkout">
+  <style>
+    #ki-{{ section.id }} { padding: 32px 0 64px; background: var(--ki-bg, #fffaf3); }
+    #ki-{{ section.id }} .ki-sc__wrap { max-width: 720px; margin: 0 auto; padding: 0 16px; }
+    #ki-{{ section.id }} .ki-sc__title {
+      font-family: var(--ki-font-primary, system-ui);
+      font-size: 28px; font-weight: 500; color: var(--ki-primary, #3a2d6e);
+      margin: 0 0 8px;
+    }
+    #ki-{{ section.id }} .ki-sc__subtitle { color: var(--ki-muted, #666); font-size: 14px; margin: 0 0 24px; }
+
+    #ki-{{ section.id }} .ki-sc__summary {
+      background: var(--ki-card, #fff); border: 1px solid var(--ki-border, rgba(0,0,0,.08));
+      border-radius: 16px; padding: 20px; margin-bottom: 24px;
+    }
+    #ki-{{ section.id }} .ki-sc__summary-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+    #ki-{{ section.id }} .ki-sc__summary-title { font-weight: 700; color: var(--ki-primary, #3a2d6e); }
+    #ki-{{ section.id }} .ki-sc__summary-total { font-weight: 700; color: var(--ki-primary, #3a2d6e); }
+    #ki-{{ section.id }} .ki-sc__summary-list { display: flex; flex-direction: column; gap: 6px; }
+    #ki-{{ section.id }} .ki-sc__summary-li {
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 13px; color: rgba(0,0,0,.75);
+    }
+    #ki-{{ section.id }} .ki-sc__summary-prices { display:flex; align-items:baseline; justify-content:flex-end; gap:7px; white-space:nowrap; }
+    #ki-{{ section.id }} .ki-sc__summary-original { color:#8a8591; font-size:11px; }
+    #ki-{{ section.id }} .ki-sc__summary-saving { display:flex; justify-content:space-between; gap:12px; margin-top:12px; padding:10px 12px; border-radius:10px; background:#e8f7ef; color:#287655; font-size:13px; font-weight:750; }
+    #ki-{{ section.id }} .ki-sc__summary-empty { font-size: 13px; color: rgba(0,0,0,.6); text-align: center; padding: 12px 0; }
+
+    #ki-{{ section.id }} .ki-sc__form {
+      background: var(--ki-card, #fff); border: 1px solid var(--ki-border, rgba(0,0,0,.08));
+      border-radius: 16px; padding: 24px;
+      display: flex; flex-direction: column; gap: 14px;
+    }
+    #ki-{{ section.id }} .ki-sc__field { display: flex; flex-direction: column; gap: 6px; }
+    #ki-{{ section.id }} .ki-sc__field label { font-size: 13px; font-weight: 600; color: var(--ki-primary, #3a2d6e); }
+    #ki-{{ section.id }} .ki-sc__field input,
+    #ki-{{ section.id }} .ki-sc__field textarea {
+      width: 100%; padding: 12px 14px;
+      border: 1px solid var(--ki-border, rgba(0,0,0,.12));
+      border-radius: 10px;
+      font-size: 14px; color: var(--ki-text, #1a1a1a);
+      background: #fff;
+      font-family: inherit;
+      transition: border-color .15s ease, box-shadow .15s ease;
+    }
+    #ki-{{ section.id }} .ki-sc__field input:focus,
+    #ki-{{ section.id }} .ki-sc__field textarea:focus {
+      outline: 0;
+      border-color: var(--ki-primary, #3a2d6e);
+      box-shadow: 0 0 0 3px rgba(58,45,110,.12);
+    }
+    #ki-{{ section.id }} .ki-sc__cta {
+      width: 100%; padding: 14px 18px;
+      background: var(--ki-primary, #3a2d6e); color: var(--ki-primary-fg, #fff);
+      border-radius: 999px;
+      font-weight: 700; font-size: 14px;
+      cursor: pointer;
+      transition: opacity .15s ease, transform .15s ease;
+    }
+    #ki-{{ section.id }} .ki-sc__cta:disabled { opacity: .55; cursor: not-allowed; }
+    #ki-{{ section.id }} .ki-sc__cta:not(:disabled):active { transform: scale(.98); }
+
+    #ki-{{ section.id }} .ki-sc__error {
+      background: #fde8e8; color: #8a1a1a; border: 1px solid #f5a8a8;
+      padding: 10px 14px; border-radius: 10px; font-size: 13px; display: none;
+    }
+    #ki-{{ section.id }} .ki-sc__error.is-visible { display: block; }
+
+    #ki-{{ section.id }} .ki-sc__steps {
+      display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px;
+      margin: 0 0 18px; padding: 0; list-style: none;
+    }
+    #ki-{{ section.id }} .ki-sc__step {
+      display: grid; grid-template-columns: 34px minmax(0, 1fr); gap: 11px; align-items: start;
+      background: #f7f5ff; border: 1px solid #ded8f4; border-radius: 14px; padding: 14px;
+    }
+    #ki-{{ section.id }} .ki-sc__step-no {
+      width: 34px; height: 34px; display: grid; place-items: center;
+      border-radius: 999px; background: var(--ki-primary, #3a2d6e); color: #fff;
+      font-size: 13px; font-weight: 800;
+    }
+    #ki-{{ section.id }} .ki-sc__step-copy { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+    #ki-{{ section.id }} .ki-sc__step-copy strong { color: var(--ki-primary, #3a2d6e); font-size: 13px; line-height: 1.35; }
+    #ki-{{ section.id }} .ki-sc__step-copy span { color: #6d6876; font-size: 12px; line-height: 1.45; }
+    #ki-{{ section.id }} .ki-sc__step.is-complete { background: #eef9f3; border-color: #cdebdc; }
+    #ki-{{ section.id }} .ki-sc__step.is-complete .ki-sc__step-no { background: #287655; }
+    #ki-{{ section.id }} .ki-sc__step.is-active { background: #fff; border-color: var(--ki-primary, #3a2d6e); box-shadow: 0 8px 24px rgba(58,45,110,.09); }
+
+    #ki-{{ section.id }} .ki-sc__progress {
+      margin: 0 0 14px; padding: 16px 18px; border-radius: 16px;
+      background: linear-gradient(135deg, #f7f5ff 0%, #fff 100%); border: 1px solid #ded8f4;
+    }
+    #ki-{{ section.id }} .ki-sc__progress-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+    #ki-{{ section.id }} .ki-sc__progress-head strong { color: var(--ki-primary, #3a2d6e); font-size: 14px; }
+    #ki-{{ section.id }} .ki-sc__progress-count { color: #6d6876; font-size: 12px; font-weight: 750; white-space: nowrap; }
+    #ki-{{ section.id }} .ki-sc__progress-track { height: 9px; margin-top: 11px; overflow: hidden; border-radius: 999px; background: #e8e3f8; }
+    #ki-{{ section.id }} .ki-sc__progress-fill {
+      display: block; width: 12%; height: 100%; border-radius: inherit;
+      background: linear-gradient(90deg, var(--ki-primary, #3a2d6e), #6d57c8);
+      transition: width .35s ease;
+    }
+    #ki-{{ section.id }} .ki-sc__progress-copy { margin: 9px 0 0; color: #6d6876; font-size: 12px; line-height: 1.45; }
+
+    #ki-{{ section.id }} .ki-sc__support {
+      display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap;
+      margin-top: 16px; padding: 15px 16px; border-radius: 14px;
+      background: #eef9f3; border: 1px solid #cdebdc;
+    }
+    #ki-{{ section.id }} .ki-sc__support-copy { display: flex; flex-direction: column; gap: 3px; }
+    #ki-{{ section.id }} .ki-sc__support-copy strong { color: #235f47; font-size: 13px; }
+    #ki-{{ section.id }} .ki-sc__support-copy a { color: #1f684a; font-size: 14px; font-weight: 750; text-decoration: none; }
+    #ki-{{ section.id }} .ki-sc__support-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+    #ki-{{ section.id }} .ki-sc__support-btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+      min-height: 40px; padding: 9px 13px; border-radius: 999px;
+      background: #fff; border: 1px solid #b9dfcb; color: #235f47;
+      font-size: 12px; font-weight: 750; text-decoration: none;
+    }
+    #ki-{{ section.id }} .ki-sc__support-btn--wa { background: #287655; border-color: #287655; color: #fff; }
+
+    #ki-{{ section.id }} .ki-sc__iyzico {
+      background: #fff; border: 1px solid var(--ki-border, rgba(0,0,0,.08));
+      border-radius: 16px; padding: 24px; min-height: 200px;
+    }
+    /* iyzico inject container — uzun formlar mobil viewport'tan taşmasın */
+    #ki-{{ section.id }} .ki-sc__iyzico {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    #ki-{{ section.id }} .ki-sc__iyzico iframe,
+    #ki-{{ section.id }} .ki-sc__iyzico form,
+    #ki-{{ section.id }} .ki-sc__iyzico * { max-width: 100% !important; }
+
+    /* Mobile polish (≤ 720px) — iyzico inject mantığı DOKUNULMAZ */
+    @media (max-width: 720px) {
+      #ki-{{ section.id }} { padding: 16px 0 80px; }
+      #ki-{{ section.id }} .ki-sc__wrap { padding: 0 16px; }
+      #ki-{{ section.id }} .ki-sc__title { font-size: 22px; line-height: 1.15; }
+      #ki-{{ section.id }} .ki-sc__subtitle { font-size: 13px; margin-bottom: 16px; }
+      #ki-{{ section.id }} .ki-sc__summary { padding: 16px; margin-bottom: 16px; }
+      #ki-{{ section.id }} .ki-sc__form { padding: 16px; gap: 12px; }
+      #ki-{{ section.id }} .ki-sc__field input,
+      #ki-{{ section.id }} .ki-sc__field textarea {
+        height: 48px; padding: 12px 14px;
+        font-size: 16px; /* iOS auto-zoom'u engeller */
+      }
+      #ki-{{ section.id }} .ki-sc__field textarea { height: auto; min-height: 96px; }
+      #ki-{{ section.id }} .ki-sc__iyzico { padding: 12px; }
+      /* CTA daha büyük + scroll-margin (alt scroll'da CTA tabbar arkasında kalmasın) */
+      #ki-{{ section.id }} .ki-sc__cta {
+        padding: 16px 18px;
+        font-size: 15px;
+        margin-top: 6px;
+      }
+      #ki-{{ section.id }} .ki-sc__form { scroll-margin-bottom: 100px; }
+      #ki-{{ section.id }} .ki-sc__steps { grid-template-columns: 1fr; }
+      #ki-{{ section.id }} .ki-sc__support { align-items: stretch; }
+      #ki-{{ section.id }} .ki-sc__support-actions { width: 100%; }
+      #ki-{{ section.id }} .ki-sc__support-btn { flex: 1; }
+    }
+  </style>
+
+  {%- comment -%}
+    Checkout sayfasında mobil tabbar gizlensin — kullanıcı checkout flow'da
+    distraction'sız form doldursun ve iyzico ödemesine geçsin.
+  {%- endcomment -%}
+  <style>
+    body[data-ki-checkout-active="true"] .ki-mobile-tabbar { display: none !important; }
+    body[data-ki-checkout-active="true"] { padding-bottom: 0 !important; }
+  </style>
+  <script>
+    (function () {
+      document.body.setAttribute('data-ki-checkout-active', 'true');
+      window.addEventListener('beforeunload', function () {
+        document.body.removeAttribute('data-ki-checkout-active');
+      });
+    })();
+  </script>
+
+  <div class="ki-sc__wrap">
+    <h1 class="ki-sc__title">{{ section.settings.heading | default: 'Aboneliğini başlat' }}</h1>
+    <p class="ki-sc__subtitle">{{ section.settings.subtitle | default: 'Bilgilerini gir, paketin 2 ayda bir kapına gelsin.' }}</p>
+
+    <div class="ki-sc__summary" data-ki-sc-summary hidden>
+      <div class="ki-sc__summary-head">
+        <span class="ki-sc__summary-title">Paketin</span>
+        <span class="ki-sc__summary-total" data-ki-sc-total>—</span>
+      </div>
+      <div class="ki-sc__summary-list" data-ki-sc-items>
+        <div class="ki-sc__summary-empty">Yükleniyor…</div>
+      </div>
+      <div class="ki-sc__summary-saving" data-ki-sc-savings-row hidden>
+        <span>Abone olarak kazancın</span>
+        <strong data-ki-sc-savings>—</strong>
+      </div>
+    </div>
+
+    <div class="ki-sc__error" data-ki-sc-error></div>
+
+    <div class="ki-sc__progress" data-ki-sc-progress aria-live="polite">
+      <div class="ki-sc__progress-head">
+        <strong data-ki-sc-progress-title>Güvenli giriş</strong>
+        <span class="ki-sc__progress-count" data-ki-sc-progress-count>0 / 4</span>
+      </div>
+      <div class="ki-sc__progress-track" role="progressbar" aria-label="Abonelik ilerlemesi" aria-valuemin="0" aria-valuemax="100" aria-valuenow="12" data-ki-sc-progress-track>
+        <span class="ki-sc__progress-fill" data-ki-sc-progress-fill></span>
+      </div>
+      <p class="ki-sc__progress-copy" data-ki-sc-progress-copy>Önce e-posta adresinle güvenli giriş yap.</p>
+    </div>
+
+    <ol class="ki-sc__steps" aria-label="Abonelik adımları">
+      <li class="ki-sc__step" data-ki-sc-step="1">
+        <span class="ki-sc__step-no">1</span>
+        <span class="ki-sc__step-copy"><strong>E-posta ile giriş</strong><span>Aboneliğini güvenle takip edebilmen için hesabını doğrula.</span></span>
+      </li>
+      <li class="ki-sc__step" data-ki-sc-step="2">
+        <span class="ki-sc__step-no">2</span>
+        <span class="ki-sc__step-copy"><strong>Adını ve soyadını gir</strong><span>Hesabında eksikse burada kolayca tamamla.</span></span>
+      </li>
+      <li class="ki-sc__step" data-ki-sc-step="3">
+        <span class="ki-sc__step-no">3</span>
+        <span class="ki-sc__step-copy"><strong>Teslimat bilgilerini gir</strong><span>Telefonunu ve paketinin geleceği adresi kontrol et.</span></span>
+      </li>
+      <li class="ki-sc__step" data-ki-sc-step="4">
+        <span class="ki-sc__step-no">4</span>
+        <span class="ki-sc__step-copy"><strong>Güvenli ödeme</strong><span>iyzico ekranında ödemeni tamamla ve .ki aboneliğini başlat.</span></span>
+      </li>
+    </ol>
+
+    <style>
+      #ki-{{ section.id }} .ki-sc__ro-note{font-size:12px;color:#6b6b6b;background:#f6f4ff;border:1px solid #e6e0ff;border-radius:8px;padding:8px 10px;margin-bottom:12px}
+      #ki-{{ section.id }} input[readonly]{background:#f3f3f5;color:#555;cursor:not-allowed}
+      #ki-{{ section.id }} .ki-sc__addr-cards{display:flex;flex-direction:column;gap:10px}
+      #ki-{{ section.id }} .ki-sc__addr-card{display:flex;gap:12px;align-items:center;border:1.5px solid #e2e2e8;border-radius:12px;padding:12px 14px;cursor:pointer;transition:border-color .15s,background .15s}
+      #ki-{{ section.id }} .ki-sc__addr-card:has(input:checked){border-color:var(--ki-primary,#3a2d6e);background:#f6f4ff}
+      #ki-{{ section.id }} .ki-sc__addr-card>input[type="radio"]{width:18px !important;height:18px;flex:0 0 18px;margin:0;padding:0;-webkit-appearance:auto;appearance:auto;accent-color:var(--ki-primary,#3a2d6e)}
+      #ki-{{ section.id }} .ki-sc__addr-body{flex:1;min-width:0;display:block}
+      #ki-{{ section.id }} .ki-sc__addr-line{display:block;font-weight:600;font-size:14px;color:#1a1a1a;white-space:normal;word-break:break-word}
+      #ki-{{ section.id }} .ki-sc__addr-sub{display:block;font-size:12.5px;color:#777;margin-top:2px}
+      #ki-{{ section.id }} .ki-sc__addr-new-btn{border:1.5px dashed #cfc7ec;background:#fff;color:var(--ki-primary,#3a2d6e);border-radius:12px;padding:12px 14px;font-weight:600;cursor:pointer;text-align:left}
+      #ki-{{ section.id }} .ki-sc__addr-new-btn.is-active{border-style:solid;border-color:var(--ki-primary,#3a2d6e);background:#f6f4ff}
+      #ki-{{ section.id }} .ki-sc__newaddr{margin-top:12px;padding:14px;border:1px solid #e6e0ff;border-radius:12px;background:#fbfaff}
+    </style>
+
+    <form class="ki-sc__form" data-ki-sc-form>
+      <p class="ki-sc__ro-note">
+        {%- if customer -%}
+          E-posta adresin hesabından geldi. Adını, soyadını ve teslimat bilgilerini tamamladıktan sonra güvenli ödemeye geçebilirsin.
+        {%- else -%}
+          E-posta girişine yönlendiriliyorsun. Girişten sonra adını, soyadını ve teslimat bilgilerini tamamlayabilirsin.
+        {%- endif -%}
+      </p>
+      <div class="ki-sc__field-row" style="display:flex;gap:12px;flex-wrap:wrap">
+        <div class="ki-sc__field" style="flex:1;min-width:120px">
+          <label for="ki-sc-firstname">İsim</label>
+          <input id="ki-sc-firstname" name="firstName" type="text" autocomplete="given-name" placeholder="Adın">
+        </div>
+        <div class="ki-sc__field" style="flex:1;min-width:120px">
+          <label for="ki-sc-lastname">Soyisim</label>
+          <input id="ki-sc-lastname" name="lastName" type="text" autocomplete="family-name" placeholder="Soyadın">
+        </div>
+      </div>
+      <div class="ki-sc__field">
+        <label for="ki-sc-email">E-posta</label>
+        <input id="ki-sc-email" name="email" type="email" readonly autocomplete="email" placeholder="Hesabındaki e-posta">
+      </div>
+      <div class="ki-sc__field">
+        <label for="ki-sc-phone">Telefon</label>
+        <input id="ki-sc-phone" name="phone" type="tel" inputmode="numeric" maxlength="17" autocomplete="tel" placeholder="05XX XXX XX XX">
+      </div>
+
+      <div class="ki-sc__field">
+        <label>Teslimat Adresi</label>
+        <div class="ki-sc__addr-cards" data-ki-sc-addr-cards>
+          {%- if customer -%}{%- for addr in customer.addresses -%}
+          <label class="ki-sc__addr-card">
+            <input type="radio" name="addrChoice" value="saved-{{ forloop.index0 }}"
+                   data-address1="{{ addr.address1 | escape }}"
+                   data-address2="{{ addr.address2 | escape }}"
+                   data-city="{{ addr.city | escape }}"
+                   data-province="{{ addr.province | escape }}"
+                   data-zip="{{ addr.zip | escape }}"
+                   data-phone="{{ addr.phone | escape }}">
+            <span class="ki-sc__addr-body">
+              <span class="ki-sc__addr-line">{{ addr.address1 }}{% if addr.address2 != blank %}, {{ addr.address2 }}{% endif %}</span>
+              <span class="ki-sc__addr-sub">{{ addr.city }}{% if addr.province != blank %} / {{ addr.province }}{% endif %}{% if addr.zip != blank %} · {{ addr.zip }}{% endif %}</span>
+            </span>
+          </label>
+          {%- endfor -%}{%- endif -%}
+          <button type="button" class="ki-sc__addr-new-btn" data-ki-sc-addnew>+ Yeni adres ekle</button>
+        </div>
+      </div>
+
+      <div class="ki-sc__newaddr" data-ki-sc-newaddr hidden>
+        <div class="ki-sc__field">
+          <label for="ki-sc-na-address">Adres</label>
+          <textarea id="ki-sc-na-address" name="na_address" rows="2" autocomplete="street-address" placeholder="Mahalle, sokak, daire no"></textarea>
+        </div>
+        <div class="ki-sc__field-row" style="display:flex;gap:12px;flex-wrap:wrap">
+          <div class="ki-sc__field" style="flex:1;min-width:110px">
+            <label for="ki-sc-na-city">İlçe / Şehir</label>
+            <input id="ki-sc-na-city" name="na_city" type="text" autocomplete="address-level2" placeholder="İlçe">
+          </div>
+          <div class="ki-sc__field" style="flex:1;min-width:110px">
+            <label for="ki-sc-na-province">İl</label>
+            <input id="ki-sc-na-province" name="na_province" type="text" autocomplete="address-level1" placeholder="İl">
+          </div>
+          <div class="ki-sc__field" style="flex:1;min-width:90px">
+            <label for="ki-sc-na-zip">Posta Kodu</label>
+            <input id="ki-sc-na-zip" name="na_zip" type="text" inputmode="numeric" maxlength="5" placeholder="34000">
+          </div>
+        </div>
+      </div>
+
+      <button type="submit" class="ki-sc__cta" data-ki-sc-cta>Ödemeye Geç</button>
+    </form>
+
+    <aside class="ki-sc__support" aria-label="Abonelik desteği">
+      <div class="ki-sc__support-copy">
+        <strong>Bir adımda takıldın mı? Yanındayız.</strong>
+        <a href="tel:+905335745535">+90 533 574 55 35</a>
+      </div>
+      <div class="ki-sc__support-actions">
+        <a class="ki-sc__support-btn ki-sc__support-btn--wa" href="https://wa.me/905335745535?text=Merhaba%2C%20abonelik%20%C3%B6demesi%20hakk%C4%B1nda%20destek%20almak%20istiyorum." target="_blank" rel="noopener">WhatsApp’tan yaz</a>
+        <a class="ki-sc__support-btn" href="tel:+905335745535">Hemen ara</a>
+      </div>
+    </aside>
+
+    <div class="ki-sc__iyzico" data-ki-sc-iyzico hidden>
+      {%- comment -%}
+        iyzico checkout form v2 hedef div'i — SDK bundle.js bu div'i bulup
+        içine ödeme UI'sini render eder. id ve class ZORUNLU.
+      {%- endcomment -%}
+      <div id="iyzipay-checkout-form" class="responsive"></div>
+    </div>
+  </div>
+</section>
+
+<script>
+  (function () {
+    var root = document.getElementById('ki-{{ section.id }}');
+    if (!root) return;
+    var storefrontLoginUrl = {{ routes.storefront_login_url | default: routes.account_login_url | json }};
+
+    var summaryEl = root.querySelector('[data-ki-sc-summary]');
+    var summaryItemsEl = root.querySelector('[data-ki-sc-items]');
+    var summaryTotalEl = root.querySelector('[data-ki-sc-total]');
+    var summarySavingsRowEl = root.querySelector('[data-ki-sc-savings-row]');
+    var summarySavingsEl = root.querySelector('[data-ki-sc-savings]');
+    var formEl = root.querySelector('[data-ki-sc-form]');
+    var ctaEl = root.querySelector('[data-ki-sc-cta]');
+    var errEl = root.querySelector('[data-ki-sc-error]');
+    var iyzicoEl = root.querySelector('[data-ki-sc-iyzico]');
+    var progressTitleEl = root.querySelector('[data-ki-sc-progress-title]');
+    var progressCountEl = root.querySelector('[data-ki-sc-progress-count]');
+    var progressTrackEl = root.querySelector('[data-ki-sc-progress-track]');
+    var progressFillEl = root.querySelector('[data-ki-sc-progress-fill]');
+    var progressCopyEl = root.querySelector('[data-ki-sc-progress-copy]');
+    var progressSteps = root.querySelectorAll('[data-ki-sc-step]');
+
+    /* Page init: form görünür + iyzico gizli — herhangi bir önceki state'i temizle */
+    formEl.style.display = '';
+    iyzicoEl.hidden = true;
+    iyzicoEl.innerHTML = '';
+    summaryEl.style.opacity = '';
+
+    /* Shopify customer bilgileri — Liquid'den server-side */
+    {%- if customer -%}
+      var isLoggedIn = true;
+      var customerEmail = {{ customer.email | default: '' | json }};
+      var customerFirstName = {{ customer.first_name | default: '' | json }};
+      var customerLastName = {{ customer.last_name | default: '' | json }};
+      var customerPhone = {{ customer.phone | default: '' | json }};
+      var customerId = {{ customer.id | default: '' | json }};
+    {%- else -%}
+      var isLoggedIn = false;
+      var customerEmail = '';
+      var customerFirstName = '';
+      var customerLastName = '';
+      var customerPhone = '';
+      var customerId = '';
+    {%- endif -%}
+
+    /* TR telefon yardımcıları: 10 hane, 5 ile başlar; görsel format 05XX XXX XX XX */
+    function normalizeTrPhone(v) {
+      var d = (v || '').replace(/\D/g, '');
+      if (d.indexOf('90') === 0 && d.length > 10) d = d.slice(2);
+      if (d.indexOf('0') === 0) d = d.slice(1);
+      return d.slice(-10);
+    }
+    function isValidTrPhone(v) { var d = normalizeTrPhone(v); return d.length === 10 && d.charAt(0) === '5'; }
+    function fmtTrPhone(v) {
+      var d = normalizeTrPhone(v);
+      if (d.length !== 10) return v;
+      return '0' + d.slice(0,3) + ' ' + d.slice(3,6) + ' ' + d.slice(6,8) + ' ' + d.slice(8,10);
+    }
+
+    var fnInput = formEl.querySelector('[name="firstName"]');
+    var lnInput = formEl.querySelector('[name="lastName"]');
+    var emailInput = formEl.querySelector('[name="email"]');
+    var phoneInput = formEl.querySelector('[name="phone"]');
+
+    /* Hesaptaki bilgiler varsa ön doldur; eksik ad/soyad kullanıcı tarafından tamamlanabilir. */
+    if (isLoggedIn) {
+      if (fnInput) fnInput.value = customerFirstName;
+      if (lnInput) lnInput.value = customerLastName;
+      if (emailInput) emailInput.value = customerEmail;
+      if (phoneInput && customerPhone) phoneInput.value = fmtTrPhone(customerPhone);
+    }
+    if (phoneInput) phoneInput.addEventListener('blur', function () {
+      if (phoneInput.value.trim()) phoneInput.value = fmtTrPhone(phoneInput.value);
+    });
+
+    /* Adres kartları + yeni adres paneli */
+    var addrCardsEl = root.querySelector('[data-ki-sc-addr-cards]');
+    var newAddrEl = root.querySelector('[data-ki-sc-newaddr]');
+    var addNewBtn = root.querySelector('[data-ki-sc-addnew]');
+    var savedRadios = addrCardsEl ? addrCardsEl.querySelectorAll('input[name="addrChoice"]') : [];
+    function showNewAddr(show) {
+      if (newAddrEl) newAddrEl.hidden = !show;
+      if (addNewBtn) addNewBtn.classList.toggle('is-active', show);
+    }
+    for (var ri = 0; ri < savedRadios.length; ri++) {
+      savedRadios[ri].addEventListener('change', function () { showNewAddr(false); });
+    }
+    if (addNewBtn) addNewBtn.addEventListener('click', function () {
+      for (var rj = 0; rj < savedRadios.length; rj++) savedRadios[rj].checked = false;
+      showNewAddr(true);
+      var na = formEl.querySelector('[name="na_address"]'); if (na) na.focus();
+    });
+    if (savedRadios.length > 0) { savedRadios[0].checked = true; showNewAddr(false); }
+    else { showNewAddr(true); }
+
+    /* Eski akıştan kalmış otomatik-submit işaretlerini temizle. */
+    try {
+      sessionStorage.removeItem('ki_subscribe_checkout_draft_v1');
+      sessionStorage.removeItem('ki_subscribe_pending_submit_v1');
+    } catch (e) {}
+
+    function fmtMoney(n) {
+      return '₺' + Number(n).toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+
+    // XSS koruması: ?pack= base64'ten gelen başlık vb. saldırgan-kontrollü olabilir;
+    // innerHTML'e basmadan önce kaçışla.
+    function escapeHtml(s) {
+      return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+        return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c];
+      });
+    }
+
+    function showError(msg) {
+      errEl.textContent = msg;
+      errEl.classList.add('is-visible');
+    }
+
+
+    function decodePack() {
+      try {
+        var url = new URL(window.location.href);
+        var enc = url.searchParams.get('pack');
+        if (!enc) return null;
+        var json = decodeURIComponent(escape(atob(decodeURIComponent(enc))));
+        var parsed = JSON.parse(json);
+        if (parsed && Array.isArray(parsed.boxItems)) return parsed;
+      } catch (e) {}
+      return null;
+    }
+
+    function renderSummary(pack) {
+      if (!pack || !pack.boxItems.length) {
+        summaryEl.hidden = false;
+        summaryItemsEl.innerHTML = '<div class="ki-sc__summary-empty">Paket bilgisi alınamadı. Lütfen <a href="/pages/paket-olustur">paket sayfasına</a> dönüp tekrar dene.</div>';
+        summaryTotalEl.textContent = '—';
+        ctaEl.disabled = true;
+        return;
+      }
+      summaryEl.hidden = false;
+      var savings = 0;
+      var renderedItems = pack.boxItems.map(function (it) {
+        var qty = Number(it.quantity || 0);
+        var price = Number(it.price || 0);
+        var originalPrice = Number(it.originalPrice || price);
+        var linePrice = qty * price;
+        var lineOriginalPrice = qty * originalPrice;
+        savings += Math.max(0, lineOriginalPrice - linePrice);
+        var priceMarkup = '<strong>' + fmtMoney(linePrice) + '</strong>';
+        if (it.selectionMode === 'shipping' && pack.freeShipping) {
+          savings += linePrice;
+          priceMarkup = '<span class="ki-sc__summary-prices"><s class="ki-sc__summary-original">' + fmtMoney(linePrice) + '</s><strong>Ücretsiz</strong></span>';
+        } else if (lineOriginalPrice > linePrice) {
+          priceMarkup = '<span class="ki-sc__summary-prices"><s class="ki-sc__summary-original">' + fmtMoney(lineOriginalPrice) + '</s><strong>' + fmtMoney(linePrice) + '</strong></span>';
+        }
+        return '<div class="ki-sc__summary-li">' +
+          '<span>' + escapeHtml(it.title || 'Ürün') + ' × ' + qty + '</span>' +
+          priceMarkup +
+          '</div>';
+      }).join('');
+      var referralDiscount = Math.max(0, Number(pack.referralDiscountAmount || 0));
+      var shippingDiscount = pack.freeShipping ? Math.max(0, Number(pack.shippingFee || 0)) : 0;
+      var extraReferralDiscount = Math.max(0, referralDiscount - shippingDiscount);
+      if (extraReferralDiscount > 0) {
+        renderedItems += '<div class="ki-sc__summary-li"><span>Referans kodu indirimi</span><strong>−' + fmtMoney(extraReferralDiscount) + '</strong></div>';
+        savings += extraReferralDiscount;
+      }
+      summaryItemsEl.innerHTML = renderedItems;
+      summaryTotalEl.textContent = fmtMoney(Number(pack.displayTotal || pack.totalPrice || 0));
+      if (summarySavingsRowEl) summarySavingsRowEl.hidden = savings <= 0;
+      if (summarySavingsEl) summarySavingsEl.textContent = fmtMoney(savings);
+    }
+
+    var pack = decodePack();
+    // Yedek: sessionStorage
+    if (!pack) {
+      try { var c = sessionStorage.getItem('ki_pack'); if (c) pack = JSON.parse(c); } catch (e) {}
+    } else {
+      try { sessionStorage.setItem('ki_pack', JSON.stringify(pack)); } catch (e) {}
+    }
+    renderSummary(pack);
+
+    function publishSubscriptionCustomerEvent(eventName, data) {
+      var publish = function (attempt) {
+        if (window.kiAnalytics && window.kiAnalytics.publishCustomerEvent) {
+          window.kiAnalytics.publishCustomerEvent(eventName, data || {});
+          return;
+        }
+        if (attempt < 30) setTimeout(function () { publish(attempt + 1); }, 250);
+      };
+      publish(0);
+    }
+
+    function packCustomerEventData(source) {
+      var items = pack && pack.boxItems ? pack.boxItems : [];
+      return {
+        content_name: (pack && pack.packName) || 'Kendi Bakım Paketim',
+        content_type: 'product',
+        content_ids: items.map(function (item) { return item.shopifyVariantGid; }).filter(Boolean),
+        contents: items.filter(function (item) { return item.shopifyVariantGid; }).map(function (item) {
+          return { id: item.shopifyVariantGid, quantity: Number(item.quantity || 1), item_price: Number(item.price || 0) };
+        }),
+        value: Number((pack && pack.totalPrice) || 0),
+        currency: (window.kiConfig && window.kiConfig.currency) || 'TRY',
+        interval_count: Number((pack && pack.intervalCount) || 2),
+        flow_id: (pack && pack.trackingFlowId) || '',
+        source: source
+      };
+    }
+
+    /* E-posta girişi tamamlanıp özel abonelik checkout'u açıldığında bir kez. */
+    if (isLoggedIn && pack && pack.boxItems && pack.boxItems.length) {
+      var checkoutEventKey = 'ki_meta_checkout_' + (pack.trackingFlowId || 'current');
+      var checkoutAlreadyPublished = false;
+      try { checkoutAlreadyPublished = sessionStorage.getItem(checkoutEventKey) === '1'; } catch (e) {}
+      if (!checkoutAlreadyPublished) {
+        publishSubscriptionCustomerEvent('carewithki:subscription_initiate_checkout', packCustomerEventData('subscription_checkout'));
+        try { sessionStorage.setItem(checkoutEventKey, '1'); } catch (e) {}
+      }
+    }
+
+    function getLoginRedirectUrl() {
+      var sourceUrl = new URL(storefrontLoginUrl, window.location.origin);
+      var loginUrl = new URL('/customer_authentication/login', window.location.origin);
+      ['locale', 'region_country', 'ui_hint'].forEach(function (key) {
+        var value = sourceUrl.searchParams.get(key);
+        if (value) loginUrl.searchParams.set(key, value);
+      });
+      /* Shopify return_to yalnızca relative URL kabul eder. Paket sessionStorage'da. */
+      loginUrl.searchParams.set('return_to', window.location.pathname + '?resume_subscription=1');
+      return loginUrl.toString();
+    }
+
+    function setProgress(stage) {
+      var states = {
+        1: { percent: 25, title: 'E-posta girişin tamamlandı', count: '1 / 4', copy: 'Harika! Şimdi adını ve soyadını kontrol et.' },
+        2: { percent: 50, title: 'Yarıyı geçtin', count: '2 / 4', copy: 'Şimdi telefonunu ve teslimat adresini tamamla.' },
+        3: { percent: 75, title: 'Son adıma hazırsın', count: '3 / 4', copy: 'Bilgilerin hazır. Güvenli ödemeye geçebilirsin.' },
+        4: { percent: 92, title: 'Çok yaklaştın!', count: '4 / 4', copy: 'Ödemeni tamamladığında .ki aboneliğin başlayacak.' }
+      };
+      var state = states[stage] || { percent: 12, title: 'Güvenli giriş', count: '0 / 4', copy: 'Önce e-posta adresinle güvenli giriş yap.' };
+      if (progressTitleEl) progressTitleEl.textContent = state.title;
+      if (progressCountEl) progressCountEl.textContent = state.count;
+      if (progressFillEl) progressFillEl.style.width = state.percent + '%';
+      if (progressTrackEl) progressTrackEl.setAttribute('aria-valuenow', String(state.percent));
+      var activeStep = stage === 0 ? 1 : Math.min(stage + 1, 4);
+      var completedThrough = Math.min(stage, 3);
+      for (var si = 0; si < progressSteps.length; si++) {
+        var stepNumber = Number(progressSteps[si].getAttribute('data-ki-sc-step'));
+        var stepNo = progressSteps[si].querySelector('.ki-sc__step-no');
+        var isComplete = stepNumber <= completedThrough;
+        progressSteps[si].classList.toggle('is-complete', isComplete);
+        progressSteps[si].classList.toggle('is-active', stepNumber === activeStep);
+        if (stepNo) stepNo.textContent = isComplete ? '✓' : String(stepNumber);
+      }
+      if (progressCopyEl) progressCopyEl.textContent = state.copy;
+    }
+
+    function selectedAddressReady() {
+      if (formEl.querySelector('input[name="addrChoice"]:checked')) return true;
+      var addressInput = formEl.querySelector('[name="na_address"]');
+      return !!(addressInput && addressInput.value.trim().length >= 5);
+    }
+
+    function namesReady() {
+      return !!(isLoggedIn && fnInput && fnInput.value.trim().length >= 2 && lnInput && lnInput.value.trim().length >= 2);
+    }
+
+    function deliveryReady() {
+      return !!(namesReady() && phoneInput && isValidTrPhone(phoneInput.value) && selectedAddressReady());
+    }
+
+    function updateProgress() {
+      setProgress(deliveryReady() ? 3 : (namesReady() ? 2 : (isLoggedIn ? 1 : 0)));
+    }
+
+    formEl.addEventListener('input', updateProgress);
+    formEl.addEventListener('change', updateProgress);
+    updateProgress();
+
+    /* Doğrudan checkout URL'sine gelen misafiri de önce e-posta girişine al. */
+    if (!isLoggedIn && pack && pack.boxItems && pack.boxItems.length) {
+      ctaEl.disabled = true;
+      ctaEl.textContent = 'E-posta girişine yönlendiriliyor…';
+      window.location.assign(getLoginRedirectUrl());
+      return;
+    }
+
+    async function submitForm() {
+      errEl.classList.remove('is-visible');
+
+      var apiBase = (window.kiConfig && window.kiConfig.subscriptionApiBase) || '';
+      if (!apiBase) { showError('API yapılandırılmamış (Theme settings → Subscription API → API base URL).'); return; }
+      if (!pack || !pack.boxItems || !pack.boxItems.length) { showError('Paket bilgisi yok. Paket sayfasına geri dön ve tekrar dene.'); return; }
+
+      var data = new FormData(formEl);
+      var firstName = (data.get('firstName') || customerFirstName || '').trim();
+      var lastName  = (data.get('lastName') || customerLastName || '').trim();
+      var name = (firstName + ' ' + lastName).trim();
+      var email = (data.get('email') || customerEmail || '').trim();
+      var phone = (data.get('phone') || '').trim();
+      var referralCode = String(pack.referralCode || '').trim();
+
+      /* Adres kaynağı: seçili kayıtlı kart ya da yeni-adres paneli */
+      var address = '', city = '', province = '', zip = '';
+      var checkedRadio = formEl.querySelector('input[name="addrChoice"]:checked');
+      if (checkedRadio) {
+        var a1 = checkedRadio.getAttribute('data-address1') || '';
+        var a2 = checkedRadio.getAttribute('data-address2') || '';
+        address = [a1, a2].filter(Boolean).join(' ').trim();
+        city = checkedRadio.getAttribute('data-city') || '';
+        province = checkedRadio.getAttribute('data-province') || '';
+        zip = checkedRadio.getAttribute('data-zip') || '';
+        if (!phone) phone = checkedRadio.getAttribute('data-phone') || '';
+      } else {
+        address = (data.get('na_address') || '').trim();
+        city = (data.get('na_city') || '').trim();
+        province = (data.get('na_province') || '').trim();
+        zip = (data.get('na_zip') || '').trim();
+      }
+
+      if (!isLoggedIn) {
+        ctaEl.disabled = true;
+        ctaEl.textContent = 'E-posta girişine yönlendiriliyor…';
+        window.location.assign(getLoginRedirectUrl());
+        return;
+      }
+
+      if (firstName.length < 2) { showError('Adını gir.'); if (fnInput) fnInput.focus(); return; }
+      if (lastName.length < 2) { showError('Soyadını gir.'); if (lnInput) lnInput.focus(); return; }
+      if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { showError('Hesabındaki e-posta bilgisi eksik veya geçersiz.'); return; }
+
+      /* Telefon ve adres iyzico ödeme adımından önce doğrulanır. */
+      if (!isValidTrPhone(phone)) { showError('Geçerli bir telefon gir (05XX XXX XX XX).'); return; }
+      if (address.length < 5) { showError('Bir teslimat adresi seç ya da yeni adres gir.'); return; }
+      if (referralCode && !/^\d{4}$/.test(referralCode)) {
+        showError('Referans kodu dört haneli olmalıdır.');
+        return;
+      }
+
+      var payload = {
+        name: name, email: email, phone: phone, address: address,
+        city: city, province: province, zip: zip,
+        shopifyCustomerId: (customerId ? String(customerId) : ''),
+        boxItems: pack.boxItems,
+        totalPrice: String(pack.totalPrice || '0'),
+        sellingPlanId: pack.sellingPlanId || '',
+        // Gönderim sıklığı (ay) — builder'da seçilir, backend iyzico plan aralığı olarak kullanır.
+        // 0 = günlük (test). isNaN kontrolü: 0 geçerli değer, || tuzağına düşmesin.
+        intervalCount: (function () { var v = Number(pack.intervalCount); return isNaN(v) ? 2 : v; })(),
+        referralCode: referralCode
+        ,analyticsSessionId: window.kiAnalytics && window.kiAnalytics.getSessionId ? window.kiAnalytics.getSessionId() : ''
+      };
+
+      ctaEl.disabled = true;
+      ctaEl.textContent = 'Yönlendiriliyor…';
+      setProgress(4);
+
+      var paymentEventKey = 'ki_meta_payment_' + (pack.trackingFlowId || 'current');
+      var paymentAlreadyPublished = false;
+      try { paymentAlreadyPublished = sessionStorage.getItem(paymentEventKey) === '1'; } catch (e) {}
+      if (!paymentAlreadyPublished) {
+        publishSubscriptionCustomerEvent('carewithki:subscription_add_payment_info', packCustomerEventData('iyzico_payment_step'));
+        try { sessionStorage.setItem(paymentEventKey, '1'); } catch (e) {}
+      }
+
+      // Form & summary state'ini güvenli şekilde restore edebilmek için fonksiyon
+      function restoreForm() {
+        formEl.style.display = '';
+        summaryEl.style.opacity = '';
+        iyzicoEl.hidden = true;
+        iyzicoEl.innerHTML = '';
+        ctaEl.disabled = false;
+        ctaEl.textContent = 'Ödemeye Geç';
+        updateProgress();
+      }
+
+      /* CSP bypass: backend domain'inde iyzico checkout sayfasına yönlendir.
+         Hidden form ile POST → browser navigate eder → iyzico ngrok page'de yüklenir. */
+      function redirectToBackendCheckout(payload) {
+        var f = document.createElement('form');
+        f.method = 'POST';
+        f.action = apiBase + '/api/subscribe/checkout-html';
+        f.style.display = 'none';
+        f.enctype = 'application/x-www-form-urlencoded';
+        f.acceptCharset = 'UTF-8';
+
+        function addInput(n, v) {
+          var i = document.createElement('input');
+          i.type = 'hidden';
+          i.name = n;
+          i.value = v == null ? '' : String(v);
+          f.appendChild(i);
+        }
+        addInput('name', payload.name);
+        addInput('email', payload.email);
+        addInput('phone', payload.phone);
+        addInput('address', payload.address);
+        addInput('city', payload.city || '');
+        addInput('province', payload.province || '');
+        addInput('zip', payload.zip || '');
+        addInput('shopifyCustomerId', payload.shopifyCustomerId || '');
+        addInput('totalPrice', payload.totalPrice || '');
+        addInput('sellingPlanId', payload.sellingPlanId || '');
+        addInput('intervalCount', String(payload.intervalCount == null ? 2 : payload.intervalCount));
+        addInput('referralCode', payload.referralCode || '');
+        addInput('analyticsSessionId', payload.analyticsSessionId || '');
+        addInput('boxItemsJson', JSON.stringify(payload.boxItems || []));
+        addInput('returnUrl', window.location.href);
+
+        document.body.appendChild(f);
+        f.submit();
+      }
+
+      try {
+        /* Body'i AÇIK UTF-8 byte'larına encode et — Türkçe karakter (ü/ç/ğ/ş/ı/ö)
+           Latin-1 olarak gönderilmesin. Backend (Jackson) UTF-8 dışında byte (0xfc vb.)
+           gördüğünde "Invalid UTF-8 start byte" parse error veriyor. */
+        var bodyText = JSON.stringify(payload);
+        var bodyBytes = (typeof TextEncoder !== 'undefined')
+          ? new TextEncoder().encode(bodyText)
+          : bodyText;
+        var res = await fetch(apiBase + '/api/subscribe/init', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json; charset=utf-8',
+            'Accept': 'application/json',
+            'ngrok-skip-browser-warning': '1'
+          },
+          credentials: 'include',
+          body: bodyBytes
+        });
+        var json = {};
+        try { json = await res.json(); } catch (_) {}
+        if (!res.ok || !json.success) {
+          throw new Error(json.error || json.message || ('Sunucu hatası (' + res.status + '). Lütfen tekrar dene.'));
+        }
+        var html = json.data && json.data.htmlContent;
+        if (!html || String(html).trim().length < 20) {
+          throw new Error('Ödeme formu alınamadı (backend boş response döndü). Lütfen tekrar dene.');
+        }
+        /* iyzico v2 SDK akışı:
+             1. iyzicoEl içinde önceden var olan #iyzipay-checkout-form div'i hedef
+             2. Backend'in döndüğü script tag'leri çalıştırılır → iyziInit oluşur
+             3. iyziInit.createTag() bundle.js'i head'e ekler
+             4. bundle.js #iyzipay-checkout-form'u bulur ve içine ödeme UI'sini basar */
+        iyzicoEl.hidden = false;
+        // Hedef div'i koru, scriptleri AYRICA ekle (innerHTML değil)
+        var targetDiv = iyzicoEl.querySelector('#iyzipay-checkout-form');
+        if (!targetDiv) {
+          targetDiv = document.createElement('div');
+          targetDiv.id = 'iyzipay-checkout-form';
+          targetDiv.className = 'responsive';
+          iyzicoEl.appendChild(targetDiv);
+        } else {
+          targetDiv.innerHTML = ''; // temizle, bundle yeniden render edebilsin
+        }
+
+        /* Shopify CSP inline script'leri 'unsafe-inline' yoksa engelliyor.
+           Sayfadaki herhangi bir nonce'lı script'in nonce'ını yakala ve
+           inject ettiğimiz iyzico scriptlerine ata. Modern browser'larda
+           getAttribute('nonce') hidden döner; .nonce property kullanılır. */
+        var pageNonce = '';
+        var anyNonceScript = document.querySelector('script[nonce]');
+        if (anyNonceScript) {
+          pageNonce = anyNonceScript.nonce || anyNonceScript.getAttribute('nonce') || '';
+        }
+
+        // Backend HTML'inden script'leri ayıkla ve çalıştır
+        var tmp = document.createElement('div');
+        tmp.innerHTML = html;
+        Array.prototype.slice.call(tmp.querySelectorAll('script')).forEach(function (oldScript) {
+          var s = document.createElement('script');
+          for (var i = 0; i < oldScript.attributes.length; i++) {
+            s.setAttribute(oldScript.attributes[i].name, oldScript.attributes[i].value);
+          }
+          // CSP nonce uygula — sayfada nonce mekanizması varsa kullan
+          if (pageNonce) {
+            s.setAttribute('nonce', pageNonce);
+            s.nonce = pageNonce;
+          }
+          s.text = oldScript.textContent;
+          iyzicoEl.appendChild(s);
+        });
+
+        /* Bundle.js render etmesi için 1.5sn bekle, sonra DOM kontrol et.
+           Render olduysa form'u gizle. Render olmadıysa CSP bypass için
+           backend'in standalone iyzico checkout sayfasına redirect et. */
+        setTimeout(function () {
+          var iyziGlobalReady = typeof window.iyziInit !== 'undefined';
+          var hasContent =
+            targetDiv.children.length > 0 ||
+            iyzicoEl.querySelector('iframe') !== null ||
+            iyzicoEl.querySelector('[class*=iyzi]:not(.ki-sc__iyzico)') !== null;
+
+          if (hasContent || iyziGlobalReady) {
+            formEl.style.display = 'none';
+            summaryEl.style.opacity = '0.6';
+            iyzicoEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          } else {
+            /* CSP bloke etmiş olabilir — backend'in standalone checkout page'ine
+               hidden form ile yönlendir. Backend ngrok domain'inde, Shopify
+               CSP'si geçerli değil. */
+            redirectToBackendCheckout(payload);
+          }
+        }, 1500);
+      } catch (err) {
+        /* fetch tarafında CSP/network/parse hatası → backend checkout page'ine
+           düş; orada iyzico standalone yüklenir, Shopify CSP devre dışı. */
+        var msg = (err && err.message) ? err.message : 'Bir hata oluştu';
+        var isCspOrNetwork = /CSP|network|Failed to fetch|NetworkError|TypeError/i.test(msg);
+        if (isCspOrNetwork) {
+          redirectToBackendCheckout(payload);
+          return;
+        }
+        restoreForm();
+        showError(msg + ' — tekrar dene veya birkaç saniye sonra yeniden öde.');
+        errEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }
+
+    /* Form submit event → submitForm() çağrısı */
+    formEl.addEventListener('submit', function (e) {
+      e.preventDefault();
+      submitForm();
+    });
+
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Subscribe checkout",
+  "tag": "section",
+  "class": "ki-section",
+  "settings": [
+    { "type": "text", "id": "heading",  "label": "Başlık",   "default": "Aboneliğini başlat" },
+    { "type": "text", "id": "subtitle", "label": "Alt başlık", "default": "Bilgilerini gir, paketin 2 ayda bir kapına gelsin." }
+  ],
+  "presets": [{ "name": "Subscribe checkout" }]
+}
+{% endschema %}

@@ -1,0 +1,648 @@
+{% comment %}
+  .ki Campus Ambassador Hub — Shopify Section v3
+  Navbar ve Footer YOK — Shopify temasindaki kullanilir.
+  Form verileri Shopify contact form uzerinden gider.
+  Shopify Admin > Settings > Notifications'dan arin@carewithki.com ve berk@carewithki.com ekleyin.
+{% endcomment %}
+
+{{ 'campus-ki.css' | asset_url | stylesheet_tag }}
+
+<div class="ki-page">
+
+  <!-- ===== HERO ===== -->
+  <section class="ki-hero">
+    <div class="ki-hero-gradient"></div>
+    <div class="ki-hero-blob ki-hero-blob--1"></div>
+    <div class="ki-hero-blob ki-hero-blob--2"></div>
+    <div class="ki-hero-blob ki-hero-blob--3"></div>
+    <div class="ki-hero-blob ki-hero-blob--4"></div>
+    <div class="ki-sparkle ki-sparkle--1"></div>
+    <div class="ki-sparkle ki-sparkle--2"></div>
+    <div class="ki-sparkle ki-sparkle--3"></div>
+    <div class="ki-sparkle ki-sparkle--4"></div>
+    <div class="ki-sparkle ki-sparkle--5"></div>
+    <div class="ki-sparkle ki-sparkle--6"></div>
+
+    <div class="ki-hero-content">
+      <span class="ki-hero-badge ki-animate">{{ section.settings.hero_badge }}</span>
+      <h1 class="ki-animate ki-delay-1">
+        {{ section.settings.hero_title_1 }}
+        <span class="ki-brand">{{ section.settings.hero_brand }}</span>
+        {{ section.settings.hero_title_2 }}
+        <span class="ki-highlight">{{ section.settings.hero_highlight }}</span>
+      </h1>
+      <p class="ki-hero-desc ki-animate ki-delay-2">{{ section.settings.hero_desc }}</p>
+      <div class="ki-hero-buttons ki-animate ki-delay-3">
+        <a href="#basvuru-formu" class="ki-btn-primary">{{ section.settings.hero_btn_primary }}</a>
+        <a href="#nasil-calisir" class="ki-btn-outline">{{ section.settings.hero_btn_secondary }}</a>
+      </div>
+      <p class="ki-hero-stats ki-animate ki-delay-4">{{ section.settings.hero_stats }}</p>
+    </div>
+  </section>
+
+  <!-- ===== HOW IT WORKS ===== -->
+  <section class="ki-section ki-how" id="nasil-calisir">
+    <div class="ki-container">
+      <h2 class="ki-section-title">{{ section.settings.how_title }}</h2>
+      <p class="ki-section-subtitle">{{ section.settings.how_subtitle }}</p>
+      <div class="ki-grid-3">
+        <div class="ki-card ki-how-card ki-animate">
+          <div class="ki-how-icon ki-icon-mint">{{ section.settings.how_card1_icon }}</div>
+          <h3>{{ section.settings.how_card1_title }}</h3>
+          <p>{{ section.settings.how_card1_desc }}</p>
+        </div>
+        <div class="ki-card ki-how-card ki-animate ki-delay-1">
+          <div class="ki-how-icon ki-icon-coral">{{ section.settings.how_card2_icon }}</div>
+          <h3>{{ section.settings.how_card2_title }}</h3>
+          <p>{{ section.settings.how_card2_desc }}</p>
+        </div>
+        <div class="ki-card ki-how-card ki-animate ki-delay-2">
+          <div class="ki-how-icon ki-icon-yellow">{{ section.settings.how_card3_icon }}</div>
+          <h3>{{ section.settings.how_card3_title }}</h3>
+          <p>{{ section.settings.how_card3_desc }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== EXAM PERIOD ===== -->
+  <section class="ki-section ki-exam">
+    <div class="ki-container">
+      <div class="ki-exam-inner">
+        <div class="ki-exam-text ki-animate">
+          <h2>{{ section.settings.exam_title }}</h2>
+          <p>{{ section.settings.exam_desc }}</p>
+          <div class="ki-exam-quote">
+            <p>{{ section.settings.exam_quote }}</p>
+          </div>
+        </div>
+        <div class="ki-exam-visual ki-animate ki-delay-2">
+          <div class="ki-exam-visual-bg"></div>
+          <div class="ki-exam-visual-card">
+            <div class="ki-exam-visual-icons">
+              <span style="background:rgba(73,61,154,0.1)">📖</span>
+              <span style="background:rgba(255,102,102,0.1)">❤️</span>
+            </div>
+            <strong style="font-size:1.0625rem;margin-bottom:0.25rem;">2 dakikalık çizim molası</strong>
+            <span style="color:#666;font-size:0.8125rem;">drawpms.com ile rahatla</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== BENEFITS ===== -->
+  <section class="ki-section ki-benefits" id="avantajlar">
+    <div class="ki-container">
+      <h2 class="ki-section-title">{{ section.settings.benefits_title }}</h2>
+      <div class="ki-grid-2" style="max-width:760px;margin:2rem auto 0;">
+        <div class="ki-card ki-benefit-card ki-animate">
+          <div class="ki-benefit-icon ki-icon-coral">{{ section.settings.benefit1_icon }}</div>
+          <h3>{{ section.settings.benefit1_title }}</h3>
+          <p>{{ section.settings.benefit1_desc }}</p>
+        </div>
+        <div class="ki-card ki-benefit-card ki-animate ki-delay-1">
+          <div class="ki-benefit-icon ki-icon-yellow">{{ section.settings.benefit2_icon }}</div>
+          <h3>{{ section.settings.benefit2_title }}</h3>
+          <p>{{ section.settings.benefit2_desc }}</p>
+        </div>
+        <div class="ki-card ki-benefit-card ki-animate ki-delay-2">
+          <div class="ki-benefit-icon ki-icon-mint">{{ section.settings.benefit3_icon }}</div>
+          <h3>{{ section.settings.benefit3_title }}</h3>
+          <p>{{ section.settings.benefit3_desc }}</p>
+        </div>
+        <div class="ki-card ki-benefit-card ki-animate ki-delay-3">
+          <div class="ki-benefit-icon ki-icon-primary">{{ section.settings.benefit4_icon }}</div>
+          <h3>{{ section.settings.benefit4_title }}</h3>
+          <p>{{ section.settings.benefit4_desc }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SOCIAL PROOF ===== -->
+  <section class="ki-section ki-social">
+    <div class="ki-container">
+      <h2 class="ki-section-title">{{ section.settings.social_title }}</h2>
+    </div>
+    <div class="ki-social-scroll">
+      {% for block in section.blocks %}
+        {% if block.type == 'testimonial' %}
+          <div class="ki-card ki-testimonial ki-animate" {{ block.shopify_attributes }}>
+            <div class="ki-testimonial-header">
+              <div class="ki-avatar ki-avatar-{{ block.settings.avatar_color | default: 'primary' }}">{{ block.settings.name | slice: 0 }}</div>
+              <div>
+                <div class="ki-testimonial-name">{{ block.settings.name }}</div>
+                <div class="ki-testimonial-uni">{{ block.settings.university }}</div>
+              </div>
+            </div>
+            <q>{{ block.settings.quote }}</q>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </section>
+
+  <!-- ===== APPLICATION FORM ===== -->
+  <section class="ki-section ki-form-section" id="basvuru-formu">
+    <div class="ki-container">
+      <div class="ki-form-container ki-animate">
+        <h2>{{ section.settings.form_title }}</h2>
+        <p class="ki-section-subtitle">{{ section.settings.form_subtitle }}</p>
+
+        {% form 'contact' %}
+          {% if form.posted_successfully? %}
+            <div class="ki-form-message success">{{ section.settings.form_success_msg }}</div>
+          {% endif %}
+          {% if form.errors %}
+            <div class="ki-form-message error">{{ form.errors | default_errors }}</div>
+          {% endif %}
+
+          <input type="hidden" name="contact[tags]" value="campus-ambassador">
+
+          <div class="ki-form-group">
+            <label class="ki-form-label">Ad Soyad *</label>
+            <input type="text" name="contact[Ad Soyad]" class="ki-form-input" placeholder="Adın Soyadın" required>
+          </div>
+          <div class="ki-form-row">
+            <div class="ki-form-group">
+              <label class="ki-form-label">E-posta *</label>
+              <input type="email" name="contact[email]" class="ki-form-input" placeholder="ornek@uni.edu.tr" required>
+            </div>
+            <div class="ki-form-group">
+              <label class="ki-form-label">Telefon *</label>
+              <input type="tel" name="contact[Telefon]" class="ki-form-input" placeholder="05XX XXX XX XX" required>
+            </div>
+          </div>
+          <div class="ki-form-row">
+            <div class="ki-form-group">
+              <label class="ki-form-label">Üniversite *</label>
+              <input type="text" name="contact[Universite]" class="ki-form-input" placeholder="Üniversiten" required>
+            </div>
+            <div class="ki-form-group">
+              <label class="ki-form-label">Bölüm *</label>
+              <input type="text" name="contact[Bolum]" class="ki-form-input" placeholder="Bölümün" required>
+            </div>
+          </div>
+          <div class="ki-form-row">
+            <div class="ki-form-group">
+              <label class="ki-form-label">Sınıf *</label>
+              <select name="contact[Sinif]" class="ki-form-select" required>
+                <option value="" disabled selected>Sınıfını seç</option>
+                <option value="1. Sinif">1. Sınıf</option>
+                <option value="2. Sinif">2. Sınıf</option>
+                <option value="3. Sinif">3. Sınıf</option>
+                <option value="4. Sinif">4. Sınıf</option>
+                <option value="Yuksek Lisans">Yüksek Lisans</option>
+              </select>
+            </div>
+            <div class="ki-form-group">
+              <label class="ki-form-label">Instagram</label>
+              <input type="text" name="contact[Instagram]" class="ki-form-input" placeholder="@kullaniciadin">
+            </div>
+          </div>
+          <div class="ki-form-group">
+            <label class="ki-form-label">Neden .ki elçisi olmak istiyorsun? *</label>
+            <textarea name="contact[body]" class="ki-form-textarea" rows="4" placeholder="Motivasyonunu paylaş..." required></textarea>
+          </div>
+          <button type="submit" class="ki-form-submit">{{ section.settings.form_btn_text }}</button>
+        {% endform %}
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== WHATSAPP FAB ===== -->
+  {% assign wa_num = section.settings.whatsapp_number | default: '905000000000' %}
+  {% assign wa_msg = section.settings.whatsapp_message | default: 'Merhaba' | url_encode %}
+  <div class="ki-whatsapp">
+    <a href="https://wa.me/{{ wa_num }}?text={{ wa_msg }}" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
+      <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+    </a>
+  </div>
+
+  <!-- ===== TOAST ===== -->
+  <div class="ki-toast" id="kiToast">{{ section.settings.form_success_msg }}</div>
+
+</div>
+
+<script>
+  // Intersection Observer — scroll animations
+  (function() {
+    var els = document.querySelectorAll('.ki-animate');
+    if ('IntersectionObserver' in window) {
+      var obs = new IntersectionObserver(function(entries) {
+        entries.forEach(function(e) {
+          if (e.isIntersecting) {
+            e.target.style.animationPlayState = 'running';
+            obs.unobserve(e.target);
+          }
+        });
+      }, { threshold: 0.1 });
+      els.forEach(function(el) {
+        el.style.animationPlayState = 'paused';
+        obs.observe(el);
+      });
+    } else {
+      els.forEach(function(el) { el.style.opacity = '1'; });
+    }
+  })();
+
+  // Smooth scroll
+  document.querySelectorAll('.ki-page a[href^="#"]').forEach(function(a) {
+    a.addEventListener('click', function(e) {
+      var href = this.getAttribute('href');
+      if (href === '#') return;
+      var t = document.querySelector(href);
+      if (t) { e.preventDefault(); t.scrollIntoView({ behavior: 'smooth' }); }
+    });
+  });
+
+  // Toast on form success
+  (function() {
+    if (window.location.hash === '#contact_form' || document.querySelector('.ki-form-message.success')) {
+      var toast = document.getElementById('kiToast');
+      if (toast) {
+        toast.classList.add('show');
+        setTimeout(function() { toast.classList.remove('show'); }, 5000);
+      }
+    }
+  })();
+</script>
+
+{% schema %}
+{
+  "name": ".ki Campus Ambassador",
+  "tag": "section",
+  "class": "ki-campus-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Hero Bölümü"
+    },
+    {
+      "type": "text",
+      "id": "hero_badge",
+      "label": "Üst Rozet",
+      "default": "🌸 Campus Ambassador Programı"
+    },
+    {
+      "type": "text",
+      "id": "hero_title_1",
+      "label": "Başlık Parça 1",
+      "default": "Kampüsünde"
+    },
+    {
+      "type": "text",
+      "id": "hero_brand",
+      "label": "Marka Adı",
+      "default": ".ki"
+    },
+    {
+      "type": "text",
+      "id": "hero_title_2",
+      "label": "Başlık Parça 2",
+      "default": "Elçisi Ol,"
+    },
+    {
+      "type": "text",
+      "id": "hero_highlight",
+      "label": "Vurgulu Kısım",
+      "default": "Farkındalık Yarat!"
+    },
+    {
+      "type": "textarea",
+      "id": "hero_desc",
+      "label": "Açıklama",
+      "default": "Regl tabularını yıkmak, sınav stresinde kadınların yanında olmak ve drawpms.com ile duyguları özgürleştirmek için ekibimize katıl."
+    },
+    {
+      "type": "text",
+      "id": "hero_btn_primary",
+      "label": "Birincil Buton",
+      "default": "Hemen Başvur"
+    },
+    {
+      "type": "text",
+      "id": "hero_btn_secondary",
+      "label": "İkincil Buton",
+      "default": "Programı İncele"
+    },
+    {
+      "type": "text",
+      "id": "hero_stats",
+      "label": "İstatistik",
+      "default": "Türkiye genelinde 40+ üniversitede, 10,000+ kadına dokunuyoruz."
+    },
+    {
+      "type": "header",
+      "content": "Nasıl Çalışır"
+    },
+    {
+      "type": "text",
+      "id": "how_title",
+      "label": "Başlık",
+      "default": "Nasıl Çalışır?"
+    },
+    {
+      "type": "text",
+      "id": "how_subtitle",
+      "label": "Alt Başlık",
+      "default": "Her kampüste iki kişilik dinamik ekipler"
+    },
+    {
+      "type": "text",
+      "id": "how_card1_icon",
+      "label": "Kart 1 İkon",
+      "default": "🩺"
+    },
+    {
+      "type": "text",
+      "id": "how_card1_title",
+      "label": "Kart 1 Başlık",
+      "default": "Sağlık İletişimcisi"
+    },
+    {
+      "type": "textarea",
+      "id": "how_card1_desc",
+      "label": "Kart 1 Açıklama",
+      "default": "Tıp veya eczacılık öğrencisi olarak PMS ve regl döngüsü hakkında bilimsel bilgi paylaş, empati kur."
+    },
+    {
+      "type": "text",
+      "id": "how_card2_icon",
+      "label": "Kart 2 İkon",
+      "default": "📣"
+    },
+    {
+      "type": "text",
+      "id": "how_card2_title",
+      "label": "Kart 2 Başlık",
+      "default": "Pazarlama Stratejisti"
+    },
+    {
+      "type": "textarea",
+      "id": "how_card2_desc",
+      "label": "Kart 2 Açıklama",
+      "default": "İşletme veya iletişim öğrencisi olarak kampüste etkinlikler düzenle, QR kodlar yerleştir, sosyal medyayı yönet."
+    },
+    {
+      "type": "text",
+      "id": "how_card3_icon",
+      "label": "Kart 3 İkon",
+      "default": "📱"
+    },
+    {
+      "type": "text",
+      "id": "how_card3_title",
+      "label": "Kart 3 Başlık",
+      "default": "drawpms.com'a Yönlendir"
+    },
+    {
+      "type": "textarea",
+      "id": "how_card3_desc",
+      "label": "Kart 3 Açıklama",
+      "default": "Öğrencileri drawpms.com'a yönlendirerek PMS duygularını çizmelerini ve paylaşmalarını sağla."
+    },
+    {
+      "type": "header",
+      "content": "Sınav Dönemi"
+    },
+    {
+      "type": "text",
+      "id": "exam_title",
+      "label": "Başlık",
+      "default": "Sınav Döneminde PMS ile Uğraşma, Biz Yanındayız"
+    },
+    {
+      "type": "textarea",
+      "id": "exam_desc",
+      "label": "Açıklama",
+      "default": "Vize ve final haftalarında stres zaten yeterince yüksek. PMS semptomları bu stresi ikiye katlayabiliyor. .ki Campus elçileri olarak kütüphanelerde ve çalışma alanlarında öğrencilere ulaşıyoruz. drawpms.com üzerinde 2 dakikalık bir çizim molası vererek hem rahatlamalarını sağlıyor hem de regl farkındalığı yaratıyoruz."
+    },
+    {
+      "type": "text",
+      "id": "exam_quote",
+      "label": "Alıntı",
+      "default": "Sınav stresini tuvale dök, kendine iyi bak."
+    },
+    {
+      "type": "header",
+      "content": "Avantajlar"
+    },
+    {
+      "type": "text",
+      "id": "benefits_title",
+      "label": "Başlık",
+      "default": "Neden .ki Elçisi Olmalısın?"
+    },
+    {
+      "type": "text",
+      "id": "benefit1_icon",
+      "label": "Avantaj 1 İkon",
+      "default": "📈"
+    },
+    {
+      "type": "text",
+      "id": "benefit1_title",
+      "label": "Avantaj 1 Başlık",
+      "default": "Performans Odaklı Kazanç"
+    },
+    {
+      "type": "textarea",
+      "id": "benefit1_desc",
+      "label": "Avantaj 1 Açıklama",
+      "default": "Yönlendirdiğin her trafik ve oluşturulan her çizim için maddi teşvik kazan."
+    },
+    {
+      "type": "text",
+      "id": "benefit2_icon",
+      "label": "Avantaj 2 İkon",
+      "default": "🎁"
+    },
+    {
+      "type": "text",
+      "id": "benefit2_title",
+      "label": "Avantaj 2 Başlık",
+      "default": "Ücretsiz .ki Ürünleri"
+    },
+    {
+      "type": "textarea",
+      "id": "benefit2_desc",
+      "label": "Avantaj 2 Açıklama",
+      "default": "Her ay özel hediye paketleri ve yeni ürünleri ilk deneme fırsatı."
+    },
+    {
+      "type": "text",
+      "id": "benefit3_icon",
+      "label": "Avantaj 3 İkon",
+      "default": "🏆"
+    },
+    {
+      "type": "text",
+      "id": "benefit3_title",
+      "label": "Avantaj 3 Başlık",
+      "default": "Kariyer Gelişimi"
+    },
+    {
+      "type": "textarea",
+      "id": "benefit3_desc",
+      "label": "Avantaj 3 Açıklama",
+      "default": "Pazarlama ve sağlık iletişimi sertifikası, referans mektubu ve staj imkanı."
+    },
+    {
+      "type": "text",
+      "id": "benefit4_icon",
+      "label": "Avantaj 4 İkon",
+      "default": "👥"
+    },
+    {
+      "type": "text",
+      "id": "benefit4_title",
+      "label": "Avantaj 4 Başlık",
+      "default": "Türkiye Çapında Topluluk"
+    },
+    {
+      "type": "textarea",
+      "id": "benefit4_desc",
+      "label": "Avantaj 4 Açıklama",
+      "default": "Diğer üniversitelerdeki elçilerle bir araya gel, networking yap."
+    },
+    {
+      "type": "header",
+      "content": "Sosyal Kanıt"
+    },
+    {
+      "type": "text",
+      "id": "social_title",
+      "label": "Başlık",
+      "default": "Bizden Kareler"
+    },
+    {
+      "type": "header",
+      "content": "Başvuru Formu"
+    },
+    {
+      "type": "text",
+      "id": "form_title",
+      "label": "Form Başlığı",
+      "default": "Hemen Başvur"
+    },
+    {
+      "type": "text",
+      "id": "form_subtitle",
+      "label": "Form Alt Başlığı",
+      "default": "Formu doldur, .ki Campus ailesine katıl!"
+    },
+    {
+      "type": "text",
+      "id": "form_btn_text",
+      "label": "Gönder Butonu",
+      "default": "Başvurumu Gönder"
+    },
+    {
+      "type": "text",
+      "id": "form_success_msg",
+      "label": "Başarı Mesajı",
+      "default": "Başvurun alındı! En kısa sürede seninle iletişime geçeceğiz. 🌸"
+    },
+    {
+      "type": "header",
+      "content": "WhatsApp"
+    },
+    {
+      "type": "text",
+      "id": "whatsapp_number",
+      "label": "Telefon Numarası",
+      "default": "905000000000",
+      "info": "Ülke kodu ile, başında + olmadan"
+    },
+    {
+      "type": "text",
+      "id": "whatsapp_message",
+      "label": "Varsayılan Mesaj",
+      "default": "Merhaba, .ki Campus hakkında bilgi almak istiyorum."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "testimonial",
+      "name": "Referans",
+      "settings": [
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Ad Soyad",
+          "default": "Zeynep A."
+        },
+        {
+          "type": "text",
+          "id": "university",
+          "label": "Üniversite",
+          "default": "İstanbul Üniversitesi"
+        },
+        {
+          "type": "textarea",
+          "id": "quote",
+          "label": "Yorum",
+          "default": "Kampüste farkındalık yaratmak beni çok mutlu etti."
+        },
+        {
+          "type": "select",
+          "id": "avatar_color",
+          "label": "Avatar Rengi",
+          "default": "primary",
+          "options": [
+            { "value": "primary", "label": "Mor" },
+            { "value": "coral", "label": "Mercan" },
+            { "value": "mint", "label": "Mint" },
+            { "value": "yellow", "label": "Sarı" }
+          ]
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": ".ki Campus Ambassador",
+      "blocks": [
+        {
+          "type": "testimonial",
+          "settings": {
+            "name": "Zeynep A.",
+            "university": "İstanbul Üniversitesi",
+            "quote": "Kampüste farkındalık yaratmak beni çok mutlu etti. Herkesin drawpms.com'u denemesi lazım!",
+            "avatar_color": "coral"
+          }
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "name": "Elif K.",
+            "university": "ODTÜ",
+            "quote": ".ki ailesine katılmak kariyerimde en iyi kararlarımdan biri oldu. Hem öğrendim hem kazandım.",
+            "avatar_color": "mint"
+          }
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "name": "Ayşe M.",
+            "university": "Boğaziçi Üniversitesi",
+            "quote": "Sınav döneminde çizim molası fikrini arkadaşlarım çok sevdi. Stresle başa çıkmak artık daha kolay.",
+            "avatar_color": "yellow"
+          }
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "name": "Selin D.",
+            "university": "Ege Üniversitesi",
+            "quote": "Regl hakkında açıkça konuşmak güçlendirici bir deneyim. .ki bunu mümkün kılıyor.",
+            "avatar_color": "primary"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

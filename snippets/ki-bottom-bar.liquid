@@ -1,0 +1,134 @@
+{% comment %}
+  .ki Mobil Alt Bar (sticky bottom nav) + Urun sayfasi "Abone Ol" butonu enjeksiyonu.
+{% endcomment %}
+
+{%- assign ki_trendyol_url = 'https://www.trendyol.com/magaza/ki-shop-m-1205638?sst=0&channelId=1' -%}
+{%- assign cur_path = request.path -%}
+{%- assign ki_all_products = '/collections/ki-urunler' -%}
+{%- assign ki_profile_url = '/pages/abonelik-portalim?view=abonelik-portalim&tab=profile' -%}
+
+<style>
+.ki-bottom-bar{display:none;}
+@media screen and (max-width:989px){
+  body{padding-bottom:calc(66px + env(safe-area-inset-bottom));}
+  .ki-bottom-bar{
+    display:grid;grid-template-columns:repeat(5,1fr);align-items:end;
+    position:fixed;left:0;right:0;bottom:0;z-index:9995;background:#fff;
+    border-top:1px solid rgba(73,61,154,.1);box-shadow:0 -6px 24px rgba(73,61,154,.08);
+    padding:6px 4px calc(6px + env(safe-area-inset-bottom));box-sizing:border-box;pointer-events:auto;
+  }
+  .ki-bottom-bar__item{
+    display:flex;flex-direction:column;align-items:center;justify-content:flex-end;
+    gap:3px;text-decoration:none;color:#8a86a8;padding:6px 2px;min-width:0;min-height:44px;
+    position:relative;z-index:1;cursor:pointer;background:none;border:0;font-family:inherit;
+    -webkit-tap-highlight-color:rgba(73,61,154,.12);touch-action:manipulation;transition:color .15s;
+  }
+  .ki-bottom-bar__item svg{width:22px;height:22px;flex-shrink:0;pointer-events:none;}
+  .ki-bottom-bar__label{font-size:10px;font-weight:600;line-height:1.15;text-align:center;letter-spacing:.01em;white-space:nowrap;pointer-events:none;}
+  .ki-bottom-bar__item.is-active{color:#493d9a;}
+  .ki-bottom-bar__item--trendyol svg{color:#f27a1a;}
+  .ki-bottom-bar__item--plus{color:#493d9a;overflow:visible;z-index:2;}
+  .ki-bottom-bar__plus-circle{
+    width:52px;height:52px;border-radius:50%;background:#493d9a;color:#fff;
+    display:flex;align-items:center;justify-content:center;margin-top:-28px;
+    box-shadow:0 6px 16px rgba(73,61,154,.35);border:3px solid #fff;box-sizing:border-box;
+    pointer-events:none;transition:background .2s,transform .15s;
+  }
+  .ki-bottom-bar__item--plus:active .ki-bottom-bar__plus-circle{transform:scale(.95);}
+  .ki-bottom-bar__plus-circle svg{width:24px;height:24px;}
+  .ki-bottom-bar__item--plus .ki-bottom-bar__label{font-size:9px;margin-top:1px;color:#493d9a;font-weight:700;}
+}
+@media screen and (min-width:990px){.ki-bottom-bar{display:none!important;}}
+</style>
+
+<nav class="ki-bottom-bar" aria-label="Mobil alt menü">
+  <a href="{{ routes.root_url }}" class="ki-bottom-bar__item{% if cur_path == '/' %} is-active{% endif %}">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M9.5 21v-6h5v6"/></svg>
+    <span class="ki-bottom-bar__label">Anasayfa</span>
+  </a>
+  <a href="{{ ki_all_products }}" class="ki-bottom-bar__item{% if cur_path contains '/collections' %} is-active{% endif %}">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="3.5" width="7" height="7" rx="1.6"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.6"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.6"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.6"/></svg>
+    <span class="ki-bottom-bar__label">Tüm Ürünler</span>
+  </a>
+  <a href="/pages/paket-olustur" class="ki-bottom-bar__item ki-bottom-bar__item--plus{% if cur_path contains 'paket-olustur' %} is-active{% endif %}">
+    <span class="ki-bottom-bar__plus-circle">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+    </span>
+    <span class="ki-bottom-bar__label">Paketini Oluştur</span>
+  </a>
+  <a href="{{ ki_trendyol_url }}" target="_blank" rel="noopener" class="ki-bottom-bar__item ki-bottom-bar__item--trendyol">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+    <span class="ki-bottom-bar__label">Trendyol</span>
+  </a>
+  <a href="{{ ki_profile_url }}" class="ki-bottom-bar__item{% if cur_path contains '/account' or cur_path contains 'abonelik-portalim' %} is-active{% endif %}">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.6"/><path d="M4.5 20.5c.8-3.6 3.9-5.5 7.5-5.5s6.7 1.9 7.5 5.5"/></svg>
+    <span class="ki-bottom-bar__label">Profil</span>
+  </a>
+</nav>
+
+{%- comment -%} ===== URUN SAYFASI: "Abone Ol" butonu enjeksiyonu ===== {%- endcomment -%}
+{%- if request.page_type == 'product' -%}
+  {%- assign ki_pdp_variant = product.selected_or_first_available_variant -%}
+  {%- assign ki_pack_handles = '|ki-hijyenik-gunduz-ped|ki-normal-ped|ki-hijyenik-gece-ped|ki-gunluk-ped-5li|ki-gunluk-premium-hijyenik-ped-10-adet|ki-gunduz-ped-5li|ki-gunduz-premium-hijyenik-ped-10-adet|ki-gece-ped-5li|ki-gece-premium-hijyenik-ped-8-adet|ki-light-ped-paketi-15-adet|ki-medium-ped-paketi-22-adet|ki-yogun-gunler-ped-paketi-26-adet|ki-dongu-destek-paketi|ki-hassas-bakim-paketi|ki-menopoz-bakim-paketi|balance-your-cycle|change-is-good|ki-daily-care-intim-bakim-jeli|ki-sens-care-intim-bakim-jeli|ki-flow-care-intim-bakim-jeli|ki-50-care-intim-bakim-jeli|ki-intimate-intim-bakim-spreyi|' -%}
+  {%- assign ki_product_handle_token = '|' | append: product.handle | append: '|' -%}
+  {%- if ki_pack_handles contains ki_product_handle_token and ki_pdp_variant != blank -%}
+  <style>
+    .ki-pdp-subscribe-btn{
+      display:flex;align-items:center;justify-content:center;gap:9px;
+      width:100%;margin-top:10px;padding:14px 24px;
+      background:#fff;color:#493d9a;
+      font-family:'Raleway',system-ui,sans-serif;font-size:15px;font-weight:700;letter-spacing:.02em;
+      border:2px solid #493d9a;border-radius:12px;cursor:pointer;text-decoration:none;
+      transition:background .2s,color .2s,transform .15s;-webkit-tap-highlight-color:transparent;
+    }
+    .ki-pdp-subscribe-btn:hover{background:#493d9a;color:#fff;transform:translateY(-1px);}
+    .ki-pdp-subscribe-btn:active{transform:translateY(0) scale(.99);}
+    .ki-pdp-subscribe-btn svg{width:17px;height:17px;flex-shrink:0;}
+  </style>
+  <script>
+  (function(){
+    var initialVariantId = {{ ki_pdp_variant.id | json }};
+    var productHandle = {{ product.handle | json }};
+    var label = 'Abone Ol · Ayda bir gönderim';
+    function selectedVariantId(){
+      var input = document.querySelector('product-form input[name="id"], form[action*="/cart/add"] input[name="id"]');
+      return input && input.value ? input.value : initialVariantId;
+    }
+    function builderUrl(){
+      return '/pages/paket-olustur?abone=' + encodeURIComponent(selectedVariantId()) + '&product=' + encodeURIComponent(productHandle);
+    }
+    function buildBtn(){
+      var a = document.createElement('a');
+      a.id = 'ki-pdp-subscribe-btn';
+      a.className = 'ki-pdp-subscribe-btn';
+      a.href = builderUrl();
+      a.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 2l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="M7 22l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg><span>' + label + '</span>';
+      return a;
+    }
+    function syncHref(){
+      var btn = document.getElementById('ki-pdp-subscribe-btn');
+      if (btn) btn.href = builderUrl();
+    }
+    function inject(){
+      if (document.getElementById('ki-pdp-subscribe-btn')) return true;
+      var atc = document.querySelector('.kipdp-atc') || document.querySelector('[id^="KiAtc-"]');
+      if (atc) { atc.insertAdjacentElement('afterend', buildBtn()); return true; }
+      return false;
+    }
+    document.addEventListener('change', function(e){
+      if (e.target && (e.target.matches('input[name="id"]') || e.target.closest('variant-selects, variant-radios'))) {
+        setTimeout(syncHref, 0);
+      }
+    });
+    document.addEventListener('variant:changed', syncHref);
+    function boot(){
+      if (inject()) return;
+      var t = 0;
+      var iv = setInterval(function(){ t++; if (inject() || t > 40) clearInterval(iv); }, 150);
+    }
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
+    else boot();
+  })();
+  </script>
+  {%- endif -%}
+{%- endif -%}

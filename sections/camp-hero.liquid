@@ -1,0 +1,136 @@
+<style>
+.ckh{
+  --p:#493d9a;--lil:#dad2ff;--bg:#f8f8f6;--txt:#1a1340;
+  position:relative;overflow:hidden;
+  background:linear-gradient(160deg,#f4f2fb 0%,#ede8ff 60%,#f8f8f6 100%);
+  padding:72px 20px 56px;
+  font-family:system-ui,sans-serif;
+  text-align:center;
+}
+.ckh__blob1,.ckh__blob2{
+  position:absolute;border-radius:50%;
+  filter:blur(60px);pointer-events:none;
+}
+.ckh__blob1{top:-60px;right:-60px;width:320px;height:320px;background:rgba(73,61,154,.1);}
+.ckh__blob2{bottom:-80px;left:-60px;width:280px;height:280px;background:rgba(255,153,153,.12);}
+.ckh__inner{position:relative;z-index:2;max-width:640px;margin:0 auto;}
+.ckh__tag{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:7px 18px;border-radius:50px;
+  background:rgba(73,61,154,.08);border:1px solid rgba(73,61,154,.15);
+  font-size:12px;font-weight:700;color:var(--p);
+  margin-bottom:24px;letter-spacing:.04em;
+}
+.ckh__title{
+  font-family:'Raleway',system-ui,sans-serif;
+  font-size:clamp(32px,8vw,60px);font-weight:900;
+  color:var(--txt);line-height:1.08;letter-spacing:-.03em;
+  margin:0 0 20px;
+}
+.ckh__title em{color:var(--p);font-style:normal;}
+.ckh__title span{
+  position:relative;display:inline-block;
+}
+.ckh__title span::after{
+  content:'';
+  position:absolute;bottom:-4px;left:0;right:0;height:3px;
+  background:#ff6666;border-radius:2px;
+  animation:drawLine 1.2s ease-out .8s both;
+}
+@keyframes drawLine{
+  from{transform:scaleX(0);transform-origin:left}
+  to{transform:scaleX(1);transform-origin:left}
+}
+.ckh__desc{
+  font-size:clamp(15px,3.5vw,18px);color:#6b6b8a;
+  line-height:1.65;margin:0 0 32px;
+}
+.ckh__desc strong{color:var(--p);font-weight:700;}
+.ckh__actions{display:flex;flex-direction:column;gap:10px;align-items:center;}
+@media(min-width:480px){
+  .ckh__actions{flex-direction:row;justify-content:center;}
+}
+.ckh__btn-primary{
+  display:inline-flex;align-items:center;gap:6px;
+  background:var(--p);color:#fff;
+  padding:13px 28px;border-radius:50px;
+  font-size:14px;font-weight:700;
+  text-decoration:none;
+  box-shadow:0 6px 24px rgba(73,61,154,.28);
+  transition:transform .2s,box-shadow .2s;
+  width:100%;justify-content:center;
+}
+@media(min-width:480px){.ckh__btn-primary{width:auto;}}
+.ckh__btn-primary:hover{transform:translateY(-2px);box-shadow:0 10px 32px rgba(73,61,154,.36);}
+.ckh__btn-outline{
+  display:inline-flex;align-items:center;justify-content:center;
+  background:transparent;color:var(--p);
+  border:1.5px solid rgba(73,61,154,.3);
+  padding:12px 24px;border-radius:50px;
+  font-size:14px;font-weight:700;
+  text-decoration:none;transition:all .2s;
+  width:100%;
+}
+@media(min-width:480px){.ckh__btn-outline{width:auto;}}
+.ckh__btn-outline:hover{background:rgba(73,61,154,.06);border-color:var(--p);}
+.ckh__footer{
+  margin-top:28px;font-size:12px;color:rgba(73,61,154,.5);
+  font-weight:500;
+}
+.ckh__stats{
+  display:flex;flex-wrap:wrap;justify-content:center;gap:16px;
+  margin-top:32px;
+}
+.ckh__stat{
+  background:#fff;border:1px solid rgba(73,61,154,.1);
+  border-radius:12px;padding:12px 18px;text-align:center;
+  box-shadow:0 2px 8px rgba(73,61,154,.06);
+  min-width:100px;
+}
+.ckh__stat-num{font-size:20px;font-weight:900;color:var(--p);display:block;line-height:1;}
+.ckh__stat-lbl{font-size:10px;color:#6b6b8a;font-weight:600;letter-spacing:.04em;margin-top:3px;display:block;}
+</style>
+
+<section class="ckh">
+  <div class="ckh__blob1"></div>
+  <div class="ckh__blob2"></div>
+  <div class="ckh__inner">
+    <div class="ckh__tag">🌸 {{ section.settings.tag_text }}</div>
+    <h1 class="ckh__title">
+      {{ section.settings.title_part_1 }}
+      <em>{{ section.settings.title_highlight }}</em>
+      {{ section.settings.title_part_2 }}<br>
+      <span>{{ section.settings.title_underline }}</span>
+    </h1>
+    <div class="ckh__desc">{{ section.settings.description }}</div>
+    <div class="ckh__actions">
+      <a href="#basvuru-formu" class="ckh__btn-primary">
+        {{ section.settings.btn_1_text }}
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+      <a href="#nasil-calisir" class="ckh__btn-outline">{{ section.settings.btn_2_text }}</a>
+    </div>
+    <div class="ckh__stats">
+      <div class="ckh__stat"><span class="ckh__stat-num">40+</span><span class="ckh__stat-lbl">Üniversite</span></div>
+      <div class="ckh__stat"><span class="ckh__stat-num">10K+</span><span class="ckh__stat-lbl">Kadına Dokunuş</span></div>
+      <div class="ckh__stat"><span class="ckh__stat-num">100%</span><span class="ckh__stat-lbl">Ücretsiz</span></div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Camp: Hero",
+  "settings": [
+    {"type":"text","id":"tag_text","label":"Etiket","default":"Campus Ambassador Programı"},
+    {"type":"text","id":"title_part_1","label":"Başlık 1","default":"Kampüsünde"},
+    {"type":"text","id":"title_highlight","label":"Vurgu","default":".ki"},
+    {"type":"text","id":"title_part_2","label":"Başlık 2","default":"Elçisi Ol,"},
+    {"type":"text","id":"title_underline","label":"Altı Çizili","default":"Farkındalık Yarat!"},
+    {"type":"richtext","id":"description","label":"Açıklama","default":"<p>Regl tabularını yıkmak, sınav stresinde kadınların yanında olmak ve <strong>drawpms.com</strong> ile duyguları özgürleştirmek için ekibimize katıl.</p>"},
+    {"type":"text","id":"btn_1_text","label":"Buton 1","default":"Hemen Başvur"},
+    {"type":"text","id":"btn_2_text","label":"Buton 2","default":"Programı İncele"}
+  ],
+  "presets":[{"name":"Camp: Hero"}]
+}
+{% endschema %}

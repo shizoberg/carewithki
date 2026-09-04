@@ -1,0 +1,69 @@
+{%- comment -%}Compact subscription explainer shared by all .ki pad PDPs.{%- endcomment -%}
+<style>
+  #KiPedFlow-{{ section.id }}{--kpf-purple:#493d9a;--kpf-dark:#1a1340;--kpf-muted:#706b7b;--kpf-line:rgba(73,61,154,.13);background:#fff;padding:{{ section.settings.padding_y }}px 0}
+  #KiPedFlow-{{ section.id }} *{box-sizing:border-box}
+  #KiPedFlow-{{ section.id }} .kpf-shell{width:min(1180px,calc(100% - 40px));margin:0 auto}
+  #KiPedFlow-{{ section.id }} .kpf-head{text-align:center;max-width:720px;margin:0 auto 26px}
+  #KiPedFlow-{{ section.id }} .kpf-eyebrow{margin:0 0 8px;color:var(--kpf-purple);font-size:10px;font-weight:850;letter-spacing:.16em;text-transform:uppercase}
+  #KiPedFlow-{{ section.id }} .kpf-title{margin:0;color:var(--kpf-dark);font-family:var(--font-heading-family),Raleway,sans-serif;font-size:clamp(27px,3.5vw,42px);line-height:1.08;letter-spacing:-.025em}
+  #KiPedFlow-{{ section.id }} .kpf-subtitle{margin:12px 0 0;color:var(--kpf-muted);font-size:14px;line-height:1.6}
+  #KiPedFlow-{{ section.id }} .kpf-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+  #KiPedFlow-{{ section.id }} .kpf-card{position:relative;min-height:174px;padding:20px;border:1px solid var(--kpf-line);border-radius:18px;background:#fff;box-shadow:0 8px 26px rgba(73,61,154,.055)}
+  #KiPedFlow-{{ section.id }} .kpf-number{position:absolute;top:15px;right:16px;color:rgba(73,61,154,.25);font-size:12px;font-weight:900;letter-spacing:.1em}
+  #KiPedFlow-{{ section.id }} .kpf-icon{width:42px;height:42px;border-radius:13px;background:#f0edfb;color:var(--kpf-purple);display:grid;place-items:center;margin-bottom:22px}
+  #KiPedFlow-{{ section.id }} .kpf-icon svg{width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+  #KiPedFlow-{{ section.id }} .kpf-card h3{margin:0 0 7px;color:var(--kpf-dark);font-size:16px;line-height:1.2}
+  #KiPedFlow-{{ section.id }} .kpf-card p{margin:0;color:var(--kpf-muted);font-size:12px;line-height:1.55}
+  #KiPedFlow-{{ section.id }} .kpf-action{display:flex;justify-content:center;margin-top:22px}
+  #KiPedFlow-{{ section.id }} .kpf-cta{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:12px 24px;border-radius:13px;background:var(--kpf-purple);color:#fff;text-decoration:none;font-size:14px;font-weight:800}
+  #KiPedFlow-{{ section.id }} .kpf-cta svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:2}
+  @media(max-width:749px){
+    #KiPedFlow-{{ section.id }}{padding:28px 0}
+    #KiPedFlow-{{ section.id }} .kpf-shell{width:calc(100% - 28px)}
+    #KiPedFlow-{{ section.id }} .kpf-head{text-align:left;margin-bottom:13px}
+    #KiPedFlow-{{ section.id }} .kpf-title{font-size:23px}
+    #KiPedFlow-{{ section.id }} .kpf-subtitle{margin-top:7px;font-size:10.5px;line-height:1.45}
+    #KiPedFlow-{{ section.id }} .kpf-grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;gap:8px}
+    #KiPedFlow-{{ section.id }} .kpf-card{min-height:122px;padding:11px;border-radius:13px}
+    #KiPedFlow-{{ section.id }} .kpf-number{top:9px;right:10px;font-size:9px}
+    #KiPedFlow-{{ section.id }} .kpf-icon{width:32px;height:32px;margin-bottom:10px;border-radius:9px}
+    #KiPedFlow-{{ section.id }} .kpf-icon svg{width:16px;height:16px}
+    #KiPedFlow-{{ section.id }} .kpf-card h3{margin-bottom:4px;font-size:12px}
+    #KiPedFlow-{{ section.id }} .kpf-card p{font-size:9px;line-height:1.35}
+    #KiPedFlow-{{ section.id }} .kpf-action{margin-top:13px}
+    #KiPedFlow-{{ section.id }} .kpf-cta{width:100%;min-height:41px;padding:9px 15px;font-size:12px}
+  }
+</style>
+
+<section id="KiPedFlow-{{ section.id }}">
+  <div class="kpf-shell">
+    <header class="kpf-head">
+      <p class="kpf-eyebrow">{{ section.settings.eyebrow | escape }}</p>
+      <h2 class="kpf-title">{{ section.settings.heading | escape }}</h2>
+      <p class="kpf-subtitle">{{ section.settings.subtitle | escape }}</p>
+    </header>
+    <ol class="kpf-grid">
+      <li class="kpf-card"><span class="kpf-number">01</span><span class="kpf-icon"><svg viewBox="0 0 24 24"><path d="M4 5h16v14H4zM8 9h8M8 13h5"/><path d="m16 16 2 2 3-4"/></svg></span><h3>Pedlerini seç</h3><p>Günlük, gündüz ve gece pedlerinden ihtiyacına uygun adetleri belirle.</p></li>
+      <li class="kpf-card"><span class="kpf-number">02</span><span class="kpf-icon"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/></svg></span><h3>Sıklığını belirle</h3><p>Paketinin sana kaç ayda bir gönderileceğini seç.</p></li>
+      <li class="kpf-card"><span class="kpf-number">03</span><span class="kpf-icon"><svg viewBox="0 0 24 24"><path d="M3 7h11v10H3zM14 10h4l3 3v4h-7"/><circle cx="7" cy="18" r="2"/><circle cx="18" cy="18" r="2"/></svg></span><h3>Ücretsiz teslim al</h3><p>Paketin planlanan zamanda hazırlanıp adresine gönderilsin.</p></li>
+      <li class="kpf-card"><span class="kpf-number">04</span><span class="kpf-icon"><svg viewBox="0 0 24 24"><path d="M4 12a8 8 0 1 0 2.3-5.7L4 8M4 4v4h4"/><path d="M9 10v4M15 10v4"/></svg></span><h3>İstediğin zaman yönet</h3><p>Gönderimi değiştir, duraklat veya taahhütsüz şekilde iptal et.</p></li>
+    </ol>
+    <div class="kpf-action"><a class="kpf-cta" href="/pages/paket-olustur?abone={{ product.selected_or_first_available_variant.id }}&product={{ product.handle | url_encode }}">{{ section.settings.cta_label | escape }}<svg viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg></a></div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name":"Ped Abonelik Akışı",
+  "tag":"section",
+  "class":"section",
+  "settings":[
+    {"type":"range","id":"padding_y","label":"Dikey boşluk","min":28,"max":80,"step":4,"unit":"px","default":56},
+    {"type":"text","id":"eyebrow","label":"Üst etiket","default":"Nasıl abone olunur?"},
+    {"type":"text","id":"heading","label":"Başlık","default":"Dört adımda ped paketin hazır"},
+    {"type":"textarea","id":"subtitle","label":"Açıklama","default":"İhtiyacına göre pedlerini seç, düzenli teslim al. Taahhüt yok; paketini hesabından kolayca yönet."},
+    {"type":"text","id":"cta_label","label":"Buton","default":"Ped paketini oluştur"}
+  ],
+  "presets":[{"name":"Ped Abonelik Akışı"}]
+}
+{% endschema %}

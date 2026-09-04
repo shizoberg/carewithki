@@ -1,0 +1,40 @@
+{%- liquid
+  assign bundle_product = product
+  assign component_1 = blank
+  assign component_2 = blank
+  assign component_3 = blank
+
+  case bundle_product.handle
+    when 'ki-dongu-destek-paketi'
+      assign component_1 = all_products['balance-your-cycle']
+      assign component_2 = all_products['ki-flow-care-intim-bakim-jeli']
+      assign component_3 = all_products['ki-intimate-intim-bakim-spreyi']
+    when 'ki-hassas-bakim-paketi'
+      assign component_1 = all_products['ki-sens-care-intim-bakim-jeli']
+      assign component_2 = all_products['ki-intimate-intim-bakim-spreyi']
+    when 'ki-menopoz-bakim-paketi'
+      assign component_1 = all_products['change-is-good']
+      assign component_2 = all_products['ki-50-care-intim-bakim-jeli']
+      assign component_3 = all_products['ki-intimate-intim-bakim-spreyi']
+  endcase
+-%}
+
+<span class="ki-care-bundle-collage" aria-hidden="true">
+  {%- for component_index in (1..3) -%}
+    {%- liquid
+      case component_index
+        when 1
+          assign component_product = component_1
+        when 2
+          assign component_product = component_2
+        else
+          assign component_product = component_3
+      endcase
+    -%}
+    {%- if component_product != blank and component_product.featured_image -%}
+      <span class="ki-care-bundle-collage__item ki-care-bundle-collage__item--{{ component_index }}">
+        {{ component_product.featured_image | image_url: width: 520 | image_tag: loading: 'lazy', alt: component_product.title }}
+      </span>
+    {%- endif -%}
+  {%- endfor -%}
+</span>

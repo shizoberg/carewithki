@@ -1,0 +1,127 @@
+{%- comment -%}
+  Ki renk uyumu + paket sayfasi UI + mobil menu (drawer) tam-ekran overlay + masaustu header CTA.
+{%- endcomment -%}
+<style>
+  :root{
+    --ki-primary: #493d9a !important;
+    --ki-primary-medium: #5946b3 !important;
+  }
+</style>
+
+{%- style -%}
+html,body{ overflow-x:clip!important; max-width:100%!important; }
+main#MainContent,.content-for-layout{ overflow-x:clip!important; max-width:100%!important; }
+[id^="KH3-"]{ overflow:hidden!important; max-width:100%!important; width:100%!important; }
+[id^="KH3-"] .kh3-track{ max-width:none; }
+.shopify-section{ max-width:100%; overflow-x:clip; }
+
+.ki-pack__howit{ background:#ffffff!important; border:1px solid #e6e3ee!important; }
+.ki-pack__item.is-selected{ background:#f4f3fb!important; }
+.ki-pack__howit ol{ counter-reset: ki-howit; }
+.ki-pack__howit ol li{ counter-increment: ki-howit; }
+.ki-pack__howit-num{ font-size:0!important; line-height:0!important; }
+.ki-pack__howit-num::before{ content: counter(ki-howit); font-size:11px; font-weight:700; line-height:1; }
+
+/* ============================================================
+   MASAUSTU HEADER CTA (>=990px)
+   - ".ki Bilimi" butonunu kaldir
+   - "Abonelige Basla" rengini .ki Bilimi rengiyle esitle (#493d9a)
+   Yuksek ozgulluk (.header__icons eklenerek) ile header.liquid'i geceriz.
+   ============================================================ */
+@media screen and (min-width:990px){
+  .section-header .header__icons .header__cta{ display:none!important; }
+  .section-header .header__icons .header__cta--abo{ background:#493d9a!important; }
+  .section-header .header__icons .header__cta--abo:hover{ background:#3b3280!important; }
+}
+
+@media screen and (max-width:989px){
+
+  .ki-announcement-bar,
+  .section-header,
+  .section-header .header-wrapper{
+    width:100%!important;max-width:100%!important;margin-left:0!important;margin-right:0!important;
+    box-sizing:border-box!important;
+  }
+
+  /* Sepeti sag kenara yaklastir */
+  .section-header .header-wrapper .header__icons{ margin-right:5px!important; }
+  .section-header .header-wrapper .header__icons .header__icon--cart{ margin-right:0!important; }
+  .section-header .header-wrapper .header.page-width,
+  .section-header .header-wrapper .header{ padding-right:5px!important; }
+
+  /* ============================================================
+     MOBIL MENU — TAM EKRAN SABIT OVERLAY (gercek header altina)
+     ============================================================ */
+  .section-header .menu-drawer{
+    position:fixed!important;
+    top:var(--ki-drawer-top, var(--header-height, 88px))!important;
+    left:0!important; right:0!important;
+    width:100%!important; max-width:100%!important;
+    height:calc(100dvh - var(--ki-drawer-top, var(--header-height, 88px)))!important;
+    margin:0!important; border:0!important; padding:0!important;
+    background:#ffffff!important;
+    z-index:9998!important;
+    box-sizing:border-box!important;
+    overflow-y:auto!important;
+    -webkit-overflow-scrolling:touch!important;
+    transform:translateX(-100%);
+    visibility:hidden;
+    transition:transform .25s ease, visibility .25s ease;
+  }
+  .section-header details[open] > .menu-drawer,
+  #Details-menu-drawer-container[open] > .menu-drawer,
+  #Details-menu-drawer-container[open] .menu-drawer{
+    transform:translateX(0)!important;
+    visibility:visible!important;
+  }
+  .section-header .menu-drawer__inner-container,
+  .section-header .menu-drawer__navigation-container{
+    width:100%!important; max-width:100%!important;
+    min-height:100%!important;
+    background:#ffffff!important;
+    box-sizing:border-box!important;
+  }
+
+  html:has(#Details-menu-drawer-container[open]),
+  body:has(#Details-menu-drawer-container[open]){
+    overflow:hidden!important;
+    touch-action:none!important;
+  }
+  body:has(#Details-menu-drawer-container[open]) .ki-bottom-bar{ display:none!important; }
+
+  .section-header details[open] > summary::before,
+  #Details-menu-drawer-container[open] > summary::before{
+    display:none!important;
+  }
+}
+
+@media screen and (max-width:600px){
+  .section-header .header-wrapper .header__icons{ margin-right:4px!important; }
+  .section-header .header-wrapper .header.page-width,
+  .section-header .header-wrapper .header{ padding-right:4px!important; }
+}
+{%- endstyle -%}
+
+<script>
+(function(){
+  function setTop(){
+    var h = document.querySelector('.section-header');
+    if(!h) return;
+    var b = h.getBoundingClientRect().bottom;
+    if(b < 0) b = 0;
+    document.documentElement.style.setProperty('--ki-drawer-top', Math.round(b) + 'px');
+  }
+  function bind(){
+    var det = document.getElementById('Details-menu-drawer-container');
+    if(det && window.MutationObserver){
+      new MutationObserver(function(){
+        if(det.hasAttribute('open')){ setTop(); requestAnimationFrame(setTop); setTimeout(setTop,50); }
+      }).observe(det, { attributes:true, attributeFilter:['open'] });
+    }
+    window.addEventListener('resize', setTop, { passive:true });
+    setTop();
+  }
+  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bind);
+  else bind();
+})();
+</script>

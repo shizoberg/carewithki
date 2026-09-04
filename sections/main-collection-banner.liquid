@@ -1,0 +1,216 @@
+{% comment %}theme-check-disable ImgLazyLoading{% endcomment %}
+{% comment %}
+  Collection Banner — Ki Brand Kit
+  
+  Brand kit:
+    #493d9a (main/purple-dark)
+    #f8f8f6 (offwhite)
+    #b2a5ff (primary/purple)
+    #dad2ff (lilac)
+{% endcomment %}
+
+{{ 'component-collection-hero.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  /* Ki Brand Kit Variables */
+  .collection-hero {
+    --ki-purple-dark: #493d9a;
+    --ki-offwhite: #f8f8f6;
+    --ki-purple: #b2a5ff;
+    --ki-lilac: #dad2ff;
+  }
+
+  /* Collection Hero - Ki Styling */
+  .collection-hero {
+    background: var(--ki-offwhite);
+    padding: 60px 0;
+  }
+
+  .collection-hero__inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .collection-hero__text-wrapper {
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .collection-hero__title {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-size: clamp(32px, 5vw, 52px);
+    font-weight: 700;
+    color: var(--ki-purple-dark);
+    letter-spacing: -0.025em;
+    line-height: 1.15;
+    margin: 0 0 16px 0;
+    text-align: center;
+  }
+
+  .collection-hero__description {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: #444;
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .collection-hero__description p {
+    margin: 0;
+  }
+
+  /* With Image Layout */
+  .collection-hero--with-image .collection-hero__inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items: center;
+  }
+
+  .collection-hero--with-image .collection-hero__text-wrapper {
+    text-align: left;
+  }
+
+  .collection-hero--with-image .collection-hero__title {
+    text-align: left;
+  }
+
+  .collection-hero--with-image .collection-hero__description {
+    text-align: left;
+    margin: 0;
+  }
+
+  .collection-hero__image-container {
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 12px 40px rgba(73, 61, 154, 0.12);
+  }
+
+  .collection-hero__image-container img {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+  }
+
+  /* Responsive */
+  @media screen and (max-width: 989px) {
+    .collection-hero {
+      padding: 48px 0;
+    }
+
+    .collection-hero--with-image .collection-hero__inner {
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+
+    .collection-hero--with-image .collection-hero__text-wrapper {
+      text-align: center;
+      order: 1;
+    }
+
+    .collection-hero--with-image .collection-hero__title {
+      text-align: center;
+    }
+
+    .collection-hero--with-image .collection-hero__description {
+      text-align: center;
+      margin: 0 auto;
+    }
+
+    .collection-hero__image-container {
+      order: 2;
+      max-width: 500px;
+      margin: 0 auto;
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    .collection-hero {
+      padding: 40px 0;
+    }
+
+    .collection-hero__title {
+      font-size: clamp(28px, 7vw, 36px);
+    }
+
+    .collection-hero__description {
+      font-size: 15px;
+    }
+
+    .collection-hero--with-image .collection-hero__inner {
+      padding-bottom: calc({{ settings.media_shadow_vertical_offset | at_least: 0 }}px + 2rem);
+    }
+  }
+{%- endstyle -%}
+
+<div class="collection-hero{% if section.settings.show_collection_image and collection.image %} collection-hero--with-image{% endif %} color-{{ section.settings.color_scheme }} gradient">
+  <div class="collection-hero__inner page-width {% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}">
+    <div class="collection-hero__text-wrapper">
+      <h1 class="collection-hero__title">
+        <span class="visually-hidden">{{ 'sections.collection_template.title' | t }}: </span>
+        {{- collection.title | escape -}}
+      </h1>
+
+      {%- if section.settings.show_collection_description -%}
+        <div class="collection-hero__description rte">{{ collection.description }}</div>
+      {%- endif -%}
+    </div>
+
+    {%- if section.settings.show_collection_image and collection.image -%}
+      <div class="collection-hero__image-container media gradient">
+        <img
+          srcset="
+            {%- if collection.image.width >= 165 -%}{{ collection.image | image_url: width: 165 }} 165w,{%- endif -%}
+            {%- if collection.image.width >= 360 -%}{{ collection.image | image_url: width: 360 }} 360w,{%- endif -%}
+            {%- if collection.image.width >= 535 -%}{{ collection.image | image_url: width: 535 }} 535w,{%- endif -%}
+            {%- if collection.image.width >= 750 -%}{{ collection.image | image_url: width: 750 }} 750w,{%- endif -%}
+            {%- if collection.image.width >= 1070 -%}{{ collection.image | image_url: width: 1070 }} 1070w,{%- endif -%}
+            {%- if collection.image.width >= 1500 -%}{{ collection.image | image_url: width: 1500 }} 1500w,{%- endif -%}
+            {{ collection.image | image_url }} {{ collection.image.width }}w
+          "
+          src="{{ collection.image | image_url: width: 750 }}"
+          sizes="(min-width: {{ settings.page_width }}px) {{ settings.page_width | minus: 100 | divided_by: 2 }}px, (min-width: 750px) calc(50vw - 130px), calc(50vw - 55px)"
+          alt="{{ collection.image.alt | escape }}"
+          width="{{ collection.image.width }}"
+          height="{{ collection.image.height }}"
+        >
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Collection Banner (Ki)",
+  "class": "section",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Koleksiyon başlığı ve açıklaması otomatik olarak koleksiyon ayarlarından alınır."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_collection_description",
+      "default": true,
+      "label": "Koleksiyon açıklamasını göster"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_collection_image",
+      "default": false,
+      "label": "Koleksiyon görselini göster"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Renk şeması",
+      "default": "scheme-1"
+    }
+  ]
+}
+{% endschema %}

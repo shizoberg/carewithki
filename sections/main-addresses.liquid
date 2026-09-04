@@ -1,0 +1,244 @@
+{{ 'customer.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'customer.js' | asset_url }}" defer></script>
+
+<style>
+.ki-addresses {
+  --p:#493d9a;--lil:#dad2ff;--bg:#f8f8f6;--txt:#1a1340;--mut:#6b6b8a;
+  background:var(--bg); min-height:80vh;
+}
+.ki-addresses__head {
+  background:linear-gradient(135deg,#493d9a 0%,#7b6dd3 100%);
+  padding:36px 24px 32px; text-align:center;
+}
+.ki-addresses__head h1 {
+  font-family:'Raleway',system-ui,sans-serif;
+  font-size:24px; font-weight:800; color:#fff; margin:0 0 10px;
+}
+.ki-back {
+  display:inline-flex;align-items:center;gap:5px;
+  background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);
+  color:#fff;font-size:12px;font-weight:600;
+  padding:6px 14px;border-radius:50px;text-decoration:none;
+  transition:background .15s;
+}
+.ki-back:hover{background:rgba(255,255,255,.22);}
+.ki-addresses__main {
+  max-width:900px;margin:0 auto;padding:28px 24px 64px;
+}
+/* Yeni adres butonu */
+.ki-add-btn {
+  display:inline-flex;align-items:center;gap:8px;
+  background:var(--p);color:#fff;
+  font-size:13px;font-weight:700;
+  padding:10px 20px;border-radius:12px;
+  border:none;cursor:pointer;margin-bottom:20px;
+  transition:background .2s;
+}
+.ki-add-btn:hover{background:#3b3280;}
+/* Form panel */
+.ki-addr-form-panel {
+  background:#fff;border-radius:16px;
+  border:1px solid rgba(73,61,154,.1);
+  box-shadow:0 4px 20px rgba(73,61,154,.08);
+  padding:24px; margin-bottom:24px;
+  display:none;
+}
+.ki-addr-form-panel.is-open{display:block;}
+.ki-addr-form-panel h2 {
+  font-size:16px;font-weight:800;color:var(--txt);
+  margin:0 0 18px;font-family:'Raleway',system-ui,sans-serif;
+}
+.ki-form-grid {
+  display:grid;grid-template-columns:1fr 1fr;gap:12px;
+}
+@media(max-width:600px){.ki-form-grid{grid-template-columns:1fr;}}
+.ki-field{position:relative;}
+.ki-field input,.ki-field select {
+  width:100%;padding:12px 13px;
+  border:1.5px solid rgba(73,61,154,.2);border-radius:10px;
+  font-size:13px;color:var(--txt);background:#fff;
+  outline:none;box-sizing:border-box;transition:border-color .2s;
+  appearance:none;
+}
+.ki-field input:focus,.ki-field select:focus{border-color:var(--p);}
+.ki-field input::placeholder{color:rgba(73,61,154,.4);}
+.ki-form-actions{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap;}
+.ki-btn-save {
+  padding:11px 24px;background:var(--p);color:#fff;
+  font-size:13px;font-weight:700;border:none;border-radius:10px;
+  cursor:pointer;transition:background .2s;
+}
+.ki-btn-save:hover{background:#3b3280;}
+.ki-btn-cancel {
+  padding:11px 20px;background:transparent;color:var(--mut);
+  font-size:13px;font-weight:600;
+  border:1.5px solid rgba(73,61,154,.18);border-radius:10px;
+  cursor:pointer;transition:all .2s;
+}
+.ki-btn-cancel:hover{border-color:var(--p);color:var(--p);}
+.ki-default-label {
+  display:inline-flex;align-items:center;gap:5px;
+  font-size:11px;font-weight:700;color:var(--p);
+  background:rgba(73,61,154,.08);border-radius:50px;
+  padding:3px 10px;margin-bottom:8px;
+}
+/* Adres listesi */
+.ki-addr-list{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+@media(max-width:600px){.ki-addr-list{grid-template-columns:1fr;}}
+.ki-addr-item {
+  background:#fff;border-radius:14px;
+  border:1px solid rgba(73,61,154,.08);
+  box-shadow:0 2px 10px rgba(73,61,154,.05);
+  padding:18px 20px;
+}
+.ki-addr-item p{font-size:13px;color:var(--txt);line-height:1.6;margin:0 0 12px;}
+.ki-addr-actions{display:flex;gap:8px;}
+.ki-addr-edit {
+  padding:7px 14px;background:rgba(73,61,154,.08);
+  color:var(--p);font-size:12px;font-weight:600;
+  border:1px solid rgba(73,61,154,.15);border-radius:8px;
+  cursor:pointer;transition:all .15s;
+}
+.ki-addr-edit:hover{background:var(--p);color:#fff;}
+.ki-addr-delete {
+  padding:7px 14px;background:rgba(225,29,72,.06);
+  color:#c0143c;font-size:12px;font-weight:600;
+  border:1px solid rgba(225,29,72,.15);border-radius:8px;
+  cursor:pointer;transition:all .15s;
+}
+.ki-addr-delete:hover{background:#c0143c;color:#fff;}
+</style>
+
+{%- paginate customer.addresses by 10 -%}
+<div class="ki-addresses" data-customer-addresses>
+
+  <div class="ki-addresses__head">
+    <h1>{{ 'customer.addresses.title' | t }}</h1>
+    <a href="{{ routes.account_url }}" class="ki-back">← {{ 'customer.account.return' | t }}</a>
+  </div>
+
+  <div class="ki-addresses__main">
+
+    <!-- Yeni Adres Ekle -->
+    <div data-address>
+      <button type="button" class="ki-add-btn" aria-expanded="false" aria-controls="AddAddress">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        {{ 'customer.addresses.add_new' | t }}
+      </button>
+      <div id="AddAddress" class="ki-addr-form-panel">
+        <h2>{{ 'customer.addresses.add_new' | t }}</h2>
+        {%- form 'customer_address', customer.new_address -%}
+          <div class="ki-form-grid">
+            <div class="ki-field"><input type="text" name="address[first_name]" value="{{ form.first_name }}" autocomplete="given-name" placeholder="{{ 'customer.addresses.first_name' | t }}"></div>
+            <div class="ki-field"><input type="text" name="address[last_name]" value="{{ form.last_name }}" autocomplete="family-name" placeholder="{{ 'customer.addresses.last_name' | t }}"></div>
+            <div class="ki-field"><input type="text" name="address[address1]" value="{{ form.address1 }}" autocomplete="address-line1" placeholder="{{ 'customer.addresses.address1' | t }}"></div>
+            <div class="ki-field"><input type="text" name="address[address2]" value="{{ form.address2 }}" autocomplete="address-line2" placeholder="{{ 'customer.addresses.address2' | t }}"></div>
+            <div class="ki-field"><input type="text" name="address[city]" value="{{ form.city }}" autocomplete="address-level2" placeholder="{{ 'customer.addresses.city' | t }}"></div>
+            <div class="ki-field"><input type="text" name="address[zip]" value="{{ form.zip }}" autocomplete="postal-code" placeholder="{{ 'customer.addresses.zip' | t }}"></div>
+            <div class="ki-field"><input type="tel" name="address[phone]" value="{{ form.phone }}" autocomplete="tel" placeholder="{{ 'customer.addresses.phone' | t }}"></div>
+            <div class="ki-field">
+              <select name="address[country]" data-default="{{ form.country }}" autocomplete="country">{{ all_country_option_tags }}</select>
+            </div>
+            <div id="AddressProvinceContainerNew" style="display:none" class="ki-field">
+              <select name="address[province]" id="AddressProvinceNew" data-default="{{ form.province }}" autocomplete="address-level1"></select>
+            </div>
+          </div>
+          <div style="margin-top:10px;display:flex;align-items:center;gap:8px;">
+            {{ form.set_as_default_checkbox }}
+            <label for="address_default_address_new" style="font-size:12px;color:var(--mut);">{{ 'customer.addresses.set_default' | t }}</label>
+          </div>
+          <div class="ki-form-actions">
+            <button class="ki-btn-save">{{ 'customer.addresses.add' | t }}</button>
+            <button type="reset" class="ki-btn-cancel">{{ 'customer.addresses.cancel' | t }}</button>
+          </div>
+        {%- endform -%}
+      </div>
+    </div>
+
+    <!-- Adres Listesi -->
+    <ul class="ki-addr-list" role="list">
+      {%- for address in customer.addresses -%}
+        <li class="ki-addr-item" data-address>
+          {%- if address == customer.default_address -%}
+            <div class="ki-default-label">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              {{ 'customer.addresses.default' | t }}
+            </div>
+          {%- endif -%}
+          <p>{{ address | format_address }}</p>
+          <div class="ki-addr-actions">
+            <button type="button" class="ki-addr-edit"
+              aria-controls="EditAddress_{{ address.id }}"
+              aria-expanded="false"
+              data-address-id="{{ address.id }}">
+              {{ 'customer.addresses.edit' | t }}
+            </button>
+            <button type="button" class="ki-addr-delete"
+              data-target="{{ address.url }}"
+              data-confirm-message="{{ 'customer.addresses.delete_confirm' | t }}">
+              {{ 'customer.addresses.delete' | t }}
+            </button>
+          </div>
+          <!-- Edit form -->
+          <div id="EditAddress_{{ address.id }}" class="ki-addr-form-panel" style="margin-top:14px;">
+            <h2>{{ 'customer.addresses.edit_address' | t }}</h2>
+            {%- form 'customer_address', address -%}
+              <div class="ki-form-grid">
+                <div class="ki-field"><input type="text" id="AddressFirstName_{{ form.id }}" name="address[first_name]" value="{{ form.first_name }}" autocomplete="given-name" placeholder="{{ 'customer.addresses.first_name' | t }}"></div>
+                <div class="ki-field"><input type="text" id="AddressLastName_{{ form.id }}" name="address[last_name]" value="{{ form.last_name }}" autocomplete="family-name" placeholder="{{ 'customer.addresses.last_name' | t }}"></div>
+                <div class="ki-field"><input type="text" name="address[address1]" value="{{ form.address1 }}" autocomplete="address-line1" placeholder="{{ 'customer.addresses.address1' | t }}"></div>
+                <div class="ki-field"><input type="text" name="address[address2]" value="{{ form.address2 }}" autocomplete="address-line2" placeholder="{{ 'customer.addresses.address2' | t }}"></div>
+                <div class="ki-field"><input type="text" name="address[city]" value="{{ form.city }}" autocomplete="address-level2" placeholder="{{ 'customer.addresses.city' | t }}"></div>
+                <div class="ki-field"><input type="text" name="address[zip]" value="{{ form.zip }}" autocomplete="postal-code" placeholder="{{ 'customer.addresses.zip' | t }}"></div>
+                <div class="ki-field"><input type="tel" name="address[phone]" value="{{ form.phone }}" autocomplete="tel" placeholder="{{ 'customer.addresses.phone' | t }}"></div>
+                <div class="ki-field">
+                  <select name="address[country]" data-address-country-select data-default="{{ form.country }}" data-form-id="{{ form.id }}" autocomplete="country">{{ all_country_option_tags }}</select>
+                </div>
+                <div id="AddressProvinceContainer_{{ form.id }}" style="display:none" class="ki-field">
+                  <select id="AddressProvince_{{ form.id }}" name="address[province]" data-default="{{ form.province }}" autocomplete="address-level1"></select>
+                </div>
+              </div>
+              <div style="margin-top:10px;display:flex;align-items:center;gap:8px;">
+                {{ form.set_as_default_checkbox }}
+                <label for="address_default_address_{{ form.id }}" style="font-size:12px;color:var(--mut);">{{ 'customer.addresses.set_default' | t }}</label>
+              </div>
+              <div class="ki-form-actions">
+                <button class="ki-btn-save">{{ 'customer.addresses.update' | t }}</button>
+                <button type="reset" class="ki-btn-cancel">{{ 'customer.addresses.cancel' | t }}</button>
+              </div>
+            {%- endform -%}
+          </div>
+        </li>
+      {%- endfor -%}
+    </ul>
+
+  </div>
+</div>
+{%- endpaginate -%}
+
+<script>
+window.addEventListener('load', function(){
+  typeof CustomerAddresses !== 'undefined' && new CustomerAddresses();
+
+  /* Yeni adres paneli toggle */
+  var addBtn = document.querySelector('[aria-controls="AddAddress"]');
+  var addPanel = document.getElementById('AddAddress');
+  if(addBtn && addPanel){
+    addBtn.addEventListener('click', function(){
+      var open = addPanel.classList.toggle('is-open');
+      addBtn.setAttribute('aria-expanded', open);
+    });
+  }
+});
+</script>
+
+{% schema %}
+{
+  "name": "t:sections.main-addresses.name",
+  "settings": [
+    {"type":"header","content":"t:sections.all.padding.section_padding_heading"},
+    {"type":"range","id":"padding_top","min":0,"max":100,"step":4,"unit":"px","label":"t:sections.all.padding.padding_top","default":0},
+    {"type":"range","id":"padding_bottom","min":0,"max":100,"step":4,"unit":"px","label":"t:sections.all.padding.padding_bottom","default":0}
+  ]
+}
+{% endschema %}

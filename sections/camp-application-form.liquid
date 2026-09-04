@@ -1,0 +1,191 @@
+<style>
+.ckform{
+  --p:#493d9a;--lil:#dad2ff;--bg:#f8f8f6;--txt:#1a1340;
+  background:{{ section.settings.bg_color | default: '#f8f8f6' }};
+  padding:56px 16px 64px;
+  font-family:system-ui,sans-serif;
+}
+.ckform__inner{
+  max-width:560px;margin:0 auto;
+}
+.ckform__head{text-align:center;margin-bottom:28px;}
+.ckform__title{
+  font-family:'Raleway',system-ui,sans-serif;
+  font-size:clamp(24px,6vw,36px);font-weight:800;
+  color:var(--txt);letter-spacing:-.02em;margin:0 0 8px;
+}
+.ckform__sub{font-size:14px;color:#6b6b8a;margin:0;}
+.ckform__card{
+  background:#fff;border-radius:20px;
+  border:1px solid rgba(73,61,154,.1);
+  box-shadow:0 4px 24px rgba(73,61,154,.1);
+  padding:28px 24px;
+}
+/* Alanlar */
+.ckf-group{margin-bottom:14px;}
+.ckf-row{
+  display:grid;grid-template-columns:1fr;
+  gap:14px;margin-bottom:14px;
+}
+@media(min-width:480px){.ckf-row{grid-template-columns:1fr 1fr;}}
+.ckf-group label,.ckf-row .ckf-group label{
+  display:block;font-size:12px;font-weight:700;
+  color:var(--txt);margin-bottom:5px;
+  letter-spacing:.01em;
+}
+.ckf-group input,
+.ckf-group select,
+.ckf-group textarea{
+  width:100%;padding:11px 13px;
+  background:#fafafa;
+  border:1.5px solid rgba(73,61,154,.15);
+  border-radius:10px;
+  font-size:13px;color:var(--txt);
+  font-family:inherit;
+  box-sizing:border-box;
+  transition:border-color .2s;
+  -webkit-appearance:none;
+  appearance:none;
+}
+.ckf-group input:focus,
+.ckf-group select:focus,
+.ckf-group textarea:focus{
+  outline:none;border-color:var(--p);
+  background:#fff;
+}
+.ckf-group input::placeholder,
+.ckf-group textarea::placeholder{color:rgba(73,61,154,.35);}
+.ckf-group textarea{resize:none;}
+/* E-posta bildirimi hidden */
+.ckf-notify{display:none;}
+/* Submit */
+.ckf-submit{
+  width:100%;padding:14px;
+  background:var(--p);color:#fff;
+  font-size:14px;font-weight:700;
+  border:none;border-radius:50px;
+  cursor:pointer;margin-top:6px;
+  box-shadow:0 6px 20px rgba(73,61,154,.25);
+  transition:transform .2s,box-shadow .2s;
+  display:flex;align-items:center;justify-content:center;gap:6px;
+}
+.ckf-submit:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(73,61,154,.35);}
+.ckf-submit svg{width:15px;height:15px;}
+/* Mesajlar */
+.ckf-success{
+  background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.2);
+  color:#15803d;border-radius:10px;padding:12px 14px;
+  font-size:13px;font-weight:600;margin-bottom:16px;text-align:center;
+}
+.ckf-error{
+  background:rgba(225,29,72,.07);border:1px solid rgba(225,29,72,.2);
+  color:#c0143c;border-radius:10px;padding:12px 14px;
+  font-size:13px;font-weight:600;margin-bottom:16px;
+}
+.ckf-note{
+  text-align:center;margin-top:16px;
+  font-size:11px;color:rgba(73,61,154,.4);
+}
+</style>
+
+<section class="ckform" id="basvuru-formu">
+  <div class="ckform__inner">
+    <div class="ckform__head">
+      <h2 class="ckform__title">{{ section.settings.title }}</h2>
+      <p class="ckform__sub">{{ section.settings.subtitle }}</p>
+    </div>
+    <div class="ckform__card">
+      {%- form 'contact', class: 'ckf' -%}
+
+        {%- if form.posted_successfully? -%}
+          <div class="ckf-success">🌸 {{ section.settings.success_msg }}</div>
+        {%- elsif form.errors -%}
+          <div class="ckf-error">Lütfen tüm zorunlu alanları doldurun.</div>
+        {%- endif -%}
+
+        {%- comment %} E-posta alıcıları — hidden fields {%- endcomment -%}
+        <input type="hidden" name="contact[notify_emails]" value="arin@carewithki.com,berk@carewithki.com" class="ckf-notify">
+        <input type="hidden" name="contact[subject]" value="🌸 Yeni Campus Elçisi Başvurusu">
+
+        <div class="ckf-group">
+          <label for="CampForm-Name">Ad Soyad *</label>
+          <input type="text" id="CampForm-Name" name="contact[name]" required
+            placeholder="Adın Soyadın"
+            value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.name }}{% endif %}">
+        </div>
+
+        <div class="ckf-row">
+          <div class="ckf-group" style="margin:0">
+            <label for="CampForm-email">E-posta *</label>
+            <input type="email" id="CampForm-email" name="contact[email]" required
+              placeholder="ornek@uni.edu.tr"
+              value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}">
+          </div>
+          <div class="ckf-group" style="margin:0">
+            <label for="CampForm-phone">Telefon *</label>
+            <input type="tel" id="CampForm-phone" name="contact[phone]" required
+              placeholder="05XX XXX XX XX">
+          </div>
+        </div>
+
+        <div class="ckf-row">
+          <div class="ckf-group" style="margin:0">
+            <label for="CampForm-university">Üniversite *</label>
+            <input type="text" id="CampForm-university" name="contact[university]" required
+              placeholder="Üniversiten">
+          </div>
+          <div class="ckf-group" style="margin:0">
+            <label for="CampForm-department">Bölüm *</label>
+            <input type="text" id="CampForm-department" name="contact[department]" required
+              placeholder="Bölümün">
+          </div>
+        </div>
+
+        <div class="ckf-row">
+          <div class="ckf-group" style="margin:0">
+            <label for="CampForm-year">Sınıf *</label>
+            <select id="CampForm-year" name="contact[year]" required>
+              <option value="" disabled selected>Seçin</option>
+              <option>1. Sınıf</option>
+              <option>2. Sınıf</option>
+              <option>3. Sınıf</option>
+              <option>4. Sınıf</option>
+              <option>Yüksek Lisans</option>
+            </select>
+          </div>
+          <div class="ckf-group" style="margin:0">
+            <label for="CampForm-instagram">Instagram</label>
+            <input type="text" id="CampForm-instagram" name="contact[instagram]"
+              placeholder="@kullaniciadin">
+          </div>
+        </div>
+
+        <div class="ckf-group">
+          <label for="CampForm-body">Neden .ki elçisi olmak istiyorsun? *</label>
+          <textarea id="CampForm-body" name="contact[body]" required rows="4"
+            placeholder="Motivasyonunu paylaş...">{% if form.body %}{{ form.body }}{% endif %}</textarea>
+        </div>
+
+        <button type="submit" class="ckf-submit">
+          {{ section.settings.btn_text }}
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+      {%- endform -%}
+      <p class="ckf-note">Başvurular arin@carewithki.com ve berk@carewithki.com'a iletilir.</p>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Camp: Application Form",
+  "settings": [
+    {"type":"color","id":"bg_color","label":"Arka Plan","default":"#f8f8f6"},
+    {"type":"text","id":"title","label":"Başlık","default":"Hemen Başvur"},
+    {"type":"text","id":"subtitle","label":"Alt Açıklama","default":"Formu doldur, .ki Campus ailesine katıl!"},
+    {"type":"text","id":"btn_text","label":"Buton","default":"Başvurumu Gönder"},
+    {"type":"text","id":"success_msg","label":"Başarı Mesajı","default":"Başvurun alındı! En kısa sürede seninle iletişime geçeceğiz."}
+  ],
+  "presets":[{"name":"Camp: Application Form"}]
+}
+{% endschema %}

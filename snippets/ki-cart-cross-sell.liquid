@@ -1,0 +1,277 @@
+{%- liquid
+  assign cross_sell_products = settings.cart_cross_sell_products
+  if cross_sell_products == blank
+    assign cross_sell_products = collections['ki-urunler'].products
+  endif
+  assign discount_percent = settings.cart_cross_sell_discount_percent | default: 10
+  assign cross_sell_limit = settings.cart_cross_sell_limit | default: 4
+  capture cart_product_tokens
+    for item in cart.items
+      echo '|'
+      echo item.product_id
+      echo '|'
+    endfor
+  endcapture
+  assign visible_cross_sell_count = 0
+-%}
+
+{%- if settings.cart_cross_sell_enabled and cross_sell_products.size > 0 -%}
+  {%- capture cross_sell_cards -%}
+    {%- for cross_sell_product in cross_sell_products -%}
+      {%- assign product_token = '|' | append: cross_sell_product.id | append: '|' -%}
+      {%- assign cross_sell_variant = cross_sell_product.selected_or_first_available_variant -%}
+      {%- unless cart_product_tokens contains product_token or cross_sell_variant.available == false -%}
+        {%- assign visible_cross_sell_count = visible_cross_sell_count | plus: 1 -%}
+        {%- assign discount_multiplier = 100 | minus: discount_percent -%}
+        {%- assign discounted_price = cross_sell_variant.price | times: discount_multiplier | divided_by: 100 -%}
+        <article class="ki-cart-offer__card">
+          <a href="{{ cross_sell_product.url }}" class="ki-cart-offer__image">
+            {% render 'ki-product-card-media', product: cross_sell_product, image_class: 'ki-cart-offer__product-image', image_width: 220, placeholder_name: 'product-1' %}
+          </a>
+          <div class="ki-cart-offer__body">
+            <a href="{{ cross_sell_product.url }}" class="ki-cart-offer__title">{{ cross_sell_product.title | escape }}</a>
+            <div class="ki-cart-offer__prices">
+              {%- if settings.cart_cross_sell_discount_code != blank -%}
+                <s>{{ cross_sell_variant.price | money }}</s>
+                <strong>{{ discounted_price | money }}</strong>
+              {%- else -%}
+                <strong>{{ cross_sell_variant.price | money }}</strong>
+              {%- endif -%}
+            </div>
+            <button
+              type="button"
+              class="ki-cart-offer__add"
+              data-ki-cross-sell-add="{{ cross_sell_variant.id }}"
+              data-discount-code="{{ settings.cart_cross_sell_discount_code | escape }}"
+              data-discount-percent="{{ discount_percent }}"
+            >
+              {%- if settings.cart_cross_sell_discount_code != blank -%}
+                Hemen ekle · %{{ discount_percent }} indirim
+              {%- else -%}
+                Hemen ekle
+              {%- endif -%}
+            </button>
+          </div>
+        </article>
+        {%- if visible_cross_sell_count >= cross_sell_limit -%}{%- break -%}{%- endif -%}
+      {%- endunless -%}
+    {%- endfor -%}
+  {%- endcapture -%}
+
+  {%- if visible_cross_sell_count > 0 -%}
+    {%- if context == 'page' -%}
+      <section class="ki-cart-approval" aria-label="Eczacı onaylı ürünler">
+        <span class="ki-cart-approval__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <path d="M9 3h6M10 3v5l-5 9a2 2 0 0 0 1.8 3h10.4a2 2 0 0 0 1.8-3l-5-9V3"/>
+            <path d="M8 15h8"/>
+            <path d="M9.5 17.5l1.5 1.5 3.5-3.5"/>
+          </svg>
+        </span>
+        <div>
+          <span class="ki-cart-approval__eyebrow">Uzman seçkisi</span>
+          <h2>Eczacılar tarafından onaylı diğer ürünlerimiz</h2>
+        </div>
+      </section>
+    {%- endif -%}
+    <aside class="ki-cart-offer{% if context == 'page' %} ki-cart-offer--page{% endif %}" aria-label="Sepetine özel ürün önerileri">
+      <div class="ki-cart-offer__heading">
+        <div>
+          <span>Sepetine özel</span>
+          <h3>{{ settings.cart_cross_sell_heading | default: 'Bunu da sevebilirsin' | escape }}</h3>
+        </div>
+        {%- if settings.cart_cross_sell_discount_code != blank -%}
+          <b>%{{ discount_percent }}</b>
+        {%- endif -%}
+      </div>
+      <div class="ki-cart-offer__track">
+        {{ cross_sell_cards }}
+      </div>
+      <p class="ki-cart-offer__status" data-ki-cross-sell-status role="status" aria-live="polite"></p>
+    </aside>
+  {%- endif -%}
+{%- endif -%}
+
+<style>
+.ki-cart-approval{display:flex;align-items:center;gap:14px;margin:30px 0 12px;padding:17px 20px;border:1px solid rgba(73,61,154,.11);border-radius:20px;background:linear-gradient(135deg,#493d9a,#6758c6);color:#fff;box-shadow:0 10px 28px rgba(73,61,154,.14)}
+.ki-cart-approval__icon{display:flex;align-items:center;justify-content:center;width:44px;height:44px;border:1px solid rgba(255,255,255,.24);border-radius:14px;background:rgba(255,255,255,.12);flex-shrink:0}
+.ki-cart-approval__icon svg{width:23px;height:23px}
+.ki-cart-approval__eyebrow{display:block;margin-bottom:3px;color:rgba(255,255,255,.72);font-size:9px;font-weight:800;letter-spacing:.12em;text-transform:uppercase}
+.ki-cart-approval h2{margin:0;color:#fff;font-size:18px;line-height:1.25;font-weight:750}
+.ki-cart-offer{margin:0 16px 16px;padding:14px;border:1px solid var(--ki-bdr,#e8e2ff);border-radius:16px;background:#fff}
+.ki-cart-offer__heading{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px}
+.ki-cart-offer__heading span{display:block;color:var(--ki-mut,#6b6b8a);font-size:9px;font-weight:800;letter-spacing:.12em;text-transform:uppercase}
+.ki-cart-offer__heading h3{margin:2px 0 0;color:var(--ki-txt,#1a1340);font-size:14px;line-height:1.2}
+.ki-cart-offer__heading b{display:inline-flex;align-items:center;justify-content:center;min-width:42px;padding:5px 8px;border-radius:30px;background:#e8f7ef;color:#16834b;font-size:11px}
+.ki-cart-offer__track{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(245px,86%);gap:9px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;padding-bottom:2px}
+.ki-cart-offer__track::-webkit-scrollbar{display:none}
+.ki-cart-offer__card{display:grid;grid-template-columns:78px 1fr;gap:10px;padding:8px;border:1px solid rgba(73,61,154,.1);border-radius:13px;background:var(--ki-lilf,#f0eeff);scroll-snap-align:start}
+.ki-cart-offer__image{width:78px;height:78px;border-radius:8px;overflow:hidden;background:#fff}
+.ki-cart-offer__image img,.ki-cart-offer__image svg{display:block;width:100%;height:100%;object-fit:cover}
+.ki-cart-offer__body{min-width:0;display:flex;flex-direction:column;align-items:flex-start}
+.ki-cart-offer__title{color:var(--ki-txt,#1a1340);font-size:11.5px;font-weight:800;line-height:1.25;text-decoration:none;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.ki-cart-offer__prices{display:flex;align-items:center;gap:6px;margin:4px 0 7px;font-size:11px}
+.ki-cart-offer__prices s{color:var(--ki-mut,#6b6b8a)}
+.ki-cart-offer__prices strong{color:var(--ki-p,#493d9a);font-size:12px}
+.ki-cart-offer__add{margin-top:auto;width:100%;min-height:29px;padding:5px 8px;border:0;border-radius:8px;background:var(--ki-p,#493d9a);color:#fff;font:inherit;font-size:9.5px;font-weight:800;cursor:pointer}
+.ki-cart-offer__add:disabled{opacity:.6;cursor:wait}
+.ki-cart-offer__add.is-added{background:#16834b;opacity:1}
+.ki-cart-offer__status{min-height:0;margin:7px 0 0;color:var(--ki-mut,#6b6b8a);font-size:10px}
+.ki-cart-offer__status:empty{display:none}
+.ki-cart-offer--page{margin:0;padding:24px;border-radius:24px;box-shadow:0 12px 38px rgba(73,61,154,.08)}
+.ki-cart-offer--page .ki-cart-offer__heading{margin-bottom:16px}
+.ki-cart-offer--page .ki-cart-offer__heading span{font-size:10px}
+.ki-cart-offer--page .ki-cart-offer__heading h3{font-size:22px}
+.ki-cart-offer--page .ki-cart-offer__track{grid-auto-columns:minmax(250px,31%);gap:14px}
+.ki-cart-offer--page .ki-cart-offer__card{grid-template-columns:96px 1fr;padding:12px;border-radius:18px}
+.ki-cart-offer--page .ki-cart-offer__image{width:96px;height:96px;border-radius:14px}
+.ki-cart-offer--page .ki-cart-offer__title{font-size:13px}
+.ki-cart-offer--page .ki-cart-offer__add{min-height:34px;border-radius:10px;font-size:10.5px}
+@media(max-width:749px){
+  .ki-cart-approval{gap:11px;margin:14px 0 8px;padding:13px 14px;border-radius:16px}
+  .ki-cart-approval__icon{width:38px;height:38px;border-radius:12px}
+  .ki-cart-approval__icon svg{width:20px;height:20px}
+  .ki-cart-approval h2{font-size:14px;line-height:1.3}
+  .ki-cart-offer--page{padding:13px;border-radius:17px}
+  .ki-cart-offer--page .ki-cart-offer__heading{margin-bottom:10px}
+  .ki-cart-offer--page .ki-cart-offer__heading h3{font-size:17px}
+  .ki-cart-offer--page .ki-cart-offer__track{grid-auto-columns:minmax(220px,84%);gap:8px}
+  .ki-cart-offer--page .ki-cart-offer__card{grid-template-columns:74px 1fr;padding:8px;border-radius:13px}
+  .ki-cart-offer--page .ki-cart-offer__image{width:74px;height:74px;border-radius:10px}
+  .ki-cart-offer--page .ki-cart-offer__title{font-size:11.5px}
+  .ki-cart-offer--page .ki-cart-offer__add{min-height:31px;font-size:9.5px}
+}
+</style>
+
+<script>
+(function() {
+  if (window.kiCrossSellBound) return;
+  window.kiCrossSellBound = true;
+
+  document.addEventListener('click', function(event) {
+    var button = event.target.closest('[data-ki-cross-sell-add]');
+    if (!button || button.disabled) return;
+
+    var isCartPage = Boolean(button.closest('.ki-cart-offer--page'));
+    var variantId = Number(button.dataset.kiCrossSellAdd);
+    var discountCode = button.dataset.discountCode || '';
+    var discountPercent = button.dataset.discountPercent || '10';
+    var offer = button.closest('.ki-cart-offer');
+    var status = offer ? offer.querySelector('[data-ki-cross-sell-status]') : null;
+    var rootPath = window.Shopify && window.Shopify.routes ? window.Shopify.routes.root : '/';
+    var originalLabel = button.textContent;
+    var discountWarning = '';
+    var itemAdded = false;
+    var sectionIds = isCartPage
+      ? ['cart-items', 'cart-footer', 'cart-icon-bubble']
+      : ['cart-drawer', 'cart-icon-bubble'];
+
+    button.disabled = true;
+    button.textContent = 'Ekleniyor…';
+    if (status) status.textContent = '';
+
+    fetch(rootPath + 'cart/add.js', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({
+        items: [{
+          id: variantId,
+          quantity: 1,
+          properties: { '_ki_cross_sell': discountCode ? '%' + discountPercent + ' teklif' : 'öneri' }
+        }],
+        sections: sectionIds,
+        sections_url: window.location.pathname
+      })
+    })
+      .then(function(response) {
+        if (!response.ok) throw new Error('add');
+        return response.json();
+      })
+      .then(function(addState) {
+        itemAdded = true;
+        button.textContent = 'Eklendi ✓';
+        button.classList.add('is-added');
+        if (!discountCode) return addState;
+        return fetch(rootPath + 'cart/update.js', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify({
+            discount: discountCode,
+            sections: sectionIds,
+            sections_url: window.location.pathname
+          })
+        }).then(function(discountResponse) {
+          if (!discountResponse.ok) throw new Error('discount');
+          return discountResponse.json();
+        });
+      })
+      .then(function(cartState) {
+        if (discountCode && cartState) {
+          var applications = (cartState.cart_level_discount_applications || []).slice();
+          (cartState.items || []).forEach(function(item) {
+            (item.discount_allocations || []).forEach(function(allocation) {
+              if (allocation.discount_application) applications.push(allocation.discount_application);
+            });
+          });
+          var applied = applications.some(function(discount) {
+            return String(discount.title || '').toLowerCase() === discountCode.toLowerCase();
+          });
+          if (!applied) discountWarning = 'Ürün eklendi. İndirim kodunun Shopify koşullarını kontrol edin.';
+        }
+        var hasCompleteSections = cartState
+          && cartState.sections
+          && sectionIds.every(function(sectionId) {
+            return typeof cartState.sections[sectionId] === 'string' && cartState.sections[sectionId].length > 0;
+          });
+        if (hasCompleteSections) return cartState.sections;
+        return fetch(rootPath + '?sections=' + sectionIds.join(',')).then(function(response) {
+          if (!response.ok) throw new Error('refresh');
+          return response.json();
+        });
+      })
+      .then(function(sections) {
+        if (isCartPage) {
+          var itemsReplaced = replaceCartPageSection(sections['cart-items'], 'cart-items');
+          var footerReplaced = replaceCartPageSection(sections['cart-footer'], '#main-cart-footer');
+          replaceCartPageSection(sections['cart-icon-bubble'], '#cart-icon-bubble');
+          if (!itemsReplaced || !footerReplaced) {
+            window.location.assign(rootPath + 'cart');
+            return;
+          }
+        } else {
+          var drawer = document.querySelector('cart-drawer');
+          if (drawer && typeof drawer.renderContents === 'function') {
+            drawer.renderContents({ id: variantId, sections: sections });
+          }
+        }
+        if (discountWarning) {
+          window.setTimeout(function() {
+            var refreshedStatus = document.querySelector('[data-ki-cross-sell-status]');
+            if (refreshedStatus) refreshedStatus.textContent = discountWarning;
+          }, 50);
+        }
+      })
+      .catch(function() {
+        if (itemAdded) {
+          window.location.assign(rootPath + 'cart');
+          return;
+        }
+        button.disabled = false;
+        button.textContent = originalLabel;
+        if (status) status.textContent = 'Eklenemedi. Lütfen tekrar dene.';
+      });
+  });
+
+  function replaceCartPageSection(html, selector) {
+    if (!html) return false;
+    var parsed = new DOMParser().parseFromString(html, 'text/html');
+    var next = parsed.querySelector(selector);
+    var current = document.querySelector(selector);
+    if (next && current) {
+      current.replaceWith(next);
+      return true;
+    }
+    return false;
+  }
+})();
+</script>

@@ -1,0 +1,343 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-product",
+      "blocks": {
+        "vendor": {
+          "type": "text",
+          "settings": {
+            "text": "{{ product.vendor }}",
+            "text_style": "uppercase"
+          }
+        },
+        "title": {
+          "type": "title",
+          "settings": {}
+        },
+        "price": {
+          "type": "price",
+          "settings": {}
+        },
+        "variant_picker": {
+          "type": "variant_picker",
+          "settings": {
+            "picker_type": "button",
+            "swatch_shape": "circle"
+          }
+        },
+        "quantity_selector": {
+          "type": "quantity_selector",
+          "settings": {}
+        },
+        "buy_buttons": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_dynamic_checkout": true,
+            "show_gift_card_recipient": true
+          }
+        },
+        "description": {
+          "type": "description",
+          "settings": {}
+        },
+        "share": {
+          "type": "share",
+          "settings": {
+            "share_label": "Share"
+          }
+        }
+      },
+      "block_order": [
+        "vendor",
+        "title",
+        "price",
+        "variant_picker",
+        "quantity_selector",
+        "buy_buttons",
+        "description",
+        "share"
+      ],
+      "disabled": true,
+      "settings": {
+        "enable_sticky_info": true,
+        "color_scheme": "scheme-1",
+        "media_size": "large",
+        "constrain_to_viewport": true,
+        "media_fit": "contain",
+        "gallery_layout": "stacked",
+        "mobile_thumbnails": "hide",
+        "media_position": "left",
+        "image_zoom": "lightbox",
+        "hide_variants": true,
+        "enable_video_looping": false,
+        "padding_top": 36,
+        "padding_bottom": 12
+      }
+    },
+    "related-products": {
+      "type": "related-products",
+      "disabled": true,
+      "settings": {
+        "heading": "You may also like",
+        "heading_size": "h2",
+        "products_to_show": 4,
+        "columns_desktop": 4,
+        "columns_mobile": "2",
+        "color_scheme": "scheme-1",
+        "image_ratio": "square",
+        "image_shape": "default",
+        "show_secondary_image": true,
+        "show_vendor": false,
+        "show_rating": false,
+        "padding_top": 36,
+        "padding_bottom": 28
+      }
+    },
+    "anneler_gunu_pdp_hero_wELNTx": {
+      "type": "anneler-gunu-pdp-hero",
+      "name": "Anneler Günü PDP Hero",
+      "settings": {
+        "product": "anneler-gunu-ozel-bundle",
+        "max_width": 1300,
+        "pad_y": 60,
+        "pad_x": 32,
+        "bg": "#ffffff",
+        "text": "#1a1a1a",
+        "muted": "#666666",
+        "cta_bg": "#493d9a",
+        "cta_text": "#ffffff",
+        "product_title": "Anneler Günü Özel Paket",
+        "product_subtitle": "Anneniz ve sizin için özel geliştirilmiş paket. Ailecek kendinize iyi bakın.",
+        "review_rating": 4.8,
+        "review_text": "98 değerlendirme · 4.8 yıldız",
+        "star_color": "#f5a623",
+        "offer_headline": "",
+        "once_title": "Tek Seferlik",
+        "once_badge": "",
+        "once_subtitle": "30 günlük kullanım",
+        "once_compare": "",
+        "once_price": "2900₺",
+        "once_per": "",
+        "once_note": "<ul><li>Balance Döngü Takviyesi</li><li>Change İleri Yaş Takviyesi </li><li><strong>Matara </strong>ve <strong>Ayna</strong> Hediye.</li><li>Anneler Günü Özel Paketleme</li></ul>",
+        "cta_label": "Sepete Ekle",
+        "shipping_text": "Ücretsiz Kargo",
+        "disclaimer": "<p>İndirim ilk sipariş için geçerlidir.</p>"
+      }
+    },
+    "ingredients_showcase_ALLmmY": {
+      "type": "ingredients_showcase",
+      "blocks": {
+        "ingredient_rGWWcp": {
+          "type": "ingredient",
+          "settings": {
+            "title": "Magnezyum Bisglisinat",
+            "description": "Yorgunluk ve bitkinliğin azalmasında katkıda bulunur.",
+            "image": "shopify://shop_images/MG_BISGLISINAT.png",
+            "form_label": "",
+            "form_info": "Gerginlik ve yorgunluk hissinin azalmasına yardımcı olur.\nSinir ve kas sistemi fonksiyonlarını destekler."
+          }
+        },
+        "ingredient_VVM4Cx": {
+          "type": "ingredient",
+          "settings": {
+            "title": "Hayıt (Vitex Agnus Castus)",
+            "description": "Menstrual döngüye bağlı hormonal dalgalanmalarla ilişkilendirilen döngüsel süreçlerin dengelenmesine destek olur. ",
+            "image": "shopify://shop_images/hayir.png",
+            "form_label": "",
+            "form_info": "Döngünde sık görülen ruh hali dalgalanmalarının dengelenmesine yardımcı olur."
+          }
+        },
+        "ingredient_PFTy9K": {
+          "type": "ingredient",
+          "settings": {
+            "title": "Metilsülfonilmetan (MSM) ",
+            "description": "Bağ dokusu ve hücresel yapıların desteklenmesine katkı sağlar. Dönemsel hassasiyetin yönetilmesiyle ile ilişkilendirilen süreçlerde destekleyici rol oynar.",
+            "image": "shopify://shop_images/MSM_7787daf7-47ab-4509-832c-0778058e60f9.png",
+            "form_label": "",
+            "form_info": "Dönemsel hassasiyetle ilişkilendirilen süreçleri destekler."
+          }
+        },
+        "ingredient_4DLAMV": {
+          "type": "ingredient",
+          "settings": {
+            "title": "Zencefil (Zingiber Officinale) ",
+            "description": "Rahatlatıcı ve destekleyici özellikleri sayesinde  sindirim sistemi konforunu destekler. Şişkinlik ve mide rahatsızlığı hissinin azalmasına yardımcı olur.",
+            "image": "shopify://shop_images/zencefil_4bea9aae-55e0-415d-a333-c341bc29e5c4.png",
+            "form_label": "",
+            "form_info": "Şişkinlik ve mide rahatsızlığı hissinin azalmasına yardımcı olur."
+          }
+        },
+        "ingredient_YdNJWW": {
+          "type": "ingredient",
+          "settings": {
+            "title": "Tıbbi Nane (Mentha Piperita)",
+            "description": "Sindirim rahatlatıcı etkisiyle bilinir. Gaz, şişkinlik ve bulantı hissinin hafifletilmesine destek olur.",
+            "image": "shopify://shop_images/tibbi_nane_afcfcc57-1ce0-4f63-91c4-87a8a8f385aa.png",
+            "form_label": "",
+            "form_info": "Sindirimi destekleyerek karın bölgesindeki rahatsızlık hissini hafifletir."
+          }
+        },
+        "ingredient_R8zVwq": {
+          "type": "ingredient",
+          "settings": {
+            "title": "Çin Melek Otu (Angelica Sinensis)",
+            "description": "Kadın sağlığına yönelik geleneksel kullanımıyla bilinen Çin Melek Otu; Dönemsel konforu destekleyen bitkisel bileşenler arasında yer alır.",
+            "image": "shopify://shop_images/cin_melek_otu.png",
+            "form_label": "",
+            "form_info": "Döngünde görülebilen vücut hassasiyeti ve gerginlik hissinin azalmasına yardımcı olur."
+          }
+        }
+      },
+      "block_order": [
+        "ingredient_rGWWcp",
+        "ingredient_VVM4Cx",
+        "ingredient_PFTy9K",
+        "ingredient_4DLAMV",
+        "ingredient_YdNJWW",
+        "ingredient_R8zVwq"
+      ],
+      "name": "Ingredients Showcase",
+      "settings": {
+        "max_width": 1220,
+        "pad_y": 96,
+        "pad_x": 34,
+        "bg": "#f8f8f6",
+        "text": "#1a1a1a",
+        "muted": "#666666",
+        "card_bg": "#ffffff",
+        "heading": "Modern Takviyemizin İçeriği",
+        "description": "Formülümüz, uzman eczacı ekibimiz tarafından geliştirildi."
+      }
+    },
+    "truly_healthy_banner_UB3yXJ": {
+      "type": "truly-healthy-banner",
+      "blocks": {
+        "feature_VNkRNW": {
+          "type": "feature",
+          "settings": {
+            "icon": "shopify://shop_images/pms_-_product_page-4.png",
+            "title": "Döngüye Uyumlu Olarak Geliştirildi",
+            "description": "Döngünde değişen hormonal ve bedensel ihtiyaçlar dikkate alınarak formüle edildi."
+          }
+        },
+        "feature_VJckDM": {
+          "type": "feature",
+          "settings": {
+            "icon": "shopify://shop_images/pms_-_product_page-4.png",
+            "title": "Bedenin Doğal Dengesini Destekler",
+            "description": "Vitamin, mineral ve bitkisel içerikler ile genel denge ve konfor hissinin desteklenmesine yardımcı olur."
+          }
+        },
+        "feature_pUb6wf": {
+          "type": "feature",
+          "settings": {
+            "icon": "shopify://shop_images/pms_-_product_page-4.png",
+            "title": "Düzenli Kullanımda Zamanla Etki",
+            "description": "Günlük rutine uyum sağlayacak şekilde tasarlandı. Etkisini zamanla ve düzenli kullanımda gösterir."
+          }
+        }
+      },
+      "block_order": [
+        "feature_VNkRNW",
+        "feature_VJckDM",
+        "feature_pUb6wf"
+      ],
+      "name": "Hero Features Banner",
+      "settings": {
+        "bg_image": "shopify://shop_images/ADC_4095-copy.jpg",
+        "overlay_color": "#000000",
+        "overlay_opacity": 10,
+        "min_height": 560,
+        "max_width": 1300,
+        "pad_y": 56,
+        "pad_x": 32,
+        "heading": "Döngünde Kendine İyi Bak",
+        "text_color": "#ffffff",
+        "panel_bg": "#5a5546bf",
+        "blur": 16,
+        "panel_text": "#ffffff",
+        "icon_color": "#f8f8f6"
+      }
+    },
+    "pdp_benefits_timeline_xpMUBt": {
+      "type": "pdp-benefits-timeline",
+      "blocks": {
+        "timeline_item_XhTY8E": {
+          "type": "timeline_item",
+          "settings": {
+            "badge": "ilk günler",
+            "title": "Şişkinlik ve Gerginlik Hissinde Hafif Destek",
+            "benefits": "Magnezyum ve B vitaminleriyle günlük besinsel desteğe katkı sağlar.|\nEnerji metabolizmasının normal işleyişini destekler.|\nSinir sistemi fonksiyonlarının desteklenmesine yardımcı olur."
+          }
+        },
+        "timeline_item_D9cHdX": {
+          "type": "timeline_item",
+          "settings": {
+            "badge": "Düzenli kullanım",
+            "title": "Döngüsel Dengenin Desteklenmesi",
+            "benefits": "Hayıt (Vitex agnus-castus) ile kadınlara özel bitkisel destek sunar.|\nDönemsel ruh hali dalgalanmalarının dengelenmesine yardımcı olur.|\nBedenin doğal ritmiyle uyumlu bir destek sağlar."
+          }
+        },
+        "timeline_item_G3tmjN": {
+          "type": "timeline_item",
+          "settings": {
+            "badge": "sürekli kullanım",
+            "title": "Daha Konforlu Bir Döngü Deneyimi",
+            "benefits": "Döngü öncesi dönemde genel konforun korunmasına katkı sağlar.|\nDönemsel yorgunluk ve halsizlik hissinin azalmasına yardımcı olur.|\nFiziksel ve duygusal iyi oluşu destekler.|\nGünlük yaşam temposuna daha rahat uyum sağlamaya katkı sağlar."
+          }
+        }
+      },
+      "block_order": [
+        "timeline_item_XhTY8E",
+        "timeline_item_D9cHdX",
+        "timeline_item_G3tmjN"
+      ],
+      "name": "PDP Benefits Timeline",
+      "settings": {
+        "max_width": 1200,
+        "pad_y": 72,
+        "pad_x": 32,
+        "bg": "#f8f8f6",
+        "text": "#1a1a1a",
+        "muted": "#555555",
+        "badge_bg": "#dad2ff",
+        "badge_text": "#493d9a",
+        "line_color": "#b2a5ff",
+        "heading": "Döngün İçin Zamanla Hissedilen Dengeli Destek",
+        "description": ".ki Balance Your Cycle; bitkisel içerikler, vitaminler ve minerallerle zenginleştirilen bu özel formül ile birlikte sürdürülebilir döngü deneyiminiz için tasarlandı.",
+        "image_main": "shopify://shop_images/ADC_5533-copy.jpg",
+        "image_main_alt": "Ürün kullanımı",
+        "image_secondary_1_alt": "Ürün",
+        "image_secondary_2_alt": "Kullanıcı",
+        "show_how_to_use": true,
+        "how_icon": "shopify://shop_images/Ekran_Resmi_2026-02-02_01.20.26.png",
+        "how_title": "Nasıl Kullanılır?",
+        "how_description": "Döngü öncesi & döngü sırasında günde bir adet saşe."
+      }
+    },
+    "177433585744c765a2": {
+      "type": "apps",
+      "settings": {
+        "include_margins": true
+      }
+    }
+  },
+  "order": [
+    "main",
+    "related-products",
+    "anneler_gunu_pdp_hero_wELNTx",
+    "ingredients_showcase_ALLmmY",
+    "truly_healthy_banner_UB3yXJ",
+    "pdp_benefits_timeline_xpMUBt",
+    "177433585744c765a2"
+  ]
+}

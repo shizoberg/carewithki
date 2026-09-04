@@ -1,0 +1,198 @@
+{%- comment -%}Compact media-led science and material story for .ki pads.{%- endcomment -%}
+
+<style>
+  #KiPedScience-{{ section.id }} {
+    --kps-purple: #493d9a;
+    --kps-dark: #1a1340;
+    --kps-muted: #706b7b;
+    --kps-line: rgba(73,61,154,.13);
+    background: {{ section.settings.background | default: '#ffffff' }};
+    padding: {{ section.settings.padding_y | default: 64 }}px 0;
+  }
+  #KiPedScience-{{ section.id }} * { box-sizing: border-box; }
+  #KiPedScience-{{ section.id }} .kps-shell { width: min(1180px, calc(100% - 40px)); margin: 0 auto; }
+  #KiPedScience-{{ section.id }} .kps-head { max-width: 760px; margin: 0 auto 30px; text-align: center; }
+  #KiPedScience-{{ section.id }} .kps-eyebrow { margin: 0 0 8px; color: var(--kps-purple); font-size: 10px; font-weight: 850; letter-spacing: .16em; text-transform: uppercase; }
+  #KiPedScience-{{ section.id }} .kps-title { margin: 0; color: var(--kps-dark); font-family: var(--font-heading-family), Raleway, sans-serif; font-size: clamp(27px, 4vw, 44px); line-height: 1.08; letter-spacing: -.025em; }
+  #KiPedScience-{{ section.id }} .kps-subtitle { margin: 13px auto 0; color: var(--kps-muted); font-size: 15px; line-height: 1.65; }
+  #KiPedScience-{{ section.id }} .kps-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 15px; }
+  #KiPedScience-{{ section.id }} .kps-card { min-width: 0; overflow: hidden; border: 1px solid var(--kps-line); border-radius: 22px; background: #fff; box-shadow: 0 9px 32px rgba(73,61,154,.06); }
+  #KiPedScience-{{ section.id }} .kps-media { position: relative; aspect-ratio: 4 / 3; overflow: hidden; background: linear-gradient(145deg, #ddd7f6, #f4f1ff); }
+  #KiPedScience-{{ section.id }} .kps-media img, #KiPedScience-{{ section.id }} .kps-media video { width: 100%; height: 100%; display: block; object-fit: cover; }
+  #KiPedScience-{{ section.id }} .kps-media-placeholder { position: absolute; inset: 0; display: grid; place-items: center; color: var(--kps-purple); }
+  #KiPedScience-{{ section.id }} .kps-media-placeholder svg { width: 58px; height: 58px; }
+  #KiPedScience-{{ section.id }} .kps-body { padding: 20px; }
+  #KiPedScience-{{ section.id }} .kps-metric { display: inline-flex; padding: 5px 9px; border-radius: 999px; background: #ebe7ff; color: var(--kps-purple); font-size: 10px; font-weight: 900; letter-spacing: .07em; text-transform: uppercase; }
+  #KiPedScience-{{ section.id }} .kps-card-title { margin: 12px 0 7px; color: var(--kps-dark); font-size: 19px; line-height: 1.18; }
+  #KiPedScience-{{ section.id }} .kps-copy { margin: 0; color: var(--kps-muted); font-size: 13px; line-height: 1.6; }
+  #KiPedScience-{{ section.id }} .kps-reason { margin-top: 14px; padding-top: 13px; border-top: 1px solid var(--kps-line); color: var(--kps-purple); font-size: 11px; line-height: 1.5; font-weight: 750; }
+  #KiPedScience-{{ section.id }} .kps-proof { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 9px; margin-top: 22px; }
+  #KiPedScience-{{ section.id }} .kps-proof span { display: inline-flex; align-items: center; gap: 6px; min-height: 34px; padding: 7px 11px; border: 1px solid var(--kps-line); border-radius: 999px; background: rgba(255,255,255,.72); color: var(--kps-purple); font-size: 10px; font-weight: 750; }
+  #KiPedScience-{{ section.id }} .kps-proof svg { width: 15px; height: 15px; }
+  #KiPedScience-{{ section.id }} .kps-action { display: flex; justify-content: center; margin-top: 22px; }
+  #KiPedScience-{{ section.id }} .kps-atc { min-width: min(100%, 330px); min-height: 48px; padding: 12px 22px; border: 0; border-radius: 13px; background: var(--kps-purple); color: #fff; font-weight: 850; cursor: pointer; }
+  #KiPedScience-{{ section.id }} .kps-status { min-height: 18px; margin: 8px 0 0; color: #47745d; text-align: center; font-size: 12px; font-weight: 750; }
+  #KiPedScience-{{ section.id }} .kps-footnote { max-width: 760px; margin: 14px auto 0; color: #8b8591; text-align: center; font-size: 10px; line-height: 1.5; }
+
+@media (max-width: 749px) {
+  #KiPedScience-{{ section.id }} { padding: 24px 0; }
+  #KiPedScience-{{ section.id }} .kps-shell { width: calc(100% - 24px); }
+  #KiPedScience-{{ section.id }} .kps-head { margin-bottom: 14px; text-align: left; }
+  #KiPedScience-{{ section.id }} .kps-title { font-size: 24px; }
+  #KiPedScience-{{ section.id }} .kps-subtitle { margin-top: 8px; font-size: 11.5px; line-height: 1.5; }
+  #KiPedScience-{{ section.id }} .kps-grid { display: flex; gap: 9px; overflow-x: auto; margin: 0 -12px; padding: 0 12px 6px; scroll-snap-type: x mandatory; scroll-padding-inline: 12px; scrollbar-width: none; overscroll-behavior-inline: contain; touch-action: pan-x pan-y; -webkit-overflow-scrolling: touch; }
+  #KiPedScience-{{ section.id }} .kps-grid::-webkit-scrollbar { display: none; }
+  #KiPedScience-{{ section.id }} .kps-card { flex: 0 0 min(60vw, 224px); scroll-snap-align: start; scroll-snap-stop: always; border-radius: 14px; }
+    #KiPedScience-{{ section.id }} .kps-media { aspect-ratio: 16 / 10; }
+    #KiPedScience-{{ section.id }} .kps-body { padding: 11px; }
+    #KiPedScience-{{ section.id }} .kps-metric { padding: 4px 7px; font-size: 8px; }
+    #KiPedScience-{{ section.id }} .kps-card-title { margin: 8px 0 5px; font-size: 14px; }
+    #KiPedScience-{{ section.id }} .kps-copy { font-size: 10.5px; line-height: 1.42; }
+    #KiPedScience-{{ section.id }} .kps-reason { margin-top: 9px; padding-top: 8px; font-size: 9px; line-height: 1.35; }
+    #KiPedScience-{{ section.id }} .kps-proof { justify-content: flex-start; gap: 5px; margin-top: 13px; }
+    #KiPedScience-{{ section.id }} .kps-proof span { min-height: 28px; padding: 5px 8px; font-size: 8px; }
+    #KiPedScience-{{ section.id }} .kps-action { margin-top: 14px; }
+    #KiPedScience-{{ section.id }} .kps-atc { min-height: 41px; padding: 9px 16px; font-size: 12px; }
+  }
+</style>
+
+<section id="KiPedScience-{{ section.id }}">
+  <div class="kps-shell">
+    <header class="kps-head">
+      <p class="kps-eyebrow">{{ section.settings.eyebrow | escape }}</p>
+      <h2 class="kps-title">{{ section.settings.heading | escape }}</h2>
+      <p class="kps-subtitle">{{ section.settings.subtitle | escape }}</p>
+    </header>
+
+    <div class="kps-grid">
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign material_asset = blank
+          case block.settings.icon
+            when 'cotton'
+              assign material_asset = 'ki-ped-material-cotton.webp'
+            when 'bamboo'
+              assign material_asset = 'ki-ped-material-bamboo.webp'
+            when 'mugwort'
+              assign material_asset = 'ki-ped-material-mugwort.webp'
+          endcase
+        -%}
+        <article class="kps-card" {{ block.shopify_attributes }}>
+          <div class="kps-media">
+            {%- if block.settings.video != blank -%}
+              {{ block.settings.video | video_tag: autoplay: true, loop: true, muted: true, controls: false, playsinline: true, preload: 'metadata' }}
+            {%- elsif block.settings.image != blank -%}
+              {{ block.settings.image | image_url: width: 900 | image_tag: widths: '320, 520, 720, 900', sizes: '(max-width: 749px) 78vw, 33vw', loading: 'lazy', alt: block.settings.title }}
+            {%- elsif material_asset != blank -%}
+              <img
+                src="{{ material_asset | asset_url }}"
+                width="1080"
+                height="1350"
+                loading="lazy"
+                alt="{{ block.settings.title | escape }}"
+              >
+            {%- else -%}
+              <span class="kps-media-placeholder" aria-hidden="true">
+                {%- case block.settings.icon -%}
+                  {%- when 'cotton' -%}<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2"><circle cx="22" cy="27" r="12"/><circle cx="40" cy="24" r="13"/><circle cx="36" cy="39" r="14"/><path d="M19 46c9-3 16-11 18-22M31 51c3-10 10-18 19-23"/></svg>
+                  {%- when 'bamboo' -%}<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2"><path d="M24 58 35 7M17 39h24M20 25h24M31 11h20M37 20c9 0 15-5 17-12-9 0-15 4-17 12ZM26 34c-9 0-15-5-17-12 9 0 15 4 17 12Z"/></svg>
+                  {%- else -%}<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2"><path d="M31 55c-8-11-8-24 0-39 8 15 8 28 0 39Z"/><path d="M31 42C20 38 14 29 13 16c13 2 21 10 18 26ZM32 35c11-4 17-12 18-25-12 2-19 10-18 25Z"/></svg>
+                {%- endcase -%}
+              </span>
+            {%- endif -%}
+          </div>
+          <div class="kps-body">
+            <span class="kps-metric">{{ block.settings.metric | escape }}</span>
+            <h3 class="kps-card-title">{{ block.settings.title | escape }}</h3>
+            <p class="kps-copy">{{ block.settings.description | escape }}</p>
+            <p class="kps-reason">Neden kullandık? {{ block.settings.reason | escape }}</p>
+          </div>
+        </article>
+      {%- endfor -%}
+    </div>
+
+    <div class="kps-proof" aria-label="Ürün geliştirme yaklaşımı">
+      <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M8 3h8M9 3v5l-5 9a2 2 0 0 0 1.8 3h12.4A2 2 0 0 0 20 17l-5-9V3"/><path d="M8 14h8"/></svg>{{ section.settings.proof_1 }}</span>
+      <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/><path d="m9 12 2 2 4-4"/></svg>{{ section.settings.proof_2 }}</span>
+    </div>
+    {% render 'ki-ped-certifications', context: 'compact', label: 'ISO · CE · FDA · Intertek' %}
+
+    <div class="kps-action"><button type="button" class="kps-atc" data-kps-atc data-variant-id="{{ product.selected_or_first_available_variant.id }}">{{ section.settings.cta_label }}</button></div>
+    <p class="kps-status" data-kps-status aria-live="polite"></p>
+    <p class="kps-footnote">{{ section.settings.footnote }}</p>
+  </div>
+</section>
+
+<script>
+  (function () {
+    var root = document.getElementById('KiPedScience-{{ section.id }}');
+    if (!root) return;
+    var button = root.querySelector('[data-kps-atc]');
+    var status = root.querySelector('[data-kps-status]');
+    if (!button || !button.getAttribute('data-variant-id')) return;
+    button.addEventListener('click', function () {
+      button.disabled = true;
+      status.textContent = 'Sepete ekleniyor…';
+      fetch('/cart/add.js', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
+        body: JSON.stringify({ id: button.getAttribute('data-variant-id'), quantity: 1 })
+      }).then(function (response) {
+        if (!response.ok) throw new Error('Ürün sepete eklenemedi.');
+        return response.json();
+      }).then(function () {
+        status.textContent = '✓ Ürün sepete eklendi.';
+        document.dispatchEvent(new CustomEvent('cart:refresh', { bubbles: true }));
+      }).catch(function (error) {
+        status.textContent = error.message || 'Bir sorun oluştu.';
+      }).finally(function () { button.disabled = false; });
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Ped Bilim Kartları",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    { "type": "color", "id": "background", "label": "Arka plan", "default": "#ffffff" },
+    { "type": "range", "id": "padding_y", "label": "Dikey boşluk", "min": 28, "max": 96, "step": 4, "unit": "px", "default": 64 },
+    { "type": "text", "id": "eyebrow", "label": "Üst etiket", "default": "İçeriği saklamıyoruz" },
+    { "type": "text", "id": "heading", "label": "Başlık", "default": "Her katmanın bir nedeni var" },
+    { "type": "textarea", "id": "subtitle", "label": "Açıklama", "default": "Cilde temas eden yüzeyden bitkisel içeriğe kadar her bileşeni, günlük konfor ve hassas kullanım ihtiyacını gözeterek seçtik." },
+    { "type": "text", "id": "proof_1", "label": "Güven ifadesi 1", "default": "Uzman eczacı yaklaşımıyla geliştirildi" },
+    { "type": "text", "id": "proof_2", "label": "Güven ifadesi 2", "default": "İçerik şeffaflığı" },
+    { "type": "text", "id": "cta_label", "label": "Buton", "default": "Bu pedi sepete ekle" },
+    { "type": "textarea", "id": "footnote", "label": "Dipnot", "default": "Onay ve kurum logoları, doğrulama belgeleri tamamlandığında bu alandan güncellenecektir." }
+  ],
+  "blocks": [
+    {
+      "type": "material",
+      "name": "İçerik kartı",
+      "limit": 3,
+      "settings": [
+        { "type": "video", "id": "video", "label": "Shopify videosu" },
+        { "type": "image_picker", "id": "image", "label": "Fotoğraf (video yoksa)" },
+        { "type": "select", "id": "icon", "label": "Geçici ikon", "default": "cotton", "options": [
+          { "value": "cotton", "label": "Pamuk" },
+          { "value": "bamboo", "label": "Bambu" },
+          { "value": "mugwort", "label": "Pelin otu" }
+        ] },
+        { "type": "text", "id": "metric", "label": "Vurgu", "default": "%95" },
+        { "type": "text", "id": "title", "label": "Başlık", "default": "Pamuklu üst yüzey" },
+        { "type": "textarea", "id": "description", "label": "Açıklama", "default": "Cilde temas eden üst yüzeyde yumuşak ve konforlu bir his sağlamaya yardımcı olur." },
+        { "type": "textarea", "id": "reason", "label": "Neden kullandık?", "default": "Hassas ciltle temas eden yüzeyde yumuşaklığı önceliklendirmek için." }
+      ]
+    }
+  ],
+  "presets": [{
+    "name": "Ped Bilim Kartları",
+    "blocks": [
+      { "type": "material", "settings": { "icon": "cotton", "metric": "%95 Pamuk", "title": "Yumuşak pamuklu üst yüzey", "description": "Cilde temas eden üst yüzeyde yumuşak ve konforlu bir his sağlamaya yardımcı olur.", "reason": "Hassas ciltle temas eden yüzeyde yumuşaklığı önceliklendirmek için." } },
+      { "type": "material", "settings": { "icon": "bamboo", "metric": "%5 Bambu", "title": "Bambu lifli dokunuş", "description": "Hafif ve nefes alabilen yüzey yapısını destekleyen doğal lif yaklaşımı sunar.", "reason": "Günlük kullanımda ferah ve hafif bir yüzey hissini desteklemek için." } },
+      { "type": "material", "settings": { "icon": "mugwort", "metric": "Pelin Otu Özü", "title": "Bitkisel bakım yaklaşımı", "description": "Pelin otu özü, ped serisinin bitkisel içerik hikâyesini tamamlar.", "reason": "Geleneksel bitki bilgisini modern kişisel bakım yaklaşımıyla buluşturmak için." } }
+    ]
+  }]
+}
+{% endschema %}

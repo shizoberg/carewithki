@@ -1,0 +1,197 @@
+{{ 'customer.css' | asset_url | stylesheet_tag }}
+
+<style>
+.ki-auth {
+  --p: #493d9a; --lil: #dad2ff; --bg: #f8f8f6; --txt: #1a1340; --mut: #6b6b8a;
+  min-height: 100vh;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--bg);
+  padding: 40px 16px;
+}
+.ki-auth__card {
+  background: #fff;
+  border-radius: 20px;
+  border: 1px solid rgba(73,61,154,.1);
+  box-shadow: 0 8px 40px rgba(73,61,154,.1);
+  padding: 44px 40px;
+  width: 100%; max-width: 420px;
+}
+.ki-auth__logo {
+  font-family: 'Raleway', system-ui, sans-serif;
+  font-size: 28px; font-weight: 900;
+  color: var(--p); text-decoration: none;
+  display: block; text-align: center;
+  margin-bottom: 6px; letter-spacing: -.03em;
+}
+.ki-auth__tagline {
+  text-align: center; font-size: 12px;
+  color: var(--mut); margin: 0 0 28px;
+}
+.ki-auth__title {
+  font-size: 20px; font-weight: 800;
+  color: var(--txt); margin: 0 0 20px;
+  font-family: 'Raleway', system-ui, sans-serif;
+  text-align: center;
+}
+.ki-auth__recover { display: none; }
+.ki-auth__recover.is-open { display: block; }
+.ki-auth__login.is-hidden { display: none; }
+/* Field */
+.ki-field { margin-bottom: 14px; position: relative; }
+.ki-field input {
+  width: 100%; padding: 13px 14px;
+  border: 1.5px solid rgba(73,61,154,.2);
+  border-radius: 10px; font-size: 14px;
+  color: var(--txt); background: #fff;
+  outline: none; box-sizing: border-box;
+  transition: border-color .2s;
+}
+.ki-field input:focus { border-color: var(--p); }
+.ki-field input::placeholder { color: rgba(73,61,154,.4); }
+/* Buttons */
+.ki-btn {
+  display: flex; align-items: center; justify-content: center;
+  width: 100%; padding: 14px;
+  background: var(--p); color: #fff;
+  font-size: 14px; font-weight: 700;
+  border: none; border-radius: 12px;
+  cursor: pointer; transition: background .2s, transform .15s;
+  text-decoration: none; margin-top: 4px;
+}
+.ki-btn:hover { background: #3b3280; transform: translateY(-1px); }
+.ki-btn--ghost {
+  background: transparent; color: var(--p);
+  border: 1.5px solid rgba(73,61,154,.25);
+}
+.ki-btn--ghost:hover { background: rgba(73,61,154,.06); transform: none; }
+.ki-auth__links {
+  display: flex; flex-direction: column; gap: 8px; margin-top: 14px;
+}
+.ki-auth__link {
+  text-align: center; font-size: 12px; color: var(--mut);
+  text-decoration: none; transition: color .15s;
+}
+.ki-auth__link:hover { color: var(--p); }
+.ki-auth__link--purple { color: var(--p); font-weight: 600; }
+.ki-auth__divider {
+  display: flex; align-items: center; gap: 10px;
+  margin: 18px 0; font-size: 11px; color: var(--mut);
+}
+.ki-auth__divider::before,.ki-auth__divider::after {
+  content: ''; flex: 1; height: 1px; background: rgba(73,61,154,.12);
+}
+.ki-form-error {
+  background: rgba(225,29,72,.07); border: 1px solid rgba(225,29,72,.2);
+  border-radius: 8px; padding: 10px 12px;
+  font-size: 12px; color: #c0143c; margin-bottom: 14px;
+}
+.ki-form-success {
+  background: rgba(34,197,94,.08); border: 1px solid rgba(34,197,94,.2);
+  border-radius: 8px; padding: 10px 12px;
+  font-size: 12px; color: #15803d; margin-bottom: 14px;
+  text-align: center;
+}
+@media (max-width: 480px) {
+  .ki-auth__card { padding: 32px 24px; }
+}
+</style>
+
+<div class="ki-auth section-{{ section.id }}-padding">
+  <div class="ki-auth__card">
+    <a href="{{ routes.root_url }}" class="ki-auth__logo">.ki</a>
+    <p class="ki-auth__tagline">Kendine iyi bak</p>
+
+    {%- assign recover_success = false -%}
+
+    <!-- Şifremi Unuttum -->
+    <div class="ki-auth__recover" id="recover-section">
+      <h1 class="ki-auth__title">{{ 'customer.recover_password.title' | t }}</h1>
+      <p style="text-align:center;font-size:13px;color:var(--mut);margin:0 0 20px;">{{ 'customer.recover_password.subtext' | t }}</p>
+      {%- form 'recover_customer_password' -%}
+        {%- assign recover_success = form.posted_successfully? -%}
+        {%- if form.errors -%}
+          <div class="ki-form-error">{{ form.errors.messages.form }}</div>
+        {%- endif -%}
+        <div class="ki-field">
+          <input type="email" name="email" id="RecoverEmail" autocomplete="email" placeholder="{{ 'customer.login_page.email' | t }}">
+        </div>
+        <button class="ki-btn">{{ 'customer.login_page.submit' | t }}</button>
+        <div class="ki-auth__links">
+          <a href="#login" class="ki-auth__link ki-auth__link--purple" id="cancel-recover">← {{ 'customer.login_page.cancel' | t }}</a>
+        </div>
+      {%- endform -%}
+    </div>
+
+    <!-- Giriş -->
+    <div class="ki-auth__login" id="login-section">
+      <h1 class="ki-auth__title">{{ 'customer.login_page.title' | t }}</h1>
+
+      {%- if recover_success -%}
+        <div class="ki-form-success">{{ 'customer.recover_password.success' | t }}</div>
+      {%- endif -%}
+
+      {%- form 'customer_login', novalidate: 'novalidate' -%}
+        {%- if form.errors -%}
+          <div class="ki-form-error">{{ form.errors | default_errors }}</div>
+        {%- endif -%}
+
+        {%- if shop.features.login_with_shop_classic_customer_accounts? -%}
+          {%- unless section.settings.enable_shop_login_button == false -%}
+            {{ shop | login_button }}
+            <div class="ki-auth__divider">{{ 'customer.login_page.alternate_provider_separator' | t }}</div>
+          {%- endunless -%}
+        {%- endif -%}
+
+        <div class="ki-field">
+          <input type="email" name="customer[email]" id="CustomerEmail" autocomplete="email" placeholder="{{ 'customer.login_page.email' | t }}">
+        </div>
+        {%- if form.password_needed -%}
+          <div class="ki-field">
+            <input type="password" name="customer[password]" id="CustomerPassword" autocomplete="current-password" placeholder="{{ 'customer.login_page.password' | t }}">
+          </div>
+        {%- endif -%}
+        <button class="ki-btn">{{ 'customer.login_page.sign_in' | t }}</button>
+        <div class="ki-auth__links">
+          {%- if form.password_needed -%}
+            <a href="#recover" class="ki-auth__link" id="forgot-link">{{ 'customer.login_page.forgot_password' | t }}</a>
+          {%- endif -%}
+          <a href="{{ routes.account_register_url }}" class="ki-auth__link ki-auth__link--purple">{{ 'customer.login_page.create_account' | t }}</a>
+        </div>
+      {%- endform -%}
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var hash = window.location.hash;
+  var recoverSection = document.getElementById('recover-section');
+  var loginSection = document.getElementById('login-section');
+  var cancelBtn = document.getElementById('cancel-recover');
+  var forgotLink = document.getElementById('forgot-link');
+
+  function showRecover(){
+    recoverSection && recoverSection.classList.add('is-open');
+    loginSection && loginSection.classList.add('is-hidden');
+  }
+  function showLogin(){
+    recoverSection && recoverSection.classList.remove('is-open');
+    loginSection && loginSection.classList.remove('is-hidden');
+  }
+  if(hash === '#recover') showRecover();
+  if(forgotLink) forgotLink.addEventListener('click', function(e){ e.preventDefault(); showRecover(); });
+  if(cancelBtn) cancelBtn.addEventListener('click', function(e){ e.preventDefault(); showLogin(); });
+})();
+</script>
+
+{% schema %}
+{
+  "name": "t:sections.main-login.name",
+  "settings": [
+    {"type":"checkbox","id":"enable_shop_login_button","label":"t:sections.main-login.shop_login_button.enable","default":true},
+    {"type":"header","content":"t:sections.all.padding.section_padding_heading"},
+    {"type":"range","id":"padding_top","min":0,"max":100,"step":4,"unit":"px","label":"t:sections.all.padding.padding_top","default":0},
+    {"type":"range","id":"padding_bottom","min":0,"max":100,"step":4,"unit":"px","label":"t:sections.all.padding.padding_bottom","default":0}
+  ]
+}
+{% endschema %}

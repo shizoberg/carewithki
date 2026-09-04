@@ -1,0 +1,293 @@
+<style>
+  #shopify-section-{{ section.id }} {
+    --ki-purple-dark: #493d9a;
+    --ki-purple: #b2a5ff;
+    --ki-lilac: #dad2ff;
+    --rose-light: #fbebf0;
+    --card-bg: #ffffff;
+    --text-main: #1a1a1a;
+  }
+
+  .balance-ba {
+    padding: 60px 20px;
+    position: relative;
+    overflow: hidden;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  }
+
+  /* Animated background blobs */
+  .balance-ba__bg {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    opacity: 0.6;
+    pointer-events: none;
+  }
+
+  .balance-ba__gradient {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom right, var(--ki-lilac) 0%, rgba(178,165,255,0.4) 50%, rgba(200,165,255,0.3) 100%);
+    background-size: 200% 200%;
+    animation: gradientShift 8s ease infinite;
+  }
+
+  .balance-ba__blob-1 {
+    position: absolute;
+    top: -80px;
+    left: -80px;
+    width: 280px;
+    height: 280px;
+    background: rgba(73,61,154,0.1);
+    border-radius: 50%;
+    filter: blur(40px);
+    animation: blobAnimate 6s infinite alternate;
+  }
+
+  .balance-ba__blob-2 {
+    position: absolute;
+    bottom: -80px;
+    right: -80px;
+    width: 280px;
+    height: 280px;
+    background: rgba(178,165,255,0.2);
+    border-radius: 50%;
+    filter: blur(40px);
+    animation: blobAnimate 6s 2s infinite alternate;
+  }
+
+  @keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+  @keyframes blobAnimate {
+    0% { transform: scale(1) translate(0, 0); }
+    100% { transform: scale(1.1) translate(20px, 20px); }
+  }
+
+  .balance-ba__content {
+    position: relative;
+    z-index: 2;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .balance-ba__header {
+    text-align: center;
+    margin-bottom: 32px;
+  }
+
+  .balance-ba__label {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: rgba(73,61,154,0.7);
+    margin-bottom: 8px;
+  }
+
+  .balance-ba__title {
+    font-size: clamp(22px, 4vw, 26px);
+    font-weight: 800;
+    color: var(--text-main);
+    margin: 0;
+  }
+
+  .balance-ba__card {
+    display: flex;
+    flex-direction: column;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.05);
+    border: 1px solid rgba(73,61,154,0.08);
+    background: rgba(255,255,255,0.6);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+  @media(min-width: 640px) {
+    .balance-ba__card {
+      flex-direction: row;
+    }
+  }
+
+  .balance-ba__before {
+    flex: 1;
+    padding: 20px;
+    background: rgba(178,165,255,0.15); /* secondary/40 equivalent */
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .balance-ba__after {
+    flex: 1;
+    padding: 20px;
+    background: rgba(218,210,255,0.4); /* plum-pale */
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .balance-ba__arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--card-bg);
+    padding: 12px;
+  }
+  .balance-ba__arrow svg {
+    width: 20px;
+    height: 20px;
+    color: var(--ki-purple-dark);
+    transform: rotate(90deg);
+  }
+  @media(min-width: 640px) {
+    .balance-ba__arrow {
+      padding: 0 16px;
+    }
+    .balance-ba__arrow svg {
+      transform: rotate(0deg);
+    }
+  }
+
+  .balance-ba__col-title {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .balance-ba__before .balance-ba__col-title { color: rgba(73,61,154,0.7); }
+  .balance-ba__after .balance-ba__col-title { color: var(--ki-purple-dark); }
+
+  .balance-ba__col-text {
+    font-size: 13px;
+    line-height: 1.4;
+  }
+  .balance-ba__before .balance-ba__col-text {
+    color: rgba(26,26,26,0.8);
+  }
+  .balance-ba__after .balance-ba__col-text {
+    color: var(--text-main);
+    font-weight: 600;
+  }
+
+  /* Reveal */
+  .bba-reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .bba-reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+</style>
+
+<div class="balance-ba">
+  <div class="balance-ba__bg">
+    <div class="balance-ba__gradient"></div>
+    <div class="balance-ba__blob-1"></div>
+    <div class="balance-ba__blob-2"></div>
+  </div>
+
+  <div class="balance-ba__content">
+    <div class="balance-ba__header bba-reveal">
+      <span class="balance-ba__label">{{ section.settings.label }}</span>
+      <h2 class="balance-ba__title">{{ section.settings.title }}</h2>
+    </div>
+
+    <div class="balance-ba__card bba-reveal" style="transition-delay: 0.1s;">
+      <div class="balance-ba__before">
+        <div class="balance-ba__col-title">{{ section.settings.before_title }}</div>
+        <div class="balance-ba__col-text">{{ section.settings.before_text }}</div>
+      </div>
+      <div class="balance-ba__arrow">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M5 12h14" /><path d="m12 5 7 7-7 7" />
+        </svg>
+      </div>
+      <div class="balance-ba__after">
+        <div class="balance-ba__col-title">{{ section.settings.after_title }}</div>
+        <div class="balance-ba__col-text">{{ section.settings.after_text }}</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function() {
+    function initReveal() {
+      var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+          }
+        });
+      }, { threshold: 0.2 });
+      
+      document.querySelectorAll('#shopify-section-{{ section.id }} .bba-reveal').forEach(function(el) {
+        observer.observe(el);
+      });
+    }
+
+    initReveal();
+
+    document.addEventListener('shopify:section:load', function(event) {
+      if (event.detail.sectionId === '{{ section.id }}') {
+        initReveal();
+      }
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Balance: Before/After",
+  "settings": [
+    {
+      "type": "text",
+      "id": "label",
+      "label": "Small Label",
+      "default": "Fark Yarat"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Öncesi & Sonrası"
+    },
+    {
+      "type": "text",
+      "id": "before_title",
+      "label": "Before Title",
+      "default": "Öncesi"
+    },
+    {
+      "type": "textarea",
+      "id": "before_text",
+      "label": "Before Text",
+      "default": "Kramp, şişkinlik, ruh hali dalgalanması, uyku bozukluğu"
+    },
+    {
+      "type": "text",
+      "id": "after_title",
+      "label": "After Title",
+      "default": "Sonrası"
+    },
+    {
+      "type": "textarea",
+      "id": "after_text",
+      "label": "After Text",
+      "default": "Dengeli döngü, enerji, net zihin, rahat uyku"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Balance: Before/After"
+    }
+  ]
+}
+{% endschema %}

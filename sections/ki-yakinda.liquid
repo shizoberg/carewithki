@@ -1,0 +1,77 @@
+{% comment %}.ki Yakında Sayfası{% endcomment %}
+<style>
+*,*::before,*::after{box-sizing:border-box;}
+.yakinda{--p:#493d9a;--lil:#dad2ff;--lilf:#f0eeff;--bg:#f8f8f6;--txt:#1a1340;--mut:#6b6b8a;--bdr:#e8e2ff;font-family:'Raleway',system-ui,sans-serif;background:var(--bg);color:var(--txt);min-height:80vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:64px 24px;text-align:center;position:relative;overflow:hidden;}
+.yakinda::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 30% 20%,rgba(73,61,154,.06) 0%,transparent 60%),radial-gradient(ellipse at 80% 80%,rgba(218,210,255,.12) 0%,transparent 55%);pointer-events:none;}
+.yakinda__inner{position:relative;z-index:1;max-width:560px;width:100%;}
+.yakinda__badge{display:inline-flex;align-items:center;gap:8px;background:var(--lilf);border:1.5px solid var(--lil);color:var(--p);font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:6px 16px;border-radius:50px;margin-bottom:28px;}
+.yakinda__badge::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--p);animation:yakinda-pulse 1.8s ease-in-out infinite;}
+@keyframes yakinda-pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.4;transform:scale(.8);}}
+.yakinda__logo{font-family:'Raleway',system-ui,sans-serif;font-size:20px;font-weight:800;color:var(--p);letter-spacing:-.04em;margin-bottom:20px;opacity:.6;}
+.yakinda__title{font-family:'Raleway',system-ui,sans-serif;font-size:clamp(36px,6vw,68px);font-weight:800;color:var(--txt);line-height:1.05;letter-spacing:-.03em;margin:0 0 16px;}
+.yakinda__title em{font-style:italic;color:var(--p);}
+.yakinda__desc{font-size:clamp(15px,2vw,18px);color:var(--mut);line-height:1.75;margin:0 0 40px;font-weight:400;max-width:440px;margin-left:auto;margin-right:auto;}
+.yakinda__form{display:flex;gap:10px;max-width:420px;margin:0 auto 16px;}
+.yakinda__input{flex:1;font-family:'Raleway',system-ui,sans-serif;font-size:14px;font-weight:500;color:var(--txt);background:#fff;border:1.5px solid var(--bdr);border-radius:12px;padding:13px 16px;outline:none;transition:border-color .15s;}
+.yakinda__input:focus{border-color:var(--p);}
+.yakinda__input::placeholder{color:rgba(73,61,154,.35);}
+.yakinda__btn{background:linear-gradient(135deg,#5a4daa,#493d9a);color:#fff;font-family:'Raleway',system-ui,sans-serif;font-size:14px;font-weight:800;border:none;border-radius:12px;padding:13px 22px;cursor:pointer;white-space:nowrap;transition:transform .15s,box-shadow .15s;box-shadow:0 4px 16px rgba(73,61,154,.25);}
+.yakinda__btn:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(73,61,154,.35);}
+.yakinda__note{font-size:12px;color:rgba(73,61,154,.4);margin-bottom:48px;}
+.yakinda__back{display:inline-flex;align-items:center;gap:6px;color:var(--p);font-size:13px;font-weight:700;text-decoration:none;opacity:.65;transition:opacity .15s;}
+.yakinda__back:hover{opacity:1;}
+.yakinda__back svg{width:14px;height:14px;}
+.yakinda__success{display:none;background:var(--lilf);border:1.5px solid var(--lil);border-radius:14px;padding:16px 24px;color:var(--p);font-size:14px;font-weight:700;margin-bottom:32px;}
+.yakinda__dots{position:absolute;top:0;left:0;right:0;bottom:0;pointer-events:none;overflow:hidden;}
+.yakinda__dot{position:absolute;border-radius:50%;background:var(--lil);opacity:.35;}
+@media(max-width:600px){.yakinda__form{flex-direction:column;}.yakinda__btn{padding:13px;}.yakinda{padding:48px 20px;}}
+</style>
+
+<div class="yakinda">
+  <div class="yakinda__dots">
+    <div class="yakinda__dot" style="width:180px;height:180px;top:-60px;right:-40px;"></div>
+    <div class="yakinda__dot" style="width:100px;height:100px;bottom:80px;left:-30px;opacity:.2;"></div>
+    <div class="yakinda__dot" style="width:60px;height:60px;top:40%;right:8%;opacity:.15;"></div>
+  </div>
+  <div class="yakinda__inner">
+    <p class="yakinda__logo">.ki</p>
+    <span class="yakinda__badge">{{ section.settings.badge | default: 'Yakında' }}</span>
+    <h1 class="yakinda__title">{{ section.settings.title | default: 'Sizlerle' }}<br><em>{{ section.settings.title_em | default: 'yakında.' }}</em></h1>
+    <p class="yakinda__desc">{{ section.settings.description | default: 'Ürettiğimiz bu özel formül üzerindeki son dokunuşları yapıyoruz. Haber almak için bize katılın.' }}</p>
+    <form class="yakinda__form" id="yakinda-form">
+      <input type="email" class="yakinda__input" placeholder="E-posta adresin" required>
+      <button type="submit" class="yakinda__btn">Beni Haberdar Et</button>
+    </form>
+    <div class="yakinda__success" id="yakinda-success">✅ Kayıt oldu! Haber vereceğiz 💜</div>
+    <p class="yakinda__note">Spam yok. Sadece önemli haberler.</p>
+    <a href="{{ routes.collections_url }}/ki-magaza" class="yakinda__back">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      Mağazaya dön
+    </a>
+  </div>
+</div>
+
+<script>
+document.getElementById('yakinda-form').addEventListener('submit',function(e){
+  e.preventDefault();
+  var email=this.querySelector('input').value;
+  this.style.display='none';
+  document.getElementById('yakinda-success').style.display='block';
+  /* Formspree veya baska servis buraya eklenebilir */
+});
+</script>
+
+{% schema %}
+{
+  "name": "Yakında (.ki)",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {"type":"text","id":"badge","label":"Rozet yazısı","default":"Yakında"},
+    {"type":"text","id":"title","label":"Başlık (normal)","default":"Sizlerle"},
+    {"type":"text","id":"title_em","label":"Başlık (italik/renkli)","default":"yakında."},
+    {"type":"textarea","id":"description","label":"Açıklama","default":"Ürettiğimiz bu özel formül üzerindeki son dokunuşları yapıyoruz. Haber almak için bize katılın."}
+  ],
+  "presets": [{"name": "Yakında (.ki)"}]
+}
+{% endschema %}

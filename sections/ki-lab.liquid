@@ -1,0 +1,824 @@
+{%- liquid
+  assign section_class = 'kilab-' | append: section.id
+  assign form_id = 'KiLabForm-' | append: section.id
+-%}
+
+<style>
+  .{{ section_class }} {
+    --kilab-purple: #4d3ca6;
+    --kilab-purple-dark: #271b66;
+    --kilab-lilac: #f2f0fb;
+    --kilab-green: #2f7c5d;
+    --kilab-text: #332c48;
+    background: {{ section.settings.background }};
+    color: var(--kilab-text);
+    padding: {{ section.settings.padding_top }}px 20px {{ section.settings.padding_bottom }}px;
+  }
+
+  .{{ section_class }} * {
+    box-sizing: border-box;
+  }
+
+  .{{ section_class }} .kilab__inner {
+    width: min(1180px, 100%);
+    margin: 0 auto;
+  }
+
+  .{{ section_class }} .kilab__hero {
+    position: relative;
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(280px, .8fr);
+    gap: 48px;
+    align-items: center;
+    padding: clamp(38px, 6vw, 76px);
+    border-radius: 32px;
+    background:
+      radial-gradient(circle at 82% 18%, rgba(181, 165, 255, .38), transparent 34%),
+      linear-gradient(135deg, var(--kilab-purple-dark), var(--kilab-purple));
+    color: #fff;
+  }
+
+  .{{ section_class }} .kilab__hero-copy {
+    position: relative;
+    z-index: 1;
+    max-width: 720px;
+  }
+
+  .{{ section_class }} .kilab__eyebrow,
+  .{{ section_class }} .kilab__section-label {
+    margin: 0 0 14px;
+    font-size: 13px;
+    line-height: 1.2;
+    font-weight: 800;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+  }
+
+  .{{ section_class }} .kilab__eyebrow {
+    color: #d9d2ff;
+  }
+
+  .{{ section_class }} .kilab__title {
+    max-width: 780px;
+    margin: 0;
+    color: #fff;
+    font-size: clamp(38px, 6vw, 72px);
+    line-height: 1.02;
+    letter-spacing: -.04em;
+  }
+
+  .{{ section_class }} .kilab__description {
+    max-width: 680px;
+    margin-top: 22px;
+    color: rgba(255, 255, 255, .82);
+    font-size: clamp(16px, 2vw, 20px);
+    line-height: 1.65;
+  }
+
+  .{{ section_class }} .kilab__description p {
+    margin: 0;
+  }
+
+  .{{ section_class }} .kilab__audiences {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 28px;
+  }
+
+  .{{ section_class }} .kilab__audience {
+    display: inline-flex;
+    align-items: center;
+    min-height: 40px;
+    padding: 9px 15px;
+    border: 1px solid rgba(255, 255, 255, .3);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, .09);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 700;
+  }
+
+  .{{ section_class }} .kilab__mark {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: min(300px, 100%);
+    aspect-ratio: 1;
+    justify-self: center;
+    border: 1px solid rgba(255, 255, 255, .22);
+    border-radius: 50%;
+    background: rgba(255, 255, 255, .09);
+  }
+
+  .{{ section_class }} .kilab__mark::before,
+  .{{ section_class }} .kilab__mark::after {
+    content: "";
+    position: absolute;
+    border: 1px solid rgba(255, 255, 255, .16);
+    border-radius: 50%;
+  }
+
+  .{{ section_class }} .kilab__mark::before {
+    inset: 22px;
+  }
+
+  .{{ section_class }} .kilab__mark::after {
+    inset: 48px;
+  }
+
+  .{{ section_class }} .kilab__mark-text {
+    position: relative;
+    z-index: 1;
+    color: #fff;
+    font-size: clamp(42px, 7vw, 76px);
+    font-weight: 800;
+    letter-spacing: -.07em;
+  }
+
+  .{{ section_class }} .kilab__process {
+    padding: clamp(54px, 8vw, 90px) 0;
+  }
+
+  .{{ section_class }} .kilab__section-head {
+    max-width: 720px;
+    margin-bottom: 30px;
+  }
+
+  .{{ section_class }} .kilab__section-label {
+    color: var(--kilab-purple);
+  }
+
+  .{{ section_class }} .kilab__section-title {
+    margin: 0;
+    color: var(--kilab-purple-dark);
+    font-size: clamp(30px, 4vw, 48px);
+    line-height: 1.12;
+    letter-spacing: -.03em;
+  }
+
+  .{{ section_class }} .kilab__steps {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 14px;
+  }
+
+  .{{ section_class }} .kilab__step {
+    min-height: 220px;
+    padding: 24px;
+    border: 1px solid rgba(77, 60, 166, .14);
+    border-radius: 22px;
+    background: #fff;
+  }
+
+  .{{ section_class }} .kilab__step-number {
+    display: grid;
+    place-items: center;
+    width: 42px;
+    height: 42px;
+    margin-bottom: 28px;
+    border-radius: 14px;
+    background: var(--kilab-lilac);
+    color: var(--kilab-purple);
+    font-size: 15px;
+    font-weight: 800;
+  }
+
+  .{{ section_class }} .kilab__step h3 {
+    margin: 0 0 10px;
+    color: var(--kilab-purple-dark);
+    font-size: 20px;
+    line-height: 1.25;
+  }
+
+  .{{ section_class }} .kilab__step p {
+    margin: 0;
+    color: #746e81;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  .{{ section_class }} .kilab__form-layout {
+    display: grid;
+    grid-template-columns: minmax(260px, .7fr) minmax(0, 1.3fr);
+    gap: 24px;
+    align-items: start;
+  }
+
+  .{{ section_class }} .kilab__form-info,
+  .{{ section_class }} .kilab__form-card {
+    border: 1px solid rgba(77, 60, 166, .14);
+    border-radius: 28px;
+    background: #fff;
+  }
+
+  .{{ section_class }} .kilab__form-info {
+    position: sticky;
+    top: 130px;
+    padding: 32px;
+  }
+
+  .{{ section_class }} .kilab__form-info h2,
+  .{{ section_class }} .kilab__form-card h2 {
+    margin: 0;
+    color: var(--kilab-purple-dark);
+    font-size: clamp(28px, 3vw, 40px);
+    line-height: 1.15;
+    letter-spacing: -.03em;
+  }
+
+  .{{ section_class }} .kilab__form-info > p {
+    margin: 16px 0 0;
+    color: #746e81;
+    font-size: 15px;
+    line-height: 1.65;
+  }
+
+  .{{ section_class }} .kilab__notice {
+    margin-top: 26px;
+    padding: 18px;
+    border-radius: 18px;
+    background: #f2f8f5;
+    color: #356d58;
+    font-size: 13px;
+    line-height: 1.55;
+  }
+
+  .{{ section_class }} .kilab__notice strong {
+    display: block;
+    margin-bottom: 5px;
+    color: var(--kilab-green);
+  }
+
+  .{{ section_class }} .kilab__form-card {
+    padding: clamp(24px, 4vw, 44px);
+  }
+
+  .{{ section_class }} .kilab__form-card-header {
+    margin-bottom: 28px;
+  }
+
+  .{{ section_class }} .kilab__form-card-header p {
+    margin: 10px 0 0;
+    color: #746e81;
+    line-height: 1.6;
+  }
+
+  .{{ section_class }} .kilab__grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+  }
+
+  .{{ section_class }} .kilab__field {
+    min-width: 0;
+  }
+
+  .{{ section_class }} .kilab__field--full {
+    grid-column: 1 / -1;
+  }
+
+  .{{ section_class }} .kilab__field label {
+    display: block;
+    margin-bottom: 7px;
+    color: var(--kilab-purple-dark);
+    font-size: 13px;
+    font-weight: 750;
+  }
+
+  .{{ section_class }} .kilab__field input,
+  .{{ section_class }} .kilab__field select,
+  .{{ section_class }} .kilab__field textarea {
+    width: 100%;
+    min-height: 52px;
+    padding: 13px 15px;
+    border: 1px solid rgba(77, 60, 166, .2);
+    border-radius: 14px;
+    background: #fbfaff;
+    color: var(--kilab-text);
+    font: inherit;
+    font-size: 15px;
+    line-height: 1.4;
+    box-shadow: none;
+  }
+
+  .{{ section_class }} .kilab__field textarea {
+    min-height: 132px;
+    resize: vertical;
+  }
+
+  .{{ section_class }} .kilab__field input:focus,
+  .{{ section_class }} .kilab__field select:focus,
+  .{{ section_class }} .kilab__field textarea:focus {
+    outline: 2px solid rgba(77, 60, 166, .14);
+    border-color: var(--kilab-purple);
+    background: #fff;
+  }
+
+  .{{ section_class }} .kilab__consent {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    margin-top: 22px;
+    color: #686174;
+    font-size: 13px;
+    line-height: 1.55;
+  }
+
+  .{{ section_class }} .kilab__consent input {
+    flex: 0 0 auto;
+    width: 18px;
+    height: 18px;
+    margin-top: 1px;
+    accent-color: var(--kilab-purple);
+  }
+
+  .{{ section_class }} .kilab__submit {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    min-height: 56px;
+    margin-top: 22px;
+    padding: 14px 22px;
+    border: 0;
+    border-radius: 999px;
+    background: var(--kilab-purple);
+    color: #fff;
+    font: inherit;
+    font-size: 16px;
+    font-weight: 800;
+    cursor: pointer;
+  }
+
+  .{{ section_class }} .kilab__submit:hover {
+    background: var(--kilab-purple-dark);
+  }
+
+  .{{ section_class }} .kilab__submit svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .{{ section_class }} .kilab__message {
+    margin-bottom: 22px;
+    padding: 15px 17px;
+    border-radius: 14px;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  .{{ section_class }} .kilab__message--success {
+    border: 1px solid rgba(47, 124, 93, .2);
+    background: #eef8f3;
+    color: var(--kilab-green);
+  }
+
+  .{{ section_class }} .kilab__message--error {
+    border: 1px solid rgba(180, 61, 61, .18);
+    background: #fff4f3;
+    color: #a33a3a;
+  }
+
+  .{{ section_class }} .kilab__message--error ul {
+    margin: 8px 0 0;
+    padding-left: 18px;
+  }
+
+  @media screen and (max-width: 900px) {
+    .{{ section_class }} .kilab__hero,
+    .{{ section_class }} .kilab__form-layout {
+      grid-template-columns: 1fr;
+    }
+
+    .{{ section_class }} .kilab__hero {
+      gap: 30px;
+    }
+
+    .{{ section_class }} .kilab__mark {
+      width: min(220px, 70vw);
+    }
+
+    .{{ section_class }} .kilab__steps {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .{{ section_class }} .kilab__form-info {
+      position: static;
+    }
+  }
+
+  @media screen and (max-width: 600px) {
+    .{{ section_class }} {
+      padding-left: 14px;
+      padding-right: 14px;
+    }
+
+    .{{ section_class }} .kilab__hero {
+      padding: 34px 24px;
+      border-radius: 24px;
+    }
+
+    .{{ section_class }} .kilab__mark {
+      display: none;
+    }
+
+    .{{ section_class }} .kilab__steps,
+    .{{ section_class }} .kilab__grid {
+      grid-template-columns: 1fr;
+    }
+
+    .{{ section_class }} .kilab__step {
+      min-height: 0;
+      padding: 21px;
+    }
+
+    .{{ section_class }} .kilab__step-number {
+      margin-bottom: 18px;
+    }
+
+    .{{ section_class }} .kilab__form-info,
+    .{{ section_class }} .kilab__form-card {
+      padding: 24px 20px;
+      border-radius: 22px;
+    }
+  }
+</style>
+
+<section class="{{ section_class }}" id="ki-lab">
+  <div class="kilab__inner">
+    <div class="kilab__hero">
+      <div class="kilab__hero-copy">
+        <p class="kilab__eyebrow">{{ section.settings.eyebrow }}</p>
+        <h1 class="kilab__title">{{ section.settings.heading }}</h1>
+        <div class="kilab__description">{{ section.settings.description }}</div>
+        <div class="kilab__audiences" aria-label="Başvuru yapabilecek meslek grupları">
+          <span class="kilab__audience">Eczacı</span>
+          <span class="kilab__audience">Doktor</span>
+          <span class="kilab__audience">Kimyager</span>
+          <span class="kilab__audience">Öğrenci</span>
+        </div>
+      </div>
+      <div class="kilab__mark" aria-hidden="true">
+        <span class="kilab__mark-text">.ki Lab</span>
+      </div>
+    </div>
+
+    <div class="kilab__process">
+      <div class="kilab__section-head">
+        <p class="kilab__section-label">{{ section.settings.process_label }}</p>
+        <h2 class="kilab__section-title">{{ section.settings.process_heading }}</h2>
+      </div>
+      <div class="kilab__steps">
+        {%- for step_number in (1..4) -%}
+          {%- capture title_key -%}step_{{ step_number }}_title{%- endcapture -%}
+          {%- capture text_key -%}step_{{ step_number }}_text{%- endcapture -%}
+          <article class="kilab__step">
+            <span class="kilab__step-number">0{{ step_number }}</span>
+            <h3>{{ section.settings[title_key] }}</h3>
+            <p>{{ section.settings[text_key] }}</p>
+          </article>
+        {%- endfor -%}
+      </div>
+    </div>
+
+    <div class="kilab__form-layout">
+      <aside class="kilab__form-info">
+        <p class="kilab__section-label">{{ section.settings.form_label }}</p>
+        <h2>{{ section.settings.form_info_heading }}</h2>
+        <p>{{ section.settings.form_info_text }}</p>
+        <div class="kilab__notice">
+          <strong>Güvenli paylaşım</strong>
+          Hasta kişisel verilerini, reçete bilgilerini veya kurumunuza ait gizli bilgileri forma eklemeyin.
+          Başvuru, ürünleştirme ya da ücret garantisi oluşturmaz.
+        </div>
+      </aside>
+
+      <div class="kilab__form-card">
+        <div class="kilab__form-card-header">
+          <h2>{{ section.settings.form_heading }}</h2>
+          <p>{{ section.settings.form_description }}</p>
+        </div>
+
+        {%- form 'contact', id: form_id, class: 'kilab__form' -%}
+          <input type="hidden" name="contact[tags]" value=".ki Lab, Ürün Fikri">
+          <input type="hidden" name="contact[subject]" value=".ki Lab yeni ürün fikri">
+
+          {%- if form.posted_successfully? -%}
+            <div class="kilab__message kilab__message--success" tabindex="-1" autofocus>
+              {{ section.settings.success_message }}
+            </div>
+          {%- endif -%}
+
+          {%- if form.errors -%}
+            <div class="kilab__message kilab__message--error" role="alert">
+              <strong>Form gönderilemedi.</strong>
+              {{ form.errors | default_errors }}
+            </div>
+          {%- endif -%}
+
+          <div class="kilab__grid">
+            <div class="kilab__field">
+              <label for="KiLabName-{{ section.id }}">Ad soyad *</label>
+              <input
+                id="KiLabName-{{ section.id }}"
+                type="text"
+                name="contact[name]"
+                autocomplete="name"
+                value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.name }}{% endif %}"
+                required
+              >
+            </div>
+
+            <div class="kilab__field">
+              <label for="KiLabEmail-{{ section.id }}">E-posta *</label>
+              <input
+                id="KiLabEmail-{{ section.id }}"
+                type="email"
+                name="contact[email]"
+                autocomplete="email"
+                autocorrect="off"
+                autocapitalize="off"
+                value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}"
+                required
+              >
+            </div>
+
+            <div class="kilab__field">
+              <label for="KiLabPhone-{{ section.id }}">Telefon</label>
+              <input id="KiLabPhone-{{ section.id }}" type="tel" name="contact[phone]" autocomplete="tel">
+            </div>
+
+            <div class="kilab__field">
+              <label for="KiLabRole-{{ section.id }}">Mesleki rol *</label>
+              <select id="KiLabRole-{{ section.id }}" name="contact[Mesleki rol]" required>
+                <option value="">Seçin</option>
+                <option value="Eczacı">Eczacı</option>
+                <option value="Doktor">Doktor</option>
+                <option value="Kimyager">Kimyager</option>
+                <option value="Öğrenci">Öğrenci</option>
+                <option value="Diğer sağlık profesyoneli">Diğer sağlık profesyoneli</option>
+              </select>
+            </div>
+
+            <div class="kilab__field kilab__field--full">
+              <label for="KiLabInstitution-{{ section.id }}">Kurum, üniversite veya bölüm</label>
+              <input id="KiLabInstitution-{{ section.id }}" type="text" name="contact[Kurum veya okul]">
+            </div>
+
+            <div class="kilab__field kilab__field--full">
+              <label for="KiLabIdeaTitle-{{ section.id }}">Fikir başlığı *</label>
+              <input
+                id="KiLabIdeaTitle-{{ section.id }}"
+                type="text"
+                name="contact[Fikir başlığı]"
+                placeholder="Örn. Menopoz döneminde günlük bakım çözümü"
+                required
+              >
+            </div>
+
+            <div class="kilab__field kilab__field--full">
+              <label for="KiLabProblem-{{ section.id }}">Hangi ihtiyacı veya sorunu çözmek istiyorsun? *</label>
+              <textarea
+                id="KiLabProblem-{{ section.id }}"
+                name="contact[body]"
+                placeholder="Gözlemini, ihtiyacı ve fikrinin neden önemli olduğunu anlat."
+                required
+              >{% if form.body %}{{ form.body }}{% endif %}</textarea>
+            </div>
+
+            <div class="kilab__field">
+              <label for="KiLabAudience-{{ section.id }}">Hedef kullanıcı</label>
+              <input
+                id="KiLabAudience-{{ section.id }}"
+                type="text"
+                name="contact[Hedef kullanıcı]"
+                placeholder="Örn. 45+ kadınlar"
+              >
+            </div>
+
+            <div class="kilab__field">
+              <label for="KiLabStage-{{ section.id }}">Fikir hangi aşamada?</label>
+              <select id="KiLabStage-{{ section.id }}" name="contact[Fikir aşaması]">
+                <option value="İlk fikir">İlk fikir</option>
+                <option value="Araştırma yapıyorum">Araştırma yapıyorum</option>
+                <option value="Formül veya prototip var">Formül veya prototip var</option>
+                <option value="Sahada test edildi">Sahada test edildi</option>
+              </select>
+            </div>
+
+            <div class="kilab__field kilab__field--full">
+              <label for="KiLabSolution-{{ section.id }}">Önerdiğin çözüm veya ürün formatı</label>
+              <textarea
+                id="KiLabSolution-{{ section.id }}"
+                name="contact[Çözüm ve ürün formatı]"
+                placeholder="Ürün formatı, kullanım şekli ve beklenen faydayı paylaş."
+              ></textarea>
+            </div>
+
+            <div class="kilab__field kilab__field--full">
+              <label for="KiLabTechnology-{{ section.id }}">İçerik, teknoloji veya formül önerisi</label>
+              <textarea
+                id="KiLabTechnology-{{ section.id }}"
+                name="contact[İçerik veya teknoloji önerisi]"
+                placeholder="Varsa aktif içerikleri, teknolojiyi veya bilimsel yaklaşımı belirt."
+              ></textarea>
+            </div>
+
+            <div class="kilab__field kilab__field--full">
+              <label for="KiLabReference-{{ section.id }}">Kaynak veya çalışma bağlantısı</label>
+              <input
+                id="KiLabReference-{{ section.id }}"
+                type="url"
+                name="contact[Kaynak bağlantısı]"
+                placeholder="https://"
+              >
+            </div>
+          </div>
+
+          <label class="kilab__consent" for="KiLabConsent-{{ section.id }}">
+            <input
+              id="KiLabConsent-{{ section.id }}"
+              type="checkbox"
+              name="contact[Değerlendirme onayı]"
+              value="Kabul ediyorum"
+              required
+            >
+            <span>
+              Paylaştığım bilgilerin fikrin ön değerlendirmesi ve benimle iletişime geçilmesi amacıyla
+              işlenmesini kabul ediyorum. Hasta veya üçüncü kişilere ait kişisel veri paylaşmadığımı onaylıyorum.
+            </span>
+          </label>
+
+          <button type="submit" class="kilab__submit">
+            {{ section.settings.submit_label }}
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path d="M5 12h14M13 6l6 6-6 6"/>
+            </svg>
+          </button>
+        {%- endform -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": ".ki Lab",
+  "settings": [
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Arka plan",
+      "default": "#f8f7fc"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Üst başlık",
+      "default": ".ki Lab · Birlikte geliştirelim"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Ana başlık",
+      "default": "Kadın sağlığı için bir fikrin mi var?"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Açıklama",
+      "default": "<p>Eczacıların, doktorların, kimyagerlerin ve öğrencilerin ürün fikirlerini bilimsel, kullanıcı odaklı ve uygulanabilir çözümlere dönüştürmek için dinliyoruz.</p>"
+    },
+    {
+      "type": "text",
+      "id": "process_label",
+      "label": "Süreç üst başlığı",
+      "default": "Fikirden değerlendirmeye"
+    },
+    {
+      "type": "text",
+      "id": "process_heading",
+      "label": "Süreç başlığı",
+      "default": "Fikrini nasıl değerlendiriyoruz?"
+    },
+    {
+      "type": "text",
+      "id": "step_1_title",
+      "label": "1. adım başlığı",
+      "default": "Fikrini paylaş"
+    },
+    {
+      "type": "textarea",
+      "id": "step_1_text",
+      "label": "1. adım açıklaması",
+      "default": "İhtiyacı, hedef kullanıcıyı ve çözüm önerini kısa form üzerinden anlat."
+    },
+    {
+      "type": "text",
+      "id": "step_2_title",
+      "label": "2. adım başlığı",
+      "default": "Bilimsel inceleme"
+    },
+    {
+      "type": "textarea",
+      "id": "step_2_text",
+      "label": "2. adım açıklaması",
+      "default": "Fikri bilimsel dayanak, güvenlik, kullanıcı ihtiyacı ve mevzuat açısından inceleriz."
+    },
+    {
+      "type": "text",
+      "id": "step_3_title",
+      "label": "3. adım başlığı",
+      "default": "Uygulanabilirlik"
+    },
+    {
+      "type": "textarea",
+      "id": "step_3_text",
+      "label": "3. adım açıklaması",
+      "default": "Üretim, formülasyon, tedarik ve operasyon koşullarını birlikte değerlendiririz."
+    },
+    {
+      "type": "text",
+      "id": "step_4_title",
+      "label": "4. adım başlığı",
+      "default": "Geri bildirim"
+    },
+    {
+      "type": "textarea",
+      "id": "step_4_text",
+      "label": "4. adım açıklaması",
+      "default": "Uygun bulunan fikirler için seninle iletişime geçer, sonraki adımları paylaşırız."
+    },
+    {
+      "type": "text",
+      "id": "form_label",
+      "label": "Form yan başlığı",
+      "default": "Ürün fikri başvurusu"
+    },
+    {
+      "type": "text",
+      "id": "form_info_heading",
+      "label": "Form bilgi başlığı",
+      "default": "Sahadaki gözlemin değerli"
+    },
+    {
+      "type": "textarea",
+      "id": "form_info_text",
+      "label": "Form bilgi açıklaması",
+      "default": "Her başvuruyu ihtiyaç, bilimsel temel ve uygulanabilirlik yönünden inceliyoruz. Detaylı anlatman değerlendirmemizi kolaylaştırır."
+    },
+    {
+      "type": "text",
+      "id": "form_heading",
+      "label": "Form başlığı",
+      "default": "Fikrini bize anlat"
+    },
+    {
+      "type": "textarea",
+      "id": "form_description",
+      "label": "Form açıklaması",
+      "default": "Zorunlu alanları doldur. Ekibimiz uygun bulunan fikirlerde seninle iletişime geçsin."
+    },
+    {
+      "type": "text",
+      "id": "submit_label",
+      "label": "Gönder butonu",
+      "default": "Fikrimi değerlendirmeye gönder"
+    },
+    {
+      "type": "text",
+      "id": "success_message",
+      "label": "Başarı mesajı",
+      "default": "Fikrin bize ulaştı. Ön değerlendirme sonrasında gerekli görülürse seninle iletişime geçeceğiz."
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 20,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Üst boşluk",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 40,
+      "max": 140,
+      "step": 4,
+      "unit": "px",
+      "label": "Alt boşluk",
+      "default": 88
+    }
+  ],
+  "presets": [
+    {
+      "name": ".ki Lab"
+    }
+  ]
+}
+{% endschema %}

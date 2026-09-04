@@ -1,0 +1,230 @@
+<style>
+.ckinfo{
+  --p:#493d9a;--lil:#dad2ff;--bg:#f8f8f6;
+  background:{{ section.settings.bg_color | default: '#f8f8f6' }};
+  padding:60px 20px;
+  font-family:system-ui,sans-serif;
+}
+.ckinfo__inner{max-width:960px;margin:0 auto;}
+.ckinfo__head{text-align:center;margin-bottom:40px;}
+.ckinfo__eyebrow{
+  display:inline-flex;align-items:center;gap:6px;
+  background:rgba(73,61,154,.08);border:1px solid rgba(73,61,154,.15);
+  padding:5px 14px;border-radius:50px;
+  font-size:11px;font-weight:700;color:var(--p);
+  letter-spacing:.06em;text-transform:uppercase;
+  margin-bottom:14px;
+}
+.ckinfo__title{
+  font-family:'Raleway',system-ui,sans-serif;
+  font-size:clamp(22px,5vw,34px);font-weight:800;
+  color:#1a1340;letter-spacing:-.02em;margin:0 0 10px;
+}
+.ckinfo__sub{font-size:14px;color:#6b6b8a;margin:0;max-width:540px;margin:0 auto;line-height:1.65;}
+
+/* İstatistik kartları */
+.ckinfo__stats{
+  display:grid;grid-template-columns:repeat(2,1fr);
+  gap:12px;margin-bottom:36px;
+}
+@media(min-width:640px){.ckinfo__stats{grid-template-columns:repeat(4,1fr);}}
+.ckinfo__stat{
+  background:#fff;border-radius:14px;
+  border:1px solid rgba(73,61,154,.09);
+  box-shadow:0 2px 10px rgba(73,61,154,.06);
+  padding:18px 14px;text-align:center;
+}
+.ckinfo__stat-num{
+  font-family:'Raleway',system-ui,sans-serif;
+  font-size:28px;font-weight:900;color:var(--p);
+  display:block;line-height:1;
+}
+.ckinfo__stat-lbl{
+  font-size:11px;color:#6b6b8a;font-weight:600;
+  margin-top:5px;display:block;line-height:1.4;
+}
+
+/* Bilgi kartları */
+.ckinfo__cards{
+  display:grid;grid-template-columns:1fr;
+  gap:14px;margin-bottom:32px;
+}
+@media(min-width:640px){.ckinfo__cards{grid-template-columns:repeat(2,1fr);}}
+@media(min-width:900px){.ckinfo__cards{grid-template-columns:repeat(3,1fr);}}
+.ckinfo__card{
+  background:#fff;border-radius:14px;
+  border:1px solid rgba(73,61,154,.08);
+  box-shadow:0 2px 10px rgba(73,61,154,.05);
+  padding:20px 18px;
+  transition:transform .2s,box-shadow .2s;
+}
+.ckinfo__card:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(73,61,154,.1);}
+.ckinfo__card-icon{
+  width:38px;height:38px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:12px;
+  background:rgba(73,61,154,.08);color:var(--p);
+}
+.ckinfo__card-icon svg{width:18px;height:18px;}
+.ckinfo__card h3{
+  font-size:14px;font-weight:700;color:#1a1340;
+  margin:0 0 7px;
+}
+.ckinfo__card p{font-size:12px;color:#6b6b8a;line-height:1.6;margin:0;}
+
+/* Döngü evreleri */
+.ckinfo__cycle{
+  background:#fff;border-radius:16px;
+  border:1px solid rgba(73,61,154,.1);
+  box-shadow:0 4px 20px rgba(73,61,154,.08);
+  padding:24px 20px;margin-bottom:32px;
+}
+.ckinfo__cycle-title{
+  font-size:15px;font-weight:800;color:#1a1340;
+  margin:0 0 18px;text-align:center;
+}
+.ckinfo__phases{
+  display:grid;grid-template-columns:repeat(2,1fr);gap:10px;
+}
+@media(min-width:560px){.ckinfo__phases{grid-template-columns:repeat(4,1fr);}}
+.ckinfo__phase{
+  border-radius:10px;padding:13px 12px;text-align:center;
+}
+.ckinfo__phase-day{font-size:9px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px;opacity:.7;}
+.ckinfo__phase-name{font-size:12px;font-weight:800;margin-bottom:4px;}
+.ckinfo__phase-desc{font-size:10px;line-height:1.4;opacity:.75;}
+
+/* Düruluk notu */
+.ckinfo__note{
+  background:rgba(73,61,154,.05);border:1px solid rgba(73,61,154,.12);
+  border-radius:12px;padding:14px 18px;
+  display:flex;align-items:flex-start;gap:10px;
+}
+.ckinfo__note svg{width:16px;height:16px;color:var(--p);flex-shrink:0;margin-top:1px;}
+.ckinfo__note p{font-size:11px;color:#6b6b8a;line-height:1.6;margin:0;}
+.ckinfo__note strong{color:var(--p);}
+</style>
+
+<section class="ckinfo" id="kadinsakligi-bilgi">
+  <div class="ckinfo__inner">
+    <div class="ckinfo__head">
+      <div class="ckinfo__eyebrow">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        Bilimsel Farkındalık
+      </div>
+      <h2 class="ckinfo__title">{{ section.settings.title }}</h2>
+      <p class="ckinfo__sub">{{ section.settings.subtitle }}</p>
+    </div>
+
+    <!-- İstatistikler -->
+    <div class="ckinfo__stats">
+      <div class="ckinfo__stat">
+        <span class="ckinfo__stat-num">%90</span>
+        <span class="ckinfo__stat-lbl">Kadın en az 1 PMS semptomu yaşıyor</span>
+      </div>
+      <div class="ckinfo__stat">
+        <span class="ckinfo__stat-num">%30</span>
+        <span class="ckinfo__stat-lbl">Günlük aktivitelerini kısıtlıyor</span>
+      </div>
+      <div class="ckinfo__stat">
+        <span class="ckinfo__stat-num">150+</span>
+        <span class="ckinfo__stat-lbl">Belgelenmiş PMS semptomu</span>
+      </div>
+      <div class="ckinfo__stat">
+        <span class="ckinfo__stat-num">%85</span>
+        <span class="ckinfo__stat-lbl">Ruh hali değişikliği yaşıyor</span>
+      </div>
+    </div>
+
+    <!-- Bilgi kartları -->
+    <div class="ckinfo__cards">
+      <div class="ckinfo__card">
+        <div class="ckinfo__card-icon" style="background:#ffeaeb;color:#e11d48;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        </div>
+        <h3>PMS Nedir?</h3>
+        <p>Premenstrüel Sendrom; regl öncesi 1–2 haftada ortaya çıkan fiziksel ve duygusal semptomlardır. şişkinlik, baş ağrısı, sinirlilik ve yorgunluk en sık görülenler arasındadır.</p>
+      </div>
+      <div class="ckinfo__card">
+        <div class="ckinfo__card-icon" style="background:#e6f8f1;color:#16a34a;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </div>
+        <h3>Hormonal Döngü</h3>
+        <p>28 günlük ortalama éştrus döngüsü boyunca estürojen ve progesteron seviyeleri sürekli değişir. Bu hormonal dalgalanmalar ruh hali, enerji ve fiziksel konforu doğrudan etkiler.</p>
+      </div>
+      <div class="ckinfo__card">
+        <div class="ckinfo__card-icon" style="background:#fffbe1;color:#d97706;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 1 0 10 10"/><path d="M12 2v10l6 6"/></svg>
+        </div>
+        <h3>Saat Etkisi</h3>
+        <p>PMS semptomlari çoğunlukla sabah saatlerinde daha şiddetlidir. Uyku kalitesi düşerken kortizol seviyeleri yükselerek semptomleri daha belirgin hale getirir.</p>
+      </div>
+      <div class="ckinfo__card">
+        <div class="ckinfo__card-icon" style="background:rgba(73,61,154,.08);color:#493d9a;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        </div>
+        <h3>Kampüs Etkisi</h3>
+        <p>Sınav dönemleri kortizol seviyesini yükseltir, bu da PMS semptomlarını %40–60 oranında artırır. Öğrenci kadınlar en kırılgan grubu oluşturur.</p>
+      </div>
+      <div class="ckinfo__card">
+        <div class="ckinfo__card-icon" style="background:#ffeaeb;color:#e11d48;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3H14z"/><path d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg>
+        </div>
+        <h3>Tabu Sorunu</h3>
+        <p>Araştırmalar, öğrenci kadınların %67’sinin regl semptomlarını çevresindekilere açıklamaktan kahrlandığını gösteriyor. Sessizlik semptomleri daha da kötüleştiriyor.</p>
+      </div>
+      <div class="ckinfo__card">
+        <div class="ckinfo__card-icon" style="background:#e6f8f1;color:#16a34a;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <h3>Doğal Çözümler</h3>
+        <p>Magnezyum, B6 vitamini, Vitex Agnus ve Dong Quai gibi bitkisel ekstreler klinik çalışmalarda PMS semptomlarını azaltmada etkili bulunmuştur.</p>
+      </div>
+    </div>
+
+    <!-- Döngü evreleri -->
+    <div class="ckinfo__cycle">
+      <p class="ckinfo__cycle-title">📅 Adet Döngüsü Evreleri</p>
+      <div class="ckinfo__phases">
+        <div class="ckinfo__phase" style="background:#ffeaeb;color:#c0143c;">
+          <div class="ckinfo__phase-day">Gün 1–5</div>
+          <div class="ckinfo__phase-name">🔴 Menstrüel</div>
+          <div class="ckinfo__phase-desc">Regl. Enerji düşeri, öz bakım önemli.</div>
+        </div>
+        <div class="ckinfo__phase" style="background:#e6f8f1;color:#16a34a;">
+          <div class="ckinfo__phase-day">Gün 6–13</div>
+          <div class="ckinfo__phase-name">🟢 Folıküler</div>
+          <div class="ckinfo__phase-desc">Estürojen yükseliş. Enerji & odaklanma artar.</div>
+        </div>
+        <div class="ckinfo__phase" style="background:#fffbe1;color:#b45309;">
+          <div class="ckinfo__phase-day">Gün 14</div>
+          <div class="ckinfo__phase-name">🟡 Ovülasyon</div>
+          <div class="ckinfo__phase-desc">Zirve enerji. En üretken dönem.</div>
+        </div>
+        <div class="ckinfo__phase" style="background:rgba(73,61,154,.07);color:#493d9a;">
+          <div class="ckinfo__phase-day">Gün 15–28</div>
+          <div class="ckinfo__phase-name">🔵 Lüteal</div>
+          <div class="ckinfo__phase-desc">PMS dönemi. Progesteron düşer, semptomlar başlar.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Referans notu -->
+    <div class="ckinfo__note">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      <p><strong>Kaynaklar:</strong> ACOG (American College of Obstetricians and Gynecologists), WHO Reproductive Health Guidelines, Obstetrics & Gynecology Journal. Bu bilgiler eğitim amaçlıdır, tıbbi tanı yerine geçmez.</p>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Camp: Kadın Sağlığı Bilgi",
+  "settings": [
+    {"type":"color","id":"bg_color","label":"Arka Plan","default":"#f8f8f6"},
+    {"type":"text","id":"title","label":"Başlık","default":"Kadın Sağlığı Hakkında Bilmen Gerekenler"},
+    {"type":"text","id":"subtitle","label":"Alt Metin","default":"PMS sadece ruh hali değişikliği değildir. Biyolojik, hormonal ve sosyal boyutlarıyla anlaşılması gereken bir sağlık durumudur."}
+  ],
+  "presets":[{"name":"Camp: Kadın Sağlığı Bilgi"}]
+}
+{% endschema %}

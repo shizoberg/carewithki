@@ -1,0 +1,470 @@
+<style>
+  #shopify-section-{{ section.id }} {
+    --ki-purple-dark: #493d9a;
+    --ki-purple: #b2a5ff;
+    --ki-lilac: #dad2ff;
+    --sage: hsl(155, 42%, 30%);
+    --card-bg: #ffffff;
+    --text-main: #1a1a1a;
+    --text-muted: rgba(26, 26, 26, 0.6);
+    --border-light: rgba(73, 61, 154, 0.1);
+  }
+
+  .balance-reviews-section {
+    padding: 60px 20px;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background-color: var(--ki-offwhite, #f8f8f6);
+  }
+
+  .balance-reviews__container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .balance-reviews__header {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+  
+  .balance-reviews__title {
+    font-size: clamp(24px, 4vw, 32px);
+    font-weight: 800;
+    color: var(--text-main);
+    margin: 0 0 12px 0;
+  }
+
+  .balance-reviews__desc {
+    font-size: 15px;
+    color: var(--text-muted);
+    max-width: 500px;
+    margin: 0 auto;
+    letter-spacing: 0.025em;
+  }
+
+  .balance-reviews__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  @media(min-width: 768px) {
+    .balance-reviews__grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .balance-review-card {
+    background: var(--card-bg);
+    border-radius: 20px;
+    padding: 24px;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.03);
+    border: 1px solid var(--border-light);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+  }
+  .balance-review-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(73,61,154,0.08);
+  }
+  
+  /* Truncated view logic */
+  .balance-review-card.hidden-card {
+    display: none;
+  }
+  .balance-reviews__grid.show-all .balance-review-card.hidden-card {
+    display: block;
+    animation: fadeIn 0.4s ease-out forwards;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .balance-review__author {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 16px;
+  }
+
+  .balance-review__avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: rgba(178,165,255,0.15); /* secondary light */
+    border: 2px solid var(--ki-purple);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--ki-purple-dark);
+    flex-shrink: 0;
+  }
+
+  .balance-review__name {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text-main);
+    margin: 0;
+  }
+
+  .balance-review__info {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin: 0;
+  }
+
+  .balance-review__content {
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 1.6;
+    color: var(--text-main);
+    margin: 0 0 16px 0;
+  }
+
+  /* Audio player */
+  .balance-audio-player {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: rgba(218,210,255,0.25);
+    border-radius: 12px;
+    padding: 12px 16px;
+  }
+
+  .balance-audio__btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--ki-purple-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    cursor: pointer;
+    flex-shrink: 0;
+    color: #fff;
+    transition: transform 0.2s;
+  }
+  .balance-audio__btn:hover {
+    transform: scale(1.05);
+  }
+  .balance-audio__btn:active {
+    transform: scale(0.95);
+  }
+  .balance-audio__btn svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .balance-audio__info {
+    flex: 1;
+  }
+
+  .balance-audio__verified {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--sage);
+    margin-bottom: 6px;
+  }
+  
+  .balance-audio__verified svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  .balance-audio__track {
+    width: 100%;
+    height: 6px;
+    background: rgba(73,61,154,0.15);
+    border-radius: 999px;
+    overflow: hidden;
+  }
+
+  .balance-audio__progress {
+    height: 100%;
+    background: var(--ki-purple-dark);
+    width: 0%;
+    transition: width 0.1s linear;
+  }
+
+  /* Toggle button */
+  .balance-reviews__toggle {
+    text-align: center;
+    margin-top: 32px;
+  }
+
+  .balance-reviews__toggle-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: transparent;
+    border: 2px solid rgba(73,61,154,0.2);
+    color: var(--ki-purple-dark);
+    padding: 12px 32px;
+    border-radius: 999px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .balance-reviews__toggle-btn:hover {
+    background: rgba(73,61,154,0.05);
+    border-color: rgba(73,61,154,0.4);
+  }
+  .balance-reviews__toggle-btn svg {
+    width: 16px;
+    height: 16px;
+    transition: transform 0.2s;
+  }
+  .balance-reviews__grid.show-all ~ .balance-reviews__toggle .balance-reviews__toggle-btn svg {
+    transform: rotate(180deg);
+  }
+
+  /* Reveal Animations */
+  .br-reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .br-reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+</style>
+
+<div class="balance-reviews-section">
+  <div class="balance-reviews__container">
+    <div class="balance-reviews__header">
+      <h2 class="balance-reviews__title br-reveal">{{ section.settings.title }}</h2>
+      <p class="balance-reviews__desc br-reveal" style="transition-delay: 0.1s;">{{ section.settings.subtitle }}</p>
+    </div>
+
+    <div class="balance-reviews__grid" id="br-grid-{{ section.id }}">
+      {% for block in section.blocks %}
+        {% assign is_hidden = false %}
+        {% if forloop.index > 2 %}
+          {% assign is_hidden = true %}
+        {% endif %}
+
+        <div class="balance-review-card br-reveal {% if is_hidden %}hidden-card{% endif %}" style="transition-delay: {{ forloop.index | times: 0.1 }}s;">
+          <div class="balance-review__author">
+            <div class="balance-review__avatar">{{ block.settings.initials }}</div>
+            <div>
+              <p class="balance-review__name">{{ block.settings.name }}</p>
+              <p class="balance-review__info">{{ block.settings.info }}</p>
+            </div>
+          </div>
+          <p class="balance-review__content">
+            &ldquo;{{ block.settings.question }}&rdquo;
+          </p>
+          {% if block.settings.audio_url != blank %}
+            <div class="balance-audio-player">
+              <audio src="{{ block.settings.audio_url }}" preload="none" class="balance-audio-elem"></audio>
+              <button class="balance-audio__btn" type="button" aria-label="Oynat">
+                <svg class="play-icon" viewBox="0 0 24 24" fill="currentColor">
+                  <polygon points="8,5 20,12 8,19" />
+                </svg>
+                <svg class="pause-icon" viewBox="0 0 24 24" fill="currentColor" style="display:none;">
+                  <rect x="6" y="4" width="4" height="16" rx="1" />
+                  <rect x="14" y="4" width="4" height="16" rx="1" />
+                </svg>
+              </button>
+              <div class="balance-audio__info">
+                <div class="balance-audio__verified">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20 6 9 17l-5-5" />
+                  </svg>
+                  Doğrulanmış Eczacı Yanıtı
+                </div>
+                <div class="balance-audio__track">
+                  <div class="balance-audio__progress"></div>
+                </div>
+              </div>
+            </div>
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+
+    <div class="balance-reviews__toggle br-reveal" style="transition-delay: 0.3s;">
+      <button class="balance-reviews__toggle-btn" id="br-toggle-{{ section.id }}" type="button">
+        <span class="br-toggle-text">Daha fazlasını gör</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="m6 9 6 6 6-6" />
+        </svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function() {
+    function initReviews() {
+      // Reveal Observer
+      var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+          }
+        });
+      }, { threshold: 0.1 });
+      
+      document.querySelectorAll('#shopify-section-{{ section.id }} .br-reveal').forEach(function(el) {
+        observer.observe(el);
+      });
+
+      // See More Toggle
+      var toggleBtn = document.getElementById('br-toggle-{{ section.id }}');
+      var grid = document.getElementById('br-grid-{{ section.id }}');
+      var toggleText = toggleBtn ? toggleBtn.querySelector('.br-toggle-text') : null;
+
+      // Clean up previous event listeners by cloning if necessary, or just rely on DOM replacement
+      if (toggleBtn && grid && !toggleBtn.hasAttribute('data-initialized')) {
+        toggleBtn.setAttribute('data-initialized', 'true');
+        toggleBtn.addEventListener('click', function() {
+          var isExpanded = grid.classList.contains('show-all');
+          if (isExpanded) {
+            grid.classList.remove('show-all');
+            if(toggleText) toggleText.textContent = "Daha fazlasını gör";
+          } else {
+            grid.classList.add('show-all');
+            if(toggleText) toggleText.textContent = "Daha az gör";
+          }
+        });
+      }
+
+      // Audio Players
+      var audioPlayers = document.querySelectorAll('#shopify-section-{{ section.id }} .balance-audio-player');
+      audioPlayers.forEach(function(player) {
+        if (player.hasAttribute('data-initialized')) return;
+        player.setAttribute('data-initialized', 'true');
+
+        var audio = player.querySelector('audio');
+        var btn = player.querySelector('.balance-audio__btn');
+        var pIcon = player.querySelector('.play-icon');
+        var pPause = player.querySelector('.pause-icon');
+        var progressBar = player.querySelector('.balance-audio__progress');
+        if(!audio || !btn) return;
+
+        function updateIcon() {
+          if (audio.paused) {
+            pIcon.style.display = 'block';
+            pPause.style.display = 'none';
+          } else {
+            pIcon.style.display = 'none';
+            pPause.style.display = 'block';
+          }
+        }
+
+        btn.addEventListener('click', function() {
+          // Pause all others first
+          document.querySelectorAll('#shopify-section-{{ section.id }} audio').forEach(function(a) {
+            if (a !== audio && !a.paused) {
+              a.pause();
+            }
+          });
+
+          if (audio.paused) {
+            audio.play().catch(function(){});;
+          } else {
+            audio.pause();
+          }
+        });
+
+        audio.addEventListener('play', updateIcon);
+        audio.addEventListener('pause', updateIcon);
+        audio.addEventListener('ended', function() {
+          progressBar.style.width = '0%';
+          updateIcon();
+        });
+
+        audio.addEventListener('timeupdate', function() {
+          if(audio.duration) {
+            var w = (audio.currentTime / audio.duration) * 100;
+            progressBar.style.width = w + '%';
+          }
+        });
+      });
+    }
+
+    initReviews();
+
+    document.addEventListener('shopify:section:load', function(event) {
+      if (event.detail.sectionId === '{{ section.id }}') {
+        initReviews();
+      }
+    });
+
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Balance: Reviews",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section Title",
+      "default": "Kullanıcılarımız Ne Soruyor?"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Section Subtitle",
+      "default": "Sıkça sorulan sorular ve uzman eczacımızın sesli yanıtları"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "review",
+      "name": "Review Action",
+      "settings": [
+        {
+          "type": "text",
+          "id": "initials",
+          "label": "Initials",
+          "default": "SE"
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Name",
+          "default": "Selin"
+        },
+        {
+          "type": "text",
+          "id": "info",
+          "label": "User Info",
+          "default": "28 yaş, İstanbul"
+        },
+        {
+          "type": "textarea",
+          "id": "question",
+          "label": "Question",
+          "default": "Adet döneminde yaşadığım şiddetli kramplar için doğal bir çözüm var mı?"
+        },
+        {
+          "type": "text",
+          "id": "audio_url",
+          "label": "Audio File URL (.mp3 etc)",
+          "info": "Upload file to Shopify Files and paste URL here"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Balance: Reviews",
+      "blocks": [
+        { "type": "review", "settings": { "initials": "SE", "name": "Selin", "info": "28 yaş, İstanbul", "question": "Adet döneminde yaşadığım şiddetli kramplar için doğal bir çözüm var mı?" } },
+        { "type": "review", "settings": { "initials": "ZE", "name": "Zeynep", "info": "30 yaş, Ankara", "question": "PMS döneminde ruh halim çok değişiyor, bu normal mi ve ne yapabilirim?" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

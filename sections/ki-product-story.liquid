@@ -1,0 +1,138 @@
+{% comment %}
+  .ki Product Story (scoped) — Brand Kit
+  Three-stage illustrated story with icon/image per stage.
+
+  Brand kit:
+    #493d9a (main)
+    #f8f8f6 (offwhite)
+    #b2a5ff (primary)
+    #dad2ff (lilac)
+{% endcomment %}
+
+<section id="kps-{{ section.id }}" class="section">
+  <style>
+    #kps-{{ section.id }}{
+      --ki-purple-dark: #493d9a;
+      --ki-offwhite: #f8f8f6;
+      --ki-purple: #b2a5ff;
+      --ki-lilac: #dad2ff;
+
+      --bg: {{ section.settings.bg | default: '#f8f8f6' }};
+      --text: {{ section.settings.text | default: '#1a1a1a' }};
+      --muted: {{ section.settings.muted | default: 'rgba(26,26,26,.72)' }};
+
+      --maxw: {{ section.settings.max_width | default: 1200 }}px;
+      --py: {{ section.settings.pad_y | default: 96 }}px;
+      --px: {{ section.settings.pad_x | default: 40 }}px;
+
+      background: var(--bg);
+      color: var(--text);
+    }
+    #kps-{{ section.id }} .kps__wrap{ max-width: var(--maxw); margin: 0 auto; padding: var(--py) var(--px); }
+    #kps-{{ section.id }} .kps__head{ text-align: center; margin-bottom: 48px; }
+    #kps-{{ section.id }} .kps__eyebrow{
+      font-size: 12px; font-weight: 700; letter-spacing: 1.6px; text-transform: uppercase;
+      color: var(--ki-purple-dark); margin: 0 0 10px;
+    }
+    #kps-{{ section.id }} .kps__title{
+      font-size: clamp(36px,5vw,56px); font-weight: 650; letter-spacing: -0.02em;
+      line-height: 1.05; color: var(--ki-purple-dark);
+      text-shadow: 0 10px 26px rgba(73,61,154,.10); margin: 0;
+    }
+    #kps-{{ section.id }} .kps__sub{
+      margin: 14px auto 0; max-width: 640px; color: var(--muted);
+      font-size: 16px; line-height: 1.7;
+    }
+    #kps-{{ section.id }} .kps__grid{
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(24px,3vw,40px);
+      max-width: 1100px; margin: 0 auto;
+    }
+    #kps-{{ section.id }} .kps__stage{ text-align: center; }
+    #kps-{{ section.id }} .kps__img,
+    #kps-{{ section.id }} .kps__icon{
+      width: 140px; height: 140px; border-radius: 50%;
+      margin: 0 auto 20px; object-fit: cover;
+      display: flex; align-items: center; justify-content: center;
+      color: #fff; font-size: 32px; font-weight: 700;
+      box-shadow: 0 18px 40px rgba(73,61,154,.18);
+    }
+    #kps-{{ section.id }} .kps__t{
+      font-size: clamp(18px,2vw,22px); font-weight: 700;
+      color: var(--ki-purple-dark); margin: 0 0 8px; letter-spacing: -0.01em;
+    }
+    #kps-{{ section.id }} .kps__d{ font-size: 15px; color: var(--muted); line-height: 1.65; margin: 0; }
+    @media (max-width: 990px){
+      #kps-{{ section.id }} .kps__wrap{ padding: 64px 20px; }
+      #kps-{{ section.id }} .kps__grid{ grid-template-columns: 1fr 1fr; gap: 24px; }
+    }
+    @media (max-width: 750px){
+      #kps-{{ section.id }} .kps__wrap{ padding: 48px 16px; }
+      #kps-{{ section.id }} .kps__grid{ grid-template-columns: 1fr; }
+      #kps-{{ section.id }} .kps__img, #kps-{{ section.id }} .kps__icon{ width: 110px; height: 110px; }
+    }
+  </style>
+
+  <div class="kps__wrap">
+    <div class="kps__head">
+      {% if section.settings.eyebrow != blank %}<p class="kps__eyebrow">{{ section.settings.eyebrow }}</p>{% endif %}
+      {% if section.settings.title != blank %}<h2 class="kps__title">{{ section.settings.title }}</h2>{% endif %}
+      {% if section.settings.subtitle != blank %}<p class="kps__sub">{{ section.settings.subtitle }}</p>{% endif %}
+    </div>
+    <div class="kps__grid">
+      {% for block in section.blocks %}
+        <div class="kps__stage" {{ block.shopify_attributes }}>
+          {% if block.settings.image != blank %}
+            <img class="kps__img" src="{{ block.settings.image | image_url: width: 320 }}" alt="{{ block.settings.title | escape }}" width="{{ block.settings.image.width }}" height="{{ block.settings.image.height }}" loading="lazy" decoding="async">
+          {% else %}
+            <div class="kps__icon" style="background: {{ block.settings.color | default: '#493d9a' }};">{{ forloop.index }}</div>
+          {% endif %}
+          <h3 class="kps__t">{{ block.settings.title }}</h3>
+          <p class="kps__d">{{ block.settings.description }}</p>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": ".ki Product Story",
+  "tag": "section",
+  "settings": [
+    { "type": "text",     "id": "eyebrow",  "label": "Üst etiket", "default": "DÖNGÜNÜN HİKAYESİ" },
+    { "type": "text",     "id": "title",    "label": "Başlık",     "default": "Sachet'ten dengeye 3 adım" },
+    { "type": "textarea", "id": "subtitle", "label": "Alt başlık", "default": "Her gün 1 sachet ile döngünü dengele." },
+
+    { "type": "header", "content": "Style" },
+    { "type": "color", "id": "bg",    "label": "Background", "default": "#f8f8f6" },
+    { "type": "color", "id": "text",  "label": "Text",       "default": "#1a1a1a" },
+    { "type": "color", "id": "muted", "label": "Muted text", "default": "#493d9a" },
+    { "type": "range", "id": "max_width", "label": "Max width (px)", "min": 1000, "max": 1600, "step": 10, "default": 1200 },
+    { "type": "range", "id": "pad_y",     "label": "Vertical padding (px)", "min": 24, "max": 200, "step": 4, "default": 96 },
+    { "type": "range", "id": "pad_x",     "label": "Horizontal padding (px)", "min": 16, "max": 90, "step": 2, "default": 40 }
+  ],
+  "blocks": [
+    {
+      "type": "stage",
+      "name": "Aşama",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Görsel" },
+        { "type": "text",     "id": "title",       "label": "Başlık",    "default": "Aç" },
+        { "type": "textarea", "id": "description", "label": "Açıklama",  "default": "Sachet'i aç, suya dök." },
+        { "type": "color",    "id": "color",       "label": "Renk",      "default": "#493d9a" }
+      ]
+    }
+  ],
+  "max_blocks": 6,
+  "presets": [
+    {
+      "name": ".ki Product Story",
+      "blocks": [
+        { "type": "stage", "settings": { "title": "Aç",             "description": "Sachet'i aç, suya dök." } },
+        { "type": "stage", "settings": { "title": "Karıştır",       "description": "Bir bardak suyla karıştır." } },
+        { "type": "stage", "settings": { "title": "Dengeyi hisset", "description": "10 sachet · 1 döngü. Düzenli kullanımla farkı yaşa." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

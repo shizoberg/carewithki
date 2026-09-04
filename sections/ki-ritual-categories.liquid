@@ -1,0 +1,117 @@
+{% comment %}
+  .ki Ritual Categories (scoped) — Brand Kit
+  Horizontally scrollable pill category links.
+
+  Brand kit:
+    #493d9a (main)
+    #f8f8f6 (offwhite)
+    #b2a5ff (primary)
+    #dad2ff (lilac)
+{% endcomment %}
+
+<section id="krc-{{ section.id }}" class="section">
+  <style>
+    #krc-{{ section.id }}{
+      --ki-purple-dark: #493d9a;
+      --ki-offwhite: #f8f8f6;
+      --ki-purple: #b2a5ff;
+      --ki-lilac: #dad2ff;
+
+      --bg: {{ section.settings.bg | default: '#ffffff' }};
+      --text: {{ section.settings.text | default: '#1a1a1a' }};
+      --muted: {{ section.settings.muted | default: 'rgba(26,26,26,.72)' }};
+
+      --maxw: {{ section.settings.max_width | default: 1200 }}px;
+      --py: {{ section.settings.pad_y | default: 64 }}px;
+      --px: {{ section.settings.pad_x | default: 40 }}px;
+
+      background: var(--bg);
+      color: var(--text);
+    }
+    #krc-{{ section.id }} .krc__wrap{ max-width: var(--maxw); margin: 0 auto; padding: var(--py) var(--px); }
+    #krc-{{ section.id }} .krc__head{ text-align: center; margin-bottom: 24px; }
+    #krc-{{ section.id }} .krc__title{
+      font-size: clamp(28px,4vw,44px); font-weight: 650; letter-spacing: -0.02em;
+      line-height: 1.1; color: var(--ki-purple-dark);
+      text-shadow: 0 10px 26px rgba(73,61,154,.10); margin: 0;
+    }
+    #krc-{{ section.id }} .krc__scroller{
+      display: flex; gap: 10px; overflow-x: auto; padding: 10px 0;
+      scrollbar-width: none; -webkit-overflow-scrolling: touch;
+    }
+    #krc-{{ section.id }} .krc__scroller::-webkit-scrollbar{ display: none; }
+    #krc-{{ section.id }} .krc__pill{
+      display: inline-flex; align-items: center; padding: 12px 22px;
+      border-radius: 999px; font-size: 14px; font-weight: 650;
+      text-decoration: none; white-space: nowrap; flex-shrink: 0;
+      box-shadow: 0 8px 20px rgba(73,61,154,.10);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    #krc-{{ section.id }} .krc__pill:hover{
+      transform: translateY(-2px);
+      box-shadow: 0 14px 28px rgba(73,61,154,.18);
+    }
+    #krc-{{ section.id }} .krc__pill:focus-visible{ outline: 2px solid var(--ki-purple-dark); outline-offset: 2px; }
+    @media (max-width: 990px){ #krc-{{ section.id }} .krc__wrap{ padding: 48px 20px; } }
+    @media (max-width: 750px){ #krc-{{ section.id }} .krc__wrap{ padding: 36px 16px; } }
+  </style>
+
+  <div class="krc__wrap">
+    {% if section.settings.title != blank %}
+      <div class="krc__head">
+        <h2 class="krc__title">{{ section.settings.title }}</h2>
+      </div>
+    {% endif %}
+    <div class="krc__scroller" role="list">
+      {% for block in section.blocks %}
+        <a href="{{ block.settings.link | default: '#' }}" class="krc__pill"
+          style="background: {{ block.settings.bg | default: '#dad2ff' }}; color: {{ block.settings.fg | default: '#493d9a' }};"
+          role="listitem" {{ block.shopify_attributes }}>
+          {{ block.settings.label }}
+        </a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": ".ki Ritual Categories",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "title", "label": "Başlık", "default": "Ritüellerine göre keşfet" },
+
+    { "type": "header", "content": "Style" },
+    { "type": "color", "id": "bg",    "label": "Background", "default": "#ffffff" },
+    { "type": "color", "id": "text",  "label": "Text",       "default": "#1a1a1a" },
+    { "type": "color", "id": "muted", "label": "Muted text", "default": "#493d9a" },
+    { "type": "range", "id": "max_width", "label": "Max width (px)", "min": 1000, "max": 1600, "step": 10, "default": 1200 },
+    { "type": "range", "id": "pad_y",     "label": "Vertical padding (px)", "min": 16, "max": 120, "step": 4, "default": 64 },
+    { "type": "range", "id": "pad_x",     "label": "Horizontal padding (px)", "min": 16, "max": 90, "step": 2, "default": 40 }
+  ],
+  "blocks": [
+    {
+      "type": "pill",
+      "name": "Etiket",
+      "settings": [
+        { "type": "text",  "id": "label", "label": "Etiket",    "default": "Uyku" },
+        { "type": "url",   "id": "link",  "label": "Link" },
+        { "type": "color", "id": "bg",    "label": "Arka plan", "default": "#dad2ff" },
+        { "type": "color", "id": "fg",    "label": "Metin",     "default": "#493d9a" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": ".ki Ritual Categories",
+      "blocks": [
+        { "type": "pill", "settings": { "label": "Uyku" } },
+        { "type": "pill", "settings": { "label": "PMS" } },
+        { "type": "pill", "settings": { "label": "Enerji" } },
+        { "type": "pill", "settings": { "label": "Hormon" } },
+        { "type": "pill", "settings": { "label": "Cilt" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

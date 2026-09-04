@@ -1,0 +1,157 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "ki_collection": {
+      "type": "ki-collection-badges",
+      "blocks": {
+        "b1": {
+          "type": "badge",
+          "settings": {
+            "label": "pH Dengeli",
+            "icon": "check",
+            "color": "1"
+          }
+        },
+        "b2": {
+          "type": "badge",
+          "settings": {
+            "label": "Kimyasal Katkısız",
+            "icon": "leaf",
+            "color": "2"
+          }
+        },
+        "b3": {
+          "type": "badge",
+          "settings": {
+            "label": "Dermatolojik Test",
+            "icon": "shield",
+            "color": "1"
+          }
+        },
+        "b4": {
+          "type": "badge",
+          "settings": {
+            "label": "GMP Sertifikalı",
+            "icon": "check",
+            "color": "1"
+          }
+        },
+        "b5": {
+          "type": "badge",
+          "settings": {
+            "label": "Uzman Eczacı Formülü",
+            "icon": "heart",
+            "color": "3"
+          }
+        },
+        "p_balance": {
+          "type": "product_label",
+          "settings": {
+            "product_handle": "balance-your-cycle",
+            "label": "En çok satan takviye",
+            "badge": "Best Seller",
+            "tags": "Hayıt Otu, Magnezyum, B6 Vitamini, GMP, Vegan"
+          }
+        },
+        "p_change": {
+          "type": "product_label",
+          "settings": {
+            "product_handle": "change-is-good",
+            "label": "45+ kadınlar için",
+            "badge": "45+",
+            "tags": "Genistein, Şerbetçi Otu, Magnezyum, Bor, Selenyum"
+          }
+        },
+        "p_bundle": {
+          "type": "product_label",
+          "settings": {
+            "product_handle": "balance-ve-intimate-bundle",
+            "label": "İkili avantajlı set",
+            "badge": "Set",
+            "tags": "Balance + İntimate, Avantajlı Fiyat, Hediye"
+          }
+        },
+        "p1": {
+          "type": "product_label",
+          "settings": {
+            "product_handle": "ki-sens-care-intim-bakim-jeli",
+            "label": "En çok tercih edilen",
+            "badge": "Popüler",
+            "tags": "Aloe Vera, pH Dengeli, Paraben İçermez"
+          }
+        },
+        "p2": {
+          "type": "product_label",
+          "settings": {
+            "product_handle": "ki-intimate-intim-bakim-spreyi",
+            "label": "Anında tazelik",
+            "badge": "Yeni",
+            "tags": "Probiyotik, Durulama Yok, Pratik"
+          }
+        },
+        "p3": {
+          "type": "product_label",
+          "settings": {
+            "product_handle": "ki-50-care-intim-bakim-jeli",
+            "label": "50+ özel formül",
+            "badge": "50+",
+            "tags": "Hyaluronik Asit, Derin Nem, Menopoz"
+          }
+        },
+        "p4": {
+          "type": "product_label",
+          "settings": {
+            "product_handle": "ki-daily-care-intim-bakim-jeli",
+            "label": "Günlük bakım",
+            "badge": "Günlük",
+            "tags": "Nazik Formül, Günlük Kullanım"
+          }
+        },
+        "p5": {
+          "type": "product_label",
+          "settings": {
+            "product_handle": "ki-flow-care-intim-bakim-jeli",
+            "label": "Koruyucu bariyer",
+            "badge": "Koruyucu",
+            "tags": "Bariyer, Doğal, Kimyasal Katkısız"
+          }
+        }
+      },
+      "block_order": [
+        "b1",
+        "b2",
+        "b3",
+        "b4",
+        "b5",
+        "p_balance",
+        "p_change",
+        "p_bundle",
+        "p1",
+        "p2",
+        "p3",
+        "p4",
+        "p5"
+      ],
+      "settings": {
+        "eyebrow_text": "Bilim ile Desteklenmiş Ürünler",
+        "banner_gradient": "linear-gradient(135deg,#2d1b69 0%,#493d9a 55%,#6b5dd3 100%)",
+        "badge_color": "#493d9a",
+        "columns_desktop": 4,
+        "products_per_page": 12,
+        "show_description": true,
+        "show_category": true
+      }
+    }
+  },
+  "order": [
+    "ki_collection"
+  ]
+}

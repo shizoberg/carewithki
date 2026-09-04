@@ -1,0 +1,202 @@
+{% comment %}Paket Slider — unified typography{% endcomment %}
+
+
+<style>
+.kpak-{{ section.id }} {
+  --p:   #493d9a;
+  --lil: #dad2ff;
+  --bg:  {{ section.settings.bg | default: '#ffffff' }};
+  background: var(--bg);
+  padding: {{ section.settings.padding_top | default: 52 }}px 0 {{ section.settings.padding_bottom | default: 64 }}px;
+  overflow: hidden;
+}
+.kpak-{{ section.id }} .kpak-inner { max-width: 1400px; margin: 0 auto; padding: 0 24px; }
+
+.kpak-{{ section.id }} .kpak-header {
+  display: flex; align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px; margin-bottom: 28px; flex-wrap: wrap;
+}
+.kpak-{{ section.id }} .kpak-header-text { flex: 1; min-width: 0; }
+.kpak-{{ section.id }} .kpak-eyebrow {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 10px; font-weight: 700;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--p); opacity: 0.72; margin-bottom: 10px;
+}
+.kpak-{{ section.id }} .kpak-eyebrow::before { content: ''; display: inline-block; width: 18px; height: 1.5px; background: var(--p); opacity: 0.5; }
+.kpak-{{ section.id }} .kpak-title {
+  font-family: 'Raleway', system-ui, sans-serif;
+  font-size: clamp(26px, 3.4vw, 46px);
+  font-weight: 800; line-height: 1.08;
+  color: #1a1340; margin: 0 0 0;
+  letter-spacing: -0.025em;
+}
+.kpak-{{ section.id }} .kpak-title em { font-style: italic; color: var(--p); }
+.kpak-{{ section.id }} .kpak-all-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 10px 22px; border-radius: 50px;
+  border: 1.5px solid var(--p); color: var(--p);
+  font-weight: 700; font-size: 14px; text-decoration: none;
+  transition: background 0.2s, color 0.2s; white-space: nowrap; flex-shrink: 0;
+}
+.kpak-{{ section.id }} .kpak-all-btn:hover { background: var(--p); color: #fff; }
+
+.kpak-{{ section.id }} .kpak-track-wrap { overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch; cursor: grab; padding-bottom: 8px; }
+.kpak-{{ section.id }} .kpak-track-wrap::-webkit-scrollbar { display: none; }
+.kpak-{{ section.id }} .kpak-track-wrap.dragging { cursor: grabbing; }
+.kpak-{{ section.id }} .kpak-track { display: flex; gap: 16px; width: max-content; }
+
+.kpak-{{ section.id }} .kpak-card {
+  width: 280px; flex-shrink: 0; background: #fff;
+  border-radius: 18px; overflow: hidden;
+  border: 1px solid rgba(73,61,154,0.10);
+  display: flex; flex-direction: column;
+  transition: transform 0.25s, box-shadow 0.25s;
+}
+.kpak-{{ section.id }} .kpak-card:hover { transform: translateY(-4px); box-shadow: 0 16px 36px rgba(73,61,154,0.16); }
+.kpak-{{ section.id }} .kpak-card-img-wrap { position: relative; width: 100%; aspect-ratio: 1/1; background: #f0eef8; overflow: hidden; }
+.kpak-{{ section.id }} .kpak-card-img-wrap img,
+.kpak-{{ section.id }} .kpak-card-img-wrap svg { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.4s; }
+.kpak-{{ section.id }} .kpak-card:hover .kpak-card-img-wrap img { transform: scale(1.04); }
+.kpak-{{ section.id }} .kpak-card-badge { position: absolute; top: 12px; left: 12px; background: var(--p); color: #fff; font-size: 10px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; padding: 3px 10px; border-radius: 50px; }
+.kpak-{{ section.id }} .kpak-card-body { padding: 16px 16px 18px; display: flex; flex-direction: column; gap: 6px; flex: 1; }
+.kpak-{{ section.id }} .kpak-stars { display: flex; align-items: center; gap: 4px; font-size: 12px; font-weight: 600; color: #333; }
+.kpak-{{ section.id }} .kpak-stars svg { width: 13px; height: 13px; fill: #f5a623; stroke: none; }
+.kpak-{{ section.id }} .kpak-card-title { font-size: 15px; font-weight: 700; color: var(--p); margin: 0; line-height: 1.3; }
+.kpak-{{ section.id }} .kpak-price-row { display: flex; align-items: center; gap: 8px; margin-top: 2px; }
+.kpak-{{ section.id }} .kpak-price { font-size: 20px; font-weight: 800; color: #111; }
+.kpak-{{ section.id }} .kpak-price-compare { font-size: 13px; color: #aaa; text-decoration: line-through; }
+.kpak-{{ section.id }} .kpak-atc {
+  display: flex; align-items: center; justify-content: center;
+  width: 100%; padding: 13px 16px; border-radius: 50px;
+  background: var(--p); color: #fff; font-weight: 800; font-size: 14px;
+  text-decoration: none; border: none; cursor: pointer; margin-top: auto;
+  transition: background 0.2s, transform 0.2s;
+}
+.kpak-{{ section.id }} .kpak-atc:hover { background: #3b3280; transform: translateY(-1px); }
+
+@media (max-width: 749px) {
+  .kpak-{{ section.id }} { padding: 32px 0 44px; }
+  .kpak-{{ section.id }} .kpak-inner { padding: 0 16px; }
+  .kpak-{{ section.id }} .kpak-title { font-size: clamp(22px, 6.5vw, 32px); }
+  .kpak-{{ section.id }} .kpak-card { width: 220px; border-radius: 14px; }
+  .kpak-{{ section.id }} .kpak-price { font-size: 18px; }
+  .kpak-{{ section.id }} .kpak-atc { font-size: 13px; padding: 11px 14px; }
+  .kpak-{{ section.id }} .kpak-all-btn { font-size: 13px; padding: 9px 18px; }
+  .kpak-{{ section.id }} .kpak-header { align-items: flex-start; }
+}
+</style>
+
+<section class="kpak-{{ section.id }}" id="KPak-{{ section.id }}">
+  <div class="kpak-inner">
+    <div class="kpak-header">
+      <div class="kpak-header-text">
+        {%- if section.settings.eyebrow != blank -%}<p class="kpak-eyebrow">{{ section.settings.eyebrow | escape }}</p>{%- endif -%}
+        {%- if section.settings.title != blank -%}<h2 class="kpak-title">{{ section.settings.title }}</h2>{%- endif -%}
+      </div>
+      {%- if section.settings.all_link != blank and section.settings.all_label != blank -%}
+        <a href="{{ section.settings.all_link }}" class="kpak-all-btn">{{ section.settings.all_label | escape }}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+      {%- endif -%}
+    </div>
+    <div class="kpak-track-wrap" id="KPakTrack-{{ section.id }}">
+      <div class="kpak-track">
+        {%- for block in section.blocks -%}
+          {%- liquid
+            assign prod = block.settings.product
+            assign card_title = block.settings.card_title
+            assign card_price = block.settings.price_override
+            assign card_compare = block.settings.compare_price
+            assign card_rating = block.settings.rating
+            assign card_badge = block.settings.badge
+            assign card_link = block.settings.card_link
+            assign card_image = block.settings.image
+            if prod != blank
+              if card_title == blank
+                assign card_title = prod.title
+              endif
+              if card_price == blank
+                assign card_price = prod.price | money
+              endif
+              if card_link == blank
+                assign card_link = prod.url
+              endif
+              if card_image == blank and prod.featured_image != blank
+                assign card_image = prod.featured_image
+              endif
+            endif
+          -%}
+          <div class="kpak-card" {{ block.shopify_attributes }}>
+            <div class="kpak-card-img-wrap">
+              {%- if card_image != blank -%}{{ card_image | image_url: width: 600 | image_tag: loading: 'lazy', alt: card_title }}{%- else -%}{{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}{%- endif -%}
+              {%- if card_badge != blank -%}<span class="kpak-card-badge">{{ card_badge | escape }}</span>{%- endif -%}
+            </div>
+            <div class="kpak-card-body">
+              {%- if card_rating != blank -%}
+              <div class="kpak-stars"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>{{ card_rating | escape }}</div>
+              {%- endif -%}
+              {%- if card_title != blank -%}<h3 class="kpak-card-title">{{ card_title | escape }}</h3>{%- endif -%}
+              <div class="kpak-price-row">
+                {%- if card_price != blank -%}<span class="kpak-price">{{ card_price }}</span>{%- endif -%}
+                {%- if card_compare != blank -%}<span class="kpak-price-compare">{{ card_compare | escape }}</span>{%- endif -%}
+              </div>
+              <a href="{{ card_link | default: '#' }}" class="kpak-atc">{{ block.settings.atc_label | default: 'Sepete Ekle' | escape }}</a>
+            </div>
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+(function(){
+  var wrap = document.getElementById('KPakTrack-{{ section.id }}');
+  if (!wrap) return;
+  var down = false, sx, sl;
+  wrap.addEventListener('mousedown', function(e){ down = true; sx = e.pageX - wrap.offsetLeft; sl = wrap.scrollLeft; wrap.classList.add('dragging'); });
+  document.addEventListener('mouseup', function(){ down = false; wrap.classList.remove('dragging'); });
+  wrap.addEventListener('mousemove', function(e){ if (!down) return; e.preventDefault(); wrap.scrollLeft = sl - (e.pageX - wrap.offsetLeft - sx) * 1.5; });
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Paket Slider (.ki)",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    { "type": "color", "id": "bg", "label": "Arka plan", "default": "#ffffff" },
+    { "type": "text", "id": "eyebrow", "label": "Üst etiket", "info": "Örn: Sana Özel" },
+    { "type": "richtext", "id": "title", "label": "Başlık", "default": "<p>Sana özel oluşturduğumuz paketler</p>" },
+    { "type": "text", "id": "all_label", "label": "Tüm paketler butonu", "default": "Tüm Paketler" },
+    { "type": "url", "id": "all_link", "label": "Tüm paketler linki" },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Üst boşluk", "default": 52 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Alt boşluk", "default": 64 }
+  ],
+  "blocks": [{
+    "type": "package_card", "name": "Paket Kartı",
+    "settings": [
+      { "type": "header", "content": "Ürün Bağlantısı" },
+      { "type": "product", "id": "product", "label": "Ürün seç (opsiyonel)" },
+      { "type": "url", "id": "card_link", "label": "Özel link" },
+      { "type": "header", "content": "Görsel & İçerik" },
+      { "type": "image_picker", "id": "image", "label": "Görsel" },
+      { "type": "text", "id": "card_title", "label": "Başlık" },
+      { "type": "text", "id": "badge", "label": "Rozet" },
+      { "type": "header", "content": "Fiyat & Puan" },
+      { "type": "text", "id": "rating", "label": "Yıldız puanı", "default": "4.9" },
+      { "type": "text", "id": "reviews", "label": "Yorum sayısı", "default": "90+" },
+      { "type": "text", "id": "price_override", "label": "Fiyat (manuel)" },
+      { "type": "text", "id": "compare_price", "label": "Karşılaştırma fiyatı" },
+      { "type": "header", "content": "Buton" },
+      { "type": "text", "id": "atc_label", "label": "Buton metni", "default": "Sepete Ekle" }
+    ]
+  }],
+  "presets": [{ "name": "Paket Slider (.ki)", "blocks": [
+    { "type": "package_card", "settings": { "card_title": "Balance Deneme Paketi", "rating": "4.9", "price_override": "197,50₺" } },
+    { "type": "package_card", "settings": { "card_title": "Tanışma Paketi", "rating": "4.7", "price_override": "349,00₺" } },
+    { "type": "package_card", "settings": { "card_title": "Aylık Rutin Paketi", "rating": "5.0" } }
+  ]}]
+}
+{% endschema %}

@@ -1,0 +1,258 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-product",
+      "blocks": {
+        "vendor": {
+          "type": "text",
+          "settings": {
+            "text": "{{ product.vendor }}",
+            "text_style": "uppercase"
+          }
+        },
+        "title": {
+          "type": "title",
+          "settings": {}
+        },
+        "price": {
+          "type": "price",
+          "settings": {}
+        },
+        "variant_picker": {
+          "type": "variant_picker",
+          "settings": {
+            "picker_type": "button",
+            "swatch_shape": "circle"
+          }
+        },
+        "quantity_selector": {
+          "type": "quantity_selector",
+          "settings": {}
+        },
+        "buy_buttons": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_dynamic_checkout": true,
+            "show_gift_card_recipient": true
+          }
+        },
+        "description": {
+          "type": "description",
+          "settings": {}
+        },
+        "share": {
+          "type": "share",
+          "settings": {
+            "share_label": "Share"
+          }
+        }
+      },
+      "block_order": [
+        "vendor",
+        "title",
+        "price",
+        "variant_picker",
+        "quantity_selector",
+        "buy_buttons",
+        "description",
+        "share"
+      ],
+      "disabled": true,
+      "settings": {
+        "enable_sticky_info": true,
+        "color_scheme": "scheme-1",
+        "media_size": "large",
+        "constrain_to_viewport": true,
+        "media_fit": "contain",
+        "gallery_layout": "stacked",
+        "mobile_thumbnails": "hide",
+        "media_position": "left",
+        "image_zoom": "lightbox",
+        "hide_variants": true,
+        "enable_video_looping": false,
+        "padding_top": 36,
+        "padding_bottom": 12
+      }
+    },
+    "related-products": {
+      "type": "related-products",
+      "disabled": true,
+      "settings": {
+        "heading": "You may also like",
+        "heading_size": "h2",
+        "products_to_show": 4,
+        "columns_desktop": 4,
+        "columns_mobile": "2",
+        "color_scheme": "scheme-1",
+        "image_ratio": "square",
+        "image_shape": "default",
+        "show_secondary_image": true,
+        "show_vendor": false,
+        "show_rating": false,
+        "padding_top": 36,
+        "padding_bottom": 28
+      }
+    },
+    "anneler_gunu_pdp_hero_wELNTx": {
+      "type": "anneler-gunu-pdp-hero",
+      "name": "Anneler Günü PDP Hero",
+      "settings": {
+        "product": "takviyeler-konferans",
+        "max_width": 1300,
+        "pad_y": 60,
+        "pad_x": 32,
+        "bg": "#ffffff",
+        "text": "#1a1a1a",
+        "muted": "#666666",
+        "cta_bg": "#493d9a",
+        "cta_text": "#ffffff",
+        "product_title": "Ecz. Arin Alan ile Kadın Sağlığında Etkili Takviyeler",
+        "product_subtitle": "Klinik pratiğinizi destekleyin. Eczacılar, diyetisyenler ve öğrenciler  için uygundur. Özel sertifika verilecektir.",
+        "review_rating": 5,
+        "review_text": "200+ Danışan",
+        "star_color": "#f5a623",
+        "offer_headline": "",
+        "once_title": "Tek Seferlik",
+        "once_badge": "",
+        "once_subtitle": "",
+        "once_compare": "",
+        "once_price": "120₺",
+        "once_per": "",
+        "once_note": "<ul><li>Eczacıya Soru Sorma Fırsatı</li><li>Alanında Uzman Bilgiler</li><li>Online Sunuma Erişim</li><li>Konferans Kaydı</li></ul>",
+        "cta_label": "Sepete Ekle",
+        "shipping_text": "Dijital Ürün",
+        "disclaimer": ""
+      }
+    },
+    "truly_healthy_banner_UB3yXJ": {
+      "type": "truly-healthy-banner",
+      "blocks": {
+        "feature_VNkRNW": {
+          "type": "feature",
+          "settings": {
+            "icon": "shopify://shop_images/pms_-_product_page-4.png",
+            "title": "Kadın Danışanlarınızı Anlayın",
+            "description": "Kadın danışanlarınızın ihtiyaçlarına özel rutinler ve bilgiler"
+          }
+        },
+        "feature_VJckDM": {
+          "type": "feature",
+          "settings": {
+            "icon": "shopify://shop_images/pms_-_product_page-4.png",
+            "title": "Bedenin Yapısı",
+            "description": "Bedenin ihtiyaçları hakkında detaylı bilgiler"
+          }
+        },
+        "feature_pUb6wf": {
+          "type": "feature",
+          "settings": {
+            "icon": "shopify://shop_images/pms_-_product_page-4.png",
+            "title": "Bilim Odaklı",
+            "description": "Danışanlarınız ile her zaman konuşabileceğiniz bilimsel konular."
+          }
+        }
+      },
+      "block_order": [
+        "feature_VNkRNW",
+        "feature_VJckDM",
+        "feature_pUb6wf"
+      ],
+      "name": "Hero Features Banner",
+      "settings": {
+        "bg_image": "shopify://shop_images/ADC_4095-copy.jpg",
+        "overlay_color": "#000000",
+        "overlay_opacity": 10,
+        "min_height": 560,
+        "max_width": 1300,
+        "pad_y": 56,
+        "pad_x": 32,
+        "heading": "Ecz. Arin Alandan Kadın Sağlığı Konferansı",
+        "text_color": "#ffffff",
+        "panel_bg": "#5a5546bf",
+        "blur": 16,
+        "panel_text": "#ffffff",
+        "icon_color": "#f8f8f6"
+      }
+    },
+    "pdp_benefits_timeline_xpMUBt": {
+      "type": "pdp-benefits-timeline",
+      "blocks": {
+        "timeline_item_XhTY8E": {
+          "type": "timeline_item",
+          "settings": {
+            "badge": "ilk günler",
+            "title": "Şişkinlik ve Gerginlik Hissinde Hafif Destek",
+            "benefits": "Magnezyum ve B vitaminleriyle günlük besinsel desteğe katkı sağlar.|\nEnerji metabolizmasının normal işleyişini destekler.|\nSinir sistemi fonksiyonlarının desteklenmesine yardımcı olur."
+          }
+        },
+        "timeline_item_D9cHdX": {
+          "type": "timeline_item",
+          "settings": {
+            "badge": "Düzenli kullanım",
+            "title": "Döngüsel Dengenin Desteklenmesi",
+            "benefits": "Hayıt (Vitex agnus-castus) ile kadınlara özel bitkisel destek sunar.|\nDönemsel ruh hali dalgalanmalarının dengelenmesine yardımcı olur.|\nBedenin doğal ritmiyle uyumlu bir destek sağlar."
+          }
+        },
+        "timeline_item_G3tmjN": {
+          "type": "timeline_item",
+          "settings": {
+            "badge": "sürekli kullanım",
+            "title": "Daha Konforlu Bir Döngü Deneyimi",
+            "benefits": "Döngü öncesi dönemde genel konforun korunmasına katkı sağlar.|\nDönemsel yorgunluk ve halsizlik hissinin azalmasına yardımcı olur.|\nFiziksel ve duygusal iyi oluşu destekler.|\nGünlük yaşam temposuna daha rahat uyum sağlamaya katkı sağlar."
+          }
+        }
+      },
+      "block_order": [
+        "timeline_item_XhTY8E",
+        "timeline_item_D9cHdX",
+        "timeline_item_G3tmjN"
+      ],
+      "disabled": true,
+      "name": "PDP Benefits Timeline",
+      "settings": {
+        "max_width": 1200,
+        "pad_y": 72,
+        "pad_x": 32,
+        "bg": "#f8f8f6",
+        "text": "#1a1a1a",
+        "muted": "#555555",
+        "badge_bg": "#dad2ff",
+        "badge_text": "#493d9a",
+        "line_color": "#b2a5ff",
+        "heading": "Döngün İçin Zamanla Hissedilen Dengeli Destek",
+        "description": ".ki Balance Your Cycle; bitkisel içerikler, vitaminler ve minerallerle zenginleştirilen bu özel formül ile birlikte sürdürülebilir döngü deneyiminiz için tasarlandı.",
+        "image_main": "shopify://shop_images/ADC_5533-copy.jpg",
+        "image_main_alt": "Ürün kullanımı",
+        "image_secondary_1_alt": "Ürün",
+        "image_secondary_2_alt": "Kullanıcı",
+        "show_how_to_use": true,
+        "how_icon": "shopify://shop_images/Ekran_Resmi_2026-02-02_01.20.26.png",
+        "how_title": "Nasıl Kullanılır?",
+        "how_description": "Döngü öncesi & döngü sırasında günde bir adet saşe."
+      }
+    },
+    "177433585744c765a2": {
+      "type": "apps",
+      "settings": {
+        "include_margins": true
+      }
+    }
+  },
+  "order": [
+    "main",
+    "related-products",
+    "anneler_gunu_pdp_hero_wELNTx",
+    "truly_healthy_banner_UB3yXJ",
+    "pdp_benefits_timeline_xpMUBt",
+    "177433585744c765a2"
+  ]
+}

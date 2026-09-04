@@ -1,0 +1,100 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "ki_collection": {
+      "type": "ki-collection-bundle",
+      "blocks": {
+        "care_cycle": {
+          "type": "featured_product",
+          "settings": {
+            "product": "ki-dongu-destek-paketi",
+            "pack_label": "En Popüler",
+            "contains_products": "Balance, flow.care İntim Bakım Jeli, intimate İntim Bakım Spreyi"
+          }
+        },
+        "care_sensitive": {
+          "type": "featured_product",
+          "settings": {
+            "product": "ki-hassas-bakim-paketi",
+            "pack_label": "Nazik Bakım",
+            "contains_products": "sens.care İntim Bakım Jeli, intimate İntim Bakım Spreyi"
+          }
+        },
+        "care_menopause": {
+          "type": "featured_product",
+          "settings": {
+            "product": "ki-menopoz-bakim-paketi",
+            "pack_label": "50+ Rutin",
+            "contains_products": "Change, 50+.care İntim Bakım Jeli, intimate İntim Bakım Spreyi"
+          }
+        },
+        "ped_light": {
+          "type": "featured_product",
+          "settings": {
+            "product": "ki-light-ped-paketi-15-adet",
+            "pack_label": "15 Ped",
+            "contains_products": "9 Günlük Ped, 4 Gündüz Ped, 2 Gece Ped"
+          }
+        },
+        "ped_medium": {
+          "type": "featured_product",
+          "settings": {
+            "product": "ki-medium-ped-paketi-22-adet",
+            "pack_label": "22 Ped",
+            "contains_products": "9 Günlük Ped, 9 Gündüz Ped, 4 Gece Ped"
+          }
+        },
+        "ped_intense": {
+          "type": "featured_product",
+          "settings": {
+            "product": "ki-yogun-gunler-ped-paketi-26-adet",
+            "pack_label": "26 Ped",
+            "contains_products": "6 Günlük Ped, 12 Gündüz Ped, 8 Gece Ped"
+          }
+        },
+        "ferah_yaz": {
+          "type": "featured_product",
+          "settings": {
+            "product": "balance-ve-intimate-bundle",
+            "pack_label": "Döngü & Bakım",
+            "contains_products": "Balance, Intimate Bakım Spreyi"
+          }
+        },
+        "friend_pack": {
+          "type": "featured_product",
+          "settings": {
+            "product": "ki-intimate-arkadas-paketi",
+            "pack_label": "2'li Paket",
+            "contains_products": "2 Intimate Bakım Spreyi"
+          }
+        }
+      },
+      "block_order": [
+        "care_cycle",
+        "care_sensitive",
+        "care_menopause",
+        "ped_light",
+        "ped_medium",
+        "ped_intense",
+        "ferah_yaz",
+        "friend_pack"
+      ],
+      "settings": {
+        "eyebrow": "BAKIMINI PAKETLE",
+        "hero_title": "Rutinin hazır, kontrolü sende",
+        "hero_description": "Ped, intim bakım ve dönemsel destek ürünlerini tek bir rutinde keşfet. Hazır paketi seç, dilersen düzenle ve düzenli gönderime ekle."
+      }
+    }
+  },
+  "order": [
+    "ki_collection"
+  ]
+}

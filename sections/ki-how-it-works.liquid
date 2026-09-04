@@ -1,0 +1,229 @@
+{% comment %}.ki Nasil Calisir — 4 adim grid{% endcomment %}
+
+
+<style>
+.kinc-{{ section.id }} {
+  --p:   #493d9a;
+  --lil: #dad2ff;
+  --bg:  {{ section.settings.bg | default: '#ffffff' }};
+  --txt: {{ section.settings.text_color | default: '#111111' }};
+  --mut: {{ section.settings.muted_color | default: '#666666' }};
+  background: var(--bg);
+  padding: {{ section.settings.pad_y | default: 56 }}px 0;
+  font-family: system-ui, sans-serif;
+}
+.kinc-{{ section.id }} .kinc-inner {
+  max-width: {{ section.settings.max_width | default: 860 }}px;
+  margin: 0 auto;
+  padding: 0 {{ section.settings.pad_x | default: 24 }}px;
+}
+
+/* Header */
+.kinc-{{ section.id }} .kinc-header {
+  text-align: center;
+  margin-bottom: 44px;
+}
+.kinc-{{ section.id }} .kinc-eyebrow {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #c0392b;
+  margin: 0 0 14px;
+  display: block;
+}
+.kinc-{{ section.id }} .kinc-heading {
+  font-family: 'Raleway', system-ui, sans-serif;
+  font-size: clamp(28px, 4.5vw, 46px);
+  font-weight: 700;
+  color: var(--p);
+  margin: 0 0 16px;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+.kinc-{{ section.id }} .kinc-subtext {
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--mut);
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+/* Grid */
+.kinc-{{ section.id }} .kinc-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+/* Kart */
+.kinc-{{ section.id }} .kinc-card {
+  background: #fff;
+  border: 1.5px solid rgba(73,61,154,0.1);
+  border-radius: 18px;
+  padding: 24px 22px 28px;
+  position: relative;
+  overflow: hidden;
+  transition: box-shadow 0.2s, border-color 0.2s;
+}
+.kinc-{{ section.id }} .kinc-card:hover {
+  border-color: rgba(73,61,154,0.22);
+  box-shadow: 0 4px 24px rgba(73,61,154,0.09);
+}
+
+/* Buyuk soluk numara */
+.kinc-{{ section.id }} .kinc-num {
+  position: absolute;
+  top: 14px;
+  right: 18px;
+  font-family: 'Raleway', system-ui, sans-serif;
+  font-size: 40px;
+  font-weight: 800;
+  color: rgba(73,61,154,0.10);
+  line-height: 1;
+  user-select: none;
+}
+
+/* Ikon kutusu */
+.kinc-{{ section.id }} .kinc-icon-box {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  background: var(--lil);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 18px;
+  flex-shrink: 0;
+}
+.kinc-{{ section.id }} .kinc-icon-box svg {
+  width: 26px;
+  height: 26px;
+  stroke: var(--p);
+  fill: none;
+  stroke-width: 1.8px;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.kinc-{{ section.id }} .kinc-icon-box img {
+  width: 26px;
+  height: 26px;
+  object-fit: contain;
+}
+
+/* Kart metin */
+.kinc-{{ section.id }} .kinc-card-title {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--p);
+  margin: 0 0 8px;
+}
+.kinc-{{ section.id }} .kinc-card-desc {
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--mut);
+  margin: 0;
+}
+
+@media (max-width: 600px) {
+  .kinc-{{ section.id }} .kinc-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+  .kinc-{{ section.id }} .kinc-card { padding: 18px 16px 22px; border-radius: 14px; }
+  .kinc-{{ section.id }} .kinc-heading { font-size: clamp(24px, 7vw, 32px); }
+  .kinc-{{ section.id }} .kinc-num { font-size: 32px; }
+  .kinc-{{ section.id }} .kinc-icon-box { width: 44px; height: 44px; border-radius: 12px; margin-bottom: 14px; }
+  .kinc-{{ section.id }} .kinc-icon-box svg { width: 22px; height: 22px; }
+  .kinc-{{ section.id }} .kinc-card-title { font-size: 15px; }
+  .kinc-{{ section.id }} .kinc-card-desc { font-size: 13px; }
+}
+</style>
+
+{%- assign step_blocks = section.blocks | where: 'type', 'step' -%}
+
+<section class="kinc-{{ section.id }}" id="KiNC-{{ section.id }}">
+  <div class="kinc-inner">
+
+    <div class="kinc-header">
+      {%- if section.settings.eyebrow != blank -%}
+        <span class="kinc-eyebrow">{{ section.settings.eyebrow | escape }}</span>
+      {%- endif -%}
+      {%- if section.settings.heading != blank -%}
+        <h2 class="kinc-heading">{{ section.settings.heading | escape }}</h2>
+      {%- endif -%}
+      {%- if section.settings.subtext != blank -%}
+        <p class="kinc-subtext">{{ section.settings.subtext | escape }}</p>
+      {%- endif -%}
+    </div>
+
+    {%- if step_blocks.size > 0 -%}
+    <div class="kinc-grid">
+      {%- for block in step_blocks -%}
+      <div class="kinc-card" {{ block.shopify_attributes }}>
+        <span class="kinc-num">{{ forloop.index }}</span>
+        <div class="kinc-icon-box">
+          {%- if block.settings.icon_image != blank -%}
+            {{ block.settings.icon_image | image_url: width: 52 | image_tag: loading: 'lazy', alt: '' }}
+          {%- else -%}
+            {%- case forloop.index -%}
+            {%- when 1 -%}
+            <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+            {%- when 2 -%}
+            <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><polyline points="9 16 11 18 15 14"/></svg>
+            {%- when 3 -%}
+            <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            {%- when 4 -%}
+            <svg viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-4.95"/></svg>
+            {%- else -%}
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            {%- endcase -%}
+          {%- endif -%}
+        </div>
+        <p class="kinc-card-title">{{ block.settings.title | escape }}</p>
+        <p class="kinc-card-desc">{{ block.settings.description | escape }}</p>
+      </div>
+      {%- endfor -%}
+    </div>
+    {%- endif -%}
+
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Nas\u0131l \u00c7al\u0131\u015f\u0131r (.ki)",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    { "type": "header", "content": "Layout" },
+    { "type": "range", "id": "max_width", "min": 600, "max": 1200, "step": 20, "unit": "px", "label": "Maks. geni\u015flik", "default": 860 },
+    { "type": "range", "id": "pad_y",    "min": 24, "max": 100, "step": 4,  "unit": "px", "label": "Dikey dolgu",    "default": 56 },
+    { "type": "range", "id": "pad_x",    "min": 12, "max": 60,  "step": 4,  "unit": "px", "label": "Yatay dolgu",    "default": 24 },
+    { "type": "color", "id": "bg",         "label": "Arka plan",  "default": "#ffffff" },
+    { "type": "color", "id": "text_color", "label": "Metin",      "default": "#111111" },
+    { "type": "color", "id": "muted_color","label": "\u0130kincil metin", "default": "#666666" },
+    { "type": "header", "content": "Ba\u015fl\u0131k" },
+    { "type": "text", "id": "eyebrow",  "label": "\u00dcst etiket",   "default": "NASIL \u00c7ALI\u015eIR?" },
+    { "type": "text", "id": "heading",  "label": "Ba\u015fl\u0131k",        "default": "Sipari\u015f ver, gerisini bize b\u0131rak" },
+    { "type": "text", "id": "subtext",  "label": "A\u00e7\u0131klama",      "default": "Birka\u00e7 ad\u0131mda kap\u0131na ula\u015fan, diledi\u011fin an y\u00f6netebilece\u011fin bir deneyim." }
+  ],
+  "blocks": [
+    {
+      "type": "step",
+      "name": "Ad\u0131m",
+      "settings": [
+        { "type": "image_picker", "id": "icon_image", "label": "\u00d6zel ikon g\u00f6rseli", "info": "Bo\u015f b\u0131rak\u0131l\u0131rsa varsay\u0131lan ikon kullan\u0131l\u0131r." },
+        { "type": "text", "id": "title",       "label": "Ba\u015fl\u0131k",     "default": "Ad\u0131m" },
+        { "type": "text", "id": "description", "label": "A\u00e7\u0131klama",  "default": "Bu ad\u0131m\u0131n k\u0131sa a\u00e7\u0131klamas\u0131." }
+      ]
+    }
+  ],
+  "presets": [{
+    "name": "Nas\u0131l \u00c7al\u0131\u015f\u0131r (.ki)",
+    "blocks": [
+      { "type": "step", "settings": { "title": "Sipari\u015f Ver", "description": "\u0130stedi\u011fin paketi se\u00e7 ve birka\u00e7 t\u0131kla sipari\u015fini olu\u015ftur." } },
+      { "type": "step", "settings": { "title": "Onayland\u0131", "description": "Sipari\u015f ekibimize ula\u015f\u0131r, kargon h\u0131zl\u0131ca haz\u0131rlan\u0131r." } },
+      { "type": "step", "settings": { "title": "Kap\u0131na Gelsin", "description": "\u00dcretsiz kargo ile \u00fcr\u00fcn\u00fcn \u00f6zenle paketlenip sana ula\u015f\u0131r." } },
+      { "type": "step", "settings": { "title": "Her Ay Tekrar", "description": "S\u0131kl\u0131\u011f\u0131n\u0131 kolayca ayarla, diledi\u011fin an iptal et." } }
+    ]
+  }]
+}
+{% endschema %}

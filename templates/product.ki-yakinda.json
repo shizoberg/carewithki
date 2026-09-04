@@ -1,0 +1,25 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "yakinda-main": {
+      "type": "ki-yakinda",
+      "settings": {
+        "badge": "Yakında",
+        "title": "Sizlerle",
+        "title_em": "yakında.",
+        "description": "Ürettiğimiz bu özel formül üzerindeki son dokunuşları yapıyoruz. Haber almak için bize katılın."
+      }
+    }
+  },
+  "order": [
+    "yakinda-main"
+  ]
+}

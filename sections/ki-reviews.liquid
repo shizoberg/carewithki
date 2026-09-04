@@ -1,0 +1,158 @@
+{% comment %}
+  .ki Reviews (scoped) — Brand Kit
+  Customer review card grid with stars summary.
+
+  Brand kit:
+    #493d9a (main)
+    #f8f8f6 (offwhite)
+    #b2a5ff (primary)
+    #dad2ff (lilac)
+{% endcomment %}
+
+<section id="krv-{{ section.id }}" class="section">
+  <style>
+    #krv-{{ section.id }}{
+      --ki-purple-dark: #493d9a;
+      --ki-offwhite: #f8f8f6;
+      --ki-purple: #b2a5ff;
+      --ki-lilac: #dad2ff;
+
+      --bg: {{ section.settings.bg | default: '#f8f8f6' }};
+      --text: {{ section.settings.text | default: '#1a1a1a' }};
+      --muted: {{ section.settings.muted | default: 'rgba(26,26,26,.72)' }};
+
+      --maxw: {{ section.settings.max_width | default: 1200 }}px;
+      --py: {{ section.settings.pad_y | default: 88 }}px;
+      --px: {{ section.settings.pad_x | default: 40 }}px;
+
+      background: var(--bg);
+      color: var(--text);
+    }
+    #krv-{{ section.id }} .krv__wrap{ max-width: var(--maxw); margin: 0 auto; padding: var(--py) var(--px); }
+    #krv-{{ section.id }} .krv__head{ text-align: center; margin-bottom: clamp(32px,4vw,56px); }
+    #krv-{{ section.id }} .krv__eyebrow{
+      font-size: 12px; font-weight: 700; letter-spacing: 1.6px; text-transform: uppercase;
+      color: var(--ki-purple-dark); margin: 0 0 10px;
+    }
+    #krv-{{ section.id }} .krv__title{
+      font-size: clamp(36px,5vw,56px); font-weight: 650; letter-spacing: -0.02em;
+      line-height: 1.05; color: var(--ki-purple-dark);
+      text-shadow: 0 10px 26px rgba(73,61,154,.10); margin: 0;
+    }
+    #krv-{{ section.id }} .krv__summary{
+      display: inline-flex; align-items: center; gap: 10px; margin-top: 14px;
+      font-weight: 600;
+    }
+    #krv-{{ section.id }} .krv__stars{ color: #f5a524; letter-spacing: 0.1em; font-size: 18px; }
+    #krv-{{ section.id }} .krv__score{ font-size: 20px; color: var(--ki-purple-dark); }
+    #krv-{{ section.id }} .krv__count{ color: var(--muted); font-weight: 500; }
+    #krv-{{ section.id }} .krv__grid{
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px;
+    }
+    #krv-{{ section.id }} .krv__card{
+      background: #fff; border: 1px solid rgba(73,61,154,.14);
+      border-radius: 18px; padding: 26px;
+      box-shadow: 0 18px 40px rgba(73,61,154,.14);
+      transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+    }
+    #krv-{{ section.id }} .krv__card:hover{
+      transform: translateY(-4px);
+      box-shadow: 0 22px 50px rgba(73,61,154,.22);
+      border-color: rgba(73,61,154,.24);
+    }
+    #krv-{{ section.id }} .krv__cstars{ color: #f5a524; font-size: 16px; letter-spacing: 0.1em; margin-bottom: 12px; }
+    #krv-{{ section.id }} .krv__text{ font-size: 15px; line-height: 1.65; color: var(--text); margin: 0 0 18px; }
+    #krv-{{ section.id }} .krv__author{ display: flex; align-items: center; gap: 12px; }
+    #krv-{{ section.id }} .krv__avatar{
+      width: 44px; height: 44px; border-radius: 50%; object-fit: cover;
+      display: flex; align-items: center; justify-content: center;
+      background: var(--ki-purple-dark); color: #fff; font-weight: 700;
+    }
+    #krv-{{ section.id }} .krv__name{ font-size: 14px; font-weight: 700; color: var(--ki-purple-dark); }
+    #krv-{{ section.id }} .krv__meta{ font-size: 12px; color: var(--muted); margin-top: 2px; }
+    @media (max-width: 990px){
+      #krv-{{ section.id }} .krv__wrap{ padding: 64px 20px; }
+      #krv-{{ section.id }} .krv__grid{ grid-template-columns: 1fr 1fr; gap: 16px; }
+    }
+    @media (max-width: 750px){
+      #krv-{{ section.id }} .krv__wrap{ padding: 48px 16px; }
+      #krv-{{ section.id }} .krv__grid{ grid-template-columns: 1fr; }
+    }
+  </style>
+
+  <div class="krv__wrap" {% if section.settings.anchor_id != blank %}id="{{ section.settings.anchor_id }}"{% endif %}>
+    <div class="krv__head">
+      {% if section.settings.eyebrow != blank %}<p class="krv__eyebrow">{{ section.settings.eyebrow }}</p>{% endif %}
+      {% if section.settings.title != blank %}<h2 class="krv__title">{{ section.settings.title }}</h2>{% endif %}
+      <div class="krv__summary">
+        <span class="krv__stars" aria-hidden="true">★★★★★</span>
+        <span class="krv__score">{{ section.settings.score }}</span>
+        <span class="krv__count">· {{ section.settings.count_text }}</span>
+      </div>
+    </div>
+    <div class="krv__grid">
+      {% for block in section.blocks %}
+        <div class="krv__card" {{ block.shopify_attributes }}>
+          <div class="krv__cstars" aria-hidden="true">★★★★★</div>
+          <p class="krv__text">"{{ block.settings.text }}"</p>
+          <div class="krv__author">
+            {% if block.settings.avatar != blank %}
+              <img src="{{ block.settings.avatar | image_url: width: 120 }}" alt="" class="krv__avatar" width="{{ block.settings.avatar.width }}" height="{{ block.settings.avatar.height }}" loading="lazy" decoding="async">
+            {% else %}
+              <div class="krv__avatar" aria-hidden="true">{{ block.settings.name | slice: 0 }}</div>
+            {% endif %}
+            <div>
+              <div class="krv__name">{{ block.settings.name }}</div>
+              <div class="krv__meta">{{ block.settings.meta }}</div>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": ".ki Reviews",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "eyebrow",    "label": "Üst etiket",   "default": "MÜŞTERİ DENEYİMLERİ" },
+    { "type": "text", "id": "title",      "label": "Başlık",       "default": "Gerçek kullanıcılardan yorumlar" },
+    { "type": "text", "id": "score",      "label": "Puan",         "default": "5.0" },
+    { "type": "text", "id": "count_text", "label": "Yorum sayısı", "default": "90+ doğrulanmış değerlendirme" },
+    { "type": "text", "id": "anchor_id",  "label": "Anchor ID",    "default": "reviews" },
+
+    { "type": "header", "content": "Style" },
+    { "type": "color", "id": "bg",    "label": "Background", "default": "#f8f8f6" },
+    { "type": "color", "id": "text",  "label": "Text",       "default": "#1a1a1a" },
+    { "type": "color", "id": "muted", "label": "Muted text", "default": "#493d9a" },
+    { "type": "range", "id": "max_width", "label": "Max width (px)", "min": 1000, "max": 1600, "step": 10, "default": 1200 },
+    { "type": "range", "id": "pad_y",     "label": "Vertical padding (px)", "min": 24, "max": 160, "step": 4, "default": 88 },
+    { "type": "range", "id": "pad_x",     "label": "Horizontal padding (px)", "min": 16, "max": 90, "step": 2, "default": 40 }
+  ],
+  "blocks": [
+    {
+      "type": "review",
+      "name": "Yorum",
+      "settings": [
+        { "type": "textarea",     "id": "text",   "label": "Yorum metni", "default": "Harika bir ürün, kesinlikle tavsiye ediyorum." },
+        { "type": "text",         "id": "name",   "label": "İsim",        "default": "Ayşe K." },
+        { "type": "text",         "id": "meta",   "label": "Ek bilgi",    "default": "28 yaş · İstanbul" },
+        { "type": "image_picker", "id": "avatar", "label": "Avatar" }
+      ]
+    }
+  ],
+  "max_blocks": 12,
+  "presets": [
+    {
+      "name": ".ki Reviews",
+      "blocks": [
+        { "type": "review", "settings": { "text": "İlk aydan itibaren PMS şikayetlerim azaldı. Artık takvimi takip etmeye gerek kalmıyor.", "name": "Ayşe K.", "meta": "28 yaş · İstanbul" } },
+        { "type": "review", "settings": { "text": "Doğal içerikli olması ve şeffaf etiketleme beni ikna etti. 3 aydır kullanıyorum.", "name": "Zeynep T.", "meta": "32 yaş · Ankara" } },
+        { "type": "review", "settings": { "text": "Aboneliğim çok rahat, kapımda. Tat olarak da hiç rahatsız etmiyor.", "name": "Selin M.", "meta": "26 yaş · İzmir" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

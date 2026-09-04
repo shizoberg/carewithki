@@ -1,0 +1,138 @@
+{% comment %}Kategori Grid — mobil font fix{% endcomment %}
+<style>
+.kcat-{{ section.id }}{
+  --p:#493d9a;--lil:#dad2ff;
+  --bg:{{ section.settings.bg | default: '#ffffff' }};
+  background:var(--bg);
+  padding:{{ section.settings.padding_top | default: 56 }}px 0 {{ section.settings.padding_bottom | default: 64 }}px;
+}
+.kcat-{{ section.id }} .kcat-inner{max-width:1180px;margin:0 auto;padding:0 24px;}
+.kcat-{{ section.id }} .kcat-header{margin-bottom:20px;}
+.kcat-{{ section.id }} .kcat-eyebrow{display:inline-flex;align-items:center;gap:6px;font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--p);opacity:.72;margin-bottom:10px;}
+.kcat-{{ section.id }} .kcat-eyebrow::before{content:'';display:inline-block;width:18px;height:1.5px;background:var(--p);opacity:.5;}
+.kcat-{{ section.id }} .kcat-heading{font-family:'Raleway',system-ui,sans-serif;font-size:clamp(22px,3vw,34px);font-weight:800;line-height:1.1;color:#1a1340;margin:0;letter-spacing:-.025em;}
+.kcat-{{ section.id }} .kcat-heading em{font-style:italic;color:var(--p);}
+.kcat-{{ section.id }} .kcat-layout{display:grid;grid-template-columns:minmax(0,1fr);gap:14px;}
+.kcat-{{ section.id }} .kcat-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))!important;grid-template-rows:repeat(2,minmax(0,1fr));gap:12px;}
+.kcat-{{ section.id }} .kcat-card{position:relative;border-radius:14px;overflow:hidden;background:#1a1060;display:flex;flex-direction:column;justify-content:flex-end;text-decoration:none;transition:transform .3s,box-shadow .3s;min-height:170px;cursor:pointer;isolation:isolate;touch-action:manipulation;}
+.kcat-{{ section.id }} .kcat-card:hover{transform:translateY(-4px);box-shadow:0 16px 40px rgba(73,61,154,.28);}
+.kcat-{{ section.id }} .kcat-card--big{min-height:210px;}
+.kcat-{{ section.id }} .kcat-card-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s;}
+.kcat-{{ section.id }} .kcat-card-img,.kcat-{{ section.id }} .kcat-card-ov{pointer-events:none;}
+.kcat-{{ section.id }} .kcat-card:hover .kcat-card-img{transform:scale(1.04);}
+.kcat-{{ section.id }} .kcat-card-ov{position:relative;z-index:2;padding:16px 16px 14px;background:linear-gradient(to top,rgba(10,5,40,.88) 0%,rgba(26,16,96,.55) 50%,transparent 100%);display:flex;align-items:flex-end;justify-content:space-between;gap:10px;}
+.kcat-{{ section.id }} .kcat-card-text{flex:1;min-width:0;}
+.kcat-{{ section.id }} .kcat-card-title{font-size:17px;font-weight:700;color:#fff;margin:0 0 3px;line-height:1.2;}
+.kcat-{{ section.id }} .kcat-card--big .kcat-card-title{font-size:22px;}
+.kcat-{{ section.id }} .kcat-card-sub{font-size:12px;color:rgba(255,255,255,.72);margin:0 0 2px;line-height:1.35;}
+.kcat-{{ section.id }} .kcat-card-price{font-size:11px;color:var(--lil);font-weight:600;margin:0;}
+.kcat-{{ section.id }} .kcat-card-arrow{width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.15);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:#fff;transition:background .2s;}
+.kcat-{{ section.id }} .kcat-card:hover .kcat-card-arrow{background:rgba(255,255,255,.28);}
+.kcat-{{ section.id }} .kcat-card-arrow svg{width:16px;height:16px;}
+.kcat-{{ section.id }} .kcat-card--c1{background:#2a1b7a;}
+.kcat-{{ section.id }} .kcat-card--c2{background:#1a1060;}
+.kcat-{{ section.id }} .kcat-card--c3{background:#0f0a40;}
+.kcat-{{ section.id }} .kcat-card--c4{background:#231570;}
+.kcat-{{ section.id }} .kcat-card--c5{background:#160e55;}
+@media(max-width:749px){
+  .kcat-{{ section.id }}{padding:32px 0 40px;}
+  .kcat-{{ section.id }} .kcat-header{margin-bottom:16px;}
+  .kcat-{{ section.id }} .kcat-layout{grid-template-columns:1fr;gap:10px;}
+  .kcat-{{ section.id }} .kcat-card--big{min-height:160px;}
+  .kcat-{{ section.id }} .kcat-card--big .kcat-card-title{font-size:17px;}
+  .kcat-{{ section.id }} .kcat-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;grid-template-rows:repeat(2,108px);gap:8px;}
+  .kcat-{{ section.id }} .kcat-card{min-height:108px;border-radius:12px;}
+  .kcat-{{ section.id }} .kcat-card-title{font-size:12px;}
+  .kcat-{{ section.id }} .kcat-card-sub{font-size:9px;line-height:1.25;}
+  .kcat-{{ section.id }} .kcat-card-price{font-size:9px;}
+  .kcat-{{ section.id }} .kcat-card-ov{padding:9px 9px 8px;gap:5px;}
+  .kcat-{{ section.id }} .kcat-card-arrow{width:24px;height:24px;}
+  .kcat-{{ section.id }} .kcat-card-arrow svg{width:11px;height:11px;}
+  .kcat-{{ section.id }} .kcat-heading{font-size:18px;}
+  .kcat-{{ section.id }} .kcat-inner{padding:0 16px;}
+}
+@media(min-width:750px) and (max-width:1099px){
+  .kcat-{{ section.id }} .kcat-card--big{min-height:190px;}
+  .kcat-{{ section.id }} .kcat-card{min-height:150px;}
+}
+</style>
+{%- assign big = section.blocks | where: 'type', 'big_card' | first -%}
+{%- assign small_cards = section.blocks | where: 'type', 'small_card' -%}
+<section class="kcat-{{ section.id }}" id="KCat-{{ section.id }}">
+  <div class="kcat-inner">
+    <div class="kcat-header">
+      {%- if section.settings.eyebrow != blank -%}<p class="kcat-eyebrow">{{ section.settings.eyebrow | escape }}</p>{%- endif -%}
+      {%- if section.settings.heading != blank -%}<h2 class="kcat-heading">{{ section.settings.heading }}</h2>{%- endif -%}
+    </div>
+    <div class="kcat-layout">
+      {%- if big != blank -%}
+      <a href="{{ big.settings.link | default: '#' }}" class="kcat-card kcat-card--big kcat-card--c1" aria-label="{{ big.settings.title | escape }}" {{ big.shopify_attributes }}>
+        {%- if big.settings.image != blank -%}{{ big.settings.image | image_url: width: 900 | image_tag: widths: '420, 600, 750, 900', sizes: '(max-width: 749px) calc(100vw - 36px), 60vw', class: 'kcat-card-img', loading: 'lazy', decoding: 'async', alt: big.settings.title }}{%- endif -%}
+        <div class="kcat-card-ov">
+          <div class="kcat-card-text">
+            {%- if big.settings.title != blank -%}<h3 class="kcat-card-title">{{ big.settings.title | escape }}</h3>{%- endif -%}
+            {%- if big.settings.subtitle != blank -%}<p class="kcat-card-sub">{{ big.settings.subtitle | escape }}</p>{%- endif -%}
+            {%- if big.settings.price_text != blank -%}<p class="kcat-card-price">{{ big.settings.price_text | escape }}</p>{%- endif -%}
+          </div>
+          <span class="kcat-card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+        </div>
+      </a>
+      {%- endif -%}
+      <div class="kcat-grid">
+        {%- assign colors = 'c2,c3,c4,c5' | split: ',' -%}
+        {%- for block in small_cards limit: 4 -%}
+          {%- assign ci = forloop.index0 | modulo: 4 -%}
+          {%- assign c = colors[ci] -%}
+          <a href="{{ block.settings.link | default: '#' }}" class="kcat-card kcat-card--{{ c }}" aria-label="{{ block.settings.title | escape }}" {{ block.shopify_attributes }}>
+            {%- if block.settings.image != blank -%}{{ block.settings.image | image_url: width: 600 | image_tag: widths: '280, 420, 600', sizes: '(max-width: 749px) calc(100vw - 36px), 30vw', class: 'kcat-card-img', loading: 'lazy', decoding: 'async', alt: block.settings.title }}{%- endif -%}
+            <div class="kcat-card-ov">
+              <div class="kcat-card-text">
+                {%- if block.settings.title != blank -%}<h3 class="kcat-card-title">{{ block.settings.title | escape }}</h3>{%- endif -%}
+                {%- if block.settings.subtitle != blank -%}<p class="kcat-card-sub">{{ block.settings.subtitle | escape }}</p>{%- endif -%}
+                {%- if block.settings.price_text != blank -%}<p class="kcat-card-price">{{ block.settings.price_text | escape }}</p>{%- endif -%}
+              </div>
+              <span class="kcat-card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+            </div>
+          </a>
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</section>
+{% schema %}
+{
+  "name": "Kategori Grid (.ki)",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {"type":"color","id":"bg","label":"Arka plan","default":"#ffffff"},
+    {"type":"text","id":"eyebrow","label":"Üst etiket"},
+    {"type":"richtext","id":"heading","label":"Başlık","default":"<p>Kendine iyi bakman için:</p>"},
+    {"type":"range","id":"padding_top","min":0,"max":100,"step":4,"unit":"px","label":"Üst boşluk","default":56},
+    {"type":"range","id":"padding_bottom","min":0,"max":100,"step":4,"unit":"px","label":"Alt boşluk","default":64}
+  ],
+  "blocks":[
+    {"type":"big_card","name":"Büyük Kart (sol)","limit":1,"settings":[
+      {"type":"image_picker","id":"image","label":"Görsel"},
+      {"type":"text","id":"title","label":"Başlık","default":"Pedler"},
+      {"type":"text","id":"subtitle","label":"Alt metin","default":"Günlük · Gündüz · Gece"},
+      {"type":"text","id":"price_text","label":"Fiyat metni","default":"00₺'den başlayan fiyatlarla"},
+      {"type":"url","id":"link","label":"Link"}
+    ]},
+    {"type":"small_card","name":"Küçük Kart (grid)","limit":4,"settings":[
+      {"type":"image_picker","id":"image","label":"Görsel"},
+      {"type":"text","id":"title","label":"Başlık","default":".ki Balance"},
+      {"type":"text","id":"subtitle","label":"Alt metin","default":"Regl döngüsü · saşe"},
+      {"type":"text","id":"price_text","label":"Fiyat metni","default":"00₺'den başlayan fiyatlarla"},
+      {"type":"url","id":"link","label":"Link"}
+    ]}
+  ],
+  "presets":[{"name":"Kategori Grid (.ki)","blocks":[
+    {"type":"big_card","settings":{"title":"Pedler","subtitle":"Günlük · Gündüz · Gece","price_text":"00₺'den başlayan fiyatlarla"}},
+    {"type":"small_card","settings":{"title":".ki Balance","subtitle":"Regl döngüsü · saşe","price_text":"00₺'den başlayan fiyatlarla"}},
+    {"type":"small_card","settings":{"title":"Bakım Jelleri","subtitle":"Daily · Sens · Flow · 50+","price_text":"00₺'den başlayan fiyatlarla"}},
+    {"type":"small_card","settings":{"title":".ki Change","subtitle":"Menopoz · kapsül","price_text":"00₺'den başlayan fiyatlarla"}},
+    {"type":"small_card","settings":{"title":"Sprey","subtitle":"İntim bakım spreyi","price_text":"00₺'den başlayan fiyatlarla"}}
+  ]}]
+}
+{% endschema %}

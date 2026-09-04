@@ -1,0 +1,3295 @@
+{% comment %}
+  ki-pack-builder — Lovable demo (PaketOlustur.tsx) parite Shopify versiyonu.
+  Mobile-first; admin Shopify product picker üzerinden ürün/görsel/fiyat yönetir.
+  Subscription kontratı: window.ki.subscription + selling_plan + /pages/paket-checkout.
+  Block tipleri:
+    - category : kategori paneli (key, label, description, hint)
+    - product  : Shopify product picker, category_key ile kategoriye bağlanır
+    - frequency: Shopify Selling Plan ID
+    - guarantee: özet altı checklist
+    - step     : "Nasıl çalışır?" adımı
+{% endcomment %}
+
+<section id="ki-{{ section.id }}" class="ki-section ki-pack" data-ki-section="pack">
+  <style>
+    /* ============================================================
+       MOBILE-FIRST (≤ 1023px native) — Lovable PaketOlustur parite
+       ============================================================ */
+
+    /* ============================================================
+       BULLETPROOF OVERFLOW GUARD — ekrandan dışarı HİÇBİR ŞEY çıkamaz,
+       sığmayan otomatik alt satıra düşer (flex-wrap: wrap).
+       ============================================================ */
+    #ki-{{ section.id }} {
+      --ki-primary: #493d9a;
+      --ki-primary-medium: #6254b4;
+      --ki-primary-fg: #ffffff;
+      --ki-secondary: #f0eef9;
+      --ki-card: #ffffff;
+      --ki-border: #e1ddf0;
+      --ki-muted: #6f6978;
+      --ki-bg: #ffffff;
+      background: var(--ki-bg);
+      padding: 24px 0 120px;
+      width: 100%;
+      max-width: 100vw;
+      overflow-x: hidden;
+    }
+    #ki-{{ section.id }}, #ki-{{ section.id }} * {
+      box-sizing: border-box;
+      min-width: 0;
+      max-width: 100%;
+    }
+    #ki-{{ section.id }} > * { max-width: 100vw; }
+    /* Tüm flex container'lar sığmayanı alt satıra düşürür */
+    #ki-{{ section.id }} .ki-pack__cat-head,
+    #ki-{{ section.id }} .ki-pack__cat-title,
+    #ki-{{ section.id }} .ki-pack__sum-head,
+    #ki-{{ section.id }} .ki-pack__item-name,
+    #ki-{{ section.id }} .ki-pack__totals .ki-pack__tot-row,
+    #ki-{{ section.id }} .ki-pack__mode,
+    #ki-{{ section.id }} .ki-pack__ship-row,
+    #ki-{{ section.id }} .ki-pack__guarantees li,
+    #ki-{{ section.id }} .ki-pack__howit li {
+      flex-wrap: wrap !important;
+    }
+    /* Uzun kelimeler kırılabilsin (URL, kategori isim vb.) */
+    #ki-{{ section.id }} .ki-pack__cat-title,
+    #ki-{{ section.id }} .ki-pack__cat-desc,
+    #ki-{{ section.id }} .ki-pack__cat-hint,
+    #ki-{{ section.id }} .ki-pack__item-name,
+    #ki-{{ section.id }} .ki-pack__item-short,
+    #ki-{{ section.id }} .ki-pack__sum-li-name,
+    #ki-{{ section.id }} .ki-pack__sum-li-meta {
+      overflow-wrap: anywhere;
+      word-break: break-word;
+    }
+
+    /* Wrap — kenarlardan 20px sabit nefes, taşma yok */
+    #ki-{{ section.id }} .ki-pack__wrap {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding-inline: 20px !important;
+      width: 100%;
+    }
+
+    /* Grid: mobile tek kolon, desktop 1fr / 400px */
+    #ki-{{ section.id }} .ki-pack__grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+      align-items: start;
+    }
+
+    /* ===== Tabs (yatay pill scroll) — negative margin YOK, container içinde kalır ===== */
+    #ki-{{ section.id }} .ki-pack__tabs {
+      display: flex; gap: 6px;
+      overflow-x: auto;
+      margin: 0 0 16px;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(0,0,0,.08);
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+      max-width: 100%;
+      width: 100%;
+    }
+    #ki-{{ section.id }} .ki-pack__tabs::-webkit-scrollbar { display: none; }
+    #ki-{{ section.id }} .ki-pack__tab {
+      flex-shrink: 0;
+      font-size: 13px; font-weight: 600;
+      padding: 9px 14px;
+      border-radius: 999px;
+      background: var(--ki-secondary, #ebe9f5);
+      color: var(--ki-primary, #3a2d6e);
+      border: 1.5px solid rgba(73,61,154,.08);
+      transition: all .2s ease;
+      white-space: nowrap !important;
+      word-break: normal !important;
+      cursor: pointer;
+    }
+    #ki-{{ section.id }} .ki-pack__tab.is-active {
+      background: var(--ki-primary, #3a2d6e);
+      color: var(--ki-primary-fg, #fff);
+      border-color: var(--ki-primary, #3a2d6e);
+    }
+    #ki-{{ section.id }} .ki-pack__tab-count {
+      display: inline-flex; align-items: center; justify-content: center;
+      min-width: 18px; height: 18px; padding: 0 5px;
+      margin-left: 6px;
+      border-radius: 999px;
+      background: var(--ki-rose, #d96d8a);
+      color: #fff;
+      font-size: 10.5px; font-weight: 700;
+    }
+    #ki-{{ section.id }} .ki-pack__tab-count[data-count="0"] { display: none; }
+    #ki-{{ section.id }} .ki-pack__tab.is-active .ki-pack__tab-count {
+      background: var(--ki-primary-fg, #fff);
+      color: var(--ki-primary, #3a2d6e);
+    }
+
+    /* ===== Categories ===== */
+    #ki-{{ section.id }} .ki-pack__cats {
+      display: flex; flex-direction: column;
+      gap: 14px;
+    }
+    #ki-{{ section.id }} .ki-pack__cat {
+      background: var(--ki-card, #fff);
+      border: 1px solid var(--ki-border, #e6e3ee);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 8px 28px -24px rgba(73,61,154,.45);
+    }
+    #ki-{{ section.id }} .ki-pack__cat-head {
+      width: 100%;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 12px;
+      padding: 18px;
+      text-align: left;
+      background: transparent;
+      border: 0; cursor: pointer;
+      transition: background .15s ease;
+    }
+    #ki-{{ section.id }} .ki-pack__cat-head:hover { background: rgba(0,0,0,.02); }
+    #ki-{{ section.id }} .ki-pack__cat-title {
+      font-family: var(--ki-font-primary, serif);
+      font-size: 20px; line-height: 1.15;
+      font-weight: 500;
+      color: var(--ki-primary, #3a2d6e);
+      margin: 0;
+      display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+    }
+    #ki-{{ section.id }} .ki-pack__cat-count {
+      display: inline-flex; align-items: center; justify-content: center;
+      min-width: 22px; height: 22px; padding: 0 6px;
+      border-radius: 999px;
+      background: var(--ki-rose, #d96d8a);
+      color: #fff;
+      font-size: 11px; font-weight: 700;
+    }
+    #ki-{{ section.id }} .ki-pack__cat-count[data-count="0"] { display: none; }
+    #ki-{{ section.id }} .ki-pack__cat-desc {
+      font-size: 12.5px; line-height: 1.4;
+      color: var(--ki-muted, #5a5a5a);
+      margin: 4px 0 0;
+    }
+    #ki-{{ section.id }} .ki-pack__chev {
+      width: 20px; height: 20px;
+      color: var(--ki-primary, #3a2d6e);
+      flex-shrink: 0;
+      transition: transform .3s ease;
+    }
+    #ki-{{ section.id }} .ki-pack__cat[data-open="true"] .ki-pack__chev {
+      transform: rotate(180deg);
+    }
+    #ki-{{ section.id }} .ki-pack__cat-body {
+      display: none;
+      border-top: 1px solid var(--ki-border, #e6e3ee);
+    }
+    #ki-{{ section.id }} .ki-pack__cat[data-open="true"] .ki-pack__cat-body {
+      display: block;
+    }
+
+    /* ===== Items — 2-satırlı grid: image+info üstte, stepper altta right-aligned ===== */
+    #ki-{{ section.id }} .ki-pack__items {
+      display: flex; flex-direction: column;
+    }
+    #ki-{{ section.id }} .ki-pack__item {
+      display: grid !important;
+      grid-template-columns: 56px minmax(0, 1fr) !important;
+      grid-template-areas:
+        "img info"
+        "img stepper" !important;
+      gap: 6px 14px;
+      padding: 14px 18px;
+      align-items: start;
+      border-bottom: 1px solid var(--ki-border, #e6e3ee);
+      transition: background .15s ease;
+      width: 100%;
+      max-width: 100%;
+    }
+    #ki-{{ section.id }} .ki-pack__item:last-child { border-bottom: 0; }
+    #ki-{{ section.id }} .ki-pack__item.is-selected {
+      background: rgba(73,61,154,.06);
+    }
+    #ki-{{ section.id }} .ki-pack__item.is-unavailable {
+      opacity: .62;
+    }
+    #ki-{{ section.id }} .ki-pack__item-img {
+      grid-area: img;
+      width: 56px; height: 56px;
+      border-radius: 12px;
+      overflow: hidden;
+      background: var(--ki-secondary, #ebe9f5);
+      border: 1px solid var(--ki-border, #e6e3ee);
+      flex-shrink: 0;
+      align-self: center;
+    }
+    #ki-{{ section.id }} .ki-pack__item-img img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    #ki-{{ section.id }} .ki-pack__item-img-placeholder {
+      width: 100%; height: 100%;
+      display: grid; place-items: center;
+      color: var(--ki-muted, #6b6360);
+    }
+    #ki-{{ section.id }} .ki-pack__item-info {
+      grid-area: info;
+      min-width: 0;
+      overflow: hidden;
+    }
+    #ki-{{ section.id }} .ki-pack__item-name {
+      font-size: 14px; font-weight: 600;
+      line-height: 1.25;
+      color: var(--ki-primary, #3a2d6e);
+      display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
+      margin: 0;
+    }
+    #ki-{{ section.id }} .ki-pack__item-name > span:first-child {
+      display: -webkit-box;
+      -webkit-line-clamp: 1;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    #ki-{{ section.id }} .ki-pack__pad-size {
+      width: 48px;
+      height: 24px;
+      flex: 0 0 48px;
+      overflow: visible;
+      color: var(--ki-primary, #493d9a);
+    }
+    #ki-{{ section.id }} .ki-pack__pad-shape {
+      fill: rgba(73,61,154,.05);
+      stroke: currentColor;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      opacity: .42;
+      vector-effect: non-scaling-stroke;
+    }
+    #ki-{{ section.id }} .ki-pack__pad-shape.is-active {
+      fill: currentColor;
+      opacity: 1;
+    }
+    #ki-{{ section.id }} .ki-pack__item-badge {
+      font-size: 9px; font-weight: 700;
+      letter-spacing: .04em; text-transform: uppercase;
+      padding: 2px 6px;
+      border-radius: 4px;
+      background: var(--ki-rose-light, #f6dce4);
+      color: var(--ki-rose, #d96d8a);
+      flex-shrink: 0;
+    }
+    #ki-{{ section.id }} .ki-pack__item-short {
+      font-size: 11.5px; line-height: 1.4;
+      color: var(--ki-muted, #5a5a5a);
+      margin: 3px 0 0;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    #ki-{{ section.id }} .ki-pack__item-price {
+      font-size: 13px; font-weight: 600;
+      color: var(--ki-primary, #3a2d6e);
+      margin: 4px 0 0;
+    }
+    #ki-{{ section.id }} .ki-pack__item-price small {
+      font-size: 10.5px; font-weight: 500;
+      color: var(--ki-muted, #5a5a5a);
+      margin-left: 3px;
+    }
+    #ki-{{ section.id }} .ki-pack__item-price s {
+      color: var(--ki-muted, #5a5a5a);
+      font-size: 11px;
+      font-weight: 500;
+      margin-left: 4px;
+    }
+    #ki-{{ section.id }} .ki-pack__item-discount {
+      display: inline-block;
+      margin-top: 3px;
+      color: #287457;
+      font-size: 10px;
+      font-weight: 700;
+    }
+    #ki-{{ section.id }} .ki-pack__bundle {
+      display: grid;
+      grid-template-columns: 76px minmax(0,1fr);
+      gap: 10px 14px;
+      padding: 16px 18px;
+      border-bottom: 1px solid var(--ki-border, #e6e3ee);
+      background: linear-gradient(135deg, rgba(73,61,154,.055), rgba(255,255,255,.98));
+    }
+    #ki-{{ section.id }} .ki-pack__bundle:last-child { border-bottom: 0; }
+    #ki-{{ section.id }} .ki-pack__bundle-media {
+      display: flex;
+      align-items: center;
+      width: 76px;
+      min-height: 70px;
+      padding-left: 10px;
+    }
+    #ki-{{ section.id }} .ki-pack__bundle-media img {
+      width: 42px;
+      height: 58px;
+      margin-left: -10px;
+      border: 2px solid #fff;
+      border-radius: 10px;
+      object-fit: cover;
+      box-shadow: 0 7px 18px rgba(42,31,94,.15);
+    }
+    #ki-{{ section.id }} .ki-pack__bundle-info { min-width: 0; }
+    #ki-{{ section.id }} .ki-pack__bundle-title {
+      margin: 0;
+      color: var(--ki-primary, #3a2d6e);
+      font-size: 15px;
+      font-weight: 800;
+      line-height: 1.25;
+    }
+    #ki-{{ section.id }} .ki-pack__bundle-copy {
+      margin: 4px 0 0;
+      color: var(--ki-muted, #5a5a5a);
+      font-size: 11px;
+      line-height: 1.4;
+    }
+    #ki-{{ section.id }} .ki-pack__bundle-products {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin: 8px 0 0;
+    }
+    #ki-{{ section.id }} .ki-pack__bundle-products span {
+      padding: 4px 6px;
+      border-radius: 7px;
+      background: #f0eef9;
+      color: #554a97;
+      font-size: 9px;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+    #ki-{{ section.id }} .ki-pack__bundle-footer {
+      grid-column: 1 / -1;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    #ki-{{ section.id }} .ki-pack__bundle-price { color: var(--ki-primary, #3a2d6e); }
+    #ki-{{ section.id }} .ki-pack__bundle-price strong { font-size: 15px; }
+    #ki-{{ section.id }} .ki-pack__bundle-price s { margin-left: 5px; color: var(--ki-muted, #6b6360); font-size: 10px; }
+    #ki-{{ section.id }} .ki-pack__bundle-price small { display: block; margin-top: 2px; color: #287457; font-size: 9px; font-weight: 800; }
+    #ki-{{ section.id }} .ki-pack__bundle-apply {
+      min-height: 36px;
+      padding: 8px 13px;
+      border: 0;
+      border-radius: 999px;
+      background: var(--ki-primary, #3a2d6e);
+      color: #fff;
+      font: inherit;
+      font-size: 10px;
+      font-weight: 800;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    #ki-{{ section.id }} .ki-pack__bundle-apply.is-applied { background: #287457; }
+    #ki-{{ section.id }} .ki-pack__bundle-apply:disabled { cursor: not-allowed; opacity: .45; }
+
+    /* ===== Stepper — 2-row layout'ta alt satır, sağa hizalı ===== */
+    #ki-{{ section.id }} .ki-pack__stepper {
+      grid-area: stepper;
+      justify-self: end;
+      display: inline-flex;
+      align-items: center; justify-content: space-between; gap: 2px;
+      width: 112px;
+      min-width: 112px;
+      padding: 3px;
+      background: var(--ki-card, #fff);
+      border: 1px solid var(--ki-border, #e6e3ee);
+      border-radius: 999px;
+      flex-shrink: 0;
+      margin-top: 6px;
+      box-shadow: 0 4px 14px rgba(73,61,154,.08);
+    }
+    #ki-{{ section.id }} .ki-pack__stepper button {
+      width: 32px; height: 32px;
+      border: 0; border-radius: 50%;
+      display: grid; place-items: center;
+      cursor: pointer;
+      transition: opacity .15s, background .15s;
+      white-space: nowrap !important;
+    }
+    #ki-{{ section.id }} .ki-pack__step-minus {
+      background: transparent;
+      color: var(--ki-primary, #3a2d6e);
+    }
+    #ki-{{ section.id }} .ki-pack__step-minus:hover:not(:disabled) {
+      background: var(--ki-secondary, #ebe9f5);
+    }
+    #ki-{{ section.id }} .ki-pack__step-minus:disabled {
+      opacity: .3; cursor: not-allowed;
+    }
+    #ki-{{ section.id }} .ki-pack__step-plus {
+      background: var(--ki-primary, #3a2d6e);
+      color: var(--ki-primary-fg, #fff);
+    }
+    #ki-{{ section.id }} .ki-pack__step-plus:hover {
+      background: var(--ki-primary-medium, #5946b3);
+    }
+    #ki-{{ section.id }} .ki-pack__step-qty {
+      min-width: 32px; height: 32px;
+      display: grid; place-items: center;
+      text-align: center;
+      font-size: 14px; font-weight: 800;
+      line-height: 1;
+      color: #493d9a;
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap !important;
+      opacity: 1;
+      visibility: visible;
+    }
+
+    /* ===== Category hint (sage) ===== */
+    #ki-{{ section.id }} .ki-pack__cat-hint {
+      display: flex; gap: 10px; align-items: flex-start;
+      padding: 12px 18px;
+      background: var(--ki-sage-light, #dde8d4);
+      border-top: 1px solid rgba(0,0,0,.06);
+      font-size: 11.5px; line-height: 1.45;
+      color: var(--ki-sage, #5d7a52);
+    }
+    #ki-{{ section.id }} .ki-pack__cat-hint > span:first-child { flex-shrink: 0; }
+    #ki-{{ section.id }} .ki-pack__cat-hint-copy { display: grid; gap: 2px; }
+    #ki-{{ section.id }} .ki-pack__cat-hint-title {
+      color: #347154;
+      font-size: 9px;
+      line-height: 1.2;
+      font-weight: 800;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+    #ki-{{ section.id }} .ki-pack__ped-modes {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+      padding: 14px 18px 8px;
+      border-top: 1px solid var(--ki-border, #e6e3ee);
+      background: #faf9ff;
+    }
+    #ki-{{ section.id }} .ki-pack__ped-mode {
+      min-height: 42px;
+      padding: 9px 12px;
+      border: 1px solid rgba(73,61,154,.18);
+      border-radius: 12px;
+      background: #fff;
+      color: var(--ki-primary, #493d9a);
+      font: inherit;
+      font-size: 11px;
+      line-height: 1.25;
+      font-weight: 750;
+      cursor: pointer;
+      transition: background .16s ease, border-color .16s ease, color .16s ease;
+    }
+    #ki-{{ section.id }} .ki-pack__ped-mode.is-active {
+      border-color: var(--ki-primary, #493d9a);
+      background: var(--ki-primary, #493d9a);
+      color: #fff;
+    }
+    #ki-{{ section.id }} .ki-pack__ped-mode-note {
+      margin: 0;
+      padding: 0 18px 12px;
+      background: #faf9ff;
+      color: var(--ki-muted, #5a5a5a);
+      font-size: 10.5px;
+      line-height: 1.4;
+    }
+
+    /* ===== Summary card ===== */
+    #ki-{{ section.id }} .ki-pack__summary-wrap {
+      position: relative;
+      isolation: isolate;
+    }
+    #ki-{{ section.id }} .ki-pack__summary-wrap::before {
+      content: "";
+      position: absolute;
+      z-index: -1;
+      inset: -16px;
+      border-radius: 32px;
+      background: radial-gradient(circle at 50% 18%, rgba(112,91,231,.34), rgba(73,61,154,.13) 48%, transparent 76%);
+      filter: blur(24px);
+      pointer-events: none;
+    }
+    #ki-{{ section.id }} .ki-pack__summary {
+      position: relative;
+      z-index: 1;
+      background: var(--ki-card, #fff);
+      border: 1px solid var(--ki-border, #e6e3ee);
+      border-radius: 18px;
+      padding: 20px;
+      box-shadow: 0 20px 58px -34px rgba(73,61,154,.62);
+    }
+    #ki-{{ section.id }} .ki-pack__sum-head {
+      display: flex; justify-content: space-between; align-items: center;
+      gap: 8px;
+      margin-bottom: 4px;
+      flex-wrap: wrap;
+    }
+    #ki-{{ section.id }} .ki-pack__sum-title {
+      font-family: var(--ki-font-primary, serif);
+      font-size: 22px; font-weight: 500;
+      color: var(--ki-primary, #3a2d6e);
+      margin: 0;
+    }
+    #ki-{{ section.id }} .ki-pack__sum-pill {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 10.5px; font-weight: 700;
+      color: var(--ki-sage, #5d7a52);
+      background: var(--ki-sage-light, #dde8d4);
+      padding: 4px 9px;
+      border-radius: 999px;
+      white-space: nowrap !important;
+    }
+    #ki-{{ section.id }} .ki-pack__frequency {
+      margin: 12px 0 0;
+      padding: 10px;
+      border: 1px solid #cfe5d8;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #f4fbf7, #edf8f1);
+    }
+    #ki-{{ section.id }} .ki-pack__frequency-label {
+      display: block;
+      margin: 0 0 7px;
+      color: #2f765b;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: .08em;
+      line-height: 1.2;
+      text-transform: uppercase;
+    }
+    #ki-{{ section.id }} .ki-pack__frequency-options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      padding: 1px 1px 4px;
+    }
+    #ki-{{ section.id }} .ki-pack__frequency-options::-webkit-scrollbar { display: none; }
+    #ki-{{ section.id }} .ki-pack__frequency-option {
+      min-width: 58px;
+      min-height: 36px;
+      flex: 1 0 auto;
+      scroll-snap-align: start;
+      border: 1px solid #c7dfd0;
+      border-radius: 999px;
+      background: rgba(255,255,255,.9);
+      color: #34775e;
+      padding: 7px 10px;
+      font: inherit;
+      font-size: 11px;
+      font-weight: 750;
+      line-height: 1;
+      white-space: nowrap !important;
+      cursor: pointer;
+      transition: background .15s ease, border-color .15s ease, color .15s ease, transform .15s ease;
+    }
+    #ki-{{ section.id }} .ki-pack__frequency-option:hover:not(:disabled) { transform: translateY(-1px); }
+    #ki-{{ section.id }} .ki-pack__frequency-option.is-active {
+      border-color: #34775e;
+      background: #34775e;
+      color: #fff;
+      box-shadow: 0 5px 14px -8px rgba(32,97,71,.9);
+    }
+    #ki-{{ section.id }} .ki-pack__frequency-option:disabled {
+      opacity: .38;
+      cursor: not-allowed;
+      text-decoration: line-through;
+    }
+    #ki-{{ section.id }} .ki-pack__frequency-note {
+      margin: 5px 1px 0;
+      color: #557065;
+      font-size: 9.5px;
+      line-height: 1.35;
+    }
+    #ki-{{ section.id }} .ki-pack__frequency-note.is-warning { color: #8a6232; }
+    #ki-{{ section.id }} .ki-pack__sum-meta {
+      font-size: 12px;
+      color: var(--ki-muted, #5a5a5a);
+      margin: 0;
+    }
+    #ki-{{ section.id }} .ki-pack__sum-list {
+      list-style: none; padding: 0;
+      margin: 16px 0 0;
+      max-height: 240px;
+      overflow-y: auto;
+      display: flex; flex-direction: column; gap: 10px;
+    }
+    #ki-{{ section.id }} .ki-pack__sum-li {
+      display: grid;
+      grid-template-columns: 40px minmax(0,1fr) auto;
+      grid-template-rows: auto auto;
+      column-gap: 10px;
+      row-gap: 4px;
+      align-items: center;
+    }
+    #ki-{{ section.id }} .ki-pack__sum-li-img {
+      grid-column: 1;
+      grid-row: 1;
+      position: relative;
+      width: 40px; height: 40px;
+      border-radius: 10px;
+      overflow: hidden;
+      background: var(--ki-secondary, #ebe9f5);
+      flex-shrink: 0;
+    }
+    #ki-{{ section.id }} .ki-pack__sum-li-img img {
+      width: 100%; height: 100%;
+      object-fit: cover; display: block;
+      border-radius: 10px;
+    }
+    #ki-{{ section.id }} .ki-pack__sum-li-qty {
+      grid-column: 1;
+      grid-row: 2;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      min-height: 18px;
+      padding: 3px 4px;
+      border-radius: 999px;
+      background: rgba(73,61,154,.10);
+      color: var(--ki-primary, #3a2d6e);
+      font-size: 8px;
+      line-height: 1;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+    #ki-{{ section.id }} .ki-pack__sum-li-info {
+      grid-column: 2;
+      grid-row: 1 / 3;
+      min-width: 0;
+    }
+    #ki-{{ section.id }} .ki-pack__sum-li-name {
+      font-size: 12.5px; font-weight: 600;
+      color: var(--ki-primary, #3a2d6e);
+      line-height: 1.2;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    #ki-{{ section.id }} .ki-pack__sum-li-meta {
+      font-size: 11px;
+      color: var(--ki-muted, #5a5a5a);
+      margin-top: 2px;
+    }
+    #ki-{{ section.id }} .ki-pack__sum-li-total {
+      grid-column: 3;
+      grid-row: 1;
+      justify-self: end;
+      font-size: 12.5px; font-weight: 700;
+      color: var(--ki-primary, #3a2d6e);
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+      margin: 0;
+    }
+    #ki-{{ section.id }} .ki-pack__sum-li-remove {
+      grid-column: 3;
+      grid-row: 2;
+      justify-self: end;
+      width: 28px;
+      height: 28px;
+      flex: 0 0 28px;
+      display: grid;
+      place-items: center;
+      border: 1px solid var(--ki-border, #e6e3ee);
+      border-radius: 50%;
+      background: #fff;
+      color: var(--ki-primary, #493d9a);
+      cursor: pointer;
+      transition: background .15s ease, color .15s ease;
+    }
+    #ki-{{ section.id }} .ki-pack__sum-li-remove:hover {
+      background: var(--ki-primary, #493d9a);
+      color: #fff;
+    }
+    #ki-{{ section.id }} .ki-pack__sum-li-remove svg {
+      width: 13px;
+      height: 13px;
+      pointer-events: none;
+    }
+
+    /* Subscriber benefits */
+    #ki-{{ section.id }} .ki-pack__benefits {
+      display: grid;
+      gap: 8px;
+      margin-top: 16px;
+    }
+    #ki-{{ section.id }} .ki-pack__benefit {
+      min-height: 48px;
+      padding: 11px 12px;
+      border: 1px solid rgba(73,61,154,.08);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--ki-primary, #3a2d6e);
+    }
+    #ki-{{ section.id }} .ki-pack__ship {
+      width: fit-content;
+      min-height: 0;
+      justify-self: start;
+      padding: 0;
+      gap: 5px;
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+      font-size: 10.5px; font-weight: 650;
+    }
+    #ki-{{ section.id }} .ki-pack__ship .ki-pack__benefit-icon {
+      width: 18px;
+      height: 18px;
+      flex-basis: 18px;
+      border-radius: 0;
+      background: transparent;
+    }
+    #ki-{{ section.id }} .ki-pack__ship .ki-pack__benefit-icon svg {
+      width: 14px;
+      height: 14px;
+    }
+    #ki-{{ section.id }} .ki-pack__shipping-progress {
+      padding: 12px 13px 10px;
+      border: 1px solid rgba(73,61,154,.12);
+      border-radius: 14px;
+      background: linear-gradient(135deg, rgba(247,245,255,.96), rgba(239,236,255,.88));
+      transition: border-color .2s ease, background .2s ease, box-shadow .2s ease;
+    }
+    #ki-{{ section.id }} .ki-pack__shipping-progress.is-free {
+      border-color: rgba(39,126,91,.24);
+      background: linear-gradient(135deg, #f0fbf6, #e1f6eb);
+      box-shadow: 0 8px 24px rgba(39,126,91,.08);
+    }
+    #ki-{{ section.id }} .ki-pack__shipping-progress .ki-pack__ship {
+      width: 100%;
+      font-size: 11.5px;
+      line-height: 1.35;
+    }
+    #ki-{{ section.id }} .ki-pack__shipping-track {
+      position: relative;
+      height: 8px;
+      margin: 12px 2px 0;
+      border-radius: 999px;
+      background: rgba(73,61,154,.12);
+      overflow: visible;
+    }
+    #ki-{{ section.id }} .ki-pack__shipping-fill {
+      position: absolute;
+      inset: 0 auto 0 0;
+      width: 0;
+      border-radius: inherit;
+      background: linear-gradient(90deg, #493d9a 0%, #7464d7 72%, #2f8b67 100%);
+      box-shadow: 0 0 12px rgba(98,84,180,.24);
+      transition: width .35s cubic-bezier(.2,.75,.25,1);
+    }
+    #ki-{{ section.id }} .ki-pack__shipping-progress.is-free .ki-pack__shipping-fill {
+      background: linear-gradient(90deg, #493d9a 0%, #6254b4 48%, #2f8b67 100%);
+      box-shadow: 0 0 14px rgba(39,126,91,.28);
+    }
+    #ki-{{ section.id }} .ki-pack__shipping-marker {
+      position: absolute;
+      z-index: 1;
+      top: 50%;
+      width: 14px;
+      height: 14px;
+      border: 3px solid #fff;
+      border-radius: 50%;
+      background: #d3cee9;
+      box-shadow: 0 0 0 1px rgba(73,61,154,.18);
+      transform: translate(-50%, -50%);
+      transition: background .2s ease, transform .2s ease;
+    }
+    #ki-{{ section.id }} .ki-pack__shipping-marker--free {
+      left: 100%;
+    }
+    #ki-{{ section.id }} .ki-pack__shipping-marker.is-reached {
+      background: #2f8b67;
+      transform: translate(-50%, -50%) scale(1.08);
+    }
+    #ki-{{ section.id }} .ki-pack__shipping-labels {
+      position: relative;
+      min-height: 29px;
+      margin-top: 6px;
+      color: var(--ki-muted, #6f6978);
+      font-size: 8.5px;
+      line-height: 1.2;
+    }
+    #ki-{{ section.id }} .ki-pack__shipping-label {
+      position: absolute;
+      top: 0;
+      display: grid;
+      gap: 1px;
+      white-space: nowrap;
+    }
+    #ki-{{ section.id }} .ki-pack__shipping-label strong {
+      color: var(--ki-primary, #493d9a);
+      font-size: 9.5px;
+      font-weight: 800;
+    }
+    #ki-{{ section.id }} .ki-pack__shipping-label--fee {
+      left: 0;
+      text-align: left;
+    }
+    #ki-{{ section.id }} .ki-pack__shipping-label--free {
+      right: 0;
+      text-align: right;
+    }
+    #ki-{{ section.id }} .ki-pack__shipping-progress.is-free .ki-pack__shipping-label--free strong {
+      color: #277e5b;
+    }
+    #ki-{{ section.id }} .ki-pack__benefit-icon {
+      width: 30px;
+      height: 30px;
+      flex: 0 0 30px;
+      display: grid;
+      place-items: center;
+      border-radius: 10px;
+      background: rgba(255,255,255,.7);
+      color: var(--ki-primary, #3a2d6e);
+    }
+    #ki-{{ section.id }} .ki-pack__benefit-icon svg { flex-shrink: 0; }
+    #ki-{{ section.id }} .ki-pack__benefit--pharmacist {
+      align-items: flex-start;
+      background: linear-gradient(135deg, #f4f2ff 0%, #eeebff 100%);
+      border-color: rgba(73,61,154,.14);
+    }
+    #ki-{{ section.id }} .ki-pack__benefit-content {
+      flex: 1;
+      min-width: 0;
+    }
+    #ki-{{ section.id }} .ki-pack__benefit-title {
+      display: block;
+      font-size: 11.5px;
+      line-height: 1.3;
+      font-weight: 750;
+    }
+    #ki-{{ section.id }} .ki-pack__benefit-copy {
+      display: block;
+      margin-top: 2px;
+      color: var(--ki-muted, #6f6978);
+      font-size: 10.5px;
+      line-height: 1.4;
+    }
+    #ki-{{ section.id }} .ki-pack__benefit-info {
+      width: 28px;
+      height: 28px;
+      flex: 0 0 28px;
+      display: grid;
+      place-items: center;
+      margin: 1px 0 0 auto;
+      padding: 0;
+      border: 1px solid rgba(73,61,154,.2);
+      border-radius: 50%;
+      background: rgba(255,255,255,.82);
+      color: var(--ki-primary, #3a2d6e);
+      font: inherit;
+      font-size: 13px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: transform .15s ease, background .15s ease;
+    }
+    #ki-{{ section.id }} .ki-pack__benefit-info:hover {
+      transform: translateY(-1px);
+      background: #fff;
+    }
+    #ki-{{ section.id }} .ki-pack__benefit-info:focus-visible {
+      outline: 2px solid var(--ki-primary-medium, #6254b4);
+      outline-offset: 2px;
+    }
+
+    #ki-pack-pharmacist-dialog-{{ section.id }} {
+      position: fixed;
+      inset: 0;
+      z-index: 10001;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background: rgba(25,18,54,.58);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      box-sizing: border-box;
+      overscroll-behavior: contain;
+    }
+    #ki-pack-pharmacist-dialog-{{ section.id }} * { box-sizing: border-box; }
+    #ki-pack-pharmacist-dialog-{{ section.id }}.is-open { display: flex; }
+    #ki-pack-pharmacist-dialog-{{ section.id }} .ki-pack__pharmacist-panel {
+      position: relative;
+      width: min(100%, 460px);
+      max-height: calc(100dvh - 40px);
+      overflow: hidden;
+      border: 1px solid rgba(78,62,168,.16);
+      border-radius: 24px;
+      background: #fff;
+      box-shadow: 0 24px 70px rgba(31,23,70,.26);
+    }
+    #ki-pack-pharmacist-dialog-{{ section.id }} .ki-pack__pharmacist-close {
+      position: absolute;
+      z-index: 1;
+      top: 12px;
+      right: 12px;
+      width: 36px;
+      height: 36px;
+      display: grid;
+      place-items: center;
+      padding: 0;
+      border: 1px solid rgba(73,61,154,.14);
+      border-radius: 50%;
+      background: rgba(255,255,255,.92);
+      color: var(--ki-primary, #3a2d6e);
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(31,23,70,.1);
+    }
+    #ki-pack-pharmacist-dialog-{{ section.id }} .ki-pack__pharmacist-media {
+      aspect-ratio: 16 / 9;
+      background: linear-gradient(135deg, #eeebff, #dcd6ff);
+    }
+    #ki-pack-pharmacist-dialog-{{ section.id }} .ki-pack__pharmacist-media img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+    }
+    #ki-pack-pharmacist-dialog-{{ section.id }} .ki-pack__pharmacist-body {
+      padding: 22px 64px 26px 24px;
+      overflow-y: auto;
+    }
+    #ki-pack-pharmacist-dialog-{{ section.id }} .ki-pack__pharmacist-media + .ki-pack__pharmacist-body {
+      padding-right: 24px;
+    }
+    #ki-pack-pharmacist-dialog-{{ section.id }} .ki-pack__pharmacist-kicker {
+      margin: 0 0 7px;
+      color: var(--ki-primary-medium, #6254b4);
+      font-size: 10.5px;
+      font-weight: 800;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+    }
+    #ki-pack-pharmacist-dialog-{{ section.id }} .ki-pack__pharmacist-title {
+      margin: 0;
+      color: var(--ki-primary, #3a2d6e);
+      font-family: var(--ki-font-primary, 'Raleway', sans-serif);
+      font-size: 24px;
+      font-weight: 750;
+      line-height: 1.18;
+    }
+    #ki-pack-pharmacist-dialog-{{ section.id }} .ki-pack__pharmacist-copy {
+      margin: 11px 0 0;
+      color: var(--ki-muted, #6f6978);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+    @media (max-width: 480px) {
+      #ki-pack-pharmacist-dialog-{{ section.id }} {
+        align-items: flex-end;
+        padding: 0;
+      }
+      #ki-pack-pharmacist-dialog-{{ section.id }} .ki-pack__pharmacist-panel {
+        width: 100%;
+        max-height: min(82dvh, 720px);
+        overflow-y: auto;
+        border-width: 1px 0 0;
+        border-radius: 22px 22px 0 0;
+      }
+      #ki-pack-pharmacist-dialog-{{ section.id }} .ki-pack__pharmacist-close {
+        position: sticky;
+        float: right;
+        top: 10px;
+        right: 10px;
+        margin: 10px 10px -46px 0;
+      }
+      #ki-pack-pharmacist-dialog-{{ section.id }} .ki-pack__pharmacist-media { aspect-ratio: 16 / 8.5; }
+      #ki-pack-pharmacist-dialog-{{ section.id }} .ki-pack__pharmacist-body,
+      #ki-pack-pharmacist-dialog-{{ section.id }} .ki-pack__pharmacist-media + .ki-pack__pharmacist-body {
+        padding: 18px 18px max(24px, env(safe-area-inset-bottom));
+      }
+      #ki-pack-pharmacist-dialog-{{ section.id }} .ki-pack__pharmacist-title { font-size: 21px; }
+      #ki-pack-pharmacist-dialog-{{ section.id }} .ki-pack__pharmacist-copy { font-size: 13px; }
+    }
+
+    /* Removed / suggested helper sections */
+    #ki-{{ section.id }} .ki-pack__helper {
+      display: none;
+      margin-top: 18px;
+      padding-top: 16px;
+      border-top: 1px solid rgba(0,0,0,.08);
+    }
+    #ki-{{ section.id }} .ki-pack__helper.is-visible { display: block; }
+    #ki-{{ section.id }} .ki-pack__helper-title {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 11px; font-weight: 700;
+      letter-spacing: .08em; text-transform: uppercase;
+      color: var(--ki-muted, #5a5a5a);
+      margin: 0 0 10px;
+    }
+    #ki-{{ section.id }} .ki-pack__helper-title svg { flex-shrink: 0; }
+    #ki-{{ section.id }} .ki-pack__helper-list {
+      list-style: none; padding: 0; margin: 0;
+      display: flex; flex-direction: column; gap: 8px;
+    }
+    #ki-{{ section.id }} .ki-pack__helper-li {
+      display: flex; align-items: center; gap: 10px;
+      min-width: 0;
+    }
+    #ki-{{ section.id }} .ki-pack__helper-img {
+      width: 32px; height: 32px;
+      border-radius: 8px;
+      overflow: hidden;
+      background: var(--ki-secondary, #ebe9f5);
+      border: 1px solid var(--ki-border, #e6e3ee);
+      flex-shrink: 0;
+    }
+    #ki-{{ section.id }} .ki-pack__helper-img img {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+    }
+    #ki-{{ section.id }} .ki-pack__helper-info { flex: 1; min-width: 0; }
+    #ki-{{ section.id }} .ki-pack__helper-name {
+      font-size: 12px; font-weight: 600;
+      color: rgba(58,45,110,.75);
+      line-height: 1.2;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    #ki-{{ section.id }} .ki-pack__helper-price {
+      font-size: 10.5px;
+      color: var(--ki-muted, #5a5a5a);
+      margin-top: 2px;
+    }
+    #ki-{{ section.id }} .ki-pack__helper-btn {
+      flex-shrink: 0;
+      border: 0; background: transparent;
+      padding: 5px 10px;
+      border-radius: 8px;
+      font-size: 11px; font-weight: 700;
+      color: var(--ki-primary, #3a2d6e);
+      cursor: pointer;
+      white-space: nowrap !important;
+      transition: background .15s ease, color .15s ease;
+    }
+    #ki-{{ section.id }} .ki-pack__helper-btn:hover {
+      background: var(--ki-secondary, #ebe9f5);
+    }
+    #ki-{{ section.id }} .ki-pack__helper--suggested .ki-pack__helper-btn {
+      color: var(--ki-sage, #5d7a52);
+    }
+
+    /* Naming dialog */
+    #ki-{{ section.id }} .ki-pack__dialog {
+      display: none;
+      position: fixed; inset: 0;
+      z-index: 200;
+      background: rgba(58,45,110,.45);
+      align-items: center; justify-content: center;
+      padding: 20px;
+    }
+    #ki-{{ section.id }} .ki-pack__dialog.is-open { display: flex; }
+    #ki-{{ section.id }} .ki-pack__dialog-panel {
+      width: 100%; max-width: 420px;
+      background: var(--ki-card, #fff);
+      border-radius: 18px;
+      padding: 22px;
+      box-shadow: 0 20px 60px -20px rgba(58,45,110,.4);
+    }
+    #ki-{{ section.id }} .ki-pack__dialog-title {
+      font-family: var(--ki-font-primary, serif);
+      font-size: 20px; font-weight: 500;
+      color: var(--ki-primary, #3a2d6e);
+      margin: 0 0 6px;
+    }
+    #ki-{{ section.id }} .ki-pack__dialog-desc {
+      font-size: 12.5px; line-height: 1.45;
+      color: var(--ki-muted, #5a5a5a);
+      margin: 0 0 16px;
+    }
+    #ki-{{ section.id }} .ki-pack__dialog-input {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid rgba(0,0,0,.12);
+      border-radius: 12px;
+      background: var(--ki-card, #fff);
+      color: var(--ki-primary, #3a2d6e);
+      font-size: 14px; font-weight: 500;
+      outline: none;
+      transition: border-color .15s ease, box-shadow .15s ease;
+    }
+    #ki-{{ section.id }} .ki-pack__dialog-input:focus {
+      border-color: var(--ki-primary, #3a2d6e);
+      box-shadow: 0 0 0 3px rgba(58,45,110,.15);
+    }
+    #ki-{{ section.id }} .ki-pack__dialog-actions {
+      display: flex; gap: 8px;
+      margin-top: 16px;
+    }
+    #ki-{{ section.id }} .ki-pack__dialog-cancel,
+    #ki-{{ section.id }} .ki-pack__dialog-confirm {
+      flex: 1;
+      padding: 12px 14px;
+      border: 0; border-radius: 999px;
+      font-size: 13px; font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap !important;
+      transition: opacity .15s, background .15s;
+    }
+    #ki-{{ section.id }} .ki-pack__dialog-cancel {
+      background: var(--ki-secondary, #ebe9f5);
+      color: var(--ki-primary, #3a2d6e);
+    }
+    #ki-{{ section.id }} .ki-pack__dialog-confirm {
+      background: var(--ki-primary, #3a2d6e);
+      color: var(--ki-primary-fg, #fff);
+    }
+    #ki-{{ section.id }} .ki-pack__dialog-confirm:disabled { opacity: .4; cursor: not-allowed; }
+
+    /* Totals */
+    #ki-{{ section.id }} .ki-pack__totals {
+      margin-top: 14px;
+      font-size: 13px;
+    }
+    #ki-{{ section.id }} .ki-pack__tot-row {
+      display: flex; justify-content: space-between;
+      padding: 5px 0;
+    }
+    #ki-{{ section.id }} .ki-pack__tot-row dt {
+      color: var(--ki-muted, #5a5a5a);
+    }
+    #ki-{{ section.id }} .ki-pack__tot-row dd {
+      font-weight: 600;
+      color: var(--ki-primary, #3a2d6e);
+      margin: 0;
+      font-variant-numeric: tabular-nums;
+    }
+    #ki-{{ section.id }} .ki-pack__tot-grand {
+      padding-top: 10px;
+      border-top: 1px solid rgba(0,0,0,.08);
+      margin-top: 4px;
+    }
+    #ki-{{ section.id }} .ki-pack__tot-grand dt {
+      font-family: var(--ki-font-primary, serif);
+      font-size: 16px; font-weight: 500;
+      color: var(--ki-primary, #3a2d6e);
+    }
+    #ki-{{ section.id }} .ki-pack__tot-grand dd {
+      font-family: var(--ki-font-primary, serif);
+      font-size: 20px; font-weight: 500;
+    }
+    #ki-{{ section.id }} .ki-pack__referral {
+      margin-top: 12px;
+      padding: 12px;
+      border: 1px solid rgba(78,62,168,.16);
+      border-radius: 14px;
+      background: #f8f7ff;
+    }
+    #ki-{{ section.id }} .ki-pack__referral-label {
+      display: block;
+      margin-bottom: 7px;
+      color: var(--ki-primary, #3a2d6e);
+      font-size: 12px;
+      font-weight: 700;
+    }
+    #ki-{{ section.id }} .ki-pack__referral-input {
+      width: 100%;
+      min-height: 42px;
+      padding: 9px 12px;
+      border: 1px solid rgba(78,62,168,.22);
+      border-radius: 10px;
+      background: #fff;
+      color: var(--ki-primary, #3a2d6e);
+      font: inherit;
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: .18em;
+      text-align: center;
+    }
+    #ki-{{ section.id }} .ki-pack__referral-input:focus {
+      outline: 0;
+      border-color: var(--ki-primary, #3a2d6e);
+      box-shadow: 0 0 0 3px rgba(78,62,168,.12);
+    }
+    #ki-{{ section.id }} .ki-pack__referral-status {
+      min-height: 16px;
+      margin: 6px 0 0;
+      color: var(--ki-muted, #6f6978);
+      font-size: 10.5px;
+      line-height: 1.4;
+    }
+    #ki-{{ section.id }} .ki-pack__referral-status.is-valid { color: #267154; }
+    #ki-{{ section.id }} .ki-pack__referral-status.is-invalid { color: #a12828; }
+
+    #ki-{{ section.id }} .ki-pack__doctor-dialog {
+      position: fixed;
+      inset: 0;
+      z-index: 10000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background: rgba(25, 18, 54, .56);
+      backdrop-filter: blur(6px);
+    }
+    #ki-{{ section.id }} .ki-pack__doctor-dialog.is-open { display: flex; }
+    #ki-{{ section.id }} .ki-pack__doctor-panel {
+      width: min(100%, 430px);
+      padding: 24px;
+      border: 1px solid rgba(78, 62, 168, .16);
+      border-radius: 24px;
+      background: #fff;
+      box-shadow: 0 24px 70px rgba(31, 23, 70, .24);
+    }
+    #ki-{{ section.id }} .ki-pack__doctor-kicker {
+      margin: 0 0 6px;
+      color: var(--ki-primary-medium, #6254b4);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+    }
+    #ki-{{ section.id }} .ki-pack__doctor-title {
+      margin: 0;
+      color: var(--ki-primary, #3a2d6e);
+      font-size: 25px;
+      line-height: 1.15;
+    }
+    #ki-{{ section.id }} .ki-pack__doctor-copy {
+      margin: 10px 0 18px;
+      color: var(--ki-muted, #6f6978);
+      font-size: 14px;
+      line-height: 1.55;
+    }
+    #ki-{{ section.id }} .ki-pack__doctor-input {
+      width: 100%;
+      min-height: 52px;
+      padding: 12px 16px;
+      border: 1px solid rgba(78, 62, 168, .25);
+      border-radius: 14px;
+      color: var(--ki-primary, #3a2d6e);
+      background: #f9f8ff;
+      font: inherit;
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: .22em;
+      text-align: center;
+    }
+    #ki-{{ section.id }} .ki-pack__doctor-input:focus {
+      outline: 0;
+      border-color: var(--ki-primary, #3a2d6e);
+      box-shadow: 0 0 0 4px rgba(78, 62, 168, .12);
+    }
+    #ki-{{ section.id }} .ki-pack__doctor-error {
+      min-height: 18px;
+      margin: 7px 0 0;
+      color: #a12828;
+      font-size: 12px;
+    }
+    #ki-{{ section.id }} .ki-pack__doctor-actions {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 9px;
+      margin-top: 12px;
+    }
+    #ki-{{ section.id }} .ki-pack__doctor-apply,
+    #ki-{{ section.id }} .ki-pack__doctor-skip {
+      min-height: 46px;
+      border-radius: 999px;
+      font: inherit;
+      font-weight: 750;
+      cursor: pointer;
+    }
+    #ki-{{ section.id }} .ki-pack__doctor-apply {
+      border: 0;
+      background: var(--ki-primary, #3a2d6e);
+      color: #fff;
+    }
+    #ki-{{ section.id }} .ki-pack__doctor-apply:disabled { opacity: .6; cursor: wait; }
+    #ki-{{ section.id }} .ki-pack__doctor-skip {
+      border: 1px solid rgba(78, 62, 168, .18);
+      background: #fff;
+      color: var(--ki-primary, #3a2d6e);
+    }
+
+    /* CTA */
+    #ki-{{ section.id }} .ki-pack__cta {
+      margin-top: 14px;
+      width: 100%;
+      padding: 14px 20px;
+      border: 0; border-radius: 999px;
+      background: var(--ki-primary, #3a2d6e);
+      color: var(--ki-primary-fg, #fff);
+      font-size: 14px; font-weight: 700;
+      cursor: pointer;
+      transition: opacity .15s, background .15s;
+      display: inline-flex; align-items: center; justify-content: center;
+      gap: 6px;
+      white-space: nowrap !important;
+      word-break: normal !important;
+    }
+    #ki-{{ section.id }} .ki-pack__cta:hover:not(:disabled) {
+      background: var(--ki-primary-medium, #5946b3);
+    }
+    #ki-{{ section.id }} .ki-pack__cta:disabled {
+      opacity: .4; cursor: not-allowed;
+    }
+    #ki-{{ section.id }} .ki-pack__cta > * { white-space: nowrap !important; }
+
+    /* Error */
+    #ki-{{ section.id }} .ki-pack__error {
+      display: none;
+      margin-top: 10px;
+      padding: 10px 12px;
+      background: var(--ki-rose-light, #f6dce4);
+      color: var(--ki-rose, #d96d8a);
+      border-radius: 10px;
+      font-size: 12px;
+    }
+    #ki-{{ section.id }} .ki-pack__error.is-visible { display: block; }
+
+    /* Guarantees */
+    #ki-{{ section.id }} .ki-pack__guarantees {
+      list-style: none; padding: 0;
+      margin: 16px 0 0;
+      display: flex; flex-direction: column; gap: 8px;
+      font-size: 11.5px;
+      color: var(--ki-muted, #5a5a5a);
+    }
+    #ki-{{ section.id }} .ki-pack__guarantees li {
+      display: flex; align-items: center; gap: 8px;
+    }
+    #ki-{{ section.id }} .ki-pack__guarantees svg {
+      color: var(--ki-sage, #5d7a52);
+      flex-shrink: 0;
+    }
+
+    /* ===== How it works ===== */
+    #ki-{{ section.id }} .ki-pack__howit {
+      margin-top: 16px;
+      padding: 18px;
+      background: var(--ki-card, #fff);
+      border: 1px solid var(--ki-border, #e6e3ee);
+      border-radius: 18px;
+    }
+    #ki-{{ section.id }} .ki-pack__howit-title {
+      font-family: var(--ki-font-primary, serif);
+      font-size: 16px; font-weight: 500;
+      color: var(--ki-primary, #3a2d6e);
+      margin: 0 0 12px;
+      display: flex; align-items: center; gap: 6px;
+    }
+    #ki-{{ section.id }} .ki-pack__howit ol {
+      list-style: none; padding: 0; margin: 0;
+      display: flex; flex-direction: column; gap: 10px;
+      font-size: 12px; line-height: 1.45;
+      color: rgba(58,45,110,.85);
+    }
+    #ki-{{ section.id }} .ki-pack__howit li {
+      display: flex; gap: 10px;
+    }
+    #ki-{{ section.id }} .ki-pack__howit-num {
+      flex-shrink: 0;
+      width: 20px; height: 20px;
+      border-radius: 50%;
+      background: var(--ki-primary, #3a2d6e);
+      color: var(--ki-primary-fg, #fff);
+      font-size: 11px; font-weight: 700;
+      display: grid; place-items: center;
+    }
+
+    /* ===== Dedicated subscription guide ===== */
+    #ki-{{ section.id }} .ki-pack__guide {
+      max-width: 1240px;
+      margin: 72px auto 0;
+      padding: 0 20px;
+    }
+    #ki-{{ section.id }} .ki-pack__guide-head {
+      max-width: 720px;
+      margin: 0 auto 34px;
+      text-align: center;
+    }
+    #ki-{{ section.id }} .ki-pack__guide-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin: 0 0 10px;
+      color: #493d9a;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+    }
+    #ki-{{ section.id }} .ki-pack__guide-eyebrow::before,
+    #ki-{{ section.id }} .ki-pack__guide-eyebrow::after {
+      content: '';
+      width: 22px;
+      height: 1px;
+      background: rgba(73,61,154,.35);
+    }
+    #ki-{{ section.id }} .ki-pack__guide-title {
+      margin: 0;
+      color: #493d9a;
+      font-family: var(--ki-font-primary, 'Raleway', sans-serif);
+      font-size: clamp(28px, 4vw, 46px);
+      font-weight: 800;
+      line-height: 1.08;
+      letter-spacing: -.025em;
+    }
+    #ki-{{ section.id }} .ki-pack__guide-subtitle {
+      max-width: 620px;
+      margin: 12px auto 0;
+      color: #6f6978;
+      font-size: 14px;
+      line-height: 1.65;
+    }
+    #ki-{{ section.id }} .ki-pack__guide-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      counter-reset: subscription-step;
+    }
+    #ki-{{ section.id }} .ki-pack__guide-card {
+      position: relative;
+      min-height: 220px;
+      padding: 22px;
+      border: 1px solid #e1ddf0;
+      border-radius: 20px;
+      background: #fff;
+      box-shadow: 0 18px 45px -36px rgba(73,61,154,.7);
+      counter-increment: subscription-step;
+    }
+    #ki-{{ section.id }} .ki-pack__guide-card::after {
+      content: '0' counter(subscription-step);
+      position: absolute;
+      top: 18px;
+      right: 18px;
+      color: rgba(73,61,154,.28);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: .08em;
+    }
+    #ki-{{ section.id }} .ki-pack__guide-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 16px;
+      display: grid;
+      place-items: center;
+      margin-bottom: 28px;
+      color: #493d9a;
+      background: #f0eef9;
+    }
+    #ki-{{ section.id }} .ki-pack__guide-icon svg {
+      width: 25px;
+      height: 25px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    #ki-{{ section.id }} .ki-pack__guide-card h3 {
+      margin: 0 0 8px;
+      color: #493d9a;
+      font-size: 17px;
+      font-weight: 800;
+      line-height: 1.25;
+    }
+    #ki-{{ section.id }} .ki-pack__guide-card p {
+      margin: 0;
+      color: #6f6978;
+      font-size: 13px;
+      line-height: 1.55;
+    }
+    #ki-{{ section.id }} .ki-pack__support {
+      margin-top: 18px;
+      padding: 22px 24px;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      color: #fff;
+      background: linear-gradient(135deg, #493d9a 0%, #30266f 100%);
+    }
+    #ki-{{ section.id }} .ki-pack__support-copy {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    #ki-{{ section.id }} .ki-pack__support-icon {
+      width: 44px;
+      height: 44px;
+      flex: 0 0 auto;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      background: rgba(255,255,255,.13);
+    }
+    #ki-{{ section.id }} .ki-pack__support-icon svg {
+      width: 22px;
+      height: 22px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+    }
+    #ki-{{ section.id }} .ki-pack__support strong {
+      display: block;
+      margin-bottom: 3px;
+      font-size: 16px;
+    }
+    #ki-{{ section.id }} .ki-pack__support p {
+      margin: 0;
+      color: rgba(255,255,255,.72);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+    #ki-{{ section.id }} .ki-pack__support-link {
+      min-height: 46px;
+      padding: 0 20px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      flex: 0 0 auto;
+      color: #fff;
+      background: #25d366;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 800;
+      transition: transform .2s, background .2s;
+    }
+    #ki-{{ section.id }} .ki-pack__support-link:hover {
+      color: #fff;
+      background: #20bd5a;
+      transform: translateY(-1px);
+    }
+    #ki-{{ section.id }} .ki-pack__support-link svg {
+      width: 18px;
+      height: 18px;
+      fill: currentColor;
+    }
+
+    /* ============================================================
+       DESKTOP (≥ 1024px) — 2 sütun, summary sağda sticky
+       ============================================================ */
+    @media (min-width: 1024px) {
+      #ki-{{ section.id }} { padding: 48px 0 80px; }
+      #ki-{{ section.id }} .ki-pack__wrap { padding-inline: 32px !important; }
+      #ki-{{ section.id }} .ki-pack__grid {
+        grid-template-columns: 1fr 400px;
+        gap: 40px;
+      }
+      #ki-{{ section.id }} .ki-pack__summary-wrap { position: sticky; top: 100px; }
+      #ki-{{ section.id }} .ki-pack__tabs {
+        margin: 0 0 20px;
+        padding: 0 0 12px;
+      }
+      #ki-{{ section.id }} .ki-pack__cat-head { padding: 22px 24px; }
+      #ki-{{ section.id }} .ki-pack__cat-title { font-size: 26px; }
+      #ki-{{ section.id }} .ki-pack__cat-desc { font-size: 13px; }
+      #ki-{{ section.id }} .ki-pack__item {
+        grid-template-columns: 72px minmax(0, 1fr) auto !important;
+        grid-template-areas: "img info stepper" !important;
+        gap: 18px;
+        padding: 18px 24px;
+        align-items: center;
+      }
+      #ki-{{ section.id }} .ki-pack__item-img { width: 72px; height: 72px; border-radius: 14px; }
+      #ki-{{ section.id }} .ki-pack__stepper { justify-self: start; margin-top: 0; }
+      #ki-{{ section.id }} .ki-pack__item-name { font-size: 15px; }
+      #ki-{{ section.id }} .ki-pack__item-short { font-size: 12.5px; }
+      #ki-{{ section.id }} .ki-pack__cat-hint { padding: 14px 24px; font-size: 12.5px; }
+      #ki-{{ section.id }} .ki-pack__summary { padding: 26px; }
+      #ki-{{ section.id }} .ki-pack__sum-title { font-size: 24px; }
+      #ki-{{ section.id }} .ki-pack__howit { padding: 22px; }
+      #ki-{{ section.id }} .ki-pack__howit-title { font-size: 18px; }
+      #ki-{{ section.id }} .ki-pack__guide { padding: 0 32px; }
+    }
+
+    @media (max-width: 899px) {
+      #ki-{{ section.id }} .ki-pack__guide-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 599px) {
+      #ki-{{ section.id }} .ki-pack__guide { margin-top: 36px; }
+      #ki-{{ section.id }} .ki-pack__guide-head { margin-bottom: 18px; }
+      #ki-{{ section.id }} .ki-pack__guide-title { font-size: 24px; }
+      #ki-{{ section.id }} .ki-pack__guide-subtitle { margin-top: 8px; font-size: 12px; line-height: 1.45; }
+      #ki-{{ section.id }} .ki-pack__guide-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+      #ki-{{ section.id }} .ki-pack__guide-card { min-height: 152px; padding: 12px; border-radius: 14px; }
+      #ki-{{ section.id }} .ki-pack__guide-card::after { top: 10px; right: 10px; font-size: 9px; }
+      #ki-{{ section.id }} .ki-pack__guide-icon { width: 36px; height: 36px; margin-bottom: 12px; border-radius: 11px; }
+      #ki-{{ section.id }} .ki-pack__guide-icon svg { width: 19px; height: 19px; }
+      #ki-{{ section.id }} .ki-pack__guide-card h3 { margin-bottom: 5px; font-size: 13px; }
+      #ki-{{ section.id }} .ki-pack__guide-card p { font-size: 10.5px; line-height: 1.4; }
+      #ki-{{ section.id }} .ki-pack__support { align-items: stretch; flex-direction: column; padding: 20px; }
+      #ki-{{ section.id }} .ki-pack__support-link { width: 100%; }
+      #ki-{{ section.id }} .ki-pack__frequency { margin-top: 10px; padding: 9px; }
+      #ki-{{ section.id }} .ki-pack__frequency-option { min-width: 62px; min-height: 38px; }
+    }
+
+    /* Çok dar mobile fallback (≤ 380px) */
+    @media (max-width: 380px) {
+      #ki-{{ section.id }} .ki-pack__wrap { padding-inline: 14px !important; }
+      #ki-{{ section.id }} .ki-pack__tabs { margin-inline: 0; padding-inline: 0; }
+      #ki-{{ section.id }} .ki-pack__cat-head { padding: 14px; }
+      #ki-{{ section.id }} .ki-pack__cat-title { font-size: 18px; }
+      #ki-{{ section.id }} .ki-pack__item {
+        grid-template-columns: 48px minmax(0, 1fr) !important;
+        gap: 6px 10px;
+        padding: 12px 14px;
+      }
+      #ki-{{ section.id }} .ki-pack__item-img { width: 48px; height: 48px; border-radius: 10px; }
+      #ki-{{ section.id }} .ki-pack__item-name { font-size: 13px; }
+      #ki-{{ section.id }} .ki-pack__cat-hint { padding: 10px 14px; }
+      #ki-{{ section.id }} .ki-pack__summary { padding: 16px; }
+      #ki-{{ section.id }} .ki-pack__sum-title { font-size: 20px; }
+    }
+  </style>
+
+  <a id="ki-builder" aria-hidden="true" style="position:absolute;top:-80px;"></a>
+  <div class="ki-pack__wrap">
+    <div class="ki-pack__grid">
+      {%- comment -%} ============ Sol kolon: Tabs + Kategoriler ============ {%- endcomment -%}
+      <div>
+        <div class="ki-pack__tabs" role="tablist">
+          <button type="button" class="ki-pack__tab is-active" data-ki-pack-tab="" role="tab">Tümü</button>
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'category' -%}
+              {%- assign category_key_normalized = block.settings.key | strip | downcase -%}
+              {%- assign category_label_normalized = block.settings.label | strip | downcase -%}
+              {%- unless category_key_normalized contains 'test' or category_label_normalized contains 'test' -%}
+                <button type="button" class="ki-pack__tab" data-ki-pack-tab="{{ block.settings.key }}" role="tab">
+                  {{ block.settings.label }}
+                  <span class="ki-pack__tab-count" data-ki-pack-tab-count="{{ block.settings.key }}" data-count="0">0</span>
+                </button>
+              {%- endunless -%}
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+
+        <div class="ki-pack__cats">
+          {%- assign first_cat_done = false -%}
+          {%- for catBlock in section.blocks -%}
+            {%- if catBlock.type == 'category' -%}
+              {%- assign category_key_normalized = catBlock.settings.key | strip | downcase -%}
+              {%- assign category_label_normalized = catBlock.settings.label | strip | downcase -%}
+              {%- unless category_key_normalized contains 'test' or category_label_normalized contains 'test' -%}
+              <div class="ki-pack__cat" data-ki-pack-cat="{{ catBlock.settings.key }}" data-open="{% unless first_cat_done %}true{% else %}false{% endunless %}" {{ catBlock.shopify_attributes }}>
+                <button type="button" class="ki-pack__cat-head" data-ki-pack-cat-toggle aria-expanded="{% unless first_cat_done %}true{% else %}false{% endunless %}">
+                  <div style="min-width:0;flex:1;">
+                    <h2 class="ki-pack__cat-title">
+                      <span>{{ catBlock.settings.label }}</span>
+                      <span class="ki-pack__cat-count" data-ki-pack-cat-count="{{ catBlock.settings.key }}" data-count="0">0</span>
+                    </h2>
+                    {%- if catBlock.settings.description != blank -%}
+                      <p class="ki-pack__cat-desc">{{ catBlock.settings.description }}</p>
+                    {%- endif -%}
+                  </div>
+                  {% render 'ki-icon', name: 'chevron-down', size: 20, class: 'ki-pack__chev' %}
+                </button>
+                <div class="ki-pack__cat-body">
+                  {%- if catBlock.settings.key == 'ped' -%}
+                    <div class="ki-pack__ped-modes" role="group" aria-label="Ped paketleme seçeneği">
+                      <button type="button" class="ki-pack__ped-mode is-active" data-ki-pack-ped-mode="loose" aria-pressed="true">Adetli Ped Seç</button>
+                      <button type="button" class="ki-pack__ped-mode" data-ki-pack-ped-mode="box" aria-pressed="false">Ped Kutusuna Abone Ol</button>
+                    </div>
+                    <p class="ki-pack__ped-mode-note" data-ki-pack-ped-mode-note>Günlük ve gündüz pedler 10’lu, gece pedleri 8’li paket halinde eklenir.</p>
+                    <div style="margin:8px 0 12px">
+                      {% render 'ki-ped-certifications', context: 'compact', label: 'ISO · CE · FDA · Intertek' %}
+                    </div>
+                  {%- endif -%}
+                  <div class="ki-pack__items">
+                    {%- for itemBlock in section.blocks -%}
+                      {%- if itemBlock.type == 'product' and itemBlock.settings.category_key == catBlock.settings.key -%}
+                        {%- assign box_product = itemBlock.settings.product -%}
+                        {%- assign loose_product = itemBlock.settings.loose_product -%}
+                        {%- assign item_name_normalized = itemBlock.settings.name_override | default: box_product.title | downcase -%}
+                        {%- assign item_short_normalized = itemBlock.settings.short | downcase -%}
+                        {%- assign ped_size = blank -%}
+                        {%- assign ped_box_count = blank -%}
+                        {%- if catBlock.settings.key == 'ped' -%}
+                          {%- if item_name_normalized contains 'günlük' or item_short_normalized contains '155' -%}
+                            {%- assign ped_size = 'small' -%}
+                            {%- assign ped_box_count = 30 -%}
+                          {%- elsif item_name_normalized contains 'gündüz' or item_name_normalized contains 'normal' or item_short_normalized contains '245' -%}
+                            {%- assign ped_size = 'medium' -%}
+                            {%- assign ped_box_count = 12 -%}
+                          {%- elsif item_name_normalized contains 'gece' or item_short_normalized contains '335' -%}
+                            {%- assign ped_size = 'large' -%}
+                            {%- assign ped_box_count = 8 -%}
+                          {%- endif -%}
+                        {%- endif -%}
+                        {%- case ped_size -%}
+                          {%- when 'small' -%}
+                            {%- if box_product == blank or box_product.handle == 'ki-hijyenik-gece-ped' -%}
+                              {%- assign box_product = all_products['ki-hijyenik-gunduz-ped'] -%}
+                            {%- endif -%}
+                            {%- if loose_product == blank -%}
+                              {%- assign loose_product = all_products['ki-gunluk-ped-5li'] -%}
+                            {%- endif -%}
+                            {%- if loose_product == blank -%}
+                              {%- assign loose_product = all_products['ki-gunluk-premium-hijyenik-ped-10-adet'] -%}
+                            {%- endif -%}
+                          {%- when 'medium' -%}
+                            {%- if box_product == blank -%}
+                              {%- assign box_product = all_products['ki-normal-ped'] -%}
+                            {%- endif -%}
+                            {%- if loose_product == blank -%}
+                              {%- assign loose_product = all_products['ki-gunduz-ped-5li'] -%}
+                            {%- endif -%}
+                            {%- if loose_product == blank -%}
+                              {%- assign loose_product = all_products['ki-gunduz-premium-hijyenik-ped-10-adet'] -%}
+                            {%- endif -%}
+                          {%- when 'large' -%}
+                            {%- if box_product == blank -%}
+                              {%- assign box_product = all_products['ki-hijyenik-gece-ped'] -%}
+                            {%- endif -%}
+                            {%- if loose_product == blank -%}
+                              {%- assign loose_product = all_products['ki-gece-ped-5li'] -%}
+                            {%- endif -%}
+                            {%- if loose_product == blank -%}
+                              {%- assign loose_product = all_products['ki-gece-premium-hijyenik-ped-8-adet'] -%}
+                            {%- endif -%}
+                        {%- endcase -%}
+                        {%- assign p = box_product -%}
+                        {%- if catBlock.settings.key == 'ped' -%}
+                          {%- assign p = loose_product -%}
+                        {%- endif -%}
+                        {%- assign display_product = p | default: box_product -%}
+                        {%- if display_product != blank -%}
+                          {%- assign v = display_product.selected_or_first_available_variant -%}
+                          {%- assign box_variant = box_product.selected_or_first_available_variant -%}
+                          {%- assign loose_variant = loose_product.selected_or_first_available_variant -%}
+                          {%- assign loose_asset = blank -%}
+                          {%- assign box_asset = blank -%}
+                          {%- case ped_size -%}
+                            {%- when 'small' -%}
+                              {%- assign loose_asset = 'ki-ped-gunluk-5li.webp' -%}
+                              {%- assign box_asset = 'ki-ped-gunluk-01.webp' -%}
+                            {%- when 'medium' -%}
+                              {%- assign loose_asset = 'ki-ped-gunduz-5li.webp' -%}
+                              {%- assign box_asset = 'ki-ped-gunduz-01.webp' -%}
+                            {%- when 'large' -%}
+                              {%- assign loose_asset = 'ki-ped-gece-5li.webp' -%}
+                              {%- assign box_asset = 'ki-ped-gece-01.webp' -%}
+                          {%- endcase -%}
+                          {%- assign subscription_discount = 0 -%}
+                          {%- if settings.subscription_enabled -%}
+                            {%- assign subscription_discount = section.settings.subscription_discount_percent | default: 15 -%}
+                          {%- endif -%}
+                          {%- if itemBlock.settings.no_subscription_discount -%}
+                            {%- assign subscription_discount = 0 -%}
+                          {%- endif -%}
+                          {%- assign item_image_asset = itemBlock.settings.image_asset | strip -%}
+                          {%- assign active_price = v.price | default: 0 -%}
+                          {%- assign subscription_discount_amount = active_price | times: subscription_discount | divided_by: 100 -%}
+                          {%- assign subscription_price = active_price | minus: subscription_discount_amount -%}
+                          <div class="ki-pack__item"
+                               data-ki-pack-item="{{ itemBlock.id }}"
+                               data-ki-pack-cat-key="{{ catBlock.settings.key }}"
+                               data-ki-pack-product-handle="{{ display_product.handle }}"
+                               data-ki-pack-variant-id="{{ v.id }}"
+                               data-ki-pack-loose-product-handle="{{ loose_product.handle }}"
+                               data-ki-pack-loose-variant-id="{{ loose_variant.id }}"
+                               data-ki-pack-loose-price="{{ loose_variant.price | divided_by: 100.0 }}"
+                               data-ki-pack-loose-available="true"
+                               data-ki-pack-box-product-handle="{{ box_product.handle }}"
+                               data-ki-pack-box-variant-id="{{ box_variant.id }}"
+                               data-ki-pack-box-price="{{ box_variant.price | divided_by: 100.0 }}"
+                               data-ki-pack-box-available="true"
+                               data-ki-pack-step="{{ itemBlock.settings.step | default: 1 }}"
+                               data-ki-pack-loose-step="{{ itemBlock.settings.step | default: 1 }}"
+                               data-ki-pack-box-step="{{ itemBlock.settings.box_step | default: 1 }}"
+                               data-ki-pack-price="{{ v.price | divided_by: 100.0 }}"
+                               data-ki-pack-discount="{{ subscription_discount }}"
+                               data-ki-pack-available="true"
+                               data-ki-pack-unit="{{ itemBlock.settings.unit | default: 'adet' }}"
+                               data-ki-pack-loose-unit="{{ itemBlock.settings.unit | default: 'adet' }}"
+                               data-ki-pack-box-unit="{{ itemBlock.settings.box_unit | default: 'kutu' }}"
+                               data-ki-pack-selection-mode="{% if catBlock.settings.key == 'ped' %}loose_pads{% else %}standard{% endif %}"
+                               {{ itemBlock.shopify_attributes }}>
+                            <div class="ki-pack__item-img">
+                              {%- if catBlock.settings.key == 'ped' and loose_asset != blank -%}
+                                <img
+                                  src="{{ loose_asset | asset_url }}"
+                                  data-ki-pack-mode-image
+                                  data-ki-pack-loose-src="{{ loose_asset | asset_url }}"
+                                  data-ki-pack-box-src="{{ box_asset | asset_url }}"
+                                  width="108"
+                                  height="135"
+                                  alt="{{ itemBlock.settings.name_override | default: display_product.title | escape }}"
+                                  loading="lazy"
+                                >
+                              {%- elsif item_image_asset != blank -%}
+                                <img
+                                  src="{{ item_image_asset | asset_url }}"
+                                  width="108"
+                                  height="135"
+                                  alt="{{ itemBlock.settings.name_override | default: display_product.title | escape }}"
+                                  loading="lazy"
+                                >
+                              {%- elsif display_product.featured_image -%}
+                                {{ display_product.featured_image | image_url: width: 200 | image_tag: alt: display_product.title, loading: 'lazy', widths: '120,240' }}
+                              {%- else -%}
+                                <span class="ki-pack__item-img-placeholder" aria-hidden="true">
+                                  {% render 'ki-icon', name: 'sparkles', size: 20 %}
+                                </span>
+                              {%- endif -%}
+                            </div>
+                            <div class="ki-pack__item-info">
+                              <div class="ki-pack__item-name">
+                                <span>{{ itemBlock.settings.name_override | default: p.title }}</span>
+                                {%- if ped_size != blank -%}
+                                  {% render 'ki-pad-size-icon', active: ped_size %}
+                                {%- endif -%}
+                                {%- if itemBlock.settings.badge != blank -%}
+                                  <span class="ki-pack__item-badge">{{ itemBlock.settings.badge }}</span>
+                                {%- endif -%}
+                              </div>
+                              {%- if itemBlock.settings.short != blank -%}
+                                <p
+                                  class="ki-pack__item-short"
+                                  data-ki-pack-mode-short
+                                  data-ki-pack-loose-text="{{ itemBlock.settings.short | escape }}"
+                                  data-ki-pack-box-text="{{ itemBlock.settings.short | escape }}{% if ped_box_count != blank %} · {{ ped_box_count }} adet/kutu{% endif %}"
+                                >{{ itemBlock.settings.short }}</p>
+                              {%- endif -%}
+                              <p class="ki-pack__item-price">
+                                {%- if subscription_discount > 0 -%}
+                                  <span data-ki-pack-price-value>₺{{ subscription_price | money_without_currency }}</span>
+                                  <s data-ki-pack-price-original>₺{{ active_price | money_without_currency }}</s>
+                                  <br><span class="ki-pack__item-discount">Abonelikte %{{ subscription_discount }} indirim</span>
+                                {%- else -%}
+                                  <span data-ki-pack-price-value>{% if active_price > 0 %}₺{{ active_price | money_without_currency }}{% else %}—{% endif %}</span>
+                                {%- endif -%}
+                                {%- if itemBlock.settings.step != blank and itemBlock.settings.step > 1 -%}
+                                  <small data-ki-pack-price-unit>/ {{ itemBlock.settings.step }} {{ itemBlock.settings.unit }}</small>
+                                {%- endif -%}
+                              </p>
+                            </div>
+                            <div class="ki-pack__stepper">
+                              <button type="button" class="ki-pack__step-minus" data-ki-pack-minus aria-label="Azalt" disabled>
+                                {% render 'ki-icon', name: 'minus', size: 14 %}
+                              </button>
+                              <span class="ki-pack__step-qty" data-ki-pack-qty>0</span>
+                              <button type="button" class="ki-pack__step-plus" data-ki-pack-plus aria-label="Arttır">
+                                {% render 'ki-icon', name: 'plus', size: 14 %}
+                              </button>
+                            </div>
+                          </div>
+                        {%- else -%}
+                          {%- comment -%} Shopify product seçilmemiş — demo değerlerle göster {%- endcomment -%}
+                          {%- assign demo_price = itemBlock.settings.demo_price | default: 0 -%}
+                          <div class="ki-pack__item ki-pack__item--demo"
+                               data-ki-pack-item="{{ itemBlock.id }}"
+                               data-ki-pack-cat-key="{{ catBlock.settings.key }}"
+                               data-ki-pack-product-handle=""
+                               data-ki-pack-variant-id=""
+                               data-ki-pack-step="{{ itemBlock.settings.step | default: 1 }}"
+                               data-ki-pack-loose-step="{{ itemBlock.settings.step | default: 1 }}"
+                               data-ki-pack-box-step="{{ itemBlock.settings.box_step | default: 1 }}"
+                               data-ki-pack-price="{{ demo_price }}"
+                               data-ki-pack-discount="0"
+                               data-ki-pack-available="false"
+                               data-ki-pack-unit="{{ itemBlock.settings.unit | default: 'adet' }}"
+                               data-ki-pack-loose-unit="{{ itemBlock.settings.unit | default: 'adet' }}"
+                               data-ki-pack-box-unit="{{ itemBlock.settings.box_unit | default: 'kutu' }}"
+                               data-ki-pack-selection-mode="{% if catBlock.settings.key == 'ped' %}loose_pads{% else %}standard{% endif %}"
+                               {{ itemBlock.shopify_attributes }}>
+                            <div class="ki-pack__item-img">
+                              <span class="ki-pack__item-img-placeholder" aria-hidden="true">
+                                {% render 'ki-icon', name: 'sparkles', size: 20 %}
+                              </span>
+                            </div>
+                            <div class="ki-pack__item-info">
+                              <div class="ki-pack__item-name">
+                                <span>{{ itemBlock.settings.name_override | default: 'Ürün' }}</span>
+                                {%- if ped_size != blank -%}
+                                  {% render 'ki-pad-size-icon', active: ped_size %}
+                                {%- endif -%}
+                                {%- if itemBlock.settings.badge != blank -%}
+                                  <span class="ki-pack__item-badge">{{ itemBlock.settings.badge }}</span>
+                                {%- endif -%}
+                              </div>
+                              {%- if itemBlock.settings.short != blank -%}
+                                <p
+                                  class="ki-pack__item-short"
+                                  data-ki-pack-mode-short
+                                  data-ki-pack-loose-text="{{ itemBlock.settings.short | escape }}"
+                                  data-ki-pack-box-text="{{ itemBlock.settings.short | escape }}{% if ped_box_count != blank %} · {{ ped_box_count }} adet/kutu{% endif %}"
+                                >{{ itemBlock.settings.short }}</p>
+                              {%- endif -%}
+                              <p class="ki-pack__item-price">
+                                —
+                              </p>
+                            </div>
+                            <div class="ki-pack__stepper">
+                              <button type="button" class="ki-pack__step-minus" data-ki-pack-minus aria-label="Azalt" disabled>
+                                {% render 'ki-icon', name: 'minus', size: 14 %}
+                              </button>
+                              <span class="ki-pack__step-qty" data-ki-pack-qty>0</span>
+                              <button type="button" class="ki-pack__step-plus" data-ki-pack-plus aria-label="Arttır" disabled>
+                                {% render 'ki-icon', name: 'plus', size: 14 %}
+                              </button>
+                            </div>
+                          </div>
+                        {%- endif -%}
+                      {%- endif -%}
+                      {%- if itemBlock.type == 'package_preset' and itemBlock.settings.category_key == catBlock.settings.key -%}
+                        {%- assign preset_product_1 = itemBlock.settings.product_1 -%}
+                        {%- assign preset_product_2 = itemBlock.settings.product_2 -%}
+                        {%- assign preset_product_3 = itemBlock.settings.product_3 -%}
+                        {%- assign preset_total = 0 -%}
+                        {%- assign preset_product_count = 0 -%}
+                        {%- assign preset_available = true -%}
+                        {%- if preset_product_1 != blank -%}
+                          {%- assign preset_product_count = preset_product_count | plus: 1 -%}
+                          {%- assign preset_product_1_total = preset_product_1.price | times: itemBlock.settings.qty_1 -%}
+                          {%- assign preset_total = preset_total | plus: preset_product_1_total -%}
+                        {%- endif -%}
+                        {%- if preset_product_2 != blank -%}
+                          {%- assign preset_product_count = preset_product_count | plus: 1 -%}
+                          {%- assign preset_product_2_total = preset_product_2.price | times: itemBlock.settings.qty_2 -%}
+                          {%- assign preset_total = preset_total | plus: preset_product_2_total -%}
+                        {%- endif -%}
+                        {%- if preset_product_3 != blank -%}
+                          {%- assign preset_product_count = preset_product_count | plus: 1 -%}
+                          {%- assign preset_product_3_total = preset_product_3.price | times: itemBlock.settings.qty_3 -%}
+                          {%- assign preset_total = preset_total | plus: preset_product_3_total -%}
+                        {%- endif -%}
+                        {%- assign preset_discount = section.settings.subscription_discount_percent | default: 15 -%}
+                        {%- assign preset_discount_amount = preset_total | times: preset_discount | divided_by: 100 -%}
+                        {%- assign preset_subscription_total = preset_total | minus: preset_discount_amount -%}
+                        <article class="ki-pack__bundle" {{ itemBlock.shopify_attributes }}>
+                          <div class="ki-pack__bundle-media" aria-hidden="true">
+                            {%- if preset_product_1.featured_image -%}{{ preset_product_1.featured_image | image_url: width: 100 | image_tag: loading: 'lazy', widths: '64,100', alt: '' }}{%- endif -%}
+                            {%- if preset_product_2.featured_image -%}{{ preset_product_2.featured_image | image_url: width: 100 | image_tag: loading: 'lazy', widths: '64,100', alt: '' }}{%- endif -%}
+                            {%- if preset_product_3.featured_image -%}{{ preset_product_3.featured_image | image_url: width: 100 | image_tag: loading: 'lazy', widths: '64,100', alt: '' }}{%- endif -%}
+                          </div>
+                          <div class="ki-pack__bundle-info">
+                            <h3 class="ki-pack__bundle-title">{{ itemBlock.settings.title }}</h3>
+                            {%- if itemBlock.settings.description != blank -%}<p class="ki-pack__bundle-copy">{{ itemBlock.settings.description }}</p>{%- endif -%}
+                            <div class="ki-pack__bundle-products">
+                              {%- if preset_product_1 != blank -%}<span>{{ itemBlock.settings.qty_1 }}× {{ preset_product_1.title }}</span>{%- endif -%}
+                              {%- if preset_product_2 != blank -%}<span>{{ itemBlock.settings.qty_2 }}× {{ preset_product_2.title }}</span>{%- endif -%}
+                              {%- if preset_product_3 != blank -%}<span>{{ itemBlock.settings.qty_3 }}× {{ preset_product_3.title }}</span>{%- endif -%}
+                            </div>
+                          </div>
+                          <div class="ki-pack__bundle-footer">
+                            <span class="ki-pack__bundle-price">
+                              <strong>{{ preset_subscription_total | money }}</strong>
+                              <s>{{ preset_total | money }}</s>
+                              <small>Abonelikte %{{ preset_discount }} indirim</small>
+                            </span>
+                            <button
+                              type="button"
+                              class="ki-pack__bundle-apply"
+                              data-ki-pack-preset-button
+                              data-preset-key="{{ itemBlock.settings.preset_key | handle }}"
+                              data-preset-title="{{ itemBlock.settings.title | escape }}"
+                              data-product-1="{{ preset_product_1.handle }}"
+                              data-qty-1="{{ itemBlock.settings.qty_1 }}"
+                              data-product-2="{{ preset_product_2.handle }}"
+                              data-qty-2="{{ itemBlock.settings.qty_2 }}"
+                              data-product-3="{{ preset_product_3.handle }}"
+                              data-qty-3="{{ itemBlock.settings.qty_3 }}"
+                              {% if preset_product_count == 0 or preset_available == false %}disabled{% endif %}
+                            >Paketi aboneliğe ekle</button>
+                          </div>
+                        </article>
+                      {%- endif -%}
+                    {%- endfor -%}
+                  </div>
+                  {%- if catBlock.settings.hint != blank -%}
+                    <div class="ki-pack__cat-hint">
+                      <span>💡</span>
+                      <span class="ki-pack__cat-hint-copy">
+                        <strong class="ki-pack__cat-hint-title">Eczacı yorumu</strong>
+                        <span>{{ catBlock.settings.hint }}</span>
+                      </span>
+                    </div>
+                  {%- endif -%}
+                </div>
+              </div>
+              {%- assign first_cat_done = true -%}
+              {%- endunless -%}
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      </div>
+
+      {%- comment -%} ============ Sağ kolon (desktop) / alt (mobile): Paketin + Nasıl çalışır ============ {%- endcomment -%}
+      <div class="ki-pack__summary-wrap">
+        <div class="ki-pack__summary">
+          <div class="ki-pack__sum-head">
+            <h3 class="ki-pack__sum-title">{{ section.settings.summary_title | default: 'Paketin' }}</h3>
+            <span class="ki-pack__sum-pill" data-ki-pack-pill>
+              <span style="width:6px;height:6px;border-radius:50%;background:var(--ki-sage,#5d7a52);"></span>
+              <span data-ki-pack-frequency-label>{{ section.settings.frequency_label | default: '2 ayda bir kapında' }}</span>
+            </span>
+          </div>
+          <p class="ki-pack__sum-meta" data-ki-pack-sum-meta>{{ section.settings.empty_message | default: 'Üst taraftan ürün ekleyerek paketini oluştur.' }}</p>
+
+          {%- if settings.subscription_enabled -%}
+            <div class="ki-pack__frequency" data-ki-pack-frequency>
+              <span class="ki-pack__frequency-label">Gönderim sıklığı</span>
+              <div class="ki-pack__frequency-options" role="radiogroup" aria-label="Gönderim sıklığı">
+                {%- for block in section.blocks -%}
+                  {%- if block.type == 'frequency' -%}
+                    {%- assign frequency_label_normalized = block.settings.label | strip | downcase -%}
+                    {%- assign frequency_months = block.settings.months | default: 2 | plus: 0 -%}
+                    {%- unless frequency_label_normalized == 'günlük' or frequency_months == 0 -%}
+                    <button
+                      type="button"
+                      class="ki-pack__frequency-option{% if block.settings.is_default %} is-active{% endif %}"
+                      data-ki-pack-frequency-option
+                      data-ki-pack-frequency-months="{{ block.settings.months | default: 2 }}"
+                      aria-pressed="{% if block.settings.is_default %}true{% else %}false{% endif %}"
+                    >{{ block.settings.months | default: 2 }} ay</button>
+                    {%- endunless -%}
+                  {%- endif -%}
+                {%- endfor -%}
+              </div>
+              <p class="ki-pack__frequency-note" data-ki-pack-frequency-note aria-live="polite"></p>
+            </div>
+          {%- endif -%}
+
+          <ul class="ki-pack__sum-list" data-ki-pack-sum-list></ul>
+
+          {%- comment -%} Existing selling-plan contract remains the checkout source of truth. {%- endcomment -%}
+          {%- if settings.subscription_enabled -%}
+            <select hidden data-ki-pack-freq aria-hidden="true">
+              {%- for block in section.blocks -%}
+                {%- if block.type == 'frequency' -%}
+                  {%- assign frequency_label_normalized = block.settings.label | strip | downcase -%}
+                  {%- assign frequency_months = block.settings.months | default: 2 | plus: 0 -%}
+                  {%- unless frequency_label_normalized == 'günlük' or frequency_months == 0 -%}
+                  <option value="{{ block.settings.selling_plan_id }}" data-months="{{ block.settings.months | default: 2 }}" {% if block.settings.is_default %}selected{% endif %}>{{ block.settings.label }}</option>
+                  {%- endunless -%}
+                {%- endif -%}
+              {%- endfor -%}
+            </select>
+          {%- endif -%}
+
+          <div class="ki-pack__benefits" aria-label="Abonelik avantajları">
+            <div class="ki-pack__shipping-progress" data-ki-pack-shipping-progress>
+              <div class="ki-pack__benefit ki-pack__ship">
+                <span class="ki-pack__benefit-icon" aria-hidden="true">
+                  {% render 'ki-icon', name: 'truck', size: 16 %}
+                </span>
+                <strong data-ki-pack-ship-text>₺800 altı abonelik kargosu ₺59</strong>
+              </div>
+              <div class="ki-pack__shipping-track" data-ki-pack-shipping-track role="progressbar" aria-label="Ücretsiz abonelik kargosu ilerlemesi" aria-valuemin="0" aria-valuemax="800" aria-valuenow="0">
+                <span class="ki-pack__shipping-fill" data-ki-pack-shipping-fill></span>
+                <span class="ki-pack__shipping-marker ki-pack__shipping-marker--free" data-ki-pack-shipping-free-marker aria-hidden="true"></span>
+              </div>
+              <div class="ki-pack__shipping-labels" aria-hidden="true">
+                <span class="ki-pack__shipping-label ki-pack__shipping-label--fee">
+                  <strong>₺59 kargo</strong>
+                  <span>₺800 altı</span>
+                </span>
+                <span class="ki-pack__shipping-label ki-pack__shipping-label--free">
+                  <strong data-ki-pack-shipping-free-label>₺800</strong>
+                  <span>Ücretsiz kargo</span>
+                </span>
+              </div>
+            </div>
+            {%- if settings.subscription_enabled -%}
+              <div class="ki-pack__benefit ki-pack__benefit--pharmacist">
+                <span class="ki-pack__benefit-icon" aria-hidden="true">
+                  {% render 'ki-icon', name: 'help-circle', size: 17 %}
+                </span>
+                <span class="ki-pack__benefit-content">
+                  <strong class="ki-pack__benefit-title">{{ section.settings.pharmacist_benefit_title | default: 'Abonelere özel: 15 dk Eczacına Sor' }}</strong>
+                  <span class="ki-pack__benefit-copy">{{ section.settings.pharmacist_benefit_copy | default: 'Dilediğin soruyu uzman eczacımıza ücretsiz sorabilirsin.' }}</span>
+                </span>
+                <button type="button" class="ki-pack__benefit-info" data-ki-pack-pharmacist-info aria-label="Eczacı avantajı hakkında bilgi" aria-haspopup="dialog">i</button>
+              </div>
+            {%- endif -%}
+          </div>
+
+          <dl class="ki-pack__totals">
+            <div class="ki-pack__tot-row">
+              <dt>Ara toplam</dt>
+              <dd data-ki-pack-subtotal>₺0</dd>
+            </div>
+            <div class="ki-pack__tot-row" data-ki-pack-discount-row hidden>
+              <dt>Abone olarak kazancın</dt>
+              <dd data-ki-pack-discount-total>−₺0</dd>
+            </div>
+            <div class="ki-pack__tot-row" data-ki-pack-shipping-row hidden>
+              <dt>Abonelik kargosu</dt>
+              <dd data-ki-pack-shipping-total>₺0</dd>
+            </div>
+            <div class="ki-pack__tot-row ki-pack__tot-grand">
+              <dt>Toplam</dt>
+              <dd data-ki-pack-total>₺0</dd>
+            </div>
+          </dl>
+
+          {%- if settings.subscription_enabled -%}
+            <div class="ki-pack__referral">
+              <label class="ki-pack__referral-label" for="ki-pack-referral-{{ section.id }}">Referans kodunuzu buraya giriniz</label>
+              <input id="ki-pack-referral-{{ section.id }}" class="ki-pack__referral-input" type="text" inputmode="numeric" pattern="[0-9]{4}" maxlength="4" autocomplete="off" placeholder="0000" data-ki-pack-referral aria-describedby="ki-pack-referral-status-{{ section.id }}">
+              <p id="ki-pack-referral-status-{{ section.id }}" class="ki-pack__referral-status" data-ki-pack-referral-status>Doktorunuzdan veya danışmanınızdan gelen kodu giriniz. Kodunuz yoksa bu alanı boş bırakabilirsiniz.</p>
+            </div>
+          {%- endif -%}
+
+          <button type="button" class="ki-pack__cta" data-ki-pack-cta disabled>
+            <span data-ki-pack-cta-text>{{ section.settings.cta_idle | default: 'Önce ürün ekle' }}</span>
+          </button>
+          <div class="ki-pack__error" data-ki-pack-error></div>
+
+          <ul class="ki-pack__guarantees">
+            {%- for block in section.blocks -%}
+              {%- if block.type == 'guarantee' -%}
+                <li>{% render 'ki-icon', name: 'check', size: 12 %}{{ block.settings.label }}</li>
+              {%- endif -%}
+            {%- endfor -%}
+          </ul>
+
+          <div class="ki-pack__helper ki-pack__helper--removed" data-ki-pack-removed-block>
+            <h4 class="ki-pack__helper-title">
+              <span aria-hidden="true">↺</span>
+              <span>Son Çıkarılanlar</span>
+            </h4>
+            <ul class="ki-pack__helper-list" data-ki-pack-removed-list></ul>
+          </div>
+
+          <div class="ki-pack__helper ki-pack__helper--suggested" data-ki-pack-suggested-block>
+            <h4 class="ki-pack__helper-title">
+              {% render 'ki-icon', name: 'sparkles', size: 12 %}
+              <span>Paketine Uyabilecek Ürünler</span>
+            </h4>
+            <ul class="ki-pack__helper-list" data-ki-pack-suggested-list></ul>
+          </div>
+        </div>
+
+        <div class="ki-pack__howit">
+          <h4 class="ki-pack__howit-title">
+            {% render 'ki-icon', name: 'package', size: 16 %}
+            <span>{{ section.settings.howit_title | default: 'Nasıl çalışır?' }}</span>
+          </h4>
+          <ol>
+            {%- assign step_index = 0 -%}
+            {%- for block in section.blocks -%}
+              {%- if block.type == 'step' -%}
+                {%- assign step_index = step_index | plus: 1 -%}
+                <li><span class="ki-pack__howit-num">{{ step_index }}</span><span>{{ block.settings.text }}</span></li>
+              {%- endif -%}
+            {%- endfor -%}
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section class="ki-pack__guide" aria-labelledby="ki-pack-guide-title-{{ section.id }}">
+    <div class="ki-pack__guide-head">
+      <p class="ki-pack__guide-eyebrow">Nasıl abone olunur?</p>
+      <h2 class="ki-pack__guide-title" id="ki-pack-guide-title-{{ section.id }}">Dört adımda bakım paketin hazır.</h2>
+      <p class="ki-pack__guide-subtitle">İhtiyacına göre oluştur, düzenli teslim al. Taahhüt yok; aboneliğini hesabından kolayca atlayabilir, duraklatabilir veya iptal edebilirsin.</p>
+    </div>
+    <ol class="ki-pack__guide-grid">
+      <li class="ki-pack__guide-card">
+        <span class="ki-pack__guide-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M4 5h16v14H4z"/><path d="M8 9h8M8 13h5"/><path d="m16 16 2 2 3-4"/></svg>
+        </span>
+        <h3>Ürünlerini seç</h3>
+        <p>Bakım rutinine uygun ürünleri ve ihtiyacın olan adetleri paketine ekle.</p>
+      </li>
+      <li class="ki-pack__guide-card">
+        <span class="ki-pack__guide-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/><path d="m9 15 2 2 4-4"/></svg>
+        </span>
+        <h3>Planını onayla</h3>
+        <p>Paket içeriğini, teslimat düzenini ve toplam tutarı kontrol ederek aboneliğini başlat.</p>
+      </li>
+      <li class="ki-pack__guide-card">
+        <span class="ki-pack__guide-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M3 7h11v10H3z"/><path d="M14 10h4l3 3v4h-7"/><circle cx="7" cy="18" r="2"/><circle cx="18" cy="18" r="2"/></svg>
+        </span>
+        <h3>Kapına gelsin</h3>
+        <p>Seçtiğin ürünler özenle hazırlanır ve planlanan zamanda adresine gönderilir.</p>
+      </li>
+      <li class="ki-pack__guide-card">
+        <span class="ki-pack__guide-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M4 12a8 8 0 1 0 2.3-5.7L4 8"/><path d="M4 4v4h4"/><path d="M9 10v4M15 10v4"/></svg>
+        </span>
+        <h3>İstediğin zaman yönet</h3>
+        <p>Taahhüt yok. Gönderimi atla, planı duraklat veya aboneliğini kolayca iptal et.</p>
+      </li>
+    </ol>
+    <div class="ki-pack__support">
+      <div class="ki-pack__support-copy">
+        <span class="ki-pack__support-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M21 11.5a8.5 8.5 0 0 1-12.3 7.6L3 21l1.9-5.7A8.5 8.5 0 1 1 21 11.5Z"/></svg>
+        </span>
+        <div>
+          <strong>Bir yerde takıldın mı?</strong>
+          <p>Abonelik ve paket oluşturma konusunda WhatsApp danışma hattımız sana yardımcı olur.</p>
+        </div>
+      </div>
+      <a class="ki-pack__support-link" href="https://wa.me/905335745535?text=Merhaba%2C%20abonelik%20hakk%C4%B1nda%20destek%20almak%20istiyorum." target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.5 14.4c-.3-.2-1.8-.9-2-.9-.3-.1-.5-.2-.7.1-.2.3-.8 1-.9 1.2-.2.2-.4.2-.7.1-2.1-1-3.5-1.9-4.9-4.3-.4-.7.4-.7 1.1-1.5.1-.2.1-.4 0-.6-.1-.2-.7-1.7-.9-2.3-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.6.1-.9.4-.3.3-1.1 1.1-1.1 2.6s1.1 3 1.2 3.2c.2.2 2.1 3.2 5.1 4.5.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 1.8-.7 2-1.4.3-.7.3-1.3.2-1.4 0-.1-.2-.2-.5-.4Z"/><path d="M20.5 3.5A11.8 11.8 0 0 0 1.9 17.7L.2 24l6.4-1.7A11.8 11.8 0 0 0 20.5 3.5Zm-8.4 18.3c-1.7 0-3.3-.5-4.7-1.3l-.3-.2-3.8 1 1-3.7-.2-.4A9.8 9.8 0 1 1 12.1 21.8Z"/></svg>
+        WhatsApp'tan destek al
+      </a>
+    </div>
+  </section>
+
+  <div class="ki-pack__dialog" data-ki-pack-dialog role="dialog" aria-modal="true" aria-labelledby="ki-pack-dialog-title-{{ section.id }}" aria-hidden="true">
+    <div class="ki-pack__dialog-panel">
+      <h3 id="ki-pack-dialog-title-{{ section.id }}" class="ki-pack__dialog-title">Paketine İsim Ver</h3>
+      <p class="ki-pack__dialog-desc">Aboneliklerim sayfasında paketini kolayca tanıyabilmen için bir isim belirle.</p>
+      <input type="text" class="ki-pack__dialog-input" data-ki-pack-dialog-input placeholder="Örn: Aylık Bakım Paketim" value="Kendi Bakım Paketim" maxlength="48">
+      <div class="ki-pack__dialog-actions">
+        <button type="button" class="ki-pack__dialog-cancel" data-ki-pack-dialog-cancel>Vazgeç</button>
+        <button type="button" class="ki-pack__dialog-confirm" data-ki-pack-dialog-confirm>Onayla ve Devam Et</button>
+      </div>
+    </div>
+  </div>
+
+  {%- if settings.subscription_enabled -%}
+    <div id="ki-pack-pharmacist-dialog-{{ section.id }}" class="ki-pack__pharmacist-dialog" data-ki-pack-pharmacist-dialog role="dialog" aria-modal="true" aria-labelledby="ki-pack-pharmacist-title-{{ section.id }}" aria-describedby="ki-pack-pharmacist-copy-{{ section.id }}" aria-hidden="true">
+      <div class="ki-pack__pharmacist-panel">
+        <button type="button" class="ki-pack__pharmacist-close" data-ki-pack-pharmacist-close aria-label="Bilgi penceresini kapat">
+          {% render 'ki-icon', name: 'close', size: 16 %}
+        </button>
+        {%- if section.settings.pharmacist_benefit_image != blank -%}
+          <div class="ki-pack__pharmacist-media">
+            {{ section.settings.pharmacist_benefit_image | image_url: width: 960 | image_tag: loading: 'lazy', widths: '360, 540, 720, 960', sizes: '(max-width: 480px) calc(100vw - 28px), 460px', alt: section.settings.pharmacist_benefit_image.alt }}
+          </div>
+        {%- endif -%}
+        <div class="ki-pack__pharmacist-body">
+          <p class="ki-pack__pharmacist-kicker">Abonelere özel</p>
+          <h3 id="ki-pack-pharmacist-title-{{ section.id }}" class="ki-pack__pharmacist-title">{{ section.settings.pharmacist_modal_title | default: 'Her ay eczacınla buluş' }}</h3>
+          <p id="ki-pack-pharmacist-copy-{{ section.id }}" class="ki-pack__pharmacist-copy">{{ section.settings.pharmacist_modal_copy | default: 'Abone olanlara özel ilettiğimiz bağlantı sayesinde her ay düzenli eczacı ile online konferans yapabileceksiniz.' }}</p>
+        </div>
+      </div>
+    </div>
+  {%- endif -%}
+
+  <div class="ki-pack__doctor-dialog" data-ki-pack-doctor-dialog role="dialog" aria-modal="true" aria-labelledby="ki-pack-doctor-title-{{ section.id }}" aria-hidden="true">
+    <div class="ki-pack__doctor-panel">
+      <p class="ki-pack__doctor-kicker">Doktor / danışman yönlendirmesi</p>
+      <h3 id="ki-pack-doctor-title-{{ section.id }}" class="ki-pack__doctor-title">Referans kodunu gir</h3>
+      <p class="ki-pack__doctor-copy">Doktorunuzdan veya danışmanınızdan gelen 4 haneli kodu girerek paketini oluşturmaya başlayabilirsin.</p>
+      <input class="ki-pack__doctor-input" type="text" inputmode="numeric" pattern="[0-9]{4}" maxlength="4" autocomplete="one-time-code" placeholder="0000" data-ki-pack-doctor-code>
+      <p class="ki-pack__doctor-error" data-ki-pack-doctor-error aria-live="polite"></p>
+      <div class="ki-pack__doctor-actions">
+        <button type="button" class="ki-pack__doctor-apply" data-ki-pack-doctor-apply>Kodu uygula</button>
+        <button type="button" class="ki-pack__doctor-skip" data-ki-pack-doctor-skip>Kodsuz devam et</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  (function () {
+    var root = document.getElementById('ki-{{ section.id }}');
+    if (!root) return;
+
+    var idleText = {{ section.settings.cta_idle | default: 'Önce ürün ekle' | json }};
+    var emptyText = {{ section.settings.empty_message | default: 'Üst taraftan ürün ekleyerek paketini oluştur.' | json }};
+    var subscriptionEnabled = {{ settings.subscription_enabled | default: false | json }};
+    var customerLoggedIn = {% if customer %}true{% else %}false{% endif %};
+    var storefrontLoginUrl = {{ routes.storefront_login_url | default: routes.account_login_url | json }};
+    var subscriptionShippingFee = {{ section.settings.subscription_shipping_fee | default: 59 }};
+    var subscriptionFreeShippingThreshold = {{ section.settings.subscription_free_shipping_threshold | default: 800 }};
+    subscriptionShippingFee = Math.max(0, Number(subscriptionShippingFee) || 0);
+    subscriptionFreeShippingThreshold = Math.max(0, Number(subscriptionFreeShippingThreshold) || 800);
+    var frequencyEl = root.querySelector('[data-ki-pack-freq]');
+    var frequencyLabelEl = root.querySelector('[data-ki-pack-frequency-label]');
+    var frequencyButtons = root.querySelectorAll('[data-ki-pack-frequency-option]');
+    var frequencyNoteEl = root.querySelector('[data-ki-pack-frequency-note]');
+    var referralInput = root.querySelector('[data-ki-pack-referral]');
+    var referralStatus = root.querySelector('[data-ki-pack-referral-status]');
+    var validatedReferralCode = '';
+    var validatedReferral = null;
+    var referralValidationTimer = null;
+    var pharmacistInfoButton = root.querySelector('[data-ki-pack-pharmacist-info]');
+    var pharmacistDialog = root.querySelector('[data-ki-pack-pharmacist-dialog]');
+    var pharmacistDialogClose = root.querySelector('[data-ki-pack-pharmacist-close]');
+    var doctorDialog = root.querySelector('[data-ki-pack-doctor-dialog]');
+    var doctorCodeInput = root.querySelector('[data-ki-pack-doctor-code]');
+    var doctorCodeError = root.querySelector('[data-ki-pack-doctor-error]');
+    var doctorApplyButton = root.querySelector('[data-ki-pack-doctor-apply]');
+    var doctorSkipButton = root.querySelector('[data-ki-pack-doctor-skip]');
+    var isDoctorReferralPage = /^\/pages\/abone-ol-doktor\/?$/.test(window.location.pathname);
+    var pharmacistDialogLastFocus = null;
+
+    if (pharmacistDialog && pharmacistDialog.parentNode !== document.body) {
+      document.body.appendChild(pharmacistDialog);
+    }
+
+    function setPharmacistDialogOpen(open) {
+      if (!pharmacistDialog) return;
+      if (open) pharmacistDialogLastFocus = document.activeElement;
+      pharmacistDialog.classList.toggle('is-open', open);
+      pharmacistDialog.setAttribute('aria-hidden', open ? 'false' : 'true');
+      document.documentElement.style.overflow = open ? 'hidden' : '';
+      document.body.style.overflow = open ? 'hidden' : '';
+      if (open && pharmacistDialogClose) window.setTimeout(function () { pharmacistDialogClose.focus(); }, 40);
+      if (!open && pharmacistDialogLastFocus && typeof pharmacistDialogLastFocus.focus === 'function') pharmacistDialogLastFocus.focus();
+    }
+
+    if (pharmacistInfoButton) pharmacistInfoButton.addEventListener('click', function () {
+      setPharmacistDialogOpen(true);
+    });
+    if (pharmacistDialogClose) pharmacistDialogClose.addEventListener('click', function () {
+      setPharmacistDialogOpen(false);
+    });
+    if (pharmacistDialog) pharmacistDialog.addEventListener('click', function (event) {
+      if (event.target === pharmacistDialog) setPharmacistDialogOpen(false);
+    });
+
+    if (referralInput) {
+      referralInput.addEventListener('input', function () {
+        referralInput.value = referralInput.value.replace(/\D/g, '').slice(0, 4);
+        validatedReferralCode = '';
+        validatedReferral = null;
+        if (referralValidationTimer) window.clearTimeout(referralValidationTimer);
+        referralStatus.className = 'ki-pack__referral-status';
+        referralStatus.textContent = referralInput.value.length
+          ? 'Kod devam etmeden önce doğrulanacak.'
+          : 'Doktorunuzdan veya danışmanınızdan gelen kodu giriniz. Kodunuz yoksa bu alanı boş bırakabilirsiniz.';
+        recalc();
+        if (referralInput.value.length === 4) {
+          referralValidationTimer = window.setTimeout(function () {
+            validateReferralCode().catch(function () {});
+          }, 350);
+        }
+      });
+    }
+
+    async function validateReferralCode() {
+      if (!referralInput || !referralInput.value) return '';
+      var code = referralInput.value.trim();
+      if (!/^\d{4}$/.test(code)) throw new Error('Referans kodu 4 haneli olmalıdır.');
+      if (validatedReferralCode === code && validatedReferral) return code;
+      var apiBase = (window.kiConfig && window.kiConfig.subscriptionApiBase) || '';
+      if (!apiBase) throw new Error('Referans kodu doğrulama servisi hazır değil.');
+      referralStatus.className = 'ki-pack__referral-status';
+      referralStatus.textContent = 'Kod doğrulanıyor…';
+      var response = await fetch(apiBase + '/api/subscribe/referral/validate?code=' + encodeURIComponent(code), {
+        headers: { 'Accept': 'application/json', 'ngrok-skip-browser-warning': '1' },
+        credentials: 'include'
+      });
+      var result = {}; try { result = await response.json(); } catch (_) {}
+      if (!response.ok || !result.success) {
+        referralStatus.className = 'ki-pack__referral-status is-invalid';
+        referralStatus.textContent = result.error || result.message || 'Referans kodu geçersiz.';
+        throw new Error(referralStatus.textContent);
+      }
+      validatedReferralCode = code;
+      validatedReferral = result.data || {};
+      var referral = validatedReferral;
+      referralStatus.className = 'ki-pack__referral-status is-valid';
+      var benefits = [];
+      if (Number(referral.discountPercent || 0) > 0) benefits.push('%' + referral.discountPercent + ' referans indirimi');
+      if (Number(referral.discountAmount || 0) > 0) benefits.push(fmt(Number(referral.discountAmount)) + ' indirim');
+      if (referral.freeShipping) benefits.push('Kargo ücretsiz');
+      referralStatus.textContent = 'Kod onaylandı' + (benefits.length ? ' · ' + benefits.join(' · ') : '.');
+      recalc();
+      return code;
+    }
+
+    function setDoctorDialogOpen(open) {
+      if (!doctorDialog) return;
+      doctorDialog.classList.toggle('is-open', open);
+      doctorDialog.setAttribute('aria-hidden', open ? 'false' : 'true');
+      document.documentElement.style.overflow = open ? 'hidden' : '';
+      if (open && doctorCodeInput) window.setTimeout(function () { doctorCodeInput.focus(); }, 40);
+    }
+
+    if (isDoctorReferralPage && doctorDialog && referralInput) {
+      var doctorParams = new URLSearchParams(window.location.search);
+      var prefilledDoctorCode = String(doctorParams.get('ref') || doctorParams.get('referans') || '').replace(/\D/g, '').slice(0, 4);
+      if (doctorCodeInput) doctorCodeInput.value = prefilledDoctorCode;
+      setDoctorDialogOpen(true);
+
+      if (doctorCodeInput) {
+        doctorCodeInput.addEventListener('input', function () {
+          doctorCodeInput.value = doctorCodeInput.value.replace(/\D/g, '').slice(0, 4);
+          if (doctorCodeError) doctorCodeError.textContent = '';
+        });
+        doctorCodeInput.addEventListener('keydown', function (event) {
+          if (event.key === 'Enter' && doctorApplyButton) doctorApplyButton.click();
+        });
+      }
+
+      if (doctorApplyButton) doctorApplyButton.addEventListener('click', async function () {
+        var code = doctorCodeInput ? doctorCodeInput.value.trim() : '';
+        if (!/^\d{4}$/.test(code)) {
+          if (doctorCodeError) doctorCodeError.textContent = 'Lütfen 4 haneli referans kodunu gir.';
+          return;
+        }
+        doctorApplyButton.disabled = true;
+        doctorApplyButton.textContent = 'Doğrulanıyor…';
+        referralInput.value = code;
+        validatedReferralCode = '';
+        try {
+          await validateReferralCode();
+          setDoctorDialogOpen(false);
+          root.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        } catch (error) {
+          if (doctorCodeError) doctorCodeError.textContent = error.message || 'Referans kodu doğrulanamadı.';
+        } finally {
+          doctorApplyButton.disabled = false;
+          doctorApplyButton.textContent = 'Kodu uygula';
+        }
+      });
+
+      if (doctorSkipButton) doctorSkipButton.addEventListener('click', function () {
+        setDoctorDialogOpen(false);
+      });
+    }
+
+    function optionMonths(option) {
+      if (!option) return 2;
+      var m = parseInt(option.getAttribute('data-months'), 10);
+      return isNaN(m) ? 2 : m;   // 0 = günlük (test) geçerli değer
+    }
+    function syncFrequencyUi() {
+      if (!frequencyEl || !frequencyEl.options.length) return;
+      var selectedOption = frequencyEl.options[frequencyEl.selectedIndex];
+      var selectedMonths = optionMonths(selectedOption);
+      if (frequencyLabelEl) frequencyLabelEl.textContent = selectedOption.text + ' kapında';
+      frequencyButtons.forEach(function (button) {
+        var active = parseInt(button.getAttribute('data-ki-pack-frequency-months'), 10) === selectedMonths;
+        button.classList.toggle('is-active', active);
+        button.setAttribute('aria-pressed', active ? 'true' : 'false');
+      });
+    }
+    function selectFrequency(months) {
+      if (!frequencyEl) return;
+      var nextIndex = -1;
+      Array.prototype.some.call(frequencyEl.options, function (option, index) {
+        if (optionMonths(option) !== months || option.disabled) return false;
+        nextIndex = index;
+        return true;
+      });
+      if (nextIndex === -1) return;
+      frequencyEl.selectedIndex = nextIndex;
+      syncFrequencyUi();
+    }
+    function updateFrequencyAvailability(lines) {
+      if (!frequencyEl) return;
+      var hasItems = lines.length > 0;
+      var monthlyCategories = ['supplement', 'gel', 'ritual', 'cosmetic', 'oil', 'spray'];
+      var hasMonthlyProduct = lines.some(function (line) { return monthlyCategories.indexOf(line.cat) !== -1; });
+      var monthlyAllowed = hasMonthlyProduct;
+
+      Array.prototype.forEach.call(frequencyEl.options, function (option) {
+        if (optionMonths(option) === 1) option.disabled = !monthlyAllowed;
+      });
+      frequencyButtons.forEach(function (button) {
+        if (parseInt(button.getAttribute('data-ki-pack-frequency-months'), 10) === 1) {
+          button.disabled = !monthlyAllowed;
+        }
+      });
+
+      var selectedOption = frequencyEl.options[frequencyEl.selectedIndex];
+      if (selectedOption && selectedOption.disabled) selectFrequency(2);
+      syncFrequencyUi();
+
+      if (!frequencyNoteEl) return;
+      frequencyNoteEl.classList.toggle('is-warning', !monthlyAllowed);
+      if (!hasItems) {
+        frequencyNoteEl.textContent = 'Ürünlerini eklediğinde uygun gönderim sıklıkları otomatik açılır.';
+      } else if (!monthlyAllowed) {
+        frequencyNoteEl.textContent = 'Sadece ped içeren paketler en erken 2 ayda bir gönderilir. Ayda bir için takviye, jel veya kozmetik ürün ekle.';
+      } else {
+        frequencyNoteEl.textContent = 'Takviye, jel veya kozmetik ürün bulunduğu için 1 ay seçeneği açık.';
+      }
+    }
+
+    if (frequencyEl && frequencyEl.options.length) {
+      syncFrequencyUi();
+      frequencyButtons.forEach(function (button) {
+        button.addEventListener('click', function () {
+          if (button.disabled) return;
+          var _bm = parseInt(button.getAttribute('data-ki-pack-frequency-months'), 10);
+          selectFrequency(isNaN(_bm) ? 2 : _bm);
+          if (window.kiAnalytics && window.kiAnalytics.track) {
+            window.kiAnalytics.track('PACK_FREQUENCY_CHANGED', { metadata: { months: isNaN(_bm) ? 2 : _bm } });
+          }
+        });
+      });
+    }
+
+    var tabs = root.querySelectorAll('[data-ki-pack-tab]');
+    var cats = root.querySelectorAll('[data-ki-pack-cat]');
+    var activeTab = '';
+    tabs.forEach(function (t) {
+      t.addEventListener('click', function () {
+        var key = t.getAttribute('data-ki-pack-tab');
+        activeTab = activeTab === key ? '' : key;
+        if (key === '') activeTab = '';
+        tabs.forEach(function (x) { x.classList.toggle('is-active', x.getAttribute('data-ki-pack-tab') === activeTab); });
+        cats.forEach(function (c) {
+          var ck = c.getAttribute('data-ki-pack-cat');
+          if (activeTab === '') c.style.display = '';
+          else { c.style.display = ck === activeTab ? '' : 'none'; if (ck === activeTab) c.setAttribute('data-open', 'true'); }
+        });
+      });
+    });
+
+    cats.forEach(function (c) {
+      var head = c.querySelector('[data-ki-pack-cat-toggle]');
+      if (!head) return;
+      head.addEventListener('click', function () {
+        var open = c.getAttribute('data-open') === 'true';
+        c.setAttribute('data-open', open ? 'false' : 'true');
+        head.setAttribute('aria-expanded', open ? 'false' : 'true');
+      });
+    });
+
+    var items = root.querySelectorAll('[data-ki-pack-item]');
+    var qtyMap = {};
+    var removedIds = [];
+    function trackPack(eventName, data) {
+      if (window.kiAnalytics && window.kiAnalytics.track) window.kiAnalytics.track(eventName, data || {});
+    }
+    function fmt(n) { return '₺' + Number(n).toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
+    function escapeHtml(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]; }); }
+    function itemMeta(el) {
+      var img = el.querySelector('.ki-pack__item-img img');
+      var nameEl = el.querySelector('.ki-pack__item-name > span');
+      return {
+        id: el.getAttribute('data-ki-pack-item'),
+        name: nameEl ? nameEl.textContent.trim() : '',
+        price: (function () {
+          var price = parseFloat(el.getAttribute('data-ki-pack-price')) || 0;
+          var discount = subscriptionEnabled ? (parseFloat(el.getAttribute('data-ki-pack-discount')) || 0) : 0;
+          return Math.round(price * (100 - Math.max(0, Math.min(100, discount)))) / 100;
+        })(),
+        step: parseInt(el.getAttribute('data-ki-pack-step'), 10) || 1,
+        available: el.getAttribute('data-ki-pack-available') === 'true',
+        img: img ? img.src : ''
+      };
+    }
+    function renderHelper(blockSel, listSel, ids, label) {
+      var block = root.querySelector(blockSel);
+      var list = root.querySelector(listSel);
+      if (!block || !list) return;
+      if (!ids.length) { block.classList.remove('is-visible'); list.innerHTML = ''; return; }
+      list.innerHTML = ids.map(function (id) {
+        var el = root.querySelector('[data-ki-pack-item="' + id + '"]');
+        if (!el || el.getAttribute('data-ki-pack-available') !== 'true') return '';
+        var m = itemMeta(el);
+        return '<li class="ki-pack__helper-li" data-ki-pack-helper-id="' + escapeHtml(id) + '">' +
+          '<div class="ki-pack__helper-img">' + (m.img ? '<img src="' + escapeHtml(m.img) + '" alt="">' : '') + '</div>' +
+          '<div class="ki-pack__helper-info">' +
+            '<div class="ki-pack__helper-name">' + escapeHtml(m.name) + '</div>' +
+            '<div class="ki-pack__helper-price">' + fmt(m.price) + '</div>' +
+          '</div>' +
+          '<button type="button" class="ki-pack__helper-btn" data-ki-pack-helper-add="' + escapeHtml(id) + '">' + label + '</button>' +
+        '</li>';
+      }).join('');
+      block.classList.add('is-visible');
+    }
+
+    function recalc() {
+      var subtotal = 0, originalSubtotal = 0, count = 0, lines = [], perCat = {};
+      items.forEach(function (it) {
+        var id = it.getAttribute('data-ki-pack-item');
+        var qty = qtyMap[id] || 0;
+        var step = parseInt(it.getAttribute('data-ki-pack-step'), 10) || 1;
+        var price = parseFloat(it.getAttribute('data-ki-pack-price')) || 0;
+        var discountRate = subscriptionEnabled ? (parseFloat(it.getAttribute('data-ki-pack-discount')) || 0) : 0;
+        discountRate = Math.max(0, Math.min(100, discountRate));
+        var salePrice = Math.round(price * (100 - discountRate)) / 100;
+        var cat = it.getAttribute('data-ki-pack-cat-key');
+        var unit = it.getAttribute('data-ki-pack-unit') || '';
+        var selectionMode = it.getAttribute('data-ki-pack-selection-mode') || 'standard';
+        var variantId = it.getAttribute('data-ki-pack-variant-id');
+        var available = it.getAttribute('data-ki-pack-available') === 'true';
+        if (!available && qty > 0) {
+          qty = 0;
+          qtyMap[id] = 0;
+        }
+        var qtyEl = it.querySelector('[data-ki-pack-qty]');
+        if (qtyEl) qtyEl.textContent = qty;
+        it.classList.toggle('is-selected', qty > 0);
+        var minus = it.querySelector('[data-ki-pack-minus]');
+        if (minus) minus.disabled = qty === 0;
+        if (qty > 0) {
+          var units = qty / step;
+          var lineTotal = units * salePrice;
+          var originalLineTotal = units * price;
+          subtotal += lineTotal;
+          originalSubtotal += originalLineTotal;
+          count += units;
+          perCat[cat] = (perCat[cat] || 0) + units;
+          var img = it.querySelector('.ki-pack__item-img img');
+          var nameEl = it.querySelector('.ki-pack__item-name > span');
+          lines.push({
+            id: id, variantId: variantId, qty: qty, units: units, unit: unit,
+            cat: cat,
+            selectionMode: selectionMode,
+            price: salePrice, originalPrice: price, discountRate: discountRate, total: lineTotal,
+            name: nameEl ? nameEl.textContent : '', img: img ? img.src : ''
+          });
+        }
+      });
+
+      root.querySelectorAll('[data-ki-pack-tab-count]').forEach(function (el) {
+        var k = el.getAttribute('data-ki-pack-tab-count'); var v = perCat[k] || 0;
+        el.textContent = v; el.setAttribute('data-count', v);
+      });
+      root.querySelectorAll('[data-ki-pack-cat-count]').forEach(function (el) {
+        var k = el.getAttribute('data-ki-pack-cat-count'); var v = perCat[k] || 0;
+        el.textContent = v; el.setAttribute('data-count', v);
+      });
+
+      var listEl = root.querySelector('[data-ki-pack-sum-list]');
+      var metaEl = root.querySelector('[data-ki-pack-sum-meta]');
+      if (lines.length === 0) {
+        listEl.innerHTML = ''; metaEl.textContent = emptyText;
+      } else {
+        metaEl.textContent = count + ' ürün seçildi.';
+        listEl.innerHTML = lines.map(function (l) {
+          var quantityLabel = l.selectionMode === 'loose_pads'
+            ? l.qty + ' adet'
+            : l.units + ' ' + l.unit;
+          var lineMeta = l.selectionMode === 'loose_pads'
+            ? l.qty + ' adet ped · ' + l.units + ' seçim × ' + fmt(l.price)
+            : l.units + ' ' + l.unit + ' × ' + fmt(l.price);
+          // XSS: merchant/ürün kaynaklı name/img innerHTML'e basılıyor — kaçışla.
+          return '<li class="ki-pack__sum-li">' +
+            '<div class="ki-pack__sum-li-img">' + (l.img ? '<img src="' + escapeHtml(l.img) + '" alt="">' : '') +
+            '</div>' +
+            '<span class="ki-pack__sum-li-qty">' + escapeHtml(quantityLabel) + '</span>' +
+            '<div class="ki-pack__sum-li-info">' +
+              '<div class="ki-pack__sum-li-name">' + escapeHtml(l.name) + '</div>' +
+              '<div class="ki-pack__sum-li-meta">' + escapeHtml(lineMeta) +
+                (l.discountRate > 0 ? ' · %' + escapeHtml(l.discountRate) + ' indirim' : '') + '</div>' +
+            '</div>' +
+            '<p class="ki-pack__sum-li-total">' + fmt(l.total) + '</p>' +
+            '<button type="button" class="ki-pack__sum-li-remove" data-ki-pack-decrease="' + escapeHtml(l.id) + '" aria-label="' + escapeHtml(l.name) + ' adedini azalt">' +
+              '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/></svg>' +
+            '</button>' +
+          '</li>';
+        }).join('');
+      }
+
+      var minimumMet = true;
+      var baseShippingFee = subscriptionEnabled && count > 0 && subtotal < subscriptionFreeShippingThreshold
+        ? subscriptionShippingFee
+        : 0;
+      var referralPercent = validatedReferral ? Math.max(0, Number(validatedReferral.discountPercent) || 0) : 0;
+      var referralFixedDiscount = validatedReferral ? Math.max(0, Number(validatedReferral.discountAmount) || 0) : 0;
+      var referralDiscount = (subtotal + baseShippingFee) * referralPercent / 100 + referralFixedDiscount;
+      referralDiscount = Math.min(referralDiscount, Math.max(0, subtotal + baseShippingFee - 0.01));
+      var shippingFee = validatedReferral && validatedReferral.freeShipping ? 0 : baseShippingFee;
+      var grandTotal = Math.max(0.01, subtotal + baseShippingFee - referralDiscount);
+      var shipText = root.querySelector('[data-ki-pack-ship-text]');
+      if (shipText) {
+        if (!subscriptionEnabled) {
+          shipText.textContent = 'Kargo ödeme adımında hesaplanır';
+        } else if (count === 0) {
+          shipText.textContent = fmt(subscriptionFreeShippingThreshold) + ' altı kargo ' + fmt(subscriptionShippingFee) + ' · üzeri ücretsiz';
+        } else if (validatedReferral && validatedReferral.freeShipping) {
+          shipText.textContent = 'Kargo ücretsiz 🎉';
+        } else if (shippingFee > 0) {
+          shipText.textContent = 'Abonelik kargosu ' + fmt(shippingFee) + ' · Ücretsiz kargoya ' + fmt(subscriptionFreeShippingThreshold - subtotal) + ' kaldı';
+        } else {
+          shipText.textContent = 'Ücretsiz abonelik kargosu 🎉';
+        }
+      }
+      var shippingProgress = root.querySelector('[data-ki-pack-shipping-progress]');
+      var shippingTrack = root.querySelector('[data-ki-pack-shipping-track]');
+      var shippingFill = root.querySelector('[data-ki-pack-shipping-fill]');
+      var shippingFreeMarker = root.querySelector('[data-ki-pack-shipping-free-marker]');
+      var shippingFreeLabel = root.querySelector('[data-ki-pack-shipping-free-label]');
+      var shippingMax = Math.max(subscriptionFreeShippingThreshold, 1);
+      var shippingProgressPercent = Math.min(100, Math.max(0, subtotal / shippingMax * 100));
+      if (shippingProgress) {
+        shippingProgress.hidden = !subscriptionEnabled;
+        shippingProgress.classList.toggle('is-free', subscriptionEnabled && count > 0 && (subtotal >= subscriptionFreeShippingThreshold || Boolean(validatedReferral && validatedReferral.freeShipping)));
+      }
+      if (shippingTrack) {
+        shippingTrack.setAttribute('aria-valuemax', String(subscriptionFreeShippingThreshold));
+        shippingTrack.setAttribute('aria-valuenow', String(Math.min(subtotal, subscriptionFreeShippingThreshold)));
+      }
+      if (shippingFill) shippingFill.style.width = shippingProgressPercent + '%';
+      if (shippingFreeMarker) shippingFreeMarker.classList.toggle('is-reached', subscriptionEnabled && count > 0 && (subtotal >= subscriptionFreeShippingThreshold || Boolean(validatedReferral && validatedReferral.freeShipping)));
+      if (shippingFreeLabel) shippingFreeLabel.textContent = fmt(subscriptionFreeShippingThreshold);
+
+      updateFrequencyAvailability(lines);
+
+      root.querySelector('[data-ki-pack-subtotal]').textContent = fmt(originalSubtotal);
+      var discountTotal = Math.max(0, originalSubtotal - subtotal) + referralDiscount;
+      var discountRow = root.querySelector('[data-ki-pack-discount-row]');
+      var discountTotalEl = root.querySelector('[data-ki-pack-discount-total]');
+      if (discountRow) discountRow.hidden = discountTotal <= 0;
+      if (discountTotalEl) discountTotalEl.textContent = '−' + fmt(discountTotal);
+      var shippingRow = root.querySelector('[data-ki-pack-shipping-row]');
+      var shippingTotalEl = root.querySelector('[data-ki-pack-shipping-total]');
+      if (shippingRow) shippingRow.hidden = !subscriptionEnabled || count === 0 || !minimumMet;
+      if (shippingTotalEl) shippingTotalEl.textContent = shippingFee > 0 ? fmt(shippingFee) : 'Ücretsiz';
+      root.querySelector('[data-ki-pack-total]').textContent = fmt(grandTotal);
+
+      var cta = root.querySelector('[data-ki-pack-cta]');
+      var ctaTxt = root.querySelector('[data-ki-pack-cta-text]');
+      cta.disabled = count === 0;
+      var ctaLabel = count === 0
+        ? idleText
+        : (subscriptionEnabled ? 'Aboneliğe devam et' : 'Sepete ekle');
+      ctaTxt.textContent = ctaLabel;
+
+      var allIds = Array.prototype.map.call(items, function (it) { return it.getAttribute('data-ki-pack-item'); });
+      allIds = allIds.filter(function (id) {
+        var item = root.querySelector('[data-ki-pack-item="' + id + '"]');
+        return item && item.getAttribute('data-ki-pack-available') === 'true';
+      });
+      var activeIds = lines.map(function (l) { return l.id; });
+      removedIds = removedIds.filter(function (id) { return activeIds.indexOf(id) === -1; });
+      var suggestedIds = allIds.filter(function (id) {
+        return activeIds.indexOf(id) === -1 && removedIds.indexOf(id) === -1;
+      }).slice(0, 3);
+      renderHelper('[data-ki-pack-removed-block]', '[data-ki-pack-removed-list]', removedIds, 'Geri Ekle');
+      renderHelper('[data-ki-pack-suggested-block]', '[data-ki-pack-suggested-list]', count > 0 ? suggestedIds : [], '+ Ekle');
+
+      root.dataset.kiPackLines = JSON.stringify(lines);
+      root.dataset.kiPackProductTotal = subtotal.toFixed(2);
+      root.dataset.kiPackShippingFee = baseShippingFee.toFixed(2);
+      root.dataset.kiPackReferralDiscount = referralDiscount.toFixed(2);
+      root.dataset.kiPackGrandTotal = grandTotal.toFixed(2);
+      root.dataset.kiPackMinimumMet = minimumMet ? 'true' : 'false';
+    }
+
+    function addQty(id, step) {
+      var item = root.querySelector('[data-ki-pack-item="' + id + '"]');
+      if (!item || item.getAttribute('data-ki-pack-available') !== 'true') return;
+      qtyMap[id] = Math.min(200, (qtyMap[id] || 0) + step);
+      var ri = removedIds.indexOf(id);
+      if (ri !== -1) removedIds.splice(ri, 1);
+      recalc();
+      var meta = itemMeta(item);
+      trackPack('PACK_ITEM_ADDED', { productId: id, variantId: item.getAttribute('data-ki-pack-variant-id'), productTitle: meta.name, value: meta.price, metadata: { quantity: qtyMap[id], step: step } });
+    }
+    function subQty(id, step) {
+      var prev = qtyMap[id] || 0;
+      qtyMap[id] = Math.max(0, prev - step);
+      if (prev > 0 && qtyMap[id] === 0) {
+        removedIds = [id].concat(removedIds.filter(function (x) { return x !== id; })).slice(0, 5);
+      }
+      recalc();
+      var item = root.querySelector('[data-ki-pack-item="' + id + '"]');
+      var meta = item ? itemMeta(item) : { name: '' };
+      trackPack('PACK_ITEM_REMOVED', { productId: id, variantId: item ? item.getAttribute('data-ki-pack-variant-id') : '', productTitle: meta.name, metadata: { quantity: qtyMap[id], step: step } });
+    }
+
+    items.forEach(function (it) {
+      var id = it.getAttribute('data-ki-pack-item');
+      qtyMap[id] = 0;
+      var plus = it.querySelector('[data-ki-pack-plus]');
+      var minus = it.querySelector('[data-ki-pack-minus]');
+      if (plus) plus.addEventListener('click', function () {
+        addQty(id, parseInt(it.getAttribute('data-ki-pack-step'), 10) || 1);
+      });
+      if (minus) minus.addEventListener('click', function () {
+        subQty(id, parseInt(it.getAttribute('data-ki-pack-step'), 10) || 1);
+      });
+    });
+
+    root.querySelectorAll('[data-ki-pack-ped-mode]').forEach(function (button) {
+      button.addEventListener('click', function () {
+        var mode = button.getAttribute('data-ki-pack-ped-mode') === 'box' ? 'box' : 'loose';
+        root.querySelectorAll('[data-ki-pack-ped-mode]').forEach(function (modeButton) {
+          var isActive = modeButton === button;
+          modeButton.classList.toggle('is-active', isActive);
+          modeButton.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+        });
+        items.forEach(function (item) {
+          if (item.getAttribute('data-ki-pack-cat-key') !== 'ped') return;
+          var id = item.getAttribute('data-ki-pack-item');
+          var modePrefix = mode === 'box' ? 'box' : 'loose';
+          var step = mode === 'box'
+            ? parseInt(item.getAttribute('data-ki-pack-box-step'), 10) || 1
+            : parseInt(item.getAttribute('data-ki-pack-loose-step'), 10) || 5;
+          var unit = mode === 'box'
+            ? item.getAttribute('data-ki-pack-box-unit') || 'kutu'
+            : item.getAttribute('data-ki-pack-loose-unit') || 'ped';
+          var variantId = item.getAttribute('data-ki-pack-' + modePrefix + '-variant-id') || '';
+          var productHandle = item.getAttribute('data-ki-pack-' + modePrefix + '-product-handle') || '';
+          var price = parseFloat(item.getAttribute('data-ki-pack-' + modePrefix + '-price')) || 0;
+          var available = Boolean(variantId);
+          item.setAttribute('data-ki-pack-step', step);
+          item.setAttribute('data-ki-pack-unit', unit);
+          item.setAttribute('data-ki-pack-variant-id', variantId);
+          item.setAttribute('data-ki-pack-product-handle', productHandle);
+          item.setAttribute('data-ki-pack-price', price);
+          item.setAttribute('data-ki-pack-available', available ? 'true' : 'false');
+          item.setAttribute('data-ki-pack-selection-mode', mode === 'box' ? 'pad_box' : 'loose_pads');
+          item.classList.remove('is-unavailable');
+          var plusButton = item.querySelector('[data-ki-pack-plus]');
+          if (plusButton) plusButton.disabled = !available;
+          var priceValue = item.querySelector('[data-ki-pack-price-value]');
+          var discountRate = subscriptionEnabled ? (parseFloat(item.getAttribute('data-ki-pack-discount')) || 0) : 0;
+          var discountedPrice = Math.round(price * (100 - discountRate)) / 100;
+          if (priceValue) priceValue.textContent = price > 0 ? fmt(discountedPrice) : '—';
+          var originalPriceValue = item.querySelector('[data-ki-pack-price-original]');
+          if (originalPriceValue) originalPriceValue.textContent = price > 0 ? fmt(price) : '';
+          var priceUnit = item.querySelector('[data-ki-pack-price-unit]');
+          if (priceUnit) priceUnit.textContent = '/ ' + step + ' ' + unit;
+          var modeShort = item.querySelector('[data-ki-pack-mode-short]');
+          if (modeShort) {
+            var modeShortText = modeShort.getAttribute('data-ki-pack-' + modePrefix + '-text');
+            if (modeShortText) modeShort.textContent = modeShortText;
+          }
+          var availabilityText = item.querySelector('[data-ki-pack-availability-text]');
+          if (availabilityText) availabilityText.hidden = true;
+          var modeImage = item.querySelector('[data-ki-pack-mode-image]');
+          if (modeImage) {
+            var imageSource = modeImage.getAttribute('data-ki-pack-' + modePrefix + '-src');
+            if (imageSource) modeImage.src = imageSource;
+          }
+          qtyMap[id] = 0;
+          removedIds = removedIds.filter(function (removedId) { return removedId !== id; });
+        });
+        var note = root.querySelector('[data-ki-pack-ped-mode-note]');
+        if (note) {
+          note.textContent = mode === 'box'
+            ? 'Seçtiğin ped kutusu abonelik paketine 1 kutu olarak eklenir.'
+            : 'Günlük ve gündüz pedler 10’lu, gece pedleri 8’li paket halinde eklenir.';
+        }
+        recalc();
+      });
+    });
+
+    document.addEventListener('ki:apply-pack-preset', function (event) {
+      var presetItems = event.detail && Array.isArray(event.detail.items) ? event.detail.items : [];
+      if (!presetItems.length) return;
+      root.dataset.kiPackPresetTitle = event.detail && event.detail.title ? event.detail.title : '';
+      Object.keys(qtyMap).forEach(function (id) { qtyMap[id] = 0; });
+      removedIds = [];
+      var appliedCount = 0;
+      presetItems.forEach(function (presetItem) {
+        var handle = String(presetItem.handle || '');
+        var units = Math.max(1, parseInt(presetItem.quantity, 10) || 1);
+        var matchedItem = Array.prototype.find.call(items, function (item) {
+          return item.getAttribute('data-ki-pack-product-handle') === handle
+            && item.getAttribute('data-ki-pack-available') === 'true';
+        });
+        if (!matchedItem) return;
+        var id = matchedItem.getAttribute('data-ki-pack-item');
+        var step = parseInt(matchedItem.getAttribute('data-ki-pack-step'), 10) || 1;
+        qtyMap[id] = Math.min(200, units * step);
+        appliedCount += units;
+        var category = matchedItem.closest('[data-ki-pack-cat]');
+        if (category) {
+          category.setAttribute('data-open', 'true');
+          var categoryToggle = category.querySelector('[data-ki-pack-cat-toggle]');
+          if (categoryToggle) categoryToggle.setAttribute('aria-expanded', 'true');
+        }
+      });
+      activeTab = '';
+      tabs.forEach(function (tab) {
+        tab.classList.toggle('is-active', tab.getAttribute('data-ki-pack-tab') === '');
+      });
+      cats.forEach(function (category) { category.style.display = ''; });
+      recalc();
+      document.dispatchEvent(new CustomEvent('ki:pack-preset-applied', { detail: { count: appliedCount } }));
+    });
+
+    document.addEventListener('ki:pack-preset-applied', function (event) {
+      var activeButton = root.querySelector('[data-ki-pack-preset-button].is-applying');
+      if (!activeButton) return;
+      activeButton.classList.remove('is-applying');
+      if (event.detail && event.detail.count > 0) {
+        activeButton.classList.add('is-applied');
+        activeButton.textContent = 'Paket seçildi ✓';
+      } else {
+        activeButton.textContent = 'Paketi aboneliğe ekle';
+      }
+    });
+
+    root.addEventListener('click', function (e) {
+      var presetButton = e.target.closest && e.target.closest('[data-ki-pack-preset-button]');
+      if (presetButton && !presetButton.disabled) {
+        var selectedPresetItems = [];
+        for (var presetIndex = 1; presetIndex <= 3; presetIndex++) {
+          var presetHandle = presetButton.getAttribute('data-product-' + presetIndex);
+          var presetQuantity = parseInt(presetButton.getAttribute('data-qty-' + presetIndex), 10) || 1;
+          if (presetHandle) selectedPresetItems.push({ handle: presetHandle, quantity: presetQuantity });
+        }
+        root.querySelectorAll('[data-ki-pack-preset-button]').forEach(function (button) {
+          button.classList.remove('is-applied', 'is-applying');
+          button.textContent = 'Paketi aboneliğe ekle';
+        });
+        presetButton.classList.add('is-applying');
+        presetButton.textContent = 'Paket hazırlanıyor…';
+        document.dispatchEvent(new CustomEvent('ki:apply-pack-preset', {
+          detail: { items: selectedPresetItems, title: presetButton.getAttribute('data-preset-title') || '' }
+        }));
+        return;
+      }
+      var decreaseBtn = e.target.closest && e.target.closest('[data-ki-pack-decrease]');
+      if (decreaseBtn) {
+        var decreaseId = decreaseBtn.getAttribute('data-ki-pack-decrease');
+        var decreaseItem = root.querySelector('[data-ki-pack-item="' + decreaseId + '"]');
+        if (!decreaseItem) return;
+        var decreaseStep = parseInt(decreaseItem.getAttribute('data-ki-pack-step'), 10) || 1;
+        subQty(decreaseId, decreaseStep);
+        return;
+      }
+      var btn = e.target.closest && e.target.closest('[data-ki-pack-helper-add]');
+      if (!btn) return;
+      var id = btn.getAttribute('data-ki-pack-helper-add');
+      var el = root.querySelector('[data-ki-pack-item="' + id + '"]');
+      if (!el) return;
+      var step = parseInt(el.getAttribute('data-ki-pack-step'), 10) || 1;
+      addQty(id, step);
+    });
+
+    var dialog = root.querySelector('[data-ki-pack-dialog]');
+    var dialogInput = root.querySelector('[data-ki-pack-dialog-input]');
+    var dialogCancel = root.querySelector('[data-ki-pack-dialog-cancel]');
+    var dialogConfirm = root.querySelector('[data-ki-pack-dialog-confirm]');
+    function openDialog() {
+      if (!dialog) return;
+      if (dialogInput && root.dataset.kiPackPresetTitle) dialogInput.value = root.dataset.kiPackPresetTitle;
+      dialog.classList.add('is-open');
+      dialog.setAttribute('aria-hidden', 'false');
+      setTimeout(function () { if (dialogInput) { dialogInput.focus(); dialogInput.select(); } }, 50);
+    }
+    function closeDialog() {
+      if (!dialog) return;
+      dialog.classList.remove('is-open');
+      dialog.setAttribute('aria-hidden', 'true');
+    }
+    if (dialog) {
+      dialog.addEventListener('click', function (e) { if (e.target === dialog) closeDialog(); });
+    }
+    if (dialogCancel) dialogCancel.addEventListener('click', closeDialog);
+    if (dialogInput) {
+      dialogInput.addEventListener('input', function () {
+        if (dialogConfirm) dialogConfirm.disabled = !dialogInput.value.trim();
+      });
+    }
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && dialog && dialog.classList.contains('is-open')) closeDialog();
+      if (e.key === 'Escape' && pharmacistDialog && pharmacistDialog.classList.contains('is-open')) setPharmacistDialogOpen(false);
+    });
+
+    var ctaEl = root.querySelector('[data-ki-pack-cta]');
+    var errEl = root.querySelector('[data-ki-pack-error]');
+    ctaEl.addEventListener('click', function () {
+      errEl.classList.remove('is-visible');
+      var lines = JSON.parse(root.dataset.kiPackLines || '[]');
+      if (!lines.length) return;
+      trackPack('SUBSCRIBE_CTA_CLICK', { metadata: { source: 'pack-builder', itemCount: lines.length } });
+      openDialog();
+    });
+
+    if (dialogConfirm) dialogConfirm.addEventListener('click', async function () {
+      errEl.classList.remove('is-visible');
+      var lines = JSON.parse(root.dataset.kiPackLines || '[]');
+      if (!lines.length) { closeDialog(); return; }
+      var packName = dialogInput && dialogInput.value.trim() ? dialogInput.value.trim() : 'Kendi Bakım Paketim';
+      var mode = subscriptionEnabled ? 'subscription' : 'oneoff';
+
+      dialogConfirm.disabled = true;
+      ctaEl.disabled = true;
+      try {
+        if (mode === 'subscription' && subscriptionEnabled) {
+          var referralCode = await validateReferralCode();
+          var checkoutUrl = (window.kiConfig && window.kiConfig.subscriptionCheckoutUrl) || '/pages/paket-checkout';
+          var freqEl = root.querySelector('[data-ki-pack-freq]');
+          var sellingPlanId = (freqEl && freqEl.value) || (window.kiConfig && window.kiConfig.defaultSellingPlanId);
+          // Seçilen gönderim sıklığı (ay) → backend intervalCount olarak checkout'a taşınır
+          var selectedFreqOpt = (freqEl && freqEl.options.length) ? freqEl.options[freqEl.selectedIndex] : null;
+          var intervalMonths = 2;
+          if (selectedFreqOpt) { var _im = parseInt(selectedFreqOpt.getAttribute('data-months'), 10); intervalMonths = isNaN(_im) ? 2 : _im; }
+          var productTotal = 0;
+          var boxItems = lines.map(function (l) {
+            productTotal += l.total;
+            return {
+              shopifyVariantGid: l.variantId ? ('gid://shopify/ProductVariant/' + l.variantId) : '',
+              title: l.name,
+              price: String(l.price),
+              originalPrice: String(l.originalPrice),
+              discountRate: l.discountRate,
+              quantity: l.units,
+              selectionMode: l.selectionMode,
+              physicalQuantity: l.qty,
+              unit: l.unit
+            };
+          });
+          var shippingFee = parseFloat(root.dataset.kiPackShippingFee || '0') || 0;
+          if (shippingFee > 0) {
+            boxItems.push({
+              shopifyVariantGid: '',
+              title: 'Abonelik kargo bedeli',
+              price: shippingFee.toFixed(2),
+              originalPrice: shippingFee.toFixed(2),
+              discountRate: 0,
+              quantity: 1,
+              selectionMode: 'shipping',
+              physicalQuantity: 1,
+              unit: 'gönderim'
+            });
+          }
+          var total = productTotal + shippingFee;
+          var displayTotal = parseFloat(root.dataset.kiPackGrandTotal || String(total)) || total;
+          var referralDiscountAmount = parseFloat(root.dataset.kiPackReferralDiscount || '0') || 0;
+          var payload = {
+            boxItems: boxItems,
+            totalPrice: total.toFixed(2),
+            productTotal: productTotal.toFixed(2),
+            shippingFee: shippingFee.toFixed(2),
+            displayTotal: displayTotal.toFixed(2),
+            referralDiscountAmount: referralDiscountAmount.toFixed(2),
+            freeShipping: Boolean(validatedReferral && validatedReferral.freeShipping),
+            sellingPlanId: sellingPlanId || '',
+            intervalCount: intervalMonths,
+            packName: packName,
+            trackingFlowId: 'sub-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 10),
+            referralCode: referralCode,
+            source: 'ki-pack-builder'
+          };
+          trackPack('SUBSCRIPTION_PACKAGE_ADDED', {
+            value: Number(payload.totalPrice || 0),
+            metadata: { source: 'pack-builder', itemCount: boxItems.length, intervalCount: intervalMonths }
+          });
+          if (window.kiAnalytics && window.kiAnalytics.publishCustomerEvent) {
+            window.kiAnalytics.publishCustomerEvent('carewithki:subscription_add_to_cart', {
+              content_name: packName,
+              content_type: 'product',
+              content_ids: boxItems.map(function (item) { return item.shopifyVariantGid; }).filter(Boolean),
+              contents: boxItems.filter(function (item) { return item.shopifyVariantGid; }).map(function (item) {
+                return { id: item.shopifyVariantGid, quantity: Number(item.quantity || 1), item_price: Number(item.price || 0) };
+              }),
+              value: Number(payload.totalPrice || 0),
+              currency: (window.kiConfig && window.kiConfig.currency) || 'TRY',
+              interval_count: intervalMonths,
+              flow_id: payload.trackingFlowId,
+              source: 'subscription_pack_builder'
+            });
+          }
+          try { sessionStorage.setItem('ki_pack', JSON.stringify(payload)); } catch (storageError) {}
+          if (!customerLoggedIn) {
+            var sourceLoginUrl = new URL(storefrontLoginUrl, window.location.origin);
+            var loginUrl = new URL('/customer_authentication/login', window.location.origin);
+            ['locale', 'region_country', 'ui_hint'].forEach(function (key) {
+              var value = sourceLoginUrl.searchParams.get(key);
+              if (value) loginUrl.searchParams.set(key, value);
+            });
+            var checkoutPath = new URL(checkoutUrl, window.location.origin).pathname;
+            loginUrl.searchParams.set('return_to', checkoutPath + '?resume_subscription=1');
+            window.location.assign(loginUrl.toString());
+            return;
+          }
+          var encoded = encodeURIComponent(btoa(unescape(encodeURIComponent(JSON.stringify(payload)))));
+          var sep = checkoutUrl.indexOf('?') === -1 ? '?' : '&';
+          window.location.href = checkoutUrl + sep + 'pack=' + encoded;
+          return;
+        } else {
+          var addItems = lines.filter(function (l) { return l.variantId; }).map(function (l) {
+            var properties = { '_PackName': packName };
+            if (l.selectionMode === 'loose_pads') {
+              properties._PackOption = 'Adetli ped seçimi';
+              properties._PackQuantity = l.qty + ' adet ped';
+            } else if (l.selectionMode === 'pad_box') {
+              properties._PackOption = 'Ped kutusu aboneliği';
+              properties._PackQuantity = l.units + ' kutu';
+            }
+            return { id: parseInt(l.variantId, 10), quantity: l.units, properties: properties };
+          });
+          if (!addItems.length) throw new Error('Geçerli ürün bulunamadı.');
+          var routes = (window.kiConfig && window.kiConfig.routes) || {};
+          var res = await fetch((routes.cartAdd || '/cart/add') + '.js', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+            body: JSON.stringify({ items: addItems })
+          });
+          if (!res.ok) {
+            var e = {}; try { e = await res.json(); } catch(_){}
+            throw new Error(e.description || e.message || 'Sepete eklenemedi');
+          }
+          closeDialog();
+          var drawer = document.querySelector('[data-ki-cart-drawer]');
+          if (drawer) drawer.classList.add('is-open');
+        }
+      } catch (e) {
+        errEl.textContent = e.message || 'Bir hata oluştu, lütfen tekrar deneyin.';
+        errEl.classList.add('is-visible');
+        closeDialog();
+      } finally {
+        ctaEl.disabled = false;
+        if (dialogConfirm) dialogConfirm.disabled = false;
+      }
+    });
+
+    recalc();
+
+    var requestedPresetKey = new URLSearchParams(window.location.search).get('preset');
+    if (requestedPresetKey) {
+      window.setTimeout(function () {
+        var safePresetKey = String(requestedPresetKey).replace(/[^a-z0-9-_]/gi, '');
+        var requestedPresetButton = root.querySelector('[data-ki-pack-preset-button][data-preset-key="' + safePresetKey + '"]');
+        if (requestedPresetButton && !requestedPresetButton.disabled) requestedPresetButton.click();
+      }, 80);
+    }
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Pack builder",
+  "tag": "section",
+  "class": "ki-section",
+  "settings": [
+    { "type": "header", "content": "Genel" },
+    { "type": "text", "id": "summary_title", "label": "Özet kart başlığı", "default": "Paketin" },
+    { "type": "text", "id": "frequency_label", "label": "Sıklık etiketi", "default": "2 ayda bir kapında" },
+    { "type": "text", "id": "empty_message", "label": "Boş durum mesajı", "default": "Üst taraftan ürün ekleyerek paketini oluştur." },
+    { "type": "text", "id": "cta_idle", "label": "CTA boş durumda", "default": "Önce ürün ekle" },
+    { "type": "text", "id": "howit_title", "label": "Nasıl çalışır başlığı", "default": "Nasıl çalışır?" },
+    { "type": "text", "id": "pharmacist_benefit_title", "label": "Eczacı avantajı başlığı", "default": "Abonelere özel: 15 dk Eczacına Sor" },
+    { "type": "textarea", "id": "pharmacist_benefit_copy", "label": "Eczacı avantajı açıklaması", "default": "Dilediğin soruyu uzman eczacımıza ücretsiz sorabilirsin." },
+    { "type": "image_picker", "id": "pharmacist_benefit_image", "label": "Eczacı ekip fotoğrafı" },
+    { "type": "text", "id": "pharmacist_modal_title", "label": "Eczacı bilgi penceresi başlığı", "default": "Her ay eczacınla buluş" },
+    { "type": "textarea", "id": "pharmacist_modal_copy", "label": "Eczacı bilgi penceresi açıklaması", "default": "Abone olanlara özel ilettiğimiz bağlantı sayesinde her ay düzenli eczacı ile online konferans yapabileceksiniz." },
+    { "type": "number", "id": "subscription_shipping_fee", "label": "Abonelik kargo bedeli (₺)", "default": 59 },
+    { "type": "number", "id": "subscription_free_shipping_threshold", "label": "Ücretsiz abonelik kargo eşiği (₺)", "default": 800 },
+    { "type": "range", "id": "subscription_discount_percent", "label": "Tüm paket için abonelik indirimi", "min": 0, "max": 30, "step": 1, "unit": "%", "default": 15 }
+  ],
+  "blocks": [
+    {
+      "type": "category",
+      "name": "Kategori",
+      "settings": [
+        { "type": "text", "id": "key", "label": "Kategori anahtarı (örn. ped)", "info": "Ürünlerin 'category_key' alanı bununla eşleşmeli" },
+        { "type": "text", "id": "label", "label": "Görünen ad", "default": "Pedler" },
+        { "type": "textarea", "id": "description", "label": "Açıklama" },
+        { "type": "textarea", "id": "hint", "label": "İpucu (panel altı)" }
+      ]
+    },
+    {
+      "type": "product",
+      "name": "Ürün (Shopify picker)",
+      "settings": [
+        { "type": "product", "id": "product", "label": "Tam kutu Shopify ürünü", "info": "Pedlerde 30/12/8 adetlik kutu; diğer kategorilerde standart üründür." },
+        { "type": "product", "id": "loose_product", "label": "Adetli ped Shopify ürünü", "info": "Yalnızca ped kategorisinde kullanılır. Adetli seçim modunda bu ürünün fiyatı ve stoğu kullanılır." },
+        { "type": "text", "id": "category_key", "label": "Kategori anahtarı", "info": "Yukarıdaki kategori block'unun 'key' alanı" },
+        { "type": "text", "id": "name_override", "label": "İsim override (opsiyonel)" },
+        { "type": "textarea", "id": "short", "label": "Kısa açıklama" },
+        { "type": "text", "id": "badge", "label": "Rozet (opsiyonel)" },
+        { "type": "text", "id": "image_asset", "label": "Tema görsel dosyası (opsiyonel)", "info": "Örn. ki-ped-pack-light.png" },
+        { "type": "checkbox", "id": "no_subscription_discount", "label": "Abonelik indirimini tekrar uygulama", "default": false, "info": "Fiyatı zaten abonelik fiyatı olan hazır paketlerde açın." },
+        { "type": "number", "id": "step", "label": "Adım miktarı", "default": 1 },
+        { "type": "text", "id": "unit", "label": "Birim", "default": "adet" },
+        { "type": "number", "id": "box_step", "label": "Ped kutusu adım miktarı", "default": 1, "info": "Yalnızca ped kategorisindeki kutu aboneliği seçeneğinde kullanılır." },
+        { "type": "text", "id": "box_unit", "label": "Ped kutusu birimi", "default": "kutu" },
+        { "type": "number", "id": "demo_price", "label": "Demo fiyat (Shopify ürünü yokken)", "default": 0 }
+      ]
+    },
+    {
+      "type": "package_preset",
+      "name": "Hazır bakım paketi",
+      "settings": [
+        { "type": "text", "id": "category_key", "label": "Kategori anahtarı", "default": "packages" },
+        { "type": "text", "id": "preset_key", "label": "Paket anahtarı", "default": "bakim-paketi", "info": "Koleksiyon kartından bu paketi otomatik seçmek için kullanılır." },
+        { "type": "text", "id": "title", "label": "Paket adı", "default": "Bakım Paketi" },
+        { "type": "textarea", "id": "description", "label": "Kısa açıklama" },
+        { "type": "product", "id": "product_1", "label": "Ürün 1" },
+        { "type": "range", "id": "qty_1", "label": "Ürün 1 adedi", "min": 1, "max": 12, "step": 1, "default": 1 },
+        { "type": "product", "id": "product_2", "label": "Ürün 2" },
+        { "type": "range", "id": "qty_2", "label": "Ürün 2 adedi", "min": 1, "max": 12, "step": 1, "default": 1 },
+        { "type": "product", "id": "product_3", "label": "Ürün 3" },
+        { "type": "range", "id": "qty_3", "label": "Ürün 3 adedi", "min": 1, "max": 12, "step": 1, "default": 1 }
+      ]
+    },
+    {
+      "type": "frequency",
+      "name": "Frequency seçeneği",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Görünen ad", "default": "2 ayda bir" },
+        {
+          "type": "select",
+          "id": "months",
+          "label": "Ay aralığı",
+          "options": [
+            { "value": "1", "label": "1 ay" },
+            { "value": "2", "label": "2 ay" },
+            { "value": "3", "label": "3 ay" },
+            { "value": "4", "label": "4 ay" },
+            { "value": "6", "label": "6 ay" }
+          ],
+          "default": "2"
+        },
+        { "type": "text", "id": "selling_plan_id", "label": "Shopify Selling Plan ID", "info": "Bu ay aralığına ait plan ID. Boş bırakılırsa global varsayılan plan kullanılır." },
+        { "type": "checkbox", "id": "is_default", "label": "Default seçenek mi?", "default": false }
+      ]
+    },
+    {
+      "type": "guarantee",
+      "name": "Garanti maddesi",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Metin", "default": "İstediğin an iptal et / atla" }
+      ]
+    },
+    {
+      "type": "step",
+      "name": "Nasıl çalışır adımı",
+      "settings": [
+        { "type": "textarea", "id": "text", "label": "Adım metni", "default": "İhtiyacın olan ürünleri ve adetleri seç." }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Pack builder",
+      "settings": {
+        "summary_title": "Paketin",
+        "frequency_label": "2 ayda bir kapında",
+        "empty_message": "Üst taraftan ürün ekleyerek paketini oluştur.",
+        "cta_idle": "Önce ürün ekle",
+        "howit_title": "Nasıl çalışır?",
+        "subscription_shipping_fee": 59,
+        "subscription_free_shipping_threshold": 800,
+        "subscription_discount_percent": 15
+      },
+      "blocks": [
+        { "type": "category", "settings": { "key": "ped",        "label": "Pedler",         "description": "Adetli paket seç veya ped kutusuna abone ol", "hint": "Günlük ve gündüz pedler 10’lu, gece pedleri 8’li paket halinde eklenir." } },
+        { "type": "product",  "settings": { "category_key": "ped",  "step": 10, "unit": "ped", "box_step": 1, "box_unit": "kutu", "name_override": ".ki Günlük Ped",  "short": "155 mm · 10 adet", "demo_price": 88.96 } },
+        { "type": "product",  "settings": { "category_key": "ped",  "step": 10, "unit": "ped", "box_step": 1, "box_unit": "kutu", "name_override": ".ki Gündüz Pedi", "short": "245 mm · 10 adet", "demo_price": 169.98 } },
+        { "type": "product",  "settings": { "category_key": "ped",  "step": 8, "unit": "ped", "box_step": 1, "box_unit": "kutu", "name_override": ".ki Gece Pedi",   "short": "335 mm · 8 adet", "demo_price": 186.99 } },
+
+        { "type": "category", "settings": { "key": "supplement", "label": "Takviyeler", "description": ".ki Balance ve .ki Change — döngü ve menopoz dönemlerine özel destek", "hint": "Balance döngü dönemini, Change menopoz dönemini desteklemek için geliştirilmiştir." } },
+        { "type": "product",  "settings": { "category_key": "supplement", "step": 1, "unit": "kutu", "badge": "EN POPÜLER", "name_override": ".ki Balance · Saşe", "short": "Döngü dönemini destekler · 10 saşe", "demo_price": 395 } },
+        { "type": "product",  "settings": { "category_key": "supplement", "step": 1, "unit": "kutu", "name_override": ".ki Change · Kapsül", "short": "Menopoz dönemini destekler · 30 kapsül", "demo_price": 449 } },
+
+        { "type": "category", "settings": { "key": "gel", "label": "İntim Yıkama Jelleri", "description": "Daily · Sens · Flow · 50+ — ihtiyacına göre intim bakım desteği", "hint": "Flow üriner sistem desteği için, 50+ menopoz dönemine özel bakım için tercih edilebilir." } },
+        { "type": "product",  "settings": { "category_key": "gel", "step": 1, "unit": "şişe", "name_override": "İntim Yıkama Jeli · Daily", "short": "Günlük pH dengeli · 200 ml", "demo_price": 1250 } },
+        { "type": "product",  "settings": { "category_key": "gel", "step": 1, "unit": "şişe", "name_override": "İntim Yıkama Jeli · Sens",  "short": "Hassas ciltler için yatıştırıcı · 200 ml", "demo_price": 1250 } },
+        { "type": "product",  "settings": { "category_key": "gel", "step": 1, "unit": "şişe", "name_override": "İntim Yıkama Jeli · Flow",  "short": "Üriner sistem desteği için · 200 ml", "demo_price": 1250 } },
+        { "type": "product",  "settings": { "category_key": "gel", "step": 1, "unit": "şişe", "name_override": "İntim Yıkama Jeli · 50+",   "short": "Menopoz dönemine özel bakım · 200 ml", "demo_price": 1250 } },
+
+        { "type": "category", "settings": { "key": "ritual", "label": "İntim Bakım Spreyi", "description": "İntim bölge için pratik bakım ve ferahlık desteği", "hint": "İntim Bakım Spreyi, intim bölge bakım rutinini gün içinde pratik şekilde destekler." } },
+        { "type": "product",  "settings": { "category_key": "ritual", "step": 1, "unit": "şişe", "name_override": "İntim Bakım Spreyi", "short": "İntim bölge bakım desteği · 100 ml", "demo_price": 139 } },
+
+        { "type": "frequency", "settings": { "label": "Ayda bir", "months": "1" } },
+        { "type": "frequency", "settings": { "label": "2 ayda bir", "months": "2", "is_default": true } },
+        { "type": "frequency", "settings": { "label": "3 ayda bir", "months": "3" } },
+        { "type": "frequency", "settings": { "label": "4 ayda bir", "months": "4" } },
+        { "type": "frequency", "settings": { "label": "6 ayda bir", "months": "6" } },
+
+        { "type": "guarantee", "settings": { "label": "İstediğin an iptal et / atla" } },
+        { "type": "guarantee", "settings": { "label": "Ücretsiz iade ve değişim" } },
+        { "type": "guarantee", "settings": { "label": "2 iş günü içinde kargoda" } },
+
+        { "type": "step", "settings": { "text": "İhtiyacın olan ürünleri ve adetleri seç." } },
+        { "type": "step", "settings": { "text": "Seçtiğin sıklıkta kapına gelsin." } },
+        { "type": "step", "settings": { "text": "İçeriğini istediğin zaman güncelle, atla veya durdur." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

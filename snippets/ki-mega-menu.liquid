@@ -1,0 +1,313 @@
+{% comment %}Ki Mega Menu – Desktop v3 — hijyenik pedler kolonu eklendi{% endcomment %}
+
+<style>
+.ki-mega-nav { display: none; }
+@media screen and (min-width: 990px) {
+  .ki-mega-nav {
+    display: flex; align-items: center; gap: 2px;
+    list-style: none; margin: 0; padding: 0;
+    grid-column: 1; grid-row: 1; justify-self: start;
+  }
+  .ki-mega-nav__item { position: relative; }
+  .ki-mega-nav__link {
+    display: flex; align-items: center; gap: 4px;
+    padding: 8px 12px; font-size: 13px; font-weight: 500;
+    color: #493d9a; text-decoration: none; border-radius: 8px;
+    transition: background .15s; white-space: nowrap;
+    background: none; border: none; cursor: pointer; font-family: inherit;
+  }
+  .ki-mega-nav__link:hover { background: rgba(73,61,154,.08); }
+  .ki-mega-nav__chevron { width: 13px; height: 13px; transition: transform .2s; flex-shrink: 0; }
+
+  /* Panel */
+  .ki-mega-panel {
+    visibility: hidden; opacity: 0; pointer-events: none;
+    position: fixed;
+    background: #fff; border-radius: 16px;
+    box-shadow: 0 8px 40px rgba(73,61,154,.14), 0 2px 8px rgba(0,0,0,.06);
+    border: 1px solid rgba(73,61,154,.08);
+    padding: 20px; z-index: 9999;
+    transition: opacity .15s ease, visibility .15s ease;
+  }
+  .ki-mega-nav__item:hover .ki-mega-panel,
+  .ki-mega-panel:hover {
+    visibility: visible; opacity: 1; pointer-events: auto;
+  }
+  .ki-mega-nav__item:hover .ki-mega-nav__chevron { transform: rotate(180deg); }
+
+  .ki-mega-panel--full { grid-template-columns: 160px 190px 160px 150px 150px; gap: 0 18px; display: grid; }
+  .ki-mega-panel--simple { min-width: 180px; display: block; }
+
+  /* Sütun başlığı */
+  .ki-mega-col__title {
+    font-size: 10px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase;
+    color: #493d9a; padding: 0 6px 8px; margin-bottom: 2px;
+    border-bottom: 2px solid rgba(73,61,154,.1);
+  }
+  .ki-mega-col__list { list-style: none; margin: 0; padding: 0; }
+
+  /* Satır — mobil drawer ile aynı yapı */
+  .ki-mega-col__item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 7px 6px; border-radius: 8px;
+    text-decoration: none; color: #222; transition: background .15s;
+  }
+  .ki-mega-col__item:hover { background: rgba(73,61,154,.06); }
+  .ki-mega-col__icon {
+    width: 32px; height: 32px; border-radius: 50%;
+    background: rgba(73,61,154,.08);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; color: #493d9a;
+  }
+  .ki-mega-col__icon svg { width: 15px; height: 15px; }
+  .ki-mega-col__icon--pad svg { width: 26px; height: 15px; }
+  .ki-mega-col__icon--pad .ki-pack__pad-shape { fill: transparent; stroke: rgba(73,61,154,.3); stroke-width: 1.45; }
+  .ki-mega-col__icon--pad .ki-pack__pad-shape.is-active { fill: #493d9a; stroke: #493d9a; }
+  .ki-mega-col__label { font-size: 12px; font-weight: 600; line-height: 1.3; color: #222; }
+  .ki-mega-col__item:hover .ki-mega-col__label { color: #493d9a; }
+  .ki-mega-col__divider { margin-top: 14px; padding-top: 10px; border-top: 1px solid rgba(73,61,154,.08); }
+
+  /* Kart — 4/3 oranı, wrapper ile */
+  .ki-mega-card {
+    display: flex; flex-direction: column; border-radius: 10px; overflow: hidden;
+    text-decoration: none; color: #222;
+    border: 1px solid rgba(73,61,154,.08);
+    transition: box-shadow .2s, transform .2s;
+  }
+  .ki-mega-card:hover { box-shadow: 0 6px 20px rgba(73,61,154,.15); transform: translateY(-2px); }
+  /* 4/3 wrapper */
+  .ki-mega-card__media {
+    position: relative;
+    width: 100%;
+    padding-top: 75%; /* 4:3 */
+    overflow: hidden;
+    background: #f0eeff;
+  }
+  .ki-mega-card__media img {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    object-fit: cover; display: block;
+  }
+  .ki-mega-card__ph {
+    position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(135deg,#e8e4ff,#f8f6ff);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .ki-mega-card__ph svg { width: 32px; height: 32px; color: rgba(73,61,154,.25); }
+  .ki-mega-card__body { padding: 8px 10px 10px; display: flex; align-items: center; justify-content: space-between; }
+  .ki-mega-card__name { font-size: 12px; font-weight: 700; color: #493d9a; }
+  .ki-mega-card__arrow svg { width: 14px; height: 14px; color: #493d9a; }
+
+  /* Footer */
+  .ki-mega-footer {
+    grid-column: 1 / -1; padding-top: 12px; margin-top: 10px;
+    border-top: 1px solid rgba(73,61,154,.08);
+    display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;
+  }
+  .ki-mega-footer__link {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-size: 12px; font-weight: 600; color: #493d9a;
+    text-decoration: none; transition: gap .15s;
+  }
+  .ki-mega-footer__link:hover { gap: 8px; }
+  .ki-mega-footer__link svg { width: 13px; height: 13px; }
+  .ki-mega-wa {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-size: 12px; font-weight: 600; color: #25d366; text-decoration: none;
+  }
+  .ki-mega-wa svg { width: 14px; height: 14px; }
+  .ki-mega-simple-item {
+    display: block; padding: 9px 12px; border-radius: 8px;
+    text-decoration: none; color: #222; font-size: 13px; font-weight: 500; transition: background .15s;
+  }
+  .ki-mega-simple-item:hover { background: rgba(73,61,154,.06); color: #493d9a; }
+}
+@media screen and (max-width: 989px) { .ki-mega-nav { display: none !important; } }
+</style>
+
+{%- assign mega_menu_handle = section.settings.menu -%}
+{%- assign mega_blocks = section.blocks | where: 'type', 'mega_image' -%}
+{%- assign mega_block = mega_blocks | first -%}
+
+<nav class="ki-mega-nav" aria-label="Ana navigasyon" id="ki-mega-nav">
+  {%- for link in linklists[mega_menu_handle].links -%}
+    <li class="ki-mega-nav__item">
+      {%- if link.links.size > 0 -%}
+        <a href="{{ link.url }}" class="ki-mega-nav__link">
+          {{ link.title }}
+          <svg class="ki-mega-nav__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </a>
+      {%- else -%}
+        <a href="{{ link.url }}" class="ki-mega-nav__link">{{ link.title }}</a>
+      {%- endif -%}
+
+      {%- if link.links.size > 0 -%}
+        {%- assign is_product_menu = false -%}
+        {%- if link.title == 'Mağaza' or link.title == 'Takviye Edici Gıdalarımız' or link.title contains 'rün' -%}
+          {%- assign is_product_menu = true -%}
+        {%- endif -%}
+
+        {%- if is_product_menu -%}
+        <div class="ki-mega-panel ki-mega-panel--full" role="region">
+
+          <!-- Sütun 1: Sprey + Takviyeler -->
+          <div class="ki-mega-col">
+            <div class="ki-mega-col__title">İntim Bakım Spreyi</div>
+            <ul class="ki-mega-col__list">
+              <li><a href="/products/ki-intimate-intim-bakim-spreyi" class="ki-mega-col__item">
+                <span class="ki-mega-col__icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="8" y="6" width="8" height="14" rx="3"/><path d="M12 6V3"/><path d="M10 3h4"/><path d="M16 9h2a1 1 0 0 1 1 1v1a1 1 0 0 1-1 1h-2"/></svg>
+                </span>
+                <span class="ki-mega-col__label">.ki intimate</span>
+              </a></li>
+            </ul>
+            <div class="ki-mega-col__divider">
+              <div class="ki-mega-col__title">Takviye Gıdalar</div>
+              <ul class="ki-mega-col__list">
+                <li><a href="/products/change-is-good" class="ki-mega-col__item">
+                  <span class="ki-mega-col__icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="8" y="3" width="8" height="10" rx="4"/><rect x="8" y="11" width="8" height="10" rx="4"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+                  </span>
+                  <span class="ki-mega-col__label">.ki Change · İleri Yaş</span>
+                </a></li>
+                <li><a href="/products/balance-your-cycle" class="ki-mega-col__item">
+                  <span class="ki-mega-col__icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="8"/><path d="M12 4a8 8 0 0 1 0 16"/><circle cx="12" cy="12" r="2" fill="currentColor" stroke="none"/></svg>
+                  </span>
+                  <span class="ki-mega-col__label">.ki Balance · Döngü</span>
+                </a></li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Sütun 2: Bakım Jelleri -->
+          <div class="ki-mega-col">
+            <div class="ki-mega-col__title">İntim Bakım Jelleri</div>
+            <ul class="ki-mega-col__list">
+              <li><a href="/products/ki-daily-care-intim-bakim-jeli" class="ki-mega-col__item">
+                <span class="ki-mega-col__icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/><line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/><line x1="4.22" y1="4.22" x2="6.34" y2="6.34"/><line x1="17.66" y1="17.66" x2="19.78" y2="19.78"/><line x1="4.22" y1="19.78" x2="6.34" y2="17.66"/><line x1="17.66" y1="6.34" x2="19.78" y2="4.22"/></svg>
+                </span>
+                <span class="ki-mega-col__label">.ki daily.care</span>
+              </a></li>
+              <li><a href="/products/ki-sens-care-intim-bakim-jeli" class="ki-mega-col__item">
+                <span class="ki-mega-col__icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2l1.5 4.5L18 8l-4.5 1.5L12 14l-1.5-4.5L6 8l4.5-1.5z"/></svg>
+                </span>
+                <span class="ki-mega-col__label">.ki sens.care</span>
+              </a></li>
+              <li><a href="/products/ki-50-care-intim-bakim-jeli" class="ki-mega-col__item">
+                <span class="ki-mega-col__icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3C12 3 6 9.5 6 14a6 6 0 0 0 12 0c0-4.5-6-11-6-11z"/></svg>
+                </span>
+                <span class="ki-mega-col__label">.ki 50+.care</span>
+              </a></li>
+              <li><a href="/products/ki-flow-care-intim-bakim-jeli" class="ki-mega-col__item">
+                <span class="ki-mega-col__icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2l7 3v6c0 4.5-3 8.5-7 10C8 19.5 5 15.5 5 11V5z"/></svg>
+                </span>
+                <span class="ki-mega-col__label">.ki flow.care</span>
+              </a></li>
+            </ul>
+          </div>
+
+          <!-- Sütun 3: Hijyenik Pedler -->
+          <div class="ki-mega-col">
+            <div class="ki-mega-col__title">Hijyenik Pedler</div>
+            <ul class="ki-mega-col__list">
+              <li><a href="/products/ki-hijyenik-gunduz-ped?view=ki-ped" class="ki-mega-col__item">
+                <span class="ki-mega-col__icon ki-mega-col__icon--pad">{% render 'ki-pad-size-icon', active: 'small' %}</span>
+                <span class="ki-mega-col__label">.ki Günlük Ped</span>
+              </a></li>
+              <li><a href="/products/ki-normal-ped?view=ki-ped" class="ki-mega-col__item">
+                <span class="ki-mega-col__icon ki-mega-col__icon--pad">{% render 'ki-pad-size-icon', active: 'medium' %}</span>
+                <span class="ki-mega-col__label">.ki Gündüz Ped</span>
+              </a></li>
+              <li><a href="/products/ki-hijyenik-gece-ped?view=ki-ped" class="ki-mega-col__item">
+                <span class="ki-mega-col__icon ki-mega-col__icon--pad">{% render 'ki-pad-size-icon', active: 'large' %}</span>
+                <span class="ki-mega-col__label">.ki Gece Ped</span>
+              </a></li>
+            </ul>
+          </div>
+
+          <!-- Kart 1: 4/3 wrapper -->
+          <a href="{{ mega_block.settings.card1_url | default: '/collections/bundle' }}" class="ki-mega-card">
+            <div class="ki-mega-card__media">
+              {%- if mega_block.settings.card1_image != blank -%}
+                {{ mega_block.settings.card1_image | image_url: width: 400 | image_tag: loading: 'lazy', alt: mega_block.settings.card1_label }}
+              {%- else -%}
+                <div class="ki-mega-card__ph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>
+              {%- endif -%}
+            </div>
+            <div class="ki-mega-card__body">
+              <span class="ki-mega-card__name">{{ mega_block.settings.card1_label | default: '.ki Paketleri' }}</span>
+              <span class="ki-mega-card__arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></span>
+            </div>
+          </a>
+
+          <!-- Kart 2: 4/3 wrapper -->
+          <a href="{{ mega_block.settings.card2_url | default: '/collections/all' }}" class="ki-mega-card">
+            <div class="ki-mega-card__media">
+              {%- if mega_block.settings.card2_image != blank -%}
+                {{ mega_block.settings.card2_image | image_url: width: 400 | image_tag: loading: 'lazy', alt: mega_block.settings.card2_label }}
+              {%- else -%}
+                <div class="ki-mega-card__ph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>
+              {%- endif -%}
+            </div>
+            <div class="ki-mega-card__body">
+              <span class="ki-mega-card__name">{{ mega_block.settings.card2_label | default: 'Tüm Ürünler' }}</span>
+              <span class="ki-mega-card__arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></span>
+            </div>
+          </a>
+
+          <!-- Footer -->
+          <div class="ki-mega-footer">
+            {%- if mega_block.settings.footer_label != blank -%}
+            <a href="{{ mega_block.settings.footer_url | default: '/pages/eczaneler' }}" class="ki-mega-footer__link">
+              {{ mega_block.settings.footer_label }}
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </a>
+            {%- endif -%}
+            <a href="https://wa.me/905335745535" target="_blank" rel="noopener" class="ki-mega-wa">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
+              +90 533 574 55 35
+            </a>
+          </div>
+        </div>
+        {%- else -%}
+        <div class="ki-mega-panel ki-mega-panel--simple" role="region">
+          {%- for child in link.links -%}
+            <a href="{{ child.url }}" class="ki-mega-simple-item">{{ child.title }}</a>
+          {%- endfor -%}
+        </div>
+        {%- endif -%}
+      {%- endif -%}
+    </li>
+  {%- endfor -%}
+</nav>
+
+<script>
+(function() {
+  function positionPanels() {
+    var nav = document.getElementById('ki-mega-nav');
+    if (!nav) return;
+    nav.querySelectorAll('.ki-mega-nav__item').forEach(function(item) {
+      var panel = item.querySelector('.ki-mega-panel');
+      if (!panel) return;
+      var link = item.querySelector('.ki-mega-nav__link');
+      var rect = link.getBoundingClientRect();
+      var pw = panel.scrollWidth || 760;
+      var ww = window.innerWidth;
+      var left = rect.left;
+      if (left + pw > ww - 16) left = ww - pw - 16;
+      if (left < 16) left = 16;
+      panel.style.left = left + 'px';
+      panel.style.top = (rect.bottom + 4) + 'px';
+    });
+  }
+  document.addEventListener('DOMContentLoaded', positionPanels);
+  window.addEventListener('resize', positionPanels);
+  window.addEventListener('scroll', positionPanels, { passive: true });
+})();
+</script>

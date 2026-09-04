@@ -1,0 +1,195 @@
+<style>
+  #shopify-section-{{ section.id }} {
+    --ki-purple-dark: #493d9a;
+    --ki-purple: #b2a5ff;
+    --card-bg: #ffffff;
+    --border-light: rgba(73,61,154,0.08);
+  }
+
+  .balance-sticky {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    background: var(--card-bg);
+    border-top: 1px solid var(--border-light);
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 -4px 24px rgba(0,0,0,0.08);
+    transform: translateY(100%);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  }
+  .balance-sticky.is-visible {
+    transform: translateY(0);
+  }
+
+  .balance-sticky__btn {
+    flex: 1;
+    max-width: 360px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    background: var(--ki-purple-dark);
+    color: #fff;
+    padding: 10px 24px;
+    border-radius: 999px;
+    min-height: 52px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .balance-sticky__btn:hover {
+    background: #3f347f;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(45,27,105,0.2);
+  }
+  .balance-sticky__btn:active {
+    transform: scale(0.98);
+  }
+
+  .balance-sticky__btn-top {
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1.2;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .balance-sticky__btn-top svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .balance-sticky__btn-sub {
+    font-size: 11px;
+    font-weight: 500;
+    opacity: 0.9;
+    line-height: 1.2;
+  }
+</style>
+
+{%- assign product = section.settings.product -%}
+
+<div class="balance-sticky" id="balance-sticky-{{ section.id }}">
+  <button type="button" class="balance-sticky__btn" id="balance-sticky-btn-{{ section.id }}">
+    <span class="balance-sticky__btn-top">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="9" cy="21" r="1" />
+        <circle cx="20" cy="21" r="1" />
+        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
+      </svg>
+      {{ section.settings.btn_text | default: ".ki Balance — Sepete Ekle" }}
+    </span>
+    <span class="balance-sticky__btn-sub">
+      {%- if product -%}
+        {{ product.price | money }} · 30 günlük kullanım
+      {%- else -%}
+        ₺450,00 · 30 günlük kullanım
+      {%- endif -%}
+    </span>
+  </button>
+</div>
+
+<script>
+  (function() {
+    function initStickyATC() {
+      var stickyBar = document.getElementById('balance-sticky-{{ section.id }}');
+      var stickyBtn = document.getElementById('balance-sticky-btn-{{ section.id }}');
+
+      if (stickyBar) {
+        var lastY = window.pageYOffset;
+        var ticking = false;
+        var threshold = 5;
+
+        function onScroll() {
+          var currentY = window.pageYOffset;
+          var delta = currentY - lastY;
+
+          if (Math.abs(delta) < threshold) {
+            ticking = false;
+            return;
+          }
+
+          if (delta > 0 && currentY > 100) {
+            // Scrolling down -> show
+            stickyBar.classList.add('is-visible');
+          } else if (delta < 0) {
+            // Scrolling up -> hide
+            stickyBar.classList.remove('is-visible');
+          }
+
+          lastY = currentY;
+          ticking = false;
+        }
+
+        window.addEventListener('scroll', function() {
+          if (!ticking) {
+            window.requestAnimationFrame(onScroll);
+            ticking = true;
+          }
+        }, { passive: true });
+      }
+
+      // Scroll to Product section logic, or trigger form submit
+      if (stickyBtn && !stickyBtn.hasAttribute('data-initialized')) {
+        stickyBtn.setAttribute('data-initialized', 'true');
+        stickyBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          var pdpForm = document.getElementById('balance-product-form');
+          if (pdpForm) {
+            pdpForm.submit();
+          } else {
+            // Alternatively scroll to PDP if form doesn't exist
+            var pdpSection = document.querySelector('.balance-pdp');
+            if (pdpSection) {
+              window.scrollTo({
+                top: pdpSection.getBoundingClientRect().top + window.pageYOffset - 80,
+                behavior: 'smooth'
+              });
+            }
+          }
+        });
+      }
+    }
+
+    initStickyATC();
+
+    document.addEventListener('shopify:section:load', function(event) {
+      if (event.detail.sectionId === '{{ section.id }}') {
+        initStickyATC();
+      }
+    });
+
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Balance: Sticky ATC",
+  "settings": [
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Product",
+      "info": "Used for price"
+    },
+    {
+      "type": "text",
+      "id": "btn_text",
+      "label": "Button Text",
+      "default": ".ki Balance — Sepete Ekle"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Balance: Sticky ATC"
+    }
+  ]
+}
+{% endschema %}

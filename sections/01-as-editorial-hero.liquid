@@ -1,0 +1,398 @@
+{% comment %}
+  Editorial Hero — 3 slaytlı kahraman bölümü
+  Pozisyon: Anasayfa #1 (en üst)
+  Mobilde: full-bleed görsel + alt copy overlay
+  Desktop: 3fr / 2fr split layout (sol görsel, sağ copy)
+  Brand: .ki palette (plum primary, sage, rose, cream)
+{% endcomment %}
+
+<section id="editorial-hero-{{ section.id }}" class="section editorial-hero" aria-roledescription="carousel">
+  <style>
+    #editorial-hero-{{ section.id }} {
+      --ki-primary: {{ section.settings.primary_color | default: '#3a2d6e' }};
+      --ki-primary-fg: {{ section.settings.primary_fg | default: '#ffffff' }};
+      --ki-text: {{ section.settings.text_color | default: '#1a1a1a' }};
+      --ki-muted: rgba(26,26,26,.7);
+      --ki-star: #f5b400;
+      position: relative;
+      background: {{ section.settings.bg | default: '#fffaf3' }};
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    /* MOBILE: full-bleed image + bottom overlay copy */
+    #editorial-hero-{{ section.id }} .eh-mobile {
+      position: relative;
+      overflow: hidden;
+      min-height: 460px;
+      height: calc((100svh - 120px) * 0.69);
+      max-height: 600px;
+    }
+    #editorial-hero-{{ section.id }} .eh-slide-img {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      opacity: 0;
+      transition: opacity .5s ease;
+    }
+    #editorial-hero-{{ section.id }} .eh-slide-img.is-active { opacity: 1; }
+    #editorial-hero-{{ section.id }} .eh-mobile::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(to bottom, rgba(0,0,0,.45), rgba(0,0,0,.1) 40%, rgba(0,0,0,.75));
+      pointer-events: none;
+    }
+    #editorial-hero-{{ section.id }} .eh-mobile-copy {
+      position: absolute; left: 0; right: 0; bottom: 0;
+      padding: 24px 48px 8px;
+      color: #fff;
+      z-index: 2;
+    }
+    #editorial-hero-{{ section.id }} .eh-eyebrow {
+      display: block;
+      font-size: 10px; font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .22em;
+      margin-bottom: 8px;
+      color: rgba(255,255,255,.85);
+      text-shadow: 0 1px 8px rgba(0,0,0,.45);
+    }
+    #editorial-hero-{{ section.id }} .eh-title {
+      font-size: 26px; line-height: 1.08;
+      font-weight: 500;
+      letter-spacing: -.02em;
+      margin: 0 0 10px;
+      text-shadow: 0 2px 18px rgba(0,0,0,.55);
+    }
+    #editorial-hero-{{ section.id }} .eh-title em {
+      font-style: italic; font-weight: 300;
+    }
+    #editorial-hero-{{ section.id }} .eh-desc {
+      font-size: 12.5px; line-height: 1.4;
+      color: rgba(255,255,255,.9);
+      margin: 0 0 16px;
+      max-width: 360px;
+      display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;
+      overflow: hidden;
+      text-shadow: 0 1px 10px rgba(0,0,0,.5);
+    }
+    #editorial-hero-{{ section.id }} .eh-ctas {
+      display: flex; flex-wrap: wrap; gap: 8px;
+      margin-bottom: 12px;
+    }
+    #editorial-hero-{{ section.id }} .eh-btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      white-space: nowrap;
+      font-size: 12.5px; font-weight: 700;
+      padding: 10px 16px;
+      border-radius: 999px;
+      transition: all .2s ease;
+      text-decoration: none;
+    }
+    #editorial-hero-{{ section.id }} .eh-btn--primary {
+      background: var(--ki-primary);
+      color: var(--ki-primary-fg);
+      box-shadow: 0 8px 24px rgba(0,0,0,.35);
+    }
+    #editorial-hero-{{ section.id }} .eh-btn--secondary {
+      border: 2px solid rgba(255,255,255,.9);
+      color: #fff;
+      backdrop-filter: blur(4px);
+    }
+    #editorial-hero-{{ section.id }} .eh-trust {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 10.5px;
+      color: rgba(255,255,255,.85);
+      text-shadow: 0 1px 8px rgba(0,0,0,.5);
+    }
+    #editorial-hero-{{ section.id }} .eh-stars { color: var(--ki-star); letter-spacing: 2px; }
+    #editorial-hero-{{ section.id }} .eh-divider { width: 1px; height: 12px; background: rgba(255,255,255,.4); }
+
+    /* Side arrows mobile */
+    #editorial-hero-{{ section.id }} .eh-arrow {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      width: 40px; height: 40px;
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 50%;
+      background: rgba(0,0,0,.25);
+      color: #fff;
+      backdrop-filter: blur(4px);
+      border: 0; cursor: pointer;
+      z-index: 3;
+    }
+    #editorial-hero-{{ section.id }} .eh-arrow--prev { left: 8px; }
+    #editorial-hero-{{ section.id }} .eh-arrow--next { right: 8px; }
+
+    /* DESKTOP layout */
+    #editorial-hero-{{ section.id }} .eh-desktop { display: none; }
+
+    @media (min-width: 1024px) {
+      #editorial-hero-{{ section.id }} .eh-mobile { display: none; }
+      #editorial-hero-{{ section.id }} .eh-desktop {
+        display: grid;
+        grid-template-columns: 3fr 2fr;
+        min-height: 760px;
+      }
+      #editorial-hero-{{ section.id }} .eh-img-side {
+        position: relative;
+        overflow: hidden;
+        min-height: 760px;
+      }
+      #editorial-hero-{{ section.id }} .eh-copy-side {
+        position: relative;
+        display: flex; flex-direction: column; justify-content: center;
+        padding: 80px 48px 128px;
+        background: {{ section.settings.copy_bg | default: '#f4ede1' }};
+        transition: background .5s ease;
+      }
+      #editorial-hero-{{ section.id }} .eh-eyebrow {
+        font-size: 11px;
+        color: rgba(58,45,110,.7);
+        text-shadow: none;
+        margin-bottom: 20px;
+      }
+      #editorial-hero-{{ section.id }} .eh-title {
+        font-size: 64px; line-height: 1.02;
+        color: var(--ki-primary);
+        text-shadow: none;
+        margin-bottom: 24px;
+      }
+      #editorial-hero-{{ section.id }} .eh-desc {
+        font-size: 16px; line-height: 1.6;
+        color: rgba(26,26,26,.75);
+        max-width: 460px;
+        text-shadow: none;
+        margin-bottom: 32px;
+        -webkit-line-clamp: unset;
+      }
+      #editorial-hero-{{ section.id }} .eh-btn { font-size: 14px; padding: 14px 24px; }
+      #editorial-hero-{{ section.id }} .eh-btn--secondary {
+        border-color: var(--ki-primary);
+        color: var(--ki-primary);
+        backdrop-filter: none;
+      }
+      #editorial-hero-{{ section.id }} .eh-btn--secondary:hover {
+        background: var(--ki-primary); color: var(--ki-primary-fg);
+      }
+      #editorial-hero-{{ section.id }} .eh-trust {
+        font-size: 12px;
+        color: var(--ki-muted);
+        text-shadow: none;
+      }
+      #editorial-hero-{{ section.id }} .eh-divider { background: rgba(0,0,0,.15); }
+
+      /* Desktop nav (slide counter) */
+      #editorial-hero-{{ section.id }} .eh-nav {
+        position: absolute; left: 48px; bottom: 40px;
+        display: flex; align-items: center; gap: 32px;
+      }
+      #editorial-hero-{{ section.id }} .eh-nav button {
+        background: transparent; border: 0; cursor: pointer;
+        color: rgba(0,0,0,.7);
+        font-size: 28px;
+      }
+      #editorial-hero-{{ section.id }} .eh-counter {
+        font-size: 16px;
+        color: rgba(0,0,0,.7);
+        font-variant-numeric: tabular-nums;
+      }
+      #editorial-hero-{{ section.id }} .eh-arrow { display: none; }
+    }
+  </style>
+
+  {%- if section.blocks.size > 0 -%}
+    {%- assign first_block = section.blocks[0] -%}
+
+    <!-- MOBILE -->
+    <div class="eh-mobile" data-eh-mobile>
+      {%- for block in section.blocks -%}
+        {%- if block.settings.image != blank -%}
+          {%- if forloop.first -%}{%- assign eh_load = 'eager' -%}{%- else -%}{%- assign eh_load = 'lazy' -%}{%- endif -%}
+          {{ block.settings.image | image_url: width: 1600 | image_tag:
+            class: 'eh-slide-img',
+            loading: eh_load,
+            alt: block.settings.image_alt,
+            data-eh-img: forloop.index0 }}
+        {%- endif -%}
+      {%- endfor -%}
+
+      <div class="eh-mobile-copy" data-eh-copy>
+        {%- if first_block.settings.eyebrow != blank -%}
+          <span class="eh-eyebrow" data-eh-eyebrow>{{ first_block.settings.eyebrow }}</span>
+        {%- endif -%}
+        <h1 class="eh-title" data-eh-title>{{ first_block.settings.heading }}</h1>
+        {%- if first_block.settings.description != blank -%}
+          <p class="eh-desc" data-eh-desc>{{ first_block.settings.description }}</p>
+        {%- endif -%}
+
+        <div class="eh-ctas" data-eh-ctas>
+          {%- if first_block.settings.cta1_label != blank -%}
+            <a href="{{ first_block.settings.cta1_link }}" class="eh-btn eh-btn--primary" data-eh-cta1>{{ first_block.settings.cta1_label }}</a>
+          {%- endif -%}
+          {%- if first_block.settings.cta2_label != blank -%}
+            <a href="{{ first_block.settings.cta2_link }}" class="eh-btn eh-btn--secondary" data-eh-cta2>{{ first_block.settings.cta2_label }}</a>
+          {%- endif -%}
+        </div>
+
+        <div class="eh-trust">
+          <span class="eh-stars">★★★★★</span>
+          <span data-eh-review>{{ first_block.settings.review_text }}</span>
+          <span class="eh-divider"></span>
+          <span data-eh-trust>{{ first_block.settings.trust_text }}</span>
+        </div>
+      </div>
+
+      <button type="button" class="eh-arrow eh-arrow--prev" data-eh-prev aria-label="Önceki slayt">‹</button>
+      <button type="button" class="eh-arrow eh-arrow--next" data-eh-next aria-label="Sonraki slayt">›</button>
+    </div>
+
+    <!-- DESKTOP -->
+    <div class="eh-desktop">
+      <div class="eh-img-side">
+        {%- for block in section.blocks -%}
+          {%- if block.settings.image != blank -%}
+            {%- if forloop.first -%}{%- assign eh_load_d = 'eager' -%}{%- else -%}{%- assign eh_load_d = 'lazy' -%}{%- endif -%}
+            {{ block.settings.image | image_url: width: 1800 | image_tag:
+              class: 'eh-slide-img',
+              loading: eh_load_d,
+              alt: block.settings.image_alt,
+              data-eh-img-d: forloop.index0 }}
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+      <div class="eh-copy-side" data-eh-copy-d>
+        <span class="eh-eyebrow" data-eh-eyebrow-d>{{ first_block.settings.eyebrow }}</span>
+        <h1 class="eh-title" data-eh-title-d>{{ first_block.settings.heading }}</h1>
+        <p class="eh-desc" data-eh-desc-d>{{ first_block.settings.description }}</p>
+
+        <div class="eh-ctas">
+          <a href="{{ first_block.settings.cta1_link }}" class="eh-btn eh-btn--primary" data-eh-cta1-d>{{ first_block.settings.cta1_label }}</a>
+          <a href="{{ first_block.settings.cta2_link }}" class="eh-btn eh-btn--secondary" data-eh-cta2-d>{{ first_block.settings.cta2_label }}</a>
+        </div>
+
+        <div class="eh-trust" style="margin-top:16px;">
+          <span class="eh-stars">★★★★★</span>
+          <span data-eh-review-d>{{ first_block.settings.review_text }}</span>
+          <span class="eh-divider"></span>
+          <span data-eh-trust-d>{{ first_block.settings.trust_text }}</span>
+        </div>
+
+        <div class="eh-nav">
+          <button type="button" data-eh-prev-d aria-label="Önceki slayt">←</button>
+          <span class="eh-counter"><span data-eh-current>1</span>/{{ section.blocks.size }}</span>
+          <button type="button" data-eh-next-d aria-label="Sonraki slayt">→</button>
+        </div>
+      </div>
+    </div>
+  {%- endif -%}
+</section>
+
+<script>
+  (function () {
+    var root = document.getElementById('editorial-hero-{{ section.id }}');
+    if (!root) return;
+
+    var blocks = [
+      {%- for block in section.blocks -%}
+        {
+          eyebrow: {{ block.settings.eyebrow | json }},
+          heading: {{ block.settings.heading | json }},
+          description: {{ block.settings.description | json }},
+          cta1Label: {{ block.settings.cta1_label | json }},
+          cta1Link: {{ block.settings.cta1_link | json }},
+          cta2Label: {{ block.settings.cta2_label | json }},
+          cta2Link: {{ block.settings.cta2_link | json }},
+          reviewText: {{ block.settings.review_text | json }},
+          trustText: {{ block.settings.trust_text | json }}
+        }{%- unless forloop.last -%},{%- endunless -%}
+      {%- endfor -%}
+    ];
+
+    var active = 0;
+    var imgsM = root.querySelectorAll('[data-eh-img]');
+    var imgsD = root.querySelectorAll('[data-eh-img-d]');
+
+    function setSlide(i) {
+      active = (i + blocks.length) % blocks.length;
+      imgsM.forEach(function (el, idx) { el.classList.toggle('is-active', idx === active); });
+      imgsD.forEach(function (el, idx) { el.classList.toggle('is-active', idx === active); });
+
+      var b = blocks[active];
+      ['', '-d'].forEach(function (sfx) {
+        var setText = function (sel, val) {
+          var el = root.querySelector('[data-eh-' + sel + sfx + ']');
+          if (el) el.textContent = val || '';
+        };
+        var setHTML = function (sel, val) {
+          var el = root.querySelector('[data-eh-' + sel + sfx + ']');
+          if (el) el.innerHTML = val || '';
+        };
+        setText('eyebrow', b.eyebrow);
+        setHTML('title', b.heading);
+        setHTML('desc', b.description);
+        setText('review', b.reviewText);
+        setText('trust', b.trustText);
+        var c1 = root.querySelector('[data-eh-cta1' + sfx + ']');
+        if (c1) { c1.textContent = b.cta1Label; c1.setAttribute('href', b.cta1Link || '#'); }
+        var c2 = root.querySelector('[data-eh-cta2' + sfx + ']');
+        if (c2) { c2.textContent = b.cta2Label; c2.setAttribute('href', b.cta2Link || '#'); }
+      });
+
+      var counter = root.querySelector('[data-eh-current]');
+      if (counter) counter.textContent = String(active + 1);
+    }
+
+    root.querySelectorAll('[data-eh-prev], [data-eh-prev-d]').forEach(function (btn) {
+      btn.addEventListener('click', function () { setSlide(active - 1); });
+    });
+    root.querySelectorAll('[data-eh-next], [data-eh-next-d]').forEach(function (btn) {
+      btn.addEventListener('click', function () { setSlide(active + 1); });
+    });
+
+    setSlide(0);
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Editorial Hero",
+  "tag": "section",
+  "class": "editorial-hero",
+  "settings": [
+    { "type": "header", "content": "Renkler" },
+    { "type": "color", "id": "bg", "label": "Bölüm arka planı", "default": "#fffaf3" },
+    { "type": "color", "id": "copy_bg", "label": "Desktop copy arka planı", "default": "#f4ede1" },
+    { "type": "color", "id": "primary_color", "label": "Primary", "default": "#3a2d6e" },
+    { "type": "color", "id": "primary_fg", "label": "Primary üzeri yazı", "default": "#ffffff" },
+    { "type": "color", "id": "text_color", "label": "Yazı rengi", "default": "#1a1a1a" }
+  ],
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "Slayt",
+      "limit": 6,
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Görsel" },
+        { "type": "text", "id": "image_alt", "label": "Alt metni" },
+        { "type": "text", "id": "eyebrow", "label": "Üst etiket", "default": "Yeni · Döngü Takviyesi" },
+        { "type": "richtext", "id": "heading", "label": "Başlık", "default": "<p>Döngünün <em>her gününde</em> dengede kal.</p>" },
+        { "type": "textarea", "id": "description", "label": "Açıklama" },
+        { "type": "text", "id": "cta1_label", "label": "Birincil CTA", "default": ".ki Balance'ı incele" },
+        { "type": "url", "id": "cta1_link", "label": "Birincil CTA linki" },
+        { "type": "text", "id": "cta2_label", "label": "İkincil CTA", "default": "Paketini oluştur" },
+        { "type": "url", "id": "cta2_link", "label": "İkincil CTA linki" },
+        { "type": "text", "id": "review_text", "label": "Değerlendirme metni", "default": "5.0 · 90+ yorum" },
+        { "type": "text", "id": "trust_text", "label": "Güven metni", "default": "2.400+ kadın tercih ediyor" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Editorial Hero",
+      "blocks": [
+        { "type": "slide" },
+        { "type": "slide" },
+        { "type": "slide" }
+      ]
+    }
+  ]
+}
+{% endschema %}

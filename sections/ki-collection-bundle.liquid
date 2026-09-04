@@ -1,0 +1,173 @@
+{% comment %}.ki Bundle Koleksiyonu — gerçek ve düzenlenebilir abonelik paketleri{% endcomment %}
+
+<style>
+.kibdl-c-{{ section.id }}{--p:#493d9a;--deep:#1a1340;--lil:#dad2ff;--bg:#f7f6fb;--mut:#706d80;background:var(--bg);min-height:60vh}
+.kibdl-c-{{ section.id }} .kbd-banner{padding:46px 24px;background:linear-gradient(128deg,#1d1644 0%,#493d9a 54%,#7467c9 100%);position:relative;overflow:hidden}
+.kibdl-c-{{ section.id }} .kbd-banner:before{content:'';position:absolute;inset:-30%;background:radial-gradient(circle at 72% 45%,rgba(255,255,255,.16),transparent 34%);pointer-events:none}
+.kibdl-c-{{ section.id }} .kbd-banner__inner{max-width:1320px;margin:auto;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(340px,.9fr);align-items:center;gap:46px;position:relative;z-index:1}
+.kibdl-c-{{ section.id }} .kbd-eyebrow{display:inline-flex;align-items:center;gap:7px;margin:0 0 12px;color:#ddd6ff;font-size:10px;font-weight:800;letter-spacing:.15em;text-transform:uppercase}
+.kibdl-c-{{ section.id }} .kbd-eyebrow:before{content:'';width:24px;height:1px;background:currentColor;opacity:.7}
+.kibdl-c-{{ section.id }} .kbd-title{max-width:700px;margin:0 0 13px;color:#fff;font:800 clamp(30px,4.4vw,58px)/1.02 'Raleway',system-ui,sans-serif;letter-spacing:-.04em}
+.kibdl-c-{{ section.id }} .kbd-desc{max-width:640px;margin:0;color:rgba(255,255,255,.72);font-size:14px;line-height:1.65}
+.kibdl-c-{{ section.id }} .kbd-hero-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+.kibdl-c-{{ section.id }} .kbd-hero-chips span{display:inline-flex;padding:7px 11px;border:1px solid rgba(255,255,255,.2);border-radius:999px;background:rgba(255,255,255,.1);color:#fff;font-size:10px;font-weight:750}
+.kibdl-c-{{ section.id }} .kbd-banner__visual{display:grid;grid-template-columns:repeat(3,1fr);gap:11px;align-items:center;transform:rotate(-2deg)}
+.kibdl-c-{{ section.id }} .kbd-banner__tile{aspect-ratio:.82;border-radius:20px;overflow:hidden;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.24);box-shadow:0 18px 42px rgba(12,8,45,.25)}
+.kibdl-c-{{ section.id }} .kbd-banner__tile:nth-child(2){transform:translateY(-18px)}
+.kibdl-c-{{ section.id }} .kbd-banner__tile img{width:100%;height:100%;object-fit:cover;display:block}
+.kibdl-c-{{ section.id }} .kbd-main{max-width:1320px;margin:auto;padding:34px 32px 76px}
+.kibdl-c-{{ section.id }} .kbd-intro{display:flex;align-items:end;justify-content:space-between;gap:24px;margin:0 0 22px}
+.kibdl-c-{{ section.id }} .kbd-intro h2{margin:0 0 5px;color:var(--deep);font:800 clamp(23px,3vw,36px)/1.1 'Raleway',system-ui,sans-serif}
+.kibdl-c-{{ section.id }} .kbd-intro p{margin:0;color:var(--mut);font-size:13px;line-height:1.55}
+.kibdl-c-{{ section.id }} .kbd-intro__badge{padding:8px 13px;border-radius:999px;background:#ebe8ff;color:var(--p);font-size:10px;font-weight:800;white-space:nowrap}
+.kibdl-c-{{ section.id }} .kbd-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;list-style:none;margin:0;padding:0}
+.kibdl-c-{{ section.id }} .kbd-card{display:flex;min-width:0;flex-direction:column;overflow:hidden;border:1px solid rgba(73,61,154,.11);border-radius:22px;background:#fff;box-shadow:0 5px 20px rgba(73,61,154,.07);transition:transform .24s,box-shadow .24s}
+.kibdl-c-{{ section.id }} .kbd-card:hover{transform:translateY(-5px);box-shadow:0 18px 45px rgba(73,61,154,.15)}
+.kibdl-c-{{ section.id }} .kbd-card__hero{position:relative;display:block;aspect-ratio:1.36;overflow:hidden;background:linear-gradient(135deg,#252050,#695bc4);text-decoration:none}
+.kibdl-c-{{ section.id }} .kbd-card__hero-img,.kibdl-c-{{ section.id }} .kbd-card__placeholder{width:100%;height:100%;display:block;object-fit:cover;transition:transform .45s}
+.kibdl-c-{{ section.id }} .kbd-card:hover .kbd-card__hero-img{transform:scale(1.035)}
+.kibdl-c-{{ section.id }} .kbd-card__save,.kibdl-c-{{ section.id }} .kbd-card__pack-label{position:absolute;top:12px;z-index:2;padding:5px 10px;border-radius:999px;font-size:9px;font-weight:850;letter-spacing:.04em}
+.kibdl-c-{{ section.id }} .kbd-card__save{left:12px;background:#d9f6e5;color:#24734f}
+.kibdl-c-{{ section.id }} .kbd-card__pack-label{right:12px;background:rgba(28,20,67,.82);backdrop-filter:blur(8px);color:#fff;text-transform:uppercase}
+.kibdl-c-{{ section.id }} .kbd-card__collage{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;padding:18px 16px;background:linear-gradient(140deg,#21194c,#6357bb)}
+.kibdl-c-{{ section.id }} .kbd-card__collage-item{min-width:0;overflow:hidden;border-radius:13px;box-shadow:0 10px 24px rgba(7,4,30,.2)}
+.kibdl-c-{{ section.id }} .kbd-card__collage-item:nth-of-type(2){transform:translateY(-7px)}
+.kibdl-c-{{ section.id }} .kbd-card__collage-item img{width:100%;height:100%;object-fit:cover;display:block}
+.kibdl-c-{{ section.id }} .ki-care-bundle-collage{display:grid;width:100%;height:100%;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;padding:18px 16px;background:linear-gradient(140deg,#21194c,#6357bb)}
+.kibdl-c-{{ section.id }} .ki-care-bundle-collage__item{min-width:0;overflow:hidden;border-radius:13px;background:#2a2358;box-shadow:0 10px 24px rgba(7,4,30,.2)}
+.kibdl-c-{{ section.id }} .ki-care-bundle-collage__item:nth-child(2){transform:translateY(-7px)}
+.kibdl-c-{{ section.id }} .ki-care-bundle-collage__item img{width:100%;height:100%;object-fit:cover;display:block}
+.kibdl-c-{{ section.id }} .kbd-card__body{display:flex;flex:1;flex-direction:column;gap:7px;padding:18px 19px 20px}
+.kibdl-c-{{ section.id }} .kbd-card__meta{color:#9d93cc;font-size:9px;font-weight:850;letter-spacing:.12em;text-transform:uppercase}
+.kibdl-c-{{ section.id }} .kbd-card__title{color:var(--deep);font:800 17px/1.25 'Raleway',system-ui,sans-serif;text-decoration:none}
+.kibdl-c-{{ section.id }} .kbd-card__title:hover{color:var(--p)}
+.kibdl-c-{{ section.id }} .kbd-card__desc{display:-webkit-box;overflow:hidden;margin:0;color:var(--mut);font-size:12px;line-height:1.55;-webkit-box-orient:vertical;-webkit-line-clamp:2}
+.kibdl-c-{{ section.id }} .kbd-card__products{display:flex;flex-wrap:wrap;gap:5px;margin-top:3px}
+.kibdl-c-{{ section.id }} .kbd-card__product-tag{display:inline-flex;padding:4px 8px;border-radius:999px;background:#f1effd;color:#55499d;font-size:9px;font-weight:700;line-height:1.3}
+.kibdl-c-{{ section.id }} .kbd-card__footer{display:flex;align-items:end;justify-content:space-between;gap:12px;margin-top:auto;padding-top:15px;border-top:1px solid rgba(73,61,154,.08)}
+.kibdl-c-{{ section.id }} .kbd-card__prices{display:flex;align-items:baseline;gap:6px;flex-wrap:wrap}
+.kibdl-c-{{ section.id }} .kbd-card__price{color:var(--p);font-size:19px;font-weight:900}
+.kibdl-c-{{ section.id }} .kbd-card__compare{color:#aaa;font-size:11px;text-decoration:line-through}
+.kibdl-c-{{ section.id }} .kbd-card__actions{display:flex;gap:6px;align-items:center}
+.kibdl-c-{{ section.id }} .kbd-card__btn{display:inline-flex;align-items:center;justify-content:center;min-height:36px;padding:8px 13px;border:1px solid var(--p);border-radius:999px;background:var(--p);color:#fff;font-size:10px;font-weight:800;text-decoration:none;white-space:nowrap}
+.kibdl-c-{{ section.id }} .kbd-card__btn--ghost{background:#fff;color:var(--p)}
+.kibdl-c-{{ section.id }} .kbd-empty{grid-column:1/-1;padding:70px 24px;text-align:center;color:var(--mut)}
+@media(max-width:989px){.kibdl-c-{{ section.id }} .kbd-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.kibdl-c-{{ section.id }} .kbd-banner__inner{grid-template-columns:1fr minmax(270px,.7fr)}}
+@media(max-width:749px){.kibdl-c-{{ section.id }} .kbd-banner{padding:31px 16px 26px}.kibdl-c-{{ section.id }} .kbd-banner__inner{grid-template-columns:1fr;gap:24px}.kibdl-c-{{ section.id }} .kbd-title{font-size:33px}.kibdl-c-{{ section.id }} .kbd-banner__visual{width:270px;gap:7px}.kibdl-c-{{ section.id }} .kbd-banner__tile{border-radius:13px}.kibdl-c-{{ section.id }} .kbd-main{padding:20px 14px 52px}.kibdl-c-{{ section.id }} .kbd-intro{align-items:start;flex-direction:column;gap:9px}.kibdl-c-{{ section.id }} .kbd-grid{grid-template-columns:1fr;gap:14px}.kibdl-c-{{ section.id }} .kbd-card{border-radius:17px}.kibdl-c-{{ section.id }} .kbd-card__hero{aspect-ratio:1.75}.kibdl-c-{{ section.id }} .kbd-card__body{padding:14px}.kibdl-c-{{ section.id }} .kbd-card__title{font-size:15px}.kibdl-c-{{ section.id }} .kbd-card__footer{align-items:center}.kibdl-c-{{ section.id }} .kbd-card__price{font-size:17px}}
+</style>
+
+{%- capture featured_handles -%}
+  {%- for featured_block in section.blocks -%}
+    {%- if featured_block.type == 'featured_product' and featured_block.settings.product != blank -%}|{{ featured_block.settings.product.handle }}|{%- endif -%}
+  {%- endfor -%}
+{%- endcapture -%}
+
+<div class="kibdl-c-{{ section.id }}">
+  <header class="kbd-banner">
+    <div class="kbd-banner__inner">
+      <div>
+        <p class="kbd-eyebrow">{{ section.settings.eyebrow | default: 'Bakımını paketle' | escape }}</p>
+        <h1 class="kbd-title">{{ section.settings.hero_title | default: collection.title | escape }}</h1>
+        <p class="kbd-desc">{{ section.settings.hero_description | default: 'Ped, intim bakım ve dönemsel destek ürünlerini ihtiyacına göre paket halinde keşfet; dilersen düzenli gönderime ekle.' | escape }}</p>
+        <div class="kbd-hero-chips"><span>%15 abonelik avantajı</span><span>Esnek gönderim</span><span>Eczacı yaklaşımı</span></div>
+      </div>
+      <div class="kbd-banner__visual" aria-hidden="true">
+        {%- assign visual_count = 0 -%}
+        {%- for visual_block in section.blocks -%}
+          {%- if visual_block.type == 'featured_product' and visual_block.settings.product.featured_image and visual_count < 3 -%}
+            <span class="kbd-banner__tile">{{ visual_block.settings.product.featured_image | image_url: width: 420 | image_tag: loading: 'eager', alt: '' }}</span>
+            {%- assign visual_count = visual_count | plus: 1 -%}
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </header>
+
+  <main class="kbd-main">
+    <div class="kbd-intro">
+      <div><h2>Tüm .ki paketleri</h2><p>Hazır bir rutin seç veya ürünlerini paket oluşturucuda dilediğin gibi düzenle.</p></div>
+      <span class="kbd-intro__badge">Tek seferlik alım veya abonelik</span>
+    </div>
+
+    <ul class="kbd-grid">
+      {%- assign rendered_card_count = 0 -%}
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'featured_product' and block.settings.product != blank -%}
+          {% render 'ki-bundle-product-card', product: block.settings.product, pack_label: block.settings.pack_label, contains_products: block.settings.contains_products %}
+          {%- assign rendered_card_count = rendered_card_count | plus: 1 -%}
+        {%- elsif block.type == 'virtual_bundle' -%}
+          {% render 'ki-bundle-virtual-card', block: block %}
+          {%- assign rendered_card_count = rendered_card_count | plus: 1 -%}
+        {%- endif -%}
+      {%- endfor -%}
+
+      {%- for product in collection.products -%}
+        {%- assign product_token = '|' | append: product.handle | append: '|' -%}
+        {%- unless featured_handles contains product_token -%}
+          {%- assign product_config = nil -%}
+          {%- for config_block in section.blocks -%}
+            {%- if config_block.type == 'product_config' and config_block.settings.product_handle == product.handle -%}{%- assign product_config = config_block -%}{%- endif -%}
+          {%- endfor -%}
+          {%- if product_config != nil -%}
+            {% render 'ki-bundle-product-card', product: product, pack_label: product_config.settings.pack_label, contains_products: product_config.settings.contains_products %}
+          {%- else -%}
+            {% render 'ki-bundle-product-card', product: product, pack_label: 'Hazır Paket' %}
+          {%- endif -%}
+          {%- assign rendered_card_count = rendered_card_count | plus: 1 -%}
+        {%- endunless -%}
+      {%- endfor -%}
+
+      {%- if rendered_card_count == 0 -%}<li class="kbd-empty">Bu koleksiyonda henüz paket bulunmuyor.</li>{%- endif -%}
+    </ul>
+  </main>
+</div>
+
+{% schema %}
+{
+  "name": "Bundle Koleksiyonu (.ki)",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {"type":"text","id":"eyebrow","label":"Üst başlık","default":"BAKIMINI PAKETLE"},
+    {"type":"text","id":"hero_title","label":"Başlık","default":"Rutinin hazır, kontrolü sende"},
+    {"type":"textarea","id":"hero_description","label":"Açıklama","default":"Ped, intim bakım ve dönemsel destek ürünlerini paket halinde keşfet; dilersen düzenli gönderime ekle."}
+  ],
+  "blocks": [
+    {
+      "type":"featured_product",
+      "name":"Gerçek paket ürünü",
+      "settings":[
+        {"type":"product","id":"product","label":"Paket ürünü"},
+        {"type":"text","id":"pack_label","label":"Etiket","default":"Hazır Paket"},
+        {"type":"textarea","id":"contains_products","label":"İçindekiler (virgülle ayır)"}
+      ]
+    },
+    {
+      "type":"virtual_bundle",
+      "name":"Düzenlenebilir paket",
+      "settings":[
+        {"type":"text","id":"preset_key","label":"Paket anahtarı","default":"bakim-paketi"},
+        {"type":"text","id":"title","label":"Paket adı","default":"Bakım Paketi"},
+        {"type":"textarea","id":"description","label":"Açıklama"},
+        {"type":"text","id":"pack_label","label":"Etiket","default":"Bakım Rutini"},
+        {"type":"product","id":"product_1","label":"Ürün 1"},
+        {"type":"range","id":"qty_1","label":"Ürün 1 adedi","min":1,"max":12,"step":1,"default":1},
+        {"type":"product","id":"product_2","label":"Ürün 2"},
+        {"type":"range","id":"qty_2","label":"Ürün 2 adedi","min":1,"max":12,"step":1,"default":1},
+        {"type":"product","id":"product_3","label":"Ürün 3"},
+        {"type":"range","id":"qty_3","label":"Ürün 3 adedi","min":1,"max":12,"step":1,"default":1}
+      ]
+    },
+    {
+      "type":"product_config",
+      "name":"Koleksiyon paket ayarı",
+      "settings":[
+        {"type":"text","id":"product_handle","label":"Ürün handle’i"},
+        {"type":"text","id":"pack_label","label":"Etiket","default":"Hazır Paket"},
+        {"type":"textarea","id":"contains_products","label":"İçindekiler (virgülle ayır)"}
+      ]
+    }
+  ],
+  "presets":[{"name":"Bundle Koleksiyonu (.ki)"}]
+}
+{% endschema %}

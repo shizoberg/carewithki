@@ -1,0 +1,80 @@
+{%- liquid
+  assign bundle_variant = product.selected_or_first_available_variant
+  assign bundle_label = pack_label | default: 'Hazır Paket'
+  assign bundle_contains = contains_products | default: ''
+  assign subscription_url = '/pages/paket-olustur?abone=' | append: bundle_variant.id | append: '&product=' | append: product.handle
+  if product.handle == 'ki-dongu-destek-paketi'
+    assign subscription_url = '/pages/paket-olustur?preset=cycle'
+  elsif product.handle == 'ki-hassas-bakim-paketi'
+    assign subscription_url = '/pages/paket-olustur?preset=sensitive'
+  elsif product.handle == 'ki-menopoz-bakim-paketi'
+    assign subscription_url = '/pages/paket-olustur?preset=menopause'
+  endif
+  if bundle_contains == blank
+    case product.handle
+      when 'ki-dongu-destek-paketi'
+        assign bundle_contains = '.ki Balance,.ki flow.care,.ki intimate'
+      when 'ki-hassas-bakim-paketi'
+        assign bundle_contains = '.ki sens.care,.ki intimate'
+      when 'ki-menopoz-bakim-paketi'
+        assign bundle_contains = '.ki Change,.ki 50+.care,.ki intimate'
+      when 'ki-light-ped-paketi-15-adet'
+        assign bundle_contains = '9 Günlük Ped,4 Gündüz Ped,2 Gece Ped'
+      when 'ki-medium-ped-paketi-22-adet'
+        assign bundle_contains = '9 Günlük Ped,9 Gündüz Ped,4 Gece Ped'
+      when 'ki-yogun-gunler-ped-paketi-26-adet'
+        assign bundle_contains = '6 Günlük Ped,12 Gündüz Ped,8 Gece Ped'
+      when 'balance-ve-intimate-bundle'
+        assign bundle_contains = '.ki Balance,.ki intimate'
+      when 'ki-intimate-arkadas-paketi'
+        assign bundle_contains = '2 × .ki intimate'
+    endcase
+  endif
+-%}
+
+<li class="kbd-card">
+  <a href="{{ product.url }}" class="kbd-card__hero" aria-label="{{ product.title | escape }}">
+    {% render 'ki-product-card-media', product: product, image_class: 'kbd-card__hero-img', image_width: 900, placeholder_name: 'product-2' %}
+    {%- if bundle_variant.compare_at_price > bundle_variant.price -%}
+      {%- assign saving_percent = bundle_variant.compare_at_price | minus: bundle_variant.price | times: 100 | divided_by: bundle_variant.compare_at_price -%}
+      <span class="kbd-card__save">%{{ saving_percent }} avantaj</span>
+    {%- endif -%}
+    <span class="kbd-card__pack-label">{{ bundle_label | escape }}</span>
+  </a>
+
+  <div class="kbd-card__body">
+    <div class="kbd-card__meta">Hazır .ki paketi</div>
+    <a href="{{ product.url }}" class="kbd-card__title">{{ product.title | escape }}</a>
+    {%- if product.description != blank -%}
+      <p class="kbd-card__desc">{{ product.description | strip_html | truncate: 120 }}</p>
+    {%- endif -%}
+
+    {%- if bundle_contains != blank -%}
+      <div class="kbd-card__products">
+        {%- assign bundle_items = bundle_contains | split: ',' -%}
+        {%- for bundle_item in bundle_items limit: 4 -%}
+          <span class="kbd-card__product-tag">✓ {{ bundle_item | strip | escape }}</span>
+        {%- endfor -%}
+      </div>
+    {%- elsif product.tags.size > 0 -%}
+      <div class="kbd-card__products">
+        {%- for product_tag in product.tags limit: 3 -%}
+          <span class="kbd-card__product-tag">✓ {{ product_tag | escape }}</span>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+
+    <div class="kbd-card__footer">
+      <div class="kbd-card__prices">
+        <span class="kbd-card__price">{{ bundle_variant.price | money }}</span>
+        {%- if bundle_variant.compare_at_price > bundle_variant.price -%}
+          <span class="kbd-card__compare">{{ bundle_variant.compare_at_price | money }}</span>
+        {%- endif -%}
+      </div>
+      <div class="kbd-card__actions">
+        <a href="{{ product.url }}" class="kbd-card__btn kbd-card__btn--ghost">İncele</a>
+        <a href="{{ subscription_url }}" class="kbd-card__btn">Abone ol →</a>
+      </div>
+    </div>
+  </div>
+</li>

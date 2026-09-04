@@ -1,0 +1,103 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "camp_hero": {
+      "type": "camp-hero",
+      "settings": {
+        "tag_text": "Campus Ambassador Program\u0131",
+        "title_part_1": "Kamp\u00fcs\u00fcnde",
+        "title_highlight": ".ki",
+        "title_part_2": "El\u00e7isi Ol,",
+        "title_underline": "Fark\u0131ndal\u0131k Yarat!",
+        "description": "<p>Regl tabular\u0131n\u0131 y\u0131kmak, s\u0131nav stresinde kad\u0131nlar\u0131n yan\u0131nda olmak ve <strong>drawpms.com<\/strong> ile duygular\u0131 \u00f6zg\u00fcrle\u015ftirmek i\u00e7in ekibimize kat\u0131l.<\/p>",
+        "btn_1_text": "Hemen Ba\u015fvur",
+        "btn_2_text": "Program\u0131 \u0130ncele"
+      }
+    },
+    "camp_health_info": {
+      "type": "camp-health-info",
+      "settings": {
+        "bg_color": "#f8f8f6",
+        "title": "Kad\u0131n Sa\u011fl\u0131\u011f\u0131 Hakk\u0131nda Bilmen Gerekenler",
+        "subtitle": "PMS sadece ruh hali de\u011fi\u015fikli\u011fi de\u011fildir. Biyolojik, hormonal ve sosyal boyutlar\u0131yla anla\u015f\u0131lmas\u0131 gereken bir sa\u011fl\u0131k durumudur."
+      }
+    },
+    "camp_how_it_works": {
+      "type": "camp-how-it-works",
+      "blocks": {
+        "card1": {"type":"card","settings":{"icon_bg":"#e6f8f1","icon_color":"#22c55e","card_title":"Sa\u011fl\u0131k \u0130leti\u015fimcisi","card_desc":"<p>T\u0131p veya eczac\u0131l\u0131k \u00f6\u011frencisi olarak PMS ve regl d\u00f6ng\u00fcs\u00fc hakk\u0131nda bilimsel bilgi payla\u015f, empati kur.<\/p>"}},
+        "card2": {"type":"card","settings":{"icon_bg":"#ffeaeb","icon_color":"#ff6666","card_title":"Pazarlama Stratejisti","card_desc":"<p>Kamp\u00fcs etkinlikleri, sosyal medya i\u00e7erikleri ve drawpms.com kampanyas\u0131 ile fark\u0131ndal\u0131k yarat.<\/p>"}},
+        "card3": {"type":"card","settings":{"icon_bg":"#fffbe1","icon_color":"#f59e0b","card_title":"drawpms.com'a Y\u00f6nlendir","card_desc":"<p>2 dakikal\u0131k \u00e7izim molalar\u0131 ile \u00f6\u011frencileri rahatlatarak regl fark\u0131ndal\u0131\u011f\u0131 yarat.<\/p>"}}
+      },
+      "block_order": ["card1","card2","card3"],
+      "settings": {
+        "bg_color": "#f8f8f6",
+        "title": "Nas\u0131l \u00c7al\u0131\u015f\u0131r?",
+        "subtitle": "Her kamp\u00fcste iki ki\u015filik dinamik ekipler"
+      }
+    },
+    "camp_benefits": {
+      "type": "camp-benefits",
+      "blocks": {
+        "b1": {"type":"benefit","settings":{"icon_bg":"#ffeaeb","icon_color":"#ff6666","card_title":"Performans Odakl\u0131 Kazan\u00e7","card_desc":"<p>Y\u00f6nlendirdi\u011fin her trafik ve olu\u015fturulan her \u00e7izim i\u00e7in maddi te\u015fvik kazan.<\/p>"}},
+        "b2": {"type":"benefit","settings":{"icon_bg":"#fffbe1","icon_color":"#f59e0b","card_title":"\u00dccretsiz .ki \u00dcr\u00fcnleri","card_desc":"<p>T\u00fcm .ki \u00fcr\u00fcn ailesine \u00fccretsiz eri\u015fim ve \u00f6zel el\u00e7i indirimleri.<\/p>"}},
+        "b3": {"type":"benefit","settings":{"icon_bg":"#e6f8f1","icon_color":"#22c55e","card_title":"Kariyer Geli\u015fimi","card_desc":"<p>CV'ne ekleyebilece\u011fin deneyim, referans mektubu ve kariyer mentorlu\u011fu.<\/p>"}},
+        "b4": {"type":"benefit","settings":{"icon_bg":"#ede8ff","icon_color":"#493d9a","card_title":"T\u00fcrkiye \u00c7ap\u0131nda Topluluk","card_desc":"<p>40+ \u00fcniversiteden el\u00e7ilerden olu\u015fan g\u00fc\u00e7l\u00fc a\u011f ile ba\u011flanma f\u0131rsat\u0131.<\/p>"}}
+      },
+      "block_order": ["b1","b2","b3","b4"],
+      "settings": {
+        "bg_color": "#ffffff",
+        "title": "Neden .ki El\u00e7isi Olmal\u0131s\u0131n?"
+      }
+    },
+    "camp_product_refs": {
+      "type": "camp-product-refs",
+      "settings": {
+        "bg_color": "#f8f8f6",
+        "title": ".ki \u00dcr\u00fcnleri Kamp\u00fcs Hayat\u0131yla Nas\u0131l E\u015fle\u015fir?",
+        "subtitle": "Uzun kamp\u00fcs g\u00fcnleri, s\u0131nav stresi ve PMS d\u00f6nemi \u2014 her ihtiyaca \u00f6zel bir \u00fcr\u00fcn."
+      }
+    },
+    "camp_social_proof": {
+      "type": "camp-social-proof",
+      "blocks": {
+        "t1": {"type":"testimonial","settings":{"avatar_text":"Z","avatar_bg":"#ff6666","avatar_color":"#ffffff","author_name":"Zeynep A.","author_uni":"\u0130stanbul \u00dcniversitesi","quote_text":"Kamp\u00fcste fark\u0131ndal\u0131k yaratmak beni \u00e7ok mutlu etti. Herkesin drawpms.com'u denemesi laz\u0131m!"}},
+        "t2": {"type":"testimonial","settings":{"avatar_text":"E","avatar_bg":"#8fe5c8","avatar_color":"#1a1a1a","author_name":"Elif K.","author_uni":"ODT\u00dc","quote_text":"Arkada\u015flar\u0131ma PMS hakk\u0131nda bilgi vermek i\u00e7in harika bir platform!"}},
+        "t3": {"type":"testimonial","settings":{"avatar_text":"A","avatar_bg":"#ffe66b","avatar_color":"#1a1a1a","author_name":"Ay\u015fe M.","author_uni":"Bo\u011fazi\u00e7i \u00dcniversitesi","quote_text":".ki ekibiyle \u00e7al\u0131\u015fmak hem kariyer hem de ki\u015fisel geli\u015fim a\u00e7\u0131s\u0131ndan \u00e7ok de\u011ferli."}},
+        "t4": {"type":"testimonial","settings":{"avatar_text":"S","avatar_bg":"#493d9a","avatar_color":"#ffffff","author_name":"Selin D.","author_uni":"Ege \u00dcniversitesi","quote_text":"Regl tabusu hakk\u0131nda konu\u015fmak art\u0131k daha kolay. Bu programa kat\u0131lmaktan \u00e7ok mutluyum."}}
+      },
+      "block_order": ["t1","t2","t3","t4"],
+      "settings": {
+        "bg_color": "#f2f2fa",
+        "title": "Bizden Kareler"
+      }
+    },
+    "camp_application_form": {
+      "type": "camp-application-form",
+      "settings": {
+        "bg_color": "#f8f8f6",
+        "title": "Hemen Ba\u015fvur",
+        "subtitle": "Formu doldur, .ki Campus ailesine kat\u0131l!",
+        "btn_text": "Ba\u015fvurumu G\u00f6nder",
+        "success_msg": "Ba\u015fvurun al\u0131nd\u0131! En k\u0131sa s\u00fcrede seninle ileti\u015fime ge\u00e7ece\u011fiz."
+      }
+    }
+  },
+  "order": [
+    "camp_hero",
+    "camp_health_info",
+    "camp_how_it_works",
+    "camp_benefits",
+    "camp_product_refs",
+    "camp_social_proof",
+    "camp_application_form"
+  ]
+}

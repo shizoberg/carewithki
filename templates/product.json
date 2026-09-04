@@ -1,0 +1,356 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-product",
+      "blocks": {
+        "vendor": {
+          "type": "text",
+          "settings": {
+            "text": "{{ product.vendor }}",
+            "text_style": "uppercase"
+          }
+        },
+        "title": {
+          "type": "title",
+          "settings": {}
+        },
+        "price": {
+          "type": "price",
+          "settings": {}
+        },
+        "variant_picker": {
+          "type": "variant_picker",
+          "settings": {
+            "picker_type": "button",
+            "swatch_shape": "circle"
+          }
+        },
+        "quantity_selector": {
+          "type": "quantity_selector",
+          "settings": {}
+        },
+        "buy_buttons": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_dynamic_checkout": true,
+            "show_gift_card_recipient": true
+          }
+        },
+        "description": {
+          "type": "description",
+          "settings": {}
+        },
+        "share": {
+          "type": "share",
+          "settings": {
+            "share_label": "Share"
+          }
+        }
+      },
+      "block_order": [
+        "vendor",
+        "title",
+        "price",
+        "variant_picker",
+        "quantity_selector",
+        "buy_buttons",
+        "description",
+        "share"
+      ],
+      "disabled": true,
+      "settings": {
+        "enable_sticky_info": true,
+        "color_scheme": "scheme-1",
+        "media_size": "large",
+        "constrain_to_viewport": true,
+        "media_fit": "contain",
+        "gallery_layout": "stacked",
+        "mobile_thumbnails": "hide",
+        "media_position": "left",
+        "image_zoom": "lightbox",
+        "hide_variants": true,
+        "enable_video_looping": false,
+        "padding_top": 36,
+        "padding_bottom": 12
+      }
+    },
+    "related-products": {
+      "type": "related-products",
+      "disabled": true,
+      "settings": {
+        "heading": "You may also like",
+        "heading_size": "h2",
+        "products_to_show": 4,
+        "columns_desktop": 4,
+        "columns_mobile": "2",
+        "color_scheme": "scheme-1",
+        "image_ratio": "square",
+        "image_shape": "default",
+        "show_secondary_image": true,
+        "show_vendor": false,
+        "show_rating": false,
+        "padding_top": 36,
+        "padding_bottom": 28
+      }
+    },
+    "pdp_hero_ki_dJWqbJ": {
+      "type": "pdp-hero-ki",
+      "name": "PDP Hero Ki",
+      "settings": {
+        "product": "",
+        "max_width": 1300,
+        "pad_y": 60,
+        "pad_x": 32,
+        "bg": "#ffffff",
+        "text": "#1a1a1a",
+        "muted": "#666666",
+        "cta_bg": "#493d9a",
+        "cta_text": "#ffffff",
+        "product_title": "Premium Ürün",
+        "product_subtitle": "Doğal içeriklerle hazırlanmış, vücudunuz için en iyisi.",
+        "review_rating": 4.8,
+        "review_text": "98 değerlendirme · 4.8 yıldız",
+        "star_color": "#f5a623",
+        "offer_headline": "",
+        "sub_product": "",
+        "sub_title": "",
+        "sub_badge": "",
+        "sub_subtitle": "",
+        "sub_compare": "",
+        "sub_price": "",
+        "sub_per": "",
+        "sub_benefits": "",
+        "once_title": "Tek Seferlik",
+        "once_badge": "",
+        "once_subtitle": "30 günlük kullanım",
+        "once_compare": "",
+        "once_price": "199₺",
+        "once_per": "6,63₺/gün",
+        "once_note": "<p>Standart teslimat</p>",
+        "cta_label": "Sepete Ekle",
+        "shipping_text": "Ücretsiz Kargo",
+        "disclaimer": "<p>İndirim ilk sipariş için geçerlidir.</p>"
+      }
+    },
+    "truly_healthy_banner_UB3yXJ": {
+      "type": "truly-healthy-banner",
+      "blocks": {
+        "feature_WgKEh9": {
+          "type": "feature",
+          "settings": {
+            "title": "Özellik Başlığı",
+            "description": "Bu özelliğin kısa açıklaması burada yer alır."
+          }
+        },
+        "feature_jwB6mV": {
+          "type": "feature",
+          "settings": {
+            "title": "Çeşitli Probiyotik Suşları",
+            "description": "24 suş, sağlıklı bir bağırsağın temeli olan mikrobiyal çeşitliliği destekler."
+          }
+        },
+        "feature_VNkRNW": {
+          "type": "feature",
+          "settings": {
+            "title": "Hayatta Kalmak İçin Tasarlandı",
+            "description": "ViaCap® dağıtım sistemi probiyotikleri kolona kadar güvenle taşır."
+          }
+        },
+        "feature_VJckDM": {
+          "type": "feature",
+          "settings": {
+            "title": "İyi Bağırsak Mikroplarını Besler",
+            "description": "Antioksidan destekli prebiyotik, faydalı bağırsak mikroplarını besler."
+          }
+        },
+        "feature_pUb6wf": {
+          "type": "feature",
+          "settings": {
+            "title": "4 Klinik Çalışmada Kanıtlandı",
+            "description": "Dört altın standart klinik çalışmada bilimsel olarak doğrulandı."
+          }
+        }
+      },
+      "block_order": [
+        "feature_WgKEh9",
+        "feature_jwB6mV",
+        "feature_VNkRNW",
+        "feature_VJckDM",
+        "feature_pUb6wf"
+      ],
+      "disabled": true,
+      "name": "Hero Features Banner",
+      "settings": {
+        "bg_image": "shopify://shop_images/DSCF0022.00_05_52_08.Still004.jpg",
+        "overlay_color": "#000000",
+        "overlay_opacity": 20,
+        "min_height": 560,
+        "max_width": 1300,
+        "pad_y": 56,
+        "pad_x": 32,
+        "heading": "Feel the difference of a truly healthy gut.",
+        "text_color": "#ffffff",
+        "panel_bg": "#5a5546bf",
+        "blur": 16,
+        "panel_text": "#ffffff",
+        "icon_color": "#f8f8f6"
+      }
+    },
+    "ingredients_showcase_ALLmmY": {
+      "type": "ingredients_showcase",
+      "blocks": {
+        "ingredient_rGWWcp": {
+          "type": "ingredient",
+          "settings": {
+            "title": "Vitamin D3",
+            "description": "Kalsiyum emilimini, kemik sağlığını ve kas fonksiyonunu destekler.",
+            "form_label": "BİYOYARARLI FORM",
+            "form_info": "Sentetik D2'ye kıyasla doğal ve daha etkili bir form olan Kolekalsiferol."
+          }
+        },
+        "ingredient_VVM4Cx": {
+          "type": "ingredient",
+          "settings": {
+            "title": "Vitamin D3",
+            "description": "Kalsiyum emilimini, kemik sağlığını ve kas fonksiyonunu destekler.",
+            "form_label": "BİYOYARARLI FORM",
+            "form_info": "Sentetik D2'ye kıyasla doğal ve daha etkili bir form olan Kolekalsiferol."
+          }
+        },
+        "ingredient_PFTy9K": {
+          "type": "ingredient",
+          "settings": {
+            "title": "Vitamin E",
+            "description": "Hücreleri serbest radikallerin neden olduğu oksidatif hasara karşı korur.",
+            "form_label": "BİYOYARARLI FORM",
+            "form_info": "Güçlü ve aktif bir E vitamini formu olan saf alfa tokoferol."
+          }
+        },
+        "ingredient_4DLAMV": {
+          "type": "ingredient",
+          "settings": {
+            "title": "Vitamin K",
+            "description": "Kemik sağlığı, mitokondriyal fonksiyon ve kan pıhtılaşması için gereklidir.",
+            "form_label": "BİYOYARARLI FORM",
+            "form_info": "Mikrobiyal olarak üretilen ve uzun ömürlü bir form olan K1 ve K2 MK-7 dahil olmak üzere iki K vitamini formu."
+          }
+        },
+        "ingredient_YdNJWW": {
+          "type": "ingredient",
+          "settings": {
+            "title": "B Vitaminleri",
+            "description": "Enerji ve besin metabolizmasını destekler, NAD+ seviyelerini artırır.",
+            "form_label": "BİYOYARARLI FORM",
+            "form_info": "B6, folat, biotin ve B12 dahil olmak üzere aktif formlarda zengin bir B vitamini kompleksi."
+          }
+        },
+        "ingredient_R8zVwq": {
+          "type": "ingredient",
+          "settings": {
+            "title": "Çinko, Selenyum, Bakır",
+            "description": "Doku oluşumunu, bağışıklık fonksiyonunu ve hücresel enerji üretimini destekler.",
+            "form_label": "BİYOYARARLI FORM",
+            "form_info": "Kolay emilen ve sindirime nazik şelatlanmış eser mineral formları."
+          }
+        }
+      },
+      "block_order": [
+        "ingredient_rGWWcp",
+        "ingredient_VVM4Cx",
+        "ingredient_PFTy9K",
+        "ingredient_4DLAMV",
+        "ingredient_YdNJWW",
+        "ingredient_R8zVwq"
+      ],
+      "disabled": true,
+      "name": "Ingredients Showcase",
+      "settings": {
+        "max_width": 1300,
+        "pad_y": 64,
+        "pad_x": 32,
+        "bg": "#f8f8f6",
+        "text": "#1a1a1a",
+        "muted": "#666666",
+        "card_bg": "#ffffff",
+        "heading": "Bioavailable nutrients that work harder for you.",
+        "description": "Formülümüz, vücudunuzun kolayca tanıyıp emebileceği formlarda içeriklerle hazırlanmıştır, böylece sağlık faydalarının tam potansiyelini deneyimlersiniz."
+      }
+    },
+    "pdp_benefits_timeline_xpMUBt": {
+      "type": "pdp-benefits-timeline",
+      "blocks": {
+        "timeline_item_a9fUy4": {
+          "type": "timeline_item",
+          "settings": {
+            "badge": "Day 1",
+            "title": "Replenishes Nutrients*",
+            "benefits": "Helps fill daily nutrient gaps|Supports cellular energy production|Fuels microbial metabolism of nutrients"
+          }
+        },
+        "timeline_item_qFqpDx": {
+          "type": "timeline_item",
+          "settings": {
+            "badge": "Week 4",
+            "title": "Maintains Immune Function*",
+            "benefits": "Bolsters daily immune defenses|Shields against environmental stress|Provides antioxidants for healthy barrier function"
+          }
+        },
+        "timeline_item_wx4VtX": {
+          "type": "timeline_item",
+          "settings": {
+            "badge": "Week 8",
+            "title": "Enhanced Cognitive Support*",
+            "benefits": "Promotes healthy hair, skin, and nails|Helps protect against free radical damage|Delivers nutrients that decline with age like CoQ10 and PQQ"
+          }
+        }
+      },
+      "block_order": [
+        "timeline_item_a9fUy4",
+        "timeline_item_qFqpDx",
+        "timeline_item_wx4VtX"
+      ],
+      "disabled": true,
+      "name": "PDP Benefits Timeline",
+      "settings": {
+        "max_width": 1200,
+        "pad_y": 72,
+        "pad_x": 32,
+        "bg": "#f8f8f6",
+        "text": "#1a1a1a",
+        "muted": "#555555",
+        "badge_bg": "#dad2ff",
+        "badge_text": "#493d9a",
+        "line_color": "#b2a5ff",
+        "heading": "Benefits that build over time.",
+        "description": "Designed for daily use, DM-02™ replenishes your body and microbiome with essential nutrients to build systemic health over time.*",
+        "image_main": "shopify://shop_images/pexels-krebsatka-19139912.jpg",
+        "image_main_alt": "Ürün kullanımı",
+        "image_secondary_1": "shopify://shop_images/pexels-krebsatka-19246021.jpg",
+        "image_secondary_1_alt": "Ürün",
+        "image_secondary_2": "shopify://shop_images/pexels-krebsatka-16285598.jpg",
+        "image_secondary_2_alt": "Kullanıcı",
+        "show_how_to_use": true,
+        "how_icon": "shopify://shop_images/pexels-krebsatka-18568988.jpg",
+        "how_title": "How to Use:",
+        "how_description": "Take 1 capsule daily with food for best absorption."
+      }
+    }
+  },
+  "order": [
+    "main",
+    "related-products",
+    "pdp_hero_ki_dJWqbJ",
+    "truly_healthy_banner_UB3yXJ",
+    "ingredients_showcase_ALLmmY",
+    "pdp_benefits_timeline_xpMUBt"
+  ]
+}

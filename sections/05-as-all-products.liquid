@@ -1,0 +1,246 @@
+{% comment %}
+  All Products — Bento görsel grid (Pedler / Balance / Jeller / Change / Sprey / Yağ)
+  Pozisyon: Anasayfa #5
+  Mobile: 2 sütun, Desktop: 6 sütun + col_span / row_span ile esnek bento.
+{% endcomment %}
+
+<section id="all-products-{{ section.id }}" class="section all-products">
+  <style>
+    #all-products-{{ section.id }} {
+      --ap-bg: {{ section.settings.bg | default: '#fffaf3' }};
+      --ap-primary: {{ section.settings.primary_color | default: '#3a2d6e' }};
+      --ap-text: {{ section.settings.text_color | default: '#1a1a1a' }};
+      background: var(--ap-bg);
+      padding: 48px 0;
+      position: relative;
+      overflow: hidden;
+      font-family: system-ui, -apple-system, sans-serif;
+    }
+
+    #all-products-{{ section.id }} .ap-illu {
+      display: none;
+    }
+
+    #all-products-{{ section.id }} .ap-wrap {
+      max-width: 1152px;
+      margin: 0 auto;
+      padding: 0 16px;
+      position: relative; z-index: 2;
+    }
+
+    #all-products-{{ section.id }} .ap-head {
+      max-width: 720px;
+      margin-bottom: 32px;
+    }
+    #all-products-{{ section.id }} .ap-title {
+      font-size: 24px; line-height: 1.1;
+      font-weight: 500;
+      letter-spacing: -.02em;
+      color: var(--ap-primary);
+      margin: 0;
+    }
+    #all-products-{{ section.id }} .ap-title em {
+      font-style: italic;
+      color: rgba(58,45,110,.8);
+    }
+
+    #all-products-{{ section.id }} .ap-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    #all-products-{{ section.id }} .ap-tile {
+      position: relative;
+      border-radius: 16px;
+      overflow: hidden;
+      aspect-ratio: 1/1;
+      display: flex; flex-direction: column;
+      justify-content: flex-end;
+      padding: 16px;
+      color: #fff;
+      text-decoration: none;
+      transition: box-shadow .5s ease;
+      grid-column: span 1;
+      grid-row: span 1;
+    }
+    #all-products-{{ section.id }} .ap-tile:hover { box-shadow: 0 18px 40px -16px rgba(0,0,0,.25); }
+
+    #all-products-{{ section.id }} .ap-tile img {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transition: transform .7s ease;
+    }
+    #all-products-{{ section.id }} .ap-tile:hover img { transform: scale(1.04); }
+    #all-products-{{ section.id }} .ap-tile::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,.55), rgba(0,0,0,.1) 50%, transparent);
+    }
+
+    #all-products-{{ section.id }} .ap-text {
+      position: relative; z-index: 2;
+      text-shadow: 0 1px 14px rgba(58,45,110,.7), 0 1px 3px rgba(58,45,110,.55);
+    }
+    #all-products-{{ section.id }} .ap-tile-title {
+      font-size: 16px; line-height: 1.2;
+      margin: 0 0 4px;
+      font-weight: 500;
+    }
+    #all-products-{{ section.id }} .ap-tile-sub {
+      font-size: 11px; opacity: .95;
+      margin: 0 0 4px;
+    }
+    #all-products-{{ section.id }} .ap-tile-price {
+      font-size: 10px; opacity: .85; margin: 0;
+    }
+
+    #all-products-{{ section.id }} .ap-arrow {
+      position: absolute; right: 12px; bottom: 12px;
+      width: 28px; height: 28px;
+      display: inline-flex; align-items: center; justify-content: center;
+      border-radius: 50%;
+      background: rgba(255,255,255,.2);
+      backdrop-filter: blur(4px);
+      color: #fff;
+      z-index: 2;
+      transition: transform .3s ease;
+    }
+    #all-products-{{ section.id }} .ap-tile:hover .ap-arrow { transform: translateX(2px); }
+
+    @media (min-width: 768px) {
+      #all-products-{{ section.id }} { padding: 64px 0; }
+      #all-products-{{ section.id }} .ap-wrap { padding: 0 24px; }
+      #all-products-{{ section.id }} .ap-head { margin-bottom: 40px; }
+      #all-products-{{ section.id }} .ap-title { font-size: 40px; }
+      #all-products-{{ section.id }} .ap-grid {
+        grid-template-columns: repeat(6, 1fr);
+        grid-auto-rows: 173px;
+        gap: 14px;
+      }
+      #all-products-{{ section.id }} .ap-tile { aspect-ratio: auto; }
+      #all-products-{{ section.id }} .ap-tile-title { font-size: 18px; }
+      #all-products-{{ section.id }} .ap-tile-sub { font-size: 12px; }
+      #all-products-{{ section.id }} .ap-tile-price { font-size: 11px; }
+
+      #all-products-{{ section.id }} .ap-illu {
+        display: block;
+        position: absolute; right: 0; bottom: 0;
+        width: 460px; height: auto;
+        pointer-events: none; user-select: none;
+        z-index: 1;
+      }
+    }
+
+    /* Bento col/row span data-attribute switches */
+    #all-products-{{ section.id }} .ap-tile[data-col="2"] { grid-column: span 1; }
+    #all-products-{{ section.id }} .ap-tile[data-row="2"] { grid-row: span 1; }
+
+    @media (min-width: 768px) {
+      #all-products-{{ section.id }} .ap-tile[data-col="1"] { grid-column: span 1; }
+      #all-products-{{ section.id }} .ap-tile[data-col="2"] { grid-column: span 2; }
+      #all-products-{{ section.id }} .ap-tile[data-col="3"] { grid-column: span 3; }
+      #all-products-{{ section.id }} .ap-tile[data-row="1"] { grid-row: span 1; }
+      #all-products-{{ section.id }} .ap-tile[data-row="2"] { grid-row: span 2; }
+    }
+  </style>
+
+  {%- if section.settings.illustration != blank -%}
+    {{ section.settings.illustration | image_url: width: 1080 | image_tag: class: 'ap-illu', loading: 'lazy', alt: '' }}
+  {%- endif -%}
+
+  <div class="ap-wrap">
+    <div class="ap-head">
+      <h2 class="ap-title">{{ section.settings.heading | default: 'Kendine iyi bakman için<em>:</em>' }}</h2>
+    </div>
+
+    <div class="ap-grid">
+      {%- for block in section.blocks -%}
+        <a href="{{ block.settings.link | default: '#' }}"
+           class="ap-tile"
+           data-col="{{ block.settings.col_span | default: 1 }}"
+           data-row="{{ block.settings.row_span | default: 1 }}"
+           {{ block.shopify_attributes }}>
+          {%- if block.settings.image != blank -%}
+            {{ block.settings.image | image_url: width: 800 | image_tag: alt: block.settings.title, loading: 'lazy', style: 'object-position:' | append: block.settings.image_position | default: 'center' }}
+          {%- endif -%}
+          <div class="ap-text">
+            <h3 class="ap-tile-title">{{ block.settings.title }}</h3>
+            <p class="ap-tile-sub">{{ block.settings.subtitle }}</p>
+            <p class="ap-tile-price">{{ block.settings.price_text | default: "00₺'den başlayan fiyatlarla" }}</p>
+          </div>
+          <span class="ap-arrow" aria-hidden="true">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+        </a>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Bento Products",
+  "tag": "section",
+  "class": "all-products",
+  "settings": [
+    { "type": "richtext", "id": "heading", "label": "Başlık", "default": "<p>Kendine iyi bakman için<em>:</em></p>" },
+    { "type": "color", "id": "bg", "label": "Arka plan", "default": "#fffaf3" },
+    { "type": "color", "id": "primary_color", "label": "Başlık rengi", "default": "#3a2d6e" },
+    { "type": "color", "id": "text_color", "label": "Yazı rengi", "default": "#1a1a1a" },
+    { "type": "image_picker", "id": "illustration", "label": "Sağ alt illüstrasyon (desktop)" }
+  ],
+  "blocks": [
+    {
+      "type": "tile",
+      "name": "Bento kutusu",
+      "limit": 12,
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Görsel" },
+        { "type": "select", "id": "image_position", "label": "Görsel pozisyonu",
+          "options": [
+            { "value": "center", "label": "Center" },
+            { "value": "left", "label": "Left" },
+            { "value": "right", "label": "Right" },
+            { "value": "top", "label": "Top" },
+            { "value": "bottom", "label": "Bottom" }
+          ],
+          "default": "center"
+        },
+        { "type": "text", "id": "title", "label": "Başlık", "default": "Pedler" },
+        { "type": "text", "id": "subtitle", "label": "Alt başlık", "default": "Günlük · Gündüz · Gece" },
+        { "type": "text", "id": "price_text", "label": "Fiyat metni", "default": "00₺'den başlayan fiyatlarla" },
+        { "type": "url", "id": "link", "label": "Link" },
+        { "type": "select", "id": "col_span", "label": "Sütun (desktop)",
+          "options": [
+            { "value": "1", "label": "1" },
+            { "value": "2", "label": "2" },
+            { "value": "3", "label": "3" }
+          ],
+          "default": "2"
+        },
+        { "type": "select", "id": "row_span", "label": "Satır (desktop)",
+          "options": [
+            { "value": "1", "label": "1" },
+            { "value": "2", "label": "2" }
+          ],
+          "default": "1"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Bento Products",
+      "blocks": [
+        { "type": "tile", "settings": { "title": "Pedler", "subtitle": "Günlük · Gündüz · Gece", "col_span": "2", "row_span": "2" } },
+        { "type": "tile", "settings": { "title": ".ki Balance", "subtitle": "Regl döngüsü · saşe", "col_span": "2", "row_span": "1" } },
+        { "type": "tile", "settings": { "title": "Bakım Jelleri", "subtitle": "Daily · Sens · Flow · 50+", "col_span": "2", "row_span": "1" } },
+        { "type": "tile", "settings": { "title": ".ki Change", "subtitle": "Menopoz · kapsül", "col_span": "2", "row_span": "1" } },
+        { "type": "tile", "settings": { "title": "Sprey", "subtitle": "İntim bakım spreyi", "col_span": "1", "row_span": "1" } },
+        { "type": "tile", "settings": { "title": "Yağ", "subtitle": "Cycle Care · 10 ml", "col_span": "1", "row_span": "1" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,49 @@
+<style>
+  #shopify-section-{{ section.id }} {
+    --ki-purple-dark: #493d9a;
+    --ki-purple: #b2a5ff;
+    --ki-lilac: #dad2ff;
+  }
+  
+  .balance-scroll-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 3px;
+    width: 0;
+    background: linear-gradient(90deg, var(--ki-purple-dark), var(--ki-purple), var(--ki-lilac));
+    z-index: 9999;
+    transition: width 0.08s linear;
+    border-radius: 0 2px 2px 0;
+  }
+</style>
+
+<div class="balance-scroll-progress" id="balance-scroll-{{ section.id }}"></div>
+
+<script>
+  (function() {
+    var progressBar = document.getElementById('balance-scroll-{{ section.id }}');
+    if (!progressBar) return;
+    
+    function updateProgress() {
+      var h = document.documentElement.scrollHeight - window.innerHeight;
+      var width = h > 0 ? (window.scrollY / h) * 100 : 0;
+      progressBar.style.width = width + '%';
+    }
+    
+    window.addEventListener("scroll", updateProgress, { passive: true });
+    updateProgress();
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Balance: Scroll Progress",
+  "settings": [],
+  "presets": [
+    {
+      "name": "Balance: Scroll Progress"
+    }
+  ]
+}
+{% endschema %}

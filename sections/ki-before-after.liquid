@@ -1,0 +1,169 @@
+{% comment %}
+  .ki Before & After (scoped) — Brand Kit
+  Two-column comparison: Before vs After lists.
+
+  Brand kit:
+    #493d9a (main)
+    #f8f8f6 (offwhite)
+    #b2a5ff (primary)
+    #dad2ff (lilac)
+
+  Fully scoped to #baft-{{ section.id }}.
+{% endcomment %}
+
+<section id="baft-{{ section.id }}" class="section">
+  <style>
+    #baft-{{ section.id }}{
+      --ki-purple-dark: #493d9a;
+      --ki-offwhite: #f8f8f6;
+      --ki-purple: #b2a5ff;
+      --ki-lilac: #dad2ff;
+
+      --bg: {{ section.settings.bg | default: '#ffffff' }};
+      --text: {{ section.settings.text | default: '#1a1a1a' }};
+      --muted: {{ section.settings.muted | default: 'rgba(26,26,26,.72)' }};
+
+      --maxw: {{ section.settings.max_width | default: 1200 }}px;
+      --py: {{ section.settings.pad_y | default: 88 }}px;
+      --px: {{ section.settings.pad_x | default: 40 }}px;
+
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    #baft-{{ section.id }} .baft__wrap{ max-width: var(--maxw); margin: 0 auto; padding: var(--py) var(--px); }
+    #baft-{{ section.id }} .baft__head{ text-align: center; margin-bottom: clamp(32px, 4vw, 56px); }
+    #baft-{{ section.id }} .baft__eyebrow{
+      font-size: 12px; font-weight: 700; letter-spacing: 1.6px; text-transform: uppercase;
+      color: var(--ki-purple-dark); margin: 0 0 10px;
+    }
+    #baft-{{ section.id }} .baft__title{
+      font-size: clamp(36px,5vw,56px); font-weight: 650; letter-spacing: -0.02em;
+      line-height: 1.05; color: var(--ki-purple-dark);
+      text-shadow: 0 10px 26px rgba(73,61,154,.10); margin: 0;
+    }
+    #baft-{{ section.id }} .baft__grid{
+      display: grid; grid-template-columns: 1fr 1fr; gap: clamp(18px,3vw,32px);
+      max-width: 960px; margin: 0 auto;
+    }
+    #baft-{{ section.id }} .baft__card{
+      border-radius: 18px; padding: clamp(22px,2.5vw,30px);
+      background: #fff; border: 1px solid rgba(73,61,154,.14);
+      box-shadow: 0 18px 40px rgba(73,61,154,.14);
+      transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+    }
+    #baft-{{ section.id }} .baft__card:hover{
+      transform: translateY(-4px);
+      box-shadow: 0 22px 50px rgba(73,61,154,.22);
+      border-color: rgba(73,61,154,.24);
+    }
+    #baft-{{ section.id }} .baft__card--before{ background: #fdf6f7; border-color: rgba(184,85,99,.18); }
+    #baft-{{ section.id }} .baft__card--after{ background: var(--ki-offwhite); border-color: rgba(73,61,154,.18); }
+    #baft-{{ section.id }} .baft__label{
+      font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+    #baft-{{ section.id }} .baft__card--before .baft__label{ color: #b85563; }
+    #baft-{{ section.id }} .baft__card--after .baft__label{ color: var(--ki-purple-dark); }
+    #baft-{{ section.id }} .baft__list{ list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 12px; }
+    #baft-{{ section.id }} .baft__list li{
+      font-size: 15px; line-height: 1.5; color: var(--text);
+      padding-left: 28px; position: relative;
+    }
+    #baft-{{ section.id }} .baft__card--before li::before{
+      content: "✕"; position: absolute; left: 0; top: 0;
+      color: #b85563; font-weight: 700;
+    }
+    #baft-{{ section.id }} .baft__card--after li::before{
+      content: "✓"; position: absolute; left: 0; top: 0;
+      color: var(--ki-purple-dark); font-weight: 700;
+    }
+    #baft-{{ section.id }} :focus-visible{
+      outline: 2px solid var(--ki-purple-dark); outline-offset: 2px; border-radius: 4px;
+    }
+    @media (max-width: 990px){
+      #baft-{{ section.id }} .baft__wrap{ padding: 64px 20px; }
+    }
+    @media (max-width: 750px){
+      #baft-{{ section.id }} .baft__wrap{ padding: 48px 16px; }
+      #baft-{{ section.id }} .baft__grid{ grid-template-columns: 1fr; gap: 14px; }
+      #baft-{{ section.id }} .baft__list li{ font-size: 14px; }
+    }
+  </style>
+
+  <div class="baft__wrap">
+    <div class="baft__head">
+      {% if section.settings.eyebrow != blank %}
+        <p class="baft__eyebrow">{{ section.settings.eyebrow }}</p>
+      {% endif %}
+      {% if section.settings.title != blank %}
+        <h2 class="baft__title">{{ section.settings.title }}</h2>
+      {% endif %}
+    </div>
+
+    <div class="baft__grid">
+      <div class="baft__card baft__card--before">
+        <div class="baft__label">{{ section.settings.before_label }}</div>
+        <ul class="baft__list">
+          {% for block in section.blocks %}
+            {% if block.type == 'before_item' %}
+              <li {{ block.shopify_attributes }}>{{ block.settings.text }}</li>
+            {% endif %}
+          {% endfor %}
+        </ul>
+      </div>
+      <div class="baft__card baft__card--after">
+        <div class="baft__label">{{ section.settings.after_label }}</div>
+        <ul class="baft__list">
+          {% for block in section.blocks %}
+            {% if block.type == 'after_item' %}
+              <li {{ block.shopify_attributes }}>{{ block.settings.text }}</li>
+            {% endif %}
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": ".ki Before & After",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "eyebrow",      "label": "Üst etiket",   "default": "FARKI HİSSET" },
+    { "type": "text", "id": "title",        "label": "Başlık",       "default": "Önce vs Sonra" },
+    { "type": "text", "id": "before_label", "label": "Önce başlığı", "default": "ÖNCESİ" },
+    { "type": "text", "id": "after_label",  "label": "Sonra başlığı","default": ".KI İLE" },
+
+    { "type": "header", "content": "Style" },
+    { "type": "color", "id": "bg",    "label": "Background", "default": "#ffffff" },
+    { "type": "color", "id": "text",  "label": "Text",       "default": "#1a1a1a" },
+    { "type": "color", "id": "muted", "label": "Muted text", "default": "#493d9a" },
+    { "type": "range", "id": "max_width", "label": "Max width (px)", "min": 1000, "max": 1600, "step": 10, "default": 1200 },
+    { "type": "range", "id": "pad_y",     "label": "Vertical padding (px)", "min": 24, "max": 160, "step": 4, "default": 88 },
+    { "type": "range", "id": "pad_x",     "label": "Horizontal padding (px)", "min": 16, "max": 90, "step": 2, "default": 40 }
+  ],
+  "blocks": [
+    { "type": "before_item", "name": "Önce maddesi", "settings": [
+      { "type": "text", "id": "text", "label": "Metin", "default": "Aylık PMS şikayetleri" }
+    ] },
+    { "type": "after_item", "name": "Sonra maddesi", "settings": [
+      { "type": "text", "id": "text", "label": "Metin", "default": "Dengeli ve öngörülebilir döngü" }
+    ] }
+  ],
+  "presets": [
+    {
+      "name": ".ki Before & After",
+      "blocks": [
+        { "type": "before_item", "settings": { "text": "Aylık beklenmedik PMS şikayetleri" } },
+        { "type": "before_item", "settings": { "text": "Düzensiz enerji ve ruh hali" } },
+        { "type": "before_item", "settings": { "text": "Birden fazla farklı takviye" } },
+        { "type": "after_item",  "settings": { "text": "Dengeli ve öngörülebilir döngü" } },
+        { "type": "after_item",  "settings": { "text": "Stabil enerji, daha iyi uyku" } },
+        { "type": "after_item",  "settings": { "text": "Tek sachet, klinik dozajlı formül" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

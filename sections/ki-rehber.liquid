@@ -1,0 +1,291 @@
+{% comment %}.ki Sağlık Rehberi v6 — hero-badge kaldırıldı, eyebrow kaldı{% endcomment %}
+<style>
+*,*::before,*::after{box-sizing:border-box;}
+.kir{--p:#493d9a;--pd:#3b3280;--lil:#dad2ff;--lilf:#f0eeff;--bg:#f8f8f6;--txt:#1a1340;--mut:#6b6b8a;--bdr:#e8e2ff;font-family:'Raleway',system-ui,sans-serif;background:var(--bg);color:var(--txt);}
+.kir__hero{background:linear-gradient(135deg,#2d1b69 0%,#493d9a 55%,#6b5dd3 100%);padding:56px 24px 60px;text-align:center;position:relative;overflow:hidden;}
+.kir__hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 70% 30%,rgba(218,210,255,.15) 0%,transparent 60%);pointer-events:none;}
+.kir__hero-eyebrow{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.8);font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;padding:6px 16px;border-radius:50px;margin-bottom:18px;}
+.kir__hero h1{font-size:clamp(28px,4.5vw,52px);font-weight:800;color:#fff;margin:0 0 12px;line-height:1.08;letter-spacing:-.025em;}
+.kir__hero h1 em{font-style:italic;color:#c4b5fd;}
+.kir__hero p{font-size:15px;color:rgba(255,255,255,.65);max-width:520px;margin:0 auto;line-height:1.75;font-weight:400;}
+.kir__tabs-wrap{background:#fff;border-bottom:1px solid var(--bdr);position:sticky;top:0;z-index:10;}
+.kir__tabs{max-width:960px;margin:0 auto;display:flex;overflow-x:auto;scrollbar-width:none;padding:0 16px;}
+.kir__tabs::-webkit-scrollbar{display:none;}
+.kir__tab{display:flex;align-items:center;gap:9px;padding:16px 22px;font-size:13px;font-weight:700;color:var(--mut);border-bottom:2.5px solid transparent;white-space:nowrap;cursor:pointer;background:none;border-left:none;border-right:none;border-top:none;font-family:'Raleway',system-ui,sans-serif;transition:color .15s,border-color .15s;-webkit-tap-highlight-color:transparent;}
+.kir__tab:hover{color:var(--p);}
+.kir__tab.is-active{color:var(--p);border-bottom-color:var(--p);}
+.kir__tab-ico{width:20px;height:20px;flex-shrink:0;}
+.kir__wrap{max-width:960px;margin:0 auto;padding:40px 24px 80px;}
+.kir__panel{display:none;}
+.kir__panel.is-active{display:block;}
+.kir__panel-hd{margin-bottom:24px;}
+.kir__panel-hd h2{font-size:clamp(20px,3vw,30px);font-weight:800;color:var(--txt);margin:0 0 8px;letter-spacing:-.02em;}
+.kir__panel-hd h2 span{color:var(--p);}
+.kir__panel-hd p{font-size:14px;color:var(--mut);line-height:1.75;margin:0;}
+.kir__section{margin-bottom:10px;background:#fff;border:1.5px solid var(--bdr);border-radius:16px;overflow:hidden;}
+.kir__acc-btn{width:100%;display:flex;align-items:center;gap:14px;padding:16px 18px;background:none;border:none;cursor:pointer;font-family:'Raleway',system-ui,sans-serif;text-align:left;-webkit-tap-highlight-color:transparent;}
+.kir__acc-btn:hover .kir__acc-title{color:var(--p);}
+.kir__acc-ico{width:42px;height:42px;border-radius:12px;background:var(--lilf);border:1.5px solid var(--bdr);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.kir__acc-ico svg{width:20px;height:20px;color:var(--p);}
+.kir__acc-text{flex:1;min-width:0;}
+.kir__acc-title{font-size:14px;font-weight:800;color:var(--txt);display:block;line-height:1.3;transition:color .15s;}
+.kir__acc-sub{font-size:11px;color:var(--mut);font-weight:400;margin-top:2px;display:block;}
+.kir__acc-arr{width:26px;height:26px;border-radius:50%;background:var(--lilf);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:transform .25s,background .15s;}
+.kir__acc-arr svg{width:13px;height:13px;color:var(--p);}
+.kir__acc-btn[aria-expanded="true"] .kir__acc-arr{transform:rotate(180deg);background:var(--lil);}
+.kir__acc-body{display:none;padding:0 18px 18px 74px;}
+.kir__acc-body.is-open{display:block;}
+.kir__acc-body p{font-size:14px;color:var(--mut);line-height:1.8;margin:0 0 12px;font-weight:400;}
+.kir__acc-body p:last-child{margin-bottom:0;}
+.kir__acc-body ul{list-style:none;padding:0;margin:0 0 12px;display:flex;flex-direction:column;gap:8px;}
+.kir__acc-body ul li{display:flex;align-items:flex-start;gap:10px;font-size:14px;color:var(--txt);line-height:1.6;font-weight:400;}
+.kir__acc-body ul li::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--p);flex-shrink:0;margin-top:7px;}
+.kir__acc-body h4{font-size:12px;font-weight:800;color:var(--p);letter-spacing:.06em;text-transform:uppercase;margin:16px 0 8px;}
+.kir__refs{background:var(--lilf);border:1.5px solid var(--bdr);border-radius:12px;padding:14px 18px;margin-top:8px;}
+.kir__refs p{font-size:11px;color:var(--mut);line-height:1.7;margin:0;}
+.kir__refs strong{color:var(--p);display:block;margin-bottom:5px;font-size:11px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;}
+.kir__cta-panel{background:linear-gradient(135deg,#2d1b69 0%,#493d9a 100%);border-radius:20px;padding:36px;text-align:center;margin-top:28px;}
+.kir__cta-panel h3{font-size:clamp(18px,2.5vw,26px);font-weight:800;color:#fff;margin:0 0 8px;}
+.kir__cta-panel h3 em{font-style:italic;color:#c4b5fd;}
+.kir__cta-panel p{font-size:14px;color:rgba(255,255,255,.65);margin:0 0 22px;line-height:1.7;}
+.kir__cta-pills{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-bottom:22px;}
+.kir__cta-pill{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);color:rgba(255,255,255,.82);font-size:11px;font-weight:600;padding:4px 12px;border-radius:50px;}
+.kir__cta-btn{display:inline-flex;align-items:center;gap:8px;background:#fff;color:var(--p);font-family:'Raleway',system-ui,sans-serif;font-size:14px;font-weight:800;padding:12px 26px;border-radius:50px;text-decoration:none;box-shadow:0 6px 24px rgba(0,0,0,.2);transition:transform .2s,box-shadow .2s;}
+.kir__cta-btn:hover{transform:translateY(-2px);box-shadow:0 10px 32px rgba(0,0,0,.28);}
+.kir__cta-btn svg{width:15px;height:15px;}
+.kir__carousel-hd{display:flex;align-items:center;justify-content:space-between;margin:28px 0 12px;}
+.kir__carousel-title{font-size:15px;font-weight:800;color:var(--txt);margin:0;}
+.kir__see-all{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:700;color:var(--p);text-decoration:none;opacity:.75;transition:opacity .15s;}
+.kir__see-all:hover{opacity:1;}
+.kir__see-all svg{width:12px;height:12px;}
+.kir__carousel{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:12px;}
+.kir__prod-card{display:flex;flex-direction:column;background:#fff;border:1.5px solid var(--bdr);border-radius:14px;overflow:hidden;cursor:pointer;transition:transform .2s,box-shadow .2s;}
+.kir__prod-card:hover{transform:translateY(-3px);box-shadow:0 10px 28px rgba(73,61,154,.1);}
+.kir__prod-card-img{width:100%;aspect-ratio:1;object-fit:cover;display:block;background:var(--lilf);}
+.kir__prod-card-body{padding:12px 14px 14px;display:flex;flex-direction:column;flex:1;}
+.kir__prod-card-type{font-size:9px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--p);opacity:.7;margin-bottom:3px;}
+.kir__prod-card-name{font-size:13px;font-weight:800;color:var(--txt);line-height:1.3;margin-bottom:6px;}
+.kir__prod-card-badges{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:8px;}
+.kir__prod-badge{font-size:9px;font-weight:700;padding:2px 7px;border-radius:4px;white-space:nowrap;}
+.kir__prod-badge--blue{background:rgba(96,165,250,.12);color:#1d4ed8;}
+.kir__prod-badge--green{background:rgba(74,222,128,.13);color:#15803d;}
+.kir__prod-badge--purple{background:rgba(73,61,154,.08);color:#493d9a;}
+.kir__prod-badge--pink{background:rgba(244,114,182,.12);color:#be185d;}
+.kir__prod-badge--amber{background:rgba(251,191,36,.14);color:#92400e;}
+.kir__prod-card-footer{display:flex;align-items:center;justify-content:space-between;margin-top:auto;padding-top:10px;border-top:1px solid var(--bdr);}
+.kir__prod-card-price{font-size:14px;font-weight:800;color:var(--p);}
+.kir__atc{display:inline-flex;align-items:center;gap:5px;background:var(--p);color:#fff;font-family:'Raleway',system-ui,sans-serif;font-size:11px;font-weight:800;border:none;border-radius:8px;padding:7px 12px;cursor:pointer;transition:background .15s,transform .15s;white-space:nowrap;}
+.kir__atc:hover{background:var(--pd);transform:translateY(-1px);}
+.kir__atc.is-loading{opacity:.7;pointer-events:none;}
+.kir__atc.is-done{background:#15803d;}
+.kir__atc svg{width:11px;height:11px;flex-shrink:0;}
+@media(max-width:600px){.kir__hero{padding:40px 16px 44px;}.kir__wrap{padding:24px 12px 60px;}.kir__acc-body{padding-left:18px;}.kir__cta-panel{padding:24px 16px;}.kir__carousel{grid-template-columns:repeat(2,1fr);}.kir__tab{padding:14px 12px;font-size:12px;gap:6px;}}
+</style>
+
+<svg style="display:none" xmlns="http://www.w3.org/2000/svg">
+  <symbol id="ico-drop" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></symbol>
+  <symbol id="ico-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></symbol>
+  <symbol id="ico-heat" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/><circle cx="12" cy="12" r="5"/></symbol>
+  <symbol id="ico-tv" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="15" rx="2"/><polyline points="17 2 12 7 7 2"/></symbol>
+  <symbol id="ico-calendar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01"/></symbol>
+  <symbol id="ico-uterus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C9 2 7 4 7 7c0 2 1 3.5 2.5 4.5L9 14a3 3 0 0 0 6 0l-.5-2.5C16 10.5 17 9 17 7c0-3-2-5-5-5z"/><path d="M9 14c-1.5 1-2.5 2.5-2.5 4a2.5 2.5 0 0 0 5 0"/><path d="M15 14c1.5 1 2.5 2.5 2.5 4a2.5 2.5 0 0 1-5 0"/></symbol>
+  <symbol id="ico-pulse" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7z"/><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></symbol>
+  <symbol id="ico-leaf" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></symbol>
+  <symbol id="ico-micro" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></symbol>
+  <symbol id="ico-spray" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="7" width="7" height="14" rx="3"/><path d="M9.5 7V4M8 4h3M15 9h2a2 2 0 0 1 2 2v0a2 2 0 0 1-2 2h-2M17 12l2 2M17 9l2-2"/></symbol>
+  <symbol id="ico-pain" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8v4M12 16h.01"/><circle cx="12" cy="12" r="9"/></symbol>
+  <symbol id="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></symbol>
+  <symbol id="ico-dna" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 15c6.667-6 13.333 0 20-6M2 9c6.667 6 13.333 0 20 6M2 9v6M22 9v6M3 10h3M18 10h3M3 14h3M18 14h3"/></symbol>
+  <symbol id="ico-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></symbol>
+  <symbol id="ico-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></symbol>
+  <symbol id="ico-cart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></symbol>
+  <symbol id="ico-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></symbol>
+</svg>
+
+<div class="kir">
+  <div class="kir__hero">
+    <h1>{{ section.settings.hero_title | default: '.ki' }} <em>{{ section.settings.hero_title_em | default: 'Sağlık Rehberi' }}</em></h1>
+    <p>{{ section.settings.hero_desc | default: 'Kadın sağlığının en çok merak edilen konuları bilimsel, anlaşılır ve dürüst bilgilerle.' }}</p>
+  </div>
+
+  <div class="kir__tabs-wrap">
+    <div class="kir__tabs" role="tablist">
+      <button class="kir__tab is-active" role="tab" data-panel="regl" aria-selected="true"><svg class="kir__tab-ico"><use href="#ico-drop"/></svg>{{ section.settings.tab1_label | default: 'Regl Rehberi' }}</button>
+      <button class="kir__tab" role="tab" data-panel="intim" aria-selected="false"><svg class="kir__tab-ico"><use href="#ico-shield"/></svg>{{ section.settings.tab2_label | default: 'İntim Bakım Rehberi' }}</button>
+      <button class="kir__tab" role="tab" data-panel="menopoz" aria-selected="false"><svg class="kir__tab-ico"><use href="#ico-heat"/></svg>{{ section.settings.tab3_label | default: 'Menopoz Rehberi' }}</button>
+    </div>
+  </div>
+
+  <div class="kir__wrap">
+    <div class="kir__panel is-active" id="panel-regl" role="tabpanel">
+      <div class="kir__panel-hd"><h2>{{ section.settings.regl_title | default: 'Regl' }} <span>{{ section.settings.regl_title_span | default: 'Rehberi' }}</span></h2><p>{{ section.settings.regl_intro | default: 'Adet döngüsü hakkında merak ettiğin her şey.' }}</p></div>
+      {%- for block in section.blocks -%}{%- if block.type == 'regl_acc' -%}
+      <div class="kir__section" {{ block.shopify_attributes }}><button class="kir__acc-btn" aria-expanded="false" aria-controls="acc-r-{{ block.id }}"><span class="kir__acc-ico"><svg><use href="#{{ block.settings.icon | default: 'ico-drop' }}"/></svg></span><span class="kir__acc-text"><span class="kir__acc-title">{{ block.settings.title }}</span><span class="kir__acc-sub">{{ block.settings.subtitle }}</span></span><span class="kir__acc-arr"><svg><use href="#ico-chevron"/></svg></span></button><div class="kir__acc-body" id="acc-r-{{ block.id }}">{{ block.settings.content }}</div></div>
+      {%- endif -%}{%- endfor -%}
+      <div class="kir__refs"><strong>📚 {{ section.settings.regl_refs_title | default: 'Bilimsel Kaynaklar' }}</strong><p>{{ section.settings.regl_refs }}</p></div>
+      <div class="kir__cta-panel"><h3>{{ section.settings.regl_cta_title | default: '.ki Balance ile' }} <em>{{ section.settings.regl_cta_em | default: 'döngünü destekle' }}</em></h3><p>{{ section.settings.regl_cta_desc | default: '17 aktif bileşen, uzman eczacı formülü.' }}</p><div class="kir__cta-pills">{%- assign rp = section.settings.regl_cta_pills | split: ',' -%}{%- for p in rp -%}<span class="kir__cta-pill">{{ p | strip }}</span>{%- endfor -%}</div><a href="{{ section.settings.regl_cta_url | default: '/products/balance-your-cycle' }}" class="kir__cta-btn"><svg width="15" height="15"><use href="#ico-arrow"/></svg>{{ section.settings.regl_cta_btn | default: '.ki Balance' }}</a></div>
+      <div class="kir__carousel-hd">
+        <p class="kir__carousel-title">{{ section.settings.regl_carousel_title | default: 'Bu dönemde önerilen ürünler' }}</p>
+        <a href="{{ routes.collections_url }}/ki-magaza" class="kir__see-all">Tüm ürünleri gör <svg><use href="#ico-arrow"/></svg></a>
+      </div>
+      <div class="kir__carousel">
+        {% comment %}theme-check-disable ImgWidthAndHeight{% endcomment %}
+        <div class="kir__prod-card" onclick="location.href='/products/balance-your-cycle'"><img class="kir__prod-card-img" src="https://cdn.shopify.com/s/files/1/0759/3659/6219/files/1_20e8a167-40c8-40a6-89bf-d55700f0d958.jpg?v=1780474786" alt=".ki Balance" loading="lazy"><div class="kir__prod-card-body"><p class="kir__prod-card-type">Döngü Takviyesi</p><p class="kir__prod-card-name">.ki Balance</p><div class="kir__prod-card-badges"><span class="kir__prod-badge kir__prod-badge--purple">17 Aktif Bileşen</span><span class="kir__prod-badge kir__prod-badge--green">Hayıt Otu</span><span class="kir__prod-badge kir__prod-badge--blue">Magnezyum</span><span class="kir__prod-badge kir__prod-badge--amber">GMP</span></div><div class="kir__prod-card-footer"><span class="kir__prod-card-price">1.400 ₺</span><button class="kir__atc" data-vid="47329564262651" onclick="event.stopPropagation()"><svg><use href="#ico-cart"/></svg>Sepete</button></div></div></div>
+        <div class="kir__prod-card" onclick="location.href='/products/ki-sens-care-intim-bakim-jeli'"><img class="kir__prod-card-img" src="https://cdn.shopify.com/s/files/1/0759/3659/6219/files/1_6e0e38c3-b481-4080-aed4-e074abe35091.jpg?v=1780520406" alt=".ki sens.care" loading="lazy"><div class="kir__prod-card-body"><p class="kir__prod-card-type">İntim Jel</p><p class="kir__prod-card-name">.ki sens.care</p><div class="kir__prod-card-badges"><span class="kir__prod-badge kir__prod-badge--blue">pH Dengeli</span><span class="kir__prod-badge kir__prod-badge--green">Aloe Vera</span><span class="kir__prod-badge kir__prod-badge--green">Paraben İçermez</span></div><div class="kir__prod-card-footer"><span class="kir__prod-card-price">1.250 ₺</span><button class="kir__atc" data-vid="48899320545531" onclick="event.stopPropagation()"><svg><use href="#ico-cart"/></svg>Sepete</button></div></div></div>
+        <div class="kir__prod-card" onclick="location.href='/products/ki-intimate-intim-bakim-spreyi'"><img class="kir__prod-card-img" src="https://cdn.shopify.com/s/files/1/0759/3659/6219/files/1_ee785a6a-90ae-4eaf-bf84-c94310ed77a6.jpg?v=1780501249" alt=".ki intimate" loading="lazy"><div class="kir__prod-card-body"><p class="kir__prod-card-type">Sprey</p><p class="kir__prod-card-name">.ki intimate</p><div class="kir__prod-card-badges"><span class="kir__prod-badge kir__prod-badge--blue">pH Dengeli</span><span class="kir__prod-badge kir__prod-badge--purple">Durulama Yok</span><span class="kir__prod-badge kir__prod-badge--green">Aloe Vera</span></div><div class="kir__prod-card-footer"><span class="kir__prod-card-price">950 ₺</span><button class="kir__atc" data-vid="48899321987323" onclick="event.stopPropagation()"><svg><use href="#ico-cart"/></svg>Sepete</button></div></div></div>
+        {% comment %}theme-check-enable ImgWidthAndHeight{% endcomment %}
+      </div>
+    </div>
+    <div class="kir__panel" id="panel-intim" role="tabpanel">
+      <div class="kir__panel-hd"><h2>{{ section.settings.intim_title | default: 'İntim Bakım' }} <span>{{ section.settings.intim_title_span | default: 'Rehberi' }}</span></h2><p>{{ section.settings.intim_intro | default: 'İntim sağlık genel sağlığın ayrılmaz parçasıdır.' }}</p></div>
+      {%- for block in section.blocks -%}{%- if block.type == 'intim_acc' -%}
+      <div class="kir__section" {{ block.shopify_attributes }}><button class="kir__acc-btn" aria-expanded="false" aria-controls="acc-i-{{ block.id }}"><span class="kir__acc-ico"><svg><use href="#{{ block.settings.icon | default: 'ico-shield' }}"/></svg></span><span class="kir__acc-text"><span class="kir__acc-title">{{ block.settings.title }}</span><span class="kir__acc-sub">{{ block.settings.subtitle }}</span></span><span class="kir__acc-arr"><svg><use href="#ico-chevron"/></svg></span></button><div class="kir__acc-body" id="acc-i-{{ block.id }}">{{ block.settings.content }}</div></div>
+      {%- endif -%}{%- endfor -%}
+      <div class="kir__refs"><strong>📚 {{ section.settings.intim_refs_title | default: 'Bilimsel Kaynaklar' }}</strong><p>{{ section.settings.intim_refs }}</p></div>
+      <div class="kir__cta-panel"><h3>{{ section.settings.intim_cta_title | default: '.ki intim bakım' }} <em>{{ section.settings.intim_cta_em | default: 'ürün ailesi' }}</em></h3><p>{{ section.settings.intim_cta_desc | default: 'pH dengeli, paraben içermeyen formüller.' }}</p><div class="kir__cta-pills">{%- assign ip = section.settings.intim_cta_pills | split: ',' -%}{%- for p in ip -%}<span class="kir__cta-pill">{{ p | strip }}</span>{%- endfor -%}</div><a href="{{ section.settings.intim_cta_url | default: '/collections/ki-magaza' }}" class="kir__cta-btn"><svg width="15" height="15"><use href="#ico-arrow"/></svg>{{ section.settings.intim_cta_btn | default: 'Tüm İntim Bakım Ürünleri' }}</a></div>
+      <div class="kir__carousel-hd">
+        <p class="kir__carousel-title">{{ section.settings.intim_carousel_title | default: 'İntim bakım ürün ailemiz' }}</p>
+        <a href="{{ routes.collections_url }}/ki-magaza" class="kir__see-all">Tümünü gör <svg><use href="#ico-arrow"/></svg></a>
+      </div>
+      <div class="kir__carousel">
+        {% comment %}theme-check-disable ImgWidthAndHeight{% endcomment %}
+        <div class="kir__prod-card" onclick="location.href='/products/ki-intimate-intim-bakim-spreyi'"><img class="kir__prod-card-img" src="https://cdn.shopify.com/s/files/1/0759/3659/6219/files/1_ee785a6a-90ae-4eaf-bf84-c94310ed77a6.jpg?v=1780501249" alt=".ki intimate" loading="lazy"><div class="kir__prod-card-body"><p class="kir__prod-card-type">Sprey</p><p class="kir__prod-card-name">.ki intimate</p><div class="kir__prod-card-badges"><span class="kir__prod-badge kir__prod-badge--blue">pH Dengeli</span><span class="kir__prod-badge kir__prod-badge--purple">Durulama Yok</span><span class="kir__prod-badge kir__prod-badge--green">Aloe Vera</span><span class="kir__prod-badge kir__prod-badge--amber">Pratik</span></div><div class="kir__prod-card-footer"><span class="kir__prod-card-price">950 ₺</span><button class="kir__atc" data-vid="48899321987323" onclick="event.stopPropagation()"><svg><use href="#ico-cart"/></svg>Sepete</button></div></div></div>
+        <div class="kir__prod-card" onclick="location.href='/products/ki-sens-care-intim-bakim-jeli'"><img class="kir__prod-card-img" src="https://cdn.shopify.com/s/files/1/0759/3659/6219/files/1_6e0e38c3-b481-4080-aed4-e074abe35091.jpg?v=1780520406" alt=".ki sens.care" loading="lazy"><div class="kir__prod-card-body"><p class="kir__prod-card-type">Hassas Ciltler</p><p class="kir__prod-card-name">.ki sens.care</p><div class="kir__prod-card-badges"><span class="kir__prod-badge kir__prod-badge--blue">Hyaluronik Asit</span><span class="kir__prod-badge kir__prod-badge--green">Paraben İçermez</span><span class="kir__prod-badge kir__prod-badge--green">Vegan</span></div><div class="kir__prod-card-footer"><span class="kir__prod-card-price">1.250 ₺</span><button class="kir__atc" data-vid="48899320545531" onclick="event.stopPropagation()"><svg><use href="#ico-cart"/></svg>Sepete</button></div></div></div>
+        <div class="kir__prod-card" onclick="location.href='/products/ki-50-care-intim-bakim-jeli'"><img class="kir__prod-card-img" src="https://cdn.shopify.com/s/files/1/0759/3659/6219/files/1_459441dd-5a93-4d17-8466-776b2634f216.jpg?v=1780520348" alt=".ki 50+.care" loading="lazy"><div class="kir__prod-card-body"><p class="kir__prod-card-type">İleri Yaş</p><p class="kir__prod-card-name">.ki 50+.care</p><div class="kir__prod-card-badges"><span class="kir__prod-badge kir__prod-badge--pink">50+ Yaş</span><span class="kir__prod-badge kir__prod-badge--blue">Derin Nem</span><span class="kir__prod-badge kir__prod-badge--purple">Derm. Test</span></div><div class="kir__prod-card-footer"><span class="kir__prod-card-price">1.250 ₺</span><button class="kir__atc" data-vid="48899320840443" onclick="event.stopPropagation()"><svg><use href="#ico-cart"/></svg>Sepete</button></div></div></div>
+        {% comment %}theme-check-enable ImgWidthAndHeight{% endcomment %}
+      </div>
+    </div>
+    <div class="kir__panel" id="panel-menopoz" role="tabpanel">
+      <div class="kir__panel-hd"><h2>{{ section.settings.men_title | default: 'Menopoz' }} <span>{{ section.settings.men_title_span | default: 'Rehberi' }}</span></h2><p>{{ section.settings.men_intro | default: 'Menopoz bir hastalık değil, doğal bir geçiş.' }}</p></div>
+      {%- for block in section.blocks -%}{%- if block.type == 'men_acc' -%}
+      <div class="kir__section" {{ block.shopify_attributes }}><button class="kir__acc-btn" aria-expanded="false" aria-controls="acc-m-{{ block.id }}"><span class="kir__acc-ico"><svg><use href="#{{ block.settings.icon | default: 'ico-moon' }}"/></svg></span><span class="kir__acc-text"><span class="kir__acc-title">{{ block.settings.title }}</span><span class="kir__acc-sub">{{ block.settings.subtitle }}</span></span><span class="kir__acc-arr"><svg><use href="#ico-chevron"/></svg></span></button><div class="kir__acc-body" id="acc-m-{{ block.id }}">{{ block.settings.content }}</div></div>
+      {%- endif -%}{%- endfor -%}
+      <div class="kir__refs"><strong>📚 {{ section.settings.men_refs_title | default: 'Bilimsel Kaynaklar' }}</strong><p>{{ section.settings.men_refs }}</p></div>
+      <div class="kir__cta-panel"><h3>{{ section.settings.men_cta_title | default: '.ki Change ile' }} <em>{{ section.settings.men_cta_em | default: 'geçişi kolaylaştır' }}</em></h3><p>{{ section.settings.men_cta_desc | default: 'Genistein, Şerbetci Otu, Bor, Magnezyum.' }}</p><div class="kir__cta-pills">{%- assign mp = section.settings.men_cta_pills | split: ',' -%}{%- for p in mp -%}<span class="kir__cta-pill">{{ p | strip }}</span>{%- endfor -%}</div><a href="{{ section.settings.men_cta_url | default: '/products/change-is-good' }}" class="kir__cta-btn"><svg width="15" height="15"><use href="#ico-arrow"/></svg>{{ section.settings.men_cta_btn | default: '.ki Change' }}</a></div>
+      <div class="kir__carousel-hd">
+        <p class="kir__carousel-title">{{ section.settings.men_carousel_title | default: 'Bu dönemde önerilen ürünler' }}</p>
+        <a href="{{ routes.collections_url }}/ki-magaza" class="kir__see-all">Tüm ürünleri gör <svg><use href="#ico-arrow"/></svg></a>
+      </div>
+      <div class="kir__carousel">
+        {% comment %}theme-check-disable ImgWidthAndHeight{% endcomment %}
+        <div class="kir__prod-card" onclick="location.href='/products/change-is-good'"><img class="kir__prod-card-img" src="https://cdn.shopify.com/s/files/1/0759/3659/6219/files/1_be26fb94-99b3-4260-a567-cc80b36f75bc.jpg?v=1780474995" alt=".ki Change" loading="lazy"><div class="kir__prod-card-body"><p class="kir__prod-card-type">İleri Yaş Takviyesi</p><p class="kir__prod-card-name">.ki Change</p><div class="kir__prod-card-badges"><span class="kir__prod-badge kir__prod-badge--pink">Genistein</span><span class="kir__prod-badge kir__prod-badge--green">Şerbetci Otu</span><span class="kir__prod-badge kir__prod-badge--blue">Magnezyum</span><span class="kir__prod-badge kir__prod-badge--amber">Bor + Se</span></div><div class="kir__prod-card-footer"><span class="kir__prod-card-price">1.500 ₺</span><button class="kir__atc" data-vid="47904588660987" onclick="event.stopPropagation()"><svg><use href="#ico-cart"/></svg>Sepete</button></div></div></div>
+        <div class="kir__prod-card" onclick="location.href='/products/ki-50-care-intim-bakim-jeli'"><img class="kir__prod-card-img" src="https://cdn.shopify.com/s/files/1/0759/3659/6219/files/1_459441dd-5a93-4d17-8466-776b2634f216.jpg?v=1780520348" alt=".ki 50+.care" loading="lazy"><div class="kir__prod-card-body"><p class="kir__prod-card-type">İntim Jel</p><p class="kir__prod-card-name">.ki 50+.care</p><div class="kir__prod-card-badges"><span class="kir__prod-badge kir__prod-badge--pink">Vajinal Atrofi</span><span class="kir__prod-badge kir__prod-badge--blue">Yoğun Nem</span><span class="kir__prod-badge kir__prod-badge--purple">Derm. Test</span></div><div class="kir__prod-card-footer"><span class="kir__prod-card-price">1.250 ₺</span><button class="kir__atc" data-vid="48899320840443" onclick="event.stopPropagation()"><svg><use href="#ico-cart"/></svg>Sepete</button></div></div></div>
+        <div class="kir__prod-card" onclick="location.href='/products/ki-intimate-intim-bakim-spreyi'"><img class="kir__prod-card-img" src="https://cdn.shopify.com/s/files/1/0759/3659/6219/files/1_ee785a6a-90ae-4eaf-bf84-c94310ed77a6.jpg?v=1780501249" alt=".ki intimate" loading="lazy"><div class="kir__prod-card-body"><p class="kir__prod-card-type">Sprey</p><p class="kir__prod-card-name">.ki intimate</p><div class="kir__prod-card-badges"><span class="kir__prod-badge kir__prod-badge--blue">pH Dengeli</span><span class="kir__prod-badge kir__prod-badge--purple">Durulama Yok</span><span class="kir__prod-badge kir__prod-badge--green">Aloe Vera</span></div><div class="kir__prod-card-footer"><span class="kir__prod-card-price">950 ₺</span><button class="kir__atc" data-vid="48899321987323" onclick="event.stopPropagation()"><svg><use href="#ico-cart"/></svg>Sepete</button></div></div></div>
+        {% comment %}theme-check-enable ImgWidthAndHeight{% endcomment %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var tabs=document.querySelectorAll('.kir__tab');
+  var panels={regl:document.getElementById('panel-regl'),intim:document.getElementById('panel-intim'),menopoz:document.getElementById('panel-menopoz')};
+  function activatePanel(target,shouldScroll){
+    if(!panels[target]) return;
+    tabs.forEach(function(tab){
+      var active=tab.getAttribute('data-panel')===target;
+      tab.classList.toggle('is-active',active);
+      tab.setAttribute('aria-selected',active ? 'true' : 'false');
+    });
+    Object.keys(panels).forEach(function(key){panels[key].classList.toggle('is-active',key===target);});
+    if(shouldScroll){
+      var tabsWrap=document.querySelector('.kir__tabs-wrap');
+      if(tabsWrap) window.scrollTo({top:tabsWrap.offsetTop-8,behavior:'smooth'});
+    }
+  }
+  tabs.forEach(function(tab){
+    tab.addEventListener('click',function(){
+      var target=this.getAttribute('data-panel');
+      activatePanel(target,true);
+      if(window.history && window.history.replaceState) window.history.replaceState(null,'','#'+target);
+    });
+  });
+  var initialPanel=window.location.hash.replace('#','');
+  if(panels[initialPanel]) activatePanel(initialPanel,false);
+  window.addEventListener('hashchange',function(){
+    var target=window.location.hash.replace('#','');
+    if(panels[target]) activatePanel(target,true);
+  });
+  document.querySelectorAll('.kir__acc-btn').forEach(function(btn){btn.addEventListener('click',function(){var id=this.getAttribute('aria-controls');var body=document.getElementById(id);var exp=this.getAttribute('aria-expanded')==='true';this.setAttribute('aria-expanded',!exp);if(body) body.classList.toggle('is-open',!exp);});});
+  document.querySelectorAll('.kir__atc').forEach(function(btn){
+    btn.addEventListener('click',function(){
+      var vid=this.getAttribute('data-vid');var self=this;
+      self.classList.add('is-loading');
+      self.innerHTML='<svg width="11" height="11"><use href="#ico-cart"/></svg> ...';
+      fetch('/cart/add.js',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id:vid,quantity:1})})
+        .then(function(r){return r.json();})
+        .then(function(){
+          self.classList.remove('is-loading');self.classList.add('is-done');
+          self.innerHTML='<svg width="11" height="11"><use href="#ico-check"/></svg> Eklendi';
+          setTimeout(function(){self.classList.remove('is-done');self.innerHTML='<svg width="11" height="11"><use href="#ico-cart"/></svg> Sepete';},2500);
+          document.dispatchEvent(new CustomEvent('cart:refresh'));
+        })
+        .catch(function(){self.classList.remove('is-loading');self.innerHTML='<svg width="11" height="11"><use href="#ico-cart"/></svg> Sepete';});
+    });
+  });
+})();
+</script>
+
+{% schema %}
+{
+  "name": ".ki Sağlık Rehberi",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {"type":"header","content":"Hero"},
+    {"type":"text","id":"hero_title","label":"Başlık normal","default":".ki"},
+    {"type":"text","id":"hero_title_em","label":"Başlık italik","default":"Sağlık Rehberi"},
+    {"type":"textarea","id":"hero_desc","label":"Alt yazı","default":"Kadın sağlığının en çok merak edilen konuları bilimsel bilgilerle."},
+    {"type":"header","content":"Tab Etiketleri"},
+    {"type":"text","id":"tab1_label","label":"Tab 1","default":"Regl Rehberi"},
+    {"type":"text","id":"tab2_label","label":"Tab 2","default":"İntim Bakım Rehberi"},
+    {"type":"text","id":"tab3_label","label":"Tab 3","default":"Menopoz Rehberi"},
+    {"type":"header","content":"Regl Paneli"},
+    {"type":"text","id":"regl_title","label":"Başlık","default":"Regl"},
+    {"type":"text","id":"regl_title_span","label":"Başlık renkli","default":"Rehberi"},
+    {"type":"textarea","id":"regl_intro","label":"Giriş","default":"Adet döngüsü hakkında merak ettiğin her şey."},
+    {"type":"textarea","id":"regl_refs","label":"Referanslar","default":"1. ACOG. PMS. 2023.\n2. Wyatt KM et al. BMJ. 1999."},
+    {"type":"text","id":"regl_refs_title","label":"Referans başlığı","default":"Bilimsel Kaynaklar"},
+    {"type":"text","id":"regl_cta_title","label":"CTA başlık","default":".ki Balance ile"},
+    {"type":"text","id":"regl_cta_em","label":"CTA italik","default":"döngünü destekle"},
+    {"type":"textarea","id":"regl_cta_desc","label":"CTA açıklama","default":"17 aktif bileşen, uzman eczacı formülü."},
+    {"type":"text","id":"regl_cta_pills","label":"CTA pill listesi","default":"🌿 Hayıt Otu, 💧 Magnezyum, ⚗️ Dong Quai, ✅ GMP"},
+    {"type":"url","id":"regl_cta_url","label":"CTA URL"},
+    {"type":"text","id":"regl_cta_btn","label":"CTA buton","default":".ki Balance"},
+    {"type":"text","id":"regl_carousel_title","label":"Carousel başlığı","default":"Bu dönemde önerilen ürünler"},
+    {"type":"header","content":"İntim Bakım Paneli"},
+    {"type":"text","id":"intim_title","label":"Başlık","default":"İntim Bakım"},
+    {"type":"text","id":"intim_title_span","label":"Başlık renkli","default":"Rehberi"},
+    {"type":"textarea","id":"intim_intro","label":"Giriş","default":"İntim sağlık genel sağlığın ayrılmaz parçasıdır."},
+    {"type":"textarea","id":"intim_refs","label":"Referanslar","default":"1. Ravel J et al. PNAS. 2011.\n2. Foxman B. Am J Med. 2002."},
+    {"type":"text","id":"intim_refs_title","label":"Referans başlığı","default":"Bilimsel Kaynaklar"},
+    {"type":"text","id":"intim_cta_title","label":"CTA başlık","default":".ki intim bakım"},
+    {"type":"text","id":"intim_cta_em","label":"CTA italik","default":"ürün ailesi"},
+    {"type":"textarea","id":"intim_cta_desc","label":"CTA açıklama","default":"pH dengeli, paraben içermeyen formüller."},
+    {"type":"text","id":"intim_cta_pills","label":"CTA pill listesi","default":"💧 Hyaluronik Asit, 🌿 Aloe Vera, 🔬 pH 3.8-4.5, ✅ Paraben İçermez"},
+    {"type":"url","id":"intim_cta_url","label":"CTA URL"},
+    {"type":"text","id":"intim_cta_btn","label":"CTA buton","default":"Tüm İntim Bakım Ürünleri"},
+    {"type":"text","id":"intim_carousel_title","label":"Carousel başlığı","default":"İntim bakım ürün ailemiz"},
+    {"type":"header","content":"Menopoz Paneli"},
+    {"type":"text","id":"men_title","label":"Başlık","default":"Menopoz"},
+    {"type":"text","id":"men_title_span","label":"Başlık renkli","default":"Rehberi"},
+    {"type":"textarea","id":"men_intro","label":"Giriş","default":"Menopoz bir hastalık değil, doğal bir geçiş."},
+    {"type":"textarea","id":"men_refs","label":"Referanslar","default":"1. Stuenkel CA et al. 2015.\n2. TJOD Menopoz Kılavuzu. 2023."},
+    {"type":"text","id":"men_refs_title","label":"Referans başlığı","default":"Bilimsel Kaynaklar"},
+    {"type":"text","id":"men_cta_title","label":"CTA başlık","default":".ki Change ile"},
+    {"type":"text","id":"men_cta_em","label":"CTA italik","default":"geçişi kolaylaştır"},
+    {"type":"textarea","id":"men_cta_desc","label":"CTA açıklama","default":"Genistein, Şerbetci Otu, Bor, Magnezyum."},
+    {"type":"text","id":"men_cta_pills","label":"CTA pill listesi","default":"💪 Genistein, 🌿 Şerbetci Otu, ⚗️ Bor, 💧 Magnezyum, ✅ GMP"},
+    {"type":"url","id":"men_cta_url","label":"CTA URL"},
+    {"type":"text","id":"men_cta_btn","label":"CTA buton","default":".ki Change"},
+    {"type":"text","id":"men_carousel_title","label":"Carousel başlığı","default":"Bu dönemde önerilen ürünler"}
+  ],
+  "blocks": [
+    {"type":"regl_acc","name":"Regl Accordion","settings":[{"type":"select","id":"icon","label":"Ikon","default":"ico-drop","options":[{"value":"ico-drop","label":"Kan Damlası"},{"value":"ico-tv","label":"TV/Reklam"},{"value":"ico-calendar","label":"Takvim"},{"value":"ico-uterus","label":"Rahim"},{"value":"ico-pulse","label":"Nabiz/Kalp"},{"value":"ico-leaf","label":"Bitki"},{"value":"ico-pain","label":"Uyarı"},{"value":"ico-shield","label":"Koruma"},{"value":"ico-micro","label":"Mikrobiom"}]},{"type":"text","id":"title","label":"Başlık","default":"Accordion başlığı"},{"type":"text","id":"subtitle","label":"Alt başlık","default":"Kısa açıklama"},{"type":"richtext","id":"content","label":"İçerik"}]},
+    {"type":"intim_acc","name":"İntim Bakım Accordion","settings":[{"type":"select","id":"icon","label":"Ikon","default":"ico-shield","options":[{"value":"ico-shield","label":"Koruma"},{"value":"ico-micro","label":"Mikrobiom"},{"value":"ico-drop","label":"Damlacık"},{"value":"ico-pain","label":"Uyarı"},{"value":"ico-spray","label":"Sprey"},{"value":"ico-leaf","label":"Bitki"}]},{"type":"text","id":"title","label":"Başlık","default":"Accordion başlığı"},{"type":"text","id":"subtitle","label":"Alt başlık","default":"Kısa açıklama"},{"type":"richtext","id":"content","label":"İçerik"}]},
+    {"type":"men_acc","name":"Menopoz Accordion","settings":[{"type":"select","id":"icon","label":"Ikon","default":"ico-moon","options":[{"value":"ico-moon","label":"Ay/Gecis"},{"value":"ico-heat","label":"Sicak Basmı"},{"value":"ico-dna","label":"DNA/Bilim"},{"value":"ico-pulse","label":"Kalp"},{"value":"ico-leaf","label":"Bitki"},{"value":"ico-shield","label":"Koruma"}]},{"type":"text","id":"title","label":"Başlık","default":"Accordion başlığı"},{"type":"text","id":"subtitle","label":"Alt başlık","default":"Kısa açıklama"},{"type":"richtext","id":"content","label":"İçerik"}]}
+  ],
+  "presets": [{"name":".ki Sağlık Rehberi"}]
+}
+{% endschema %}

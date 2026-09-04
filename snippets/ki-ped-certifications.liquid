@@ -1,0 +1,41 @@
+{%- liquid
+  assign cert_context = context | default: 'default'
+  assign cert_label = label | default: 'ISO, CE, FDA ve Intertek standartları'
+-%}
+
+<style>
+  .ki-ped-certs{--ki-cert-purple:#493d9a;display:flex;align-items:center;gap:10px;min-width:0;color:var(--ki-cert-purple)}
+  .ki-ped-certs__logos{display:block;width:min(100%,230px);height:50px;flex:0 1 230px;background:currentColor;-webkit-mask-image:var(--ki-cert-image);mask-image:var(--ki-cert-image);-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-position:center;mask-position:center;-webkit-mask-size:175% auto;mask-size:175% auto}
+  .ki-ped-certs__copy{display:flex;min-width:0;flex-direction:column;gap:2px}
+  .ki-ped-certs__copy strong{font-size:10px;line-height:1.2;letter-spacing:.09em;text-transform:uppercase}
+  .ki-ped-certs__copy span{color:#756f80;font-size:9px;line-height:1.3}
+  .ki-ped-certs--media{position:absolute;z-index:3;left:14px;bottom:14px;max-width:calc(100% - 28px);padding:5px 10px;border-radius:12px;background:rgba(255,255,255,.94);box-shadow:0 8px 22px rgba(29,20,69,.14)}
+  .ki-ped-certs--media .ki-ped-certs__logos{width:150px;height:34px;flex-basis:150px}
+  .ki-ped-certs--media .ki-ped-certs__copy{display:none}
+  .ki-ped-certs--compact{justify-content:center;padding:6px 10px;border:1px solid rgba(73,61,154,.13);border-radius:12px;background:#faf9ff}
+  .ki-ped-certs--compact .ki-ped-certs__logos{width:180px;height:39px;flex-basis:180px}
+  @media(max-width:749px){
+    .ki-ped-certs{gap:7px}
+    .ki-ped-certs__logos{width:165px;height:37px;flex-basis:165px}
+    .ki-ped-certs__copy strong{font-size:8px}
+    .ki-ped-certs__copy span{font-size:7.5px}
+    .ki-ped-certs--media{left:8px;bottom:8px;padding:3px 7px;border-radius:9px}
+    .ki-ped-certs--media .ki-ped-certs__logos{width:118px;height:27px;flex-basis:118px}
+    .ki-ped-certs--compact{justify-content:flex-start;padding:4px 8px}
+    .ki-ped-certs--compact .ki-ped-certs__logos{width:142px;height:31px;flex-basis:142px}
+  }
+</style>
+
+<div
+  class="ki-ped-certs ki-ped-certs--{{ cert_context | escape }}"
+  style="--ki-cert-image:url('{{ 'ki-ped-certifications.png' | asset_url }}')"
+  role="img"
+  aria-label="{{ cert_label | escape }}"
+>
+  <span class="ki-ped-certs__logos" aria-hidden="true"></span>
+  {%- unless cert_context == 'media' -%}
+    <span class="ki-ped-certs__copy">
+      <strong>{{ cert_label }}</strong>
+    </span>
+  {%- endunless -%}
+</div>

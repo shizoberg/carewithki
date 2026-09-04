@@ -1,0 +1,1286 @@
+
+{%- style -%}
+/* ── ROOT ── */
+.k2{
+  --plum:{{ section.settings.color_primary }};
+  --plum-md:{{ section.settings.color_primary | color_lighten: 15 }};
+  --plum-l:{{ section.settings.color_primary | color_lighten: 85 }};
+  --plum-p:{{ section.settings.color_primary | color_lighten: 92 }};
+  --rose:#C2556A;--rose-l:#FCE8EC;--rose-p:#FEF5F7;
+  --sage:#2D6B54;--sage-l:#E2F2EB;
+  --amber:#B07B22;--amber-l:#FAF0DC;
+  --cream:#FAF7F2;--cream-2:#F3EEE7;--cream-3:#E8E0D5;
+  --stone:#C4BAB0;--stone-d:#8A8078;
+  --ink:#1A1410;--ink-l:#7A7068;
+  --border:rgba(26,20,16,0.08);--border-md:rgba(26,20,16,0.14);
+  --shadow-sm:0 1px 4px rgba(26,20,16,0.06);
+  --shadow-md:0 4px 20px rgba(26,20,16,0.09);
+  --shadow-lg:0 8px 40px rgba(26,20,16,0.11);
+  --font:'Raleway','Helvetica Neue',system-ui,sans-serif;
+  --r-xs:6px;--r-sm:10px;--r-md:16px;--r-lg:24px;--r-xl:32px;
+  --atc-h:68px;
+  font-family:var(--font);font-size:15px;line-height:1.6;color:var(--ink);
+  -webkit-font-smoothing:antialiased;overflow-x:hidden;
+  position:relative;
+}
+.k2 *,.k2 *::before,.k2 *::after{box-sizing:border-box;}
+
+/* ── SCROLL PROGRESS ── */
+.k2-sp{position:fixed;top:0;left:0;width:0;height:3px;background:linear-gradient(90deg,var(--plum),var(--rose));z-index:9999;transition:width .15s linear;}
+
+/* ── REVEAL ANIMATIONS ── */
+.k2-r{opacity:0;transform:translateY(24px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1);}
+.k2-r.v{opacity:1;transform:translateY(0);}
+.k2-d1{transition-delay:.1s;}
+.k2-d2{transition-delay:.2s;}
+.k2-d3{transition-delay:.3s;}
+.k2-d4{transition-delay:.4s;}
+
+/* ── CONTAINER ── */
+.k2-c{max-width:1080px;margin:0 auto;padding:0 1.25rem;}
+
+/* ── 2-COL LAYOUT ── */
+.k2-row{display:flex;flex-direction:column;gap:2rem;}
+.k2-col{flex:1;min-width:0;}
+
+/* ── SECTION COMMON ── */
+.k2-sec{padding:3rem 0;}
+.k2-lbl{font-size:.75rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--plum);margin-bottom:.75rem;}
+.k2-h2{font-size:1.5rem;font-weight:800;line-height:1.2;margin-bottom:.75rem;color:var(--ink);}
+.k2-p{font-size:.95rem;color:var(--ink-l);line-height:1.7;}
+
+/* ── HERO ── */
+.k2-hero{position:relative;overflow:hidden;min-height:75vh;display:flex;align-items:center;justify-content:center;text-align:center;padding:5rem 1.25rem 4rem;}
+.k2-hero-media{position:absolute;inset:0;z-index:0;}
+.k2-hero-media img,.k2-hero-media video{width:100%;height:100%;object-fit:cover;}
+.k2-hero-overlay{position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(26,20,16,.55) 0%,rgba(26,20,16,.7) 100%);}
+.k2-hero-in{position:relative;z-index:2;max-width:640px;}
+.k2-badge{display:inline-flex;align-items:center;gap:.5rem;background:rgba(255,255,255,.15);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.2);border-radius:32px;padding:.45rem 1rem;font-size:.75rem;font-weight:600;color:#fff;margin-bottom:1.25rem;}
+.k2-pulse{width:8px;height:8px;border-radius:50%;background:#6EE7A0;animation:k2pulse 2s infinite;}
+@keyframes k2pulse{0%,100%{box-shadow:0 0 0 0 rgba(110,231,160,.5);}50%{box-shadow:0 0 0 6px rgba(110,231,160,0);}}
+.k2-hero-t{font-size:2rem;font-weight:800;line-height:1.15;color:#fff;margin:0 0 1rem;}
+.k2-hero-t em{font-style:italic;color:var(--plum-l);}
+.k2-hero-s{font-size:1rem;color:rgba(255,255,255,.85);margin:0 0 1.75rem;line-height:1.65;}
+.k2-hero-cta{display:inline-flex;align-items:center;gap:.5rem;background:#fff;color:var(--plum);font-weight:700;font-size:.95rem;padding:.85rem 2rem;border-radius:32px;text-decoration:none;transition:transform .25s,box-shadow .25s;position:relative;overflow:hidden;}
+.k2-hero-cta:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg);}
+.k2-hero-cta::after{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.35),transparent);transition:left .5s;}
+.k2-hero-cta:hover::after{left:100%;}
+.k2-hero-cta svg{width:16px;height:16px;}
+
+/* ── TOAST ── */
+.k2-toast{position:fixed;bottom:90px;left:1rem;background:#fff;border:1px solid var(--border);border-radius:var(--r-md);padding:.85rem 1rem;display:flex;align-items:center;gap:.75rem;box-shadow:var(--shadow-lg);z-index:9998;max-width:340px;transform:translateY(20px);opacity:0;transition:all .4s cubic-bezier(.22,1,.36,1);pointer-events:none;}
+.k2-toast.show{transform:translateY(0);opacity:1;pointer-events:auto;}
+.k2-toast-av{width:36px;height:36px;border-radius:50%;background:var(--plum-l);display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;}
+.k2-toast-t{flex:1;min-width:0;}
+.k2-toast-n{font-size:.82rem;font-weight:700;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.k2-toast-s{font-size:.72rem;color:var(--ink-l);}
+.k2-toast-x{cursor:pointer;font-size:1.2rem;color:var(--stone-d);padding:.25rem;line-height:1;}
+
+/* ── SYMPTOM CHECKLIST ── */
+.k2-sym-list{display:flex;flex-direction:column;gap:.5rem;margin-bottom:1rem;}
+.k2-sym{display:flex;align-items:center;gap:.75rem;background:#fff;border:1.5px solid var(--border-md);border-radius:var(--r-sm);padding:.75rem 1rem;cursor:pointer;transition:all .25s;user-select:none;-webkit-user-select:none;}
+.k2-sym:hover{border-color:var(--plum-md);background:var(--plum-p);}
+.k2-sym.on{border-color:var(--plum);background:var(--plum-p);}
+.k2-chk{width:22px;height:22px;border-radius:6px;border:2px solid var(--stone);display:flex;align-items:center;justify-content:center;font-size:.75rem;color:transparent;transition:all .2s;flex-shrink:0;}
+.k2-sym.on .k2-chk{background:var(--plum);border-color:var(--plum);color:#fff;}
+.k2-sym span{font-size:.9rem;font-weight:500;}
+.k2-sym-ctr{display:flex;align-items:center;gap:.5rem;background:var(--rose-l);border-radius:var(--r-sm);padding:.75rem 1rem;font-size:.85rem;font-weight:600;color:var(--rose);opacity:0;transform:scale(.96);transition:all .35s;}
+.k2-sym-ctr.show{opacity:1;transform:scale(1);}
+.k2-sym-ctr svg{width:16px;height:16px;flex-shrink:0;}
+
+/* ── TESTIMONIAL CAROUSEL ── */
+.k2-test{background:var(--cream);border-radius:var(--r-lg);padding:1.25rem;position:relative;}
+.k2-cw{position:relative;overflow:hidden;border-radius:var(--r-md);}
+.k2-cm{overflow:hidden;}
+.k2-ct{display:flex;transition:transform .45s cubic-bezier(.22,1,.36,1);cursor:grab;}
+.k2-ct.dragging{transition:none;cursor:grabbing;}
+.k2-cs{flex:0 0 calc(100%/2.3);margin-right:.6rem;border-radius:var(--r-md);overflow:hidden;position:relative;aspect-ratio:3/4;background:var(--cream-2);}
+.k2-cs img{width:100%;height:100%;object-fit:cover;display:block;}
+.k2-cs-ov{position:absolute;bottom:0;left:0;right:0;padding:.75rem;background:linear-gradient(transparent,rgba(0,0,0,.55));display:flex;align-items:flex-end;gap:.5rem;}
+.k2-sp-btn{width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.25);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;}
+.k2-sp-btn svg{width:12px;height:12px;}
+.k2-sn{font-size:.78rem;font-weight:600;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.3);}
+.k2-ca{position:absolute;top:50%;transform:translateY(-50%);width:32px;height:32px;border-radius:50%;border:none;background:rgba(255,255,255,.9);box-shadow:var(--shadow-sm);font-size:1.2rem;cursor:pointer;display:none;align-items:center;justify-content:center;z-index:2;color:var(--ink);}
+.k2-ca.prev{left:.5rem;}
+.k2-ca.next{right:.5rem;}
+.k2-cd{display:flex;justify-content:center;gap:6px;margin-top:.75rem;}
+.k2-dot{width:6px;height:6px;border-radius:50%;background:var(--stone);cursor:pointer;transition:all .25s;}
+.k2-dot.on{width:18px;border-radius:3px;background:var(--plum);}
+
+/* ── BEFORE / AFTER ── */
+.k2-ba{padding:3rem 0;}
+.k2-bag{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;}
+.k2-bac{background:#fff;border-radius:var(--r-md);padding:1.25rem;border:1px solid var(--border);}
+.k2-bac.before{border-top:3px solid var(--rose);}
+.k2-bac.after{border-top:3px solid var(--sage);}
+.k2-bah{font-size:.8rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:.75rem;color:var(--ink-l);}
+.k2-bac.before .k2-bah{color:var(--rose);}
+.k2-bac.after .k2-bah{color:var(--sage);}
+.k2-bai{display:flex;align-items:flex-start;gap:.5rem;font-size:.85rem;margin-bottom:.5rem;line-height:1.5;}
+.k2-bai:last-child{margin-bottom:0;}
+.k2-bad{width:6px;height:6px;border-radius:50%;margin-top:.45rem;flex-shrink:0;}
+.k2-bac.before .k2-bad{background:var(--rose);}
+.k2-bac.after .k2-bad{background:var(--sage);}
+
+/* ── INGREDIENTS ── */
+.k2-il{display:flex;flex-direction:column;gap:.5rem;}
+.k2-ir{display:flex;align-items:center;gap:.75rem;background:#fff;border:1px solid var(--border);border-radius:var(--r-sm);padding:.75rem 1rem;transition:transform .25s,box-shadow .25s;}
+.k2-ir:hover{transform:translateY(-2px);box-shadow:var(--shadow-md);}
+.k2-ii{width:40px;height:40px;border-radius:var(--r-sm);display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;}
+.k2-it{flex:1;min-width:0;}
+.k2-in{font-size:.9rem;font-weight:700;color:var(--ink);}
+.k2-id{font-size:.78rem;color:var(--ink-l);line-height:1.45;}
+.k2-ido{font-size:.7rem;font-weight:700;padding:.3rem .6rem;border-radius:var(--r-xs);white-space:nowrap;flex-shrink:0;}
+
+/* ── STATS ── */
+.k2-sr{display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem;margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid var(--border);}
+.k2-sb{text-align:center;padding:1rem .5rem;background:#fff;border-radius:var(--r-md);border:1px solid var(--border);}
+.k2-sn2{font-size:1.75rem;font-weight:800;color:var(--plum);line-height:1;}
+.k2-sl{font-size:.7rem;color:var(--ink-l);margin-top:.35rem;line-height:1.3;}
+
+/* ── PRODUCT GALLERY ── */
+.k2-prod{padding:3rem 0;}
+.k2-gal{position:relative;width:100%;max-width:400px;border-radius:var(--r-lg);overflow:hidden;background:var(--cream);}
+.k2-gal-main{position:relative;aspect-ratio:1/1;overflow:hidden;}
+.k2-gal-main img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .45s;}
+.k2-gal-main img.on{opacity:1;}
+.k2-thumbs{display:flex;gap:.5rem;padding:.5rem;justify-content:center;}
+.k2-th{width:52px;height:52px;border-radius:var(--r-xs);overflow:hidden;border:2px solid transparent;cursor:pointer;transition:border-color .2s;opacity:.6;transition:opacity .2s,border-color .2s;}
+.k2-th.on{border-color:var(--plum);opacity:1;}
+.k2-th img{width:100%;height:100%;object-fit:cover;display:block;}
+.k2-gd{display:flex;justify-content:center;gap:6px;padding:.5rem 0;}
+.k2-gdot{width:6px;height:6px;border-radius:50%;background:var(--stone);cursor:pointer;transition:all .25s;}
+.k2-gdot.on{width:18px;border-radius:3px;background:var(--plum);}
+.k2-swh{text-align:center;font-size:.72rem;color:var(--stone-d);display:flex;align-items:center;justify-content:center;gap:.35rem;padding:.25rem 0 .5rem;}
+.k2-swh svg{width:12px;height:12px;}
+
+/* ── PRODUCT META ── */
+.k2-meta{text-align:center;max-width:400px;width:100%;}
+.k2-pn{font-size:1.35rem;font-weight:800;margin:0 0 .25rem;}
+.k2-ptag{font-size:.88rem;color:var(--ink-l);margin:0 0 .75rem;}
+.k2-pstars{font-size:.88rem;color:var(--amber);margin:0 0 .5rem;}
+.k2-pstars span{color:var(--ink-l);font-size:.8rem;}
+.k2-pp{font-size:1.5rem;font-weight:800;color:var(--plum);margin:0 0 .25rem;}
+.k2-pps{font-size:.82rem;color:var(--sage);display:flex;align-items:center;justify-content:center;gap:.35rem;margin:0 0 1.25rem;}
+.k2-pps svg{width:14px;height:14px;}
+.k2-cta{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;width:100%;max-width:360px;padding:1rem 2rem;background:var(--plum);color:#fff;font-size:1rem;font-weight:700;border-radius:32px;text-decoration:none;transition:transform .25s,box-shadow .25s;position:relative;overflow:hidden;}
+.k2-cta:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg);}
+.k2-cta::after{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.2),transparent);transition:left .5s;}
+.k2-cta:hover::after{left:100%;}
+.k2-cta svg{flex-shrink:0;}
+.k2-tr{display:flex;flex-wrap:wrap;justify-content:center;gap:.5rem;margin-top:1rem;}
+.k2-tb{font-size:.72rem;font-weight:600;color:var(--ink-l);background:var(--cream);border:1px solid var(--border);border-radius:32px;padding:.35rem .75rem;}
+
+/* ── URGENCY BAR ── */
+.k2-urg{background:var(--plum);color:#fff;text-align:center;padding:.6rem 1rem;font-size:.82rem;font-weight:600;display:flex;align-items:center;justify-content:center;gap:.5rem;}
+.k2-ui{font-size:1rem;}
+
+/* ── STICKY ATC ── */
+.k2-atc{position:fixed;bottom:0;left:0;right:0;height:var(--atc-h);background:#fff;border-top:1px solid var(--border);display:flex;align-items:center;gap:.75rem;padding:0 1rem;z-index:9990;transform:translateY(100%);transition:transform .35s cubic-bezier(.22,1,.36,1);box-shadow:0 -2px 20px rgba(26,20,16,.08);}
+.k2-atc.show{transform:translateY(0);}
+.k2-atc-img{width:44px;height:44px;border-radius:var(--r-sm);overflow:hidden;flex-shrink:0;}
+.k2-atc-img img{width:100%;height:100%;object-fit:cover;}
+.k2-atc-info{flex:1;min-width:0;}
+.k2-atc-n{font-size:.85rem;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.k2-atc-s{font-size:.72rem;color:var(--ink-l);}
+.k2-atc-btn{flex-shrink:0;background:var(--plum);color:#fff;font-size:.82rem;font-weight:700;padding:.6rem 1.25rem;border-radius:32px;text-decoration:none;transition:transform .2s;}
+.k2-atc-btn:hover{transform:scale(1.03);}
+
+/* ── RESPONSIVE: TABLET 768px ── */
+@media(min-width:768px){
+  .k2-hero-t{font-size:2.5rem;}
+  .k2-h2{font-size:1.75rem;}
+  .k2-cs{flex:0 0 calc(100%/2);}
+  .k2-ca{display:flex;}
+  .k2-bag{gap:1rem;}
+  .k2-sr{gap:1rem;}
+  .k2-atc{padding:0 2rem;}
+}
+
+/* ── RESPONSIVE: DESKTOP 1100px ── */
+@media(min-width:1100px){
+  .k2-hero{min-height:85vh;}
+  .k2-hero-t{font-size:3rem;}
+  .k2-hero-s{font-size:1.1rem;}
+  .k2-h2{font-size:2rem;}
+  .k2-row{flex-direction:row;gap:2.5rem;}
+  .k2-cs{flex:0 0 calc(100%/2.5);}
+  .k2-sec{padding:4rem 0;}
+  .k2-ba{padding:4rem 0;}
+  .k2-prod{padding:4rem 0;}
+  .k2-prod .k2-c{flex-direction:row;align-items:flex-start;gap:3rem;}
+  .k2-meta{text-align:left;}
+  .k2-meta .k2-pps{justify-content:flex-start;}
+  .k2-meta .k2-tr{justify-content:flex-start;}
+  .k2-meta .k2-cta{max-width:320px;}
+}
+
+/* ── MOBILE ONLY max 767px ── */
+@media(max-width:767px){
+  .k2-hero{min-height:65vh;padding:3.5rem 1rem 3rem;}
+  .k2-hero-t{font-size:1.65rem;}
+  .k2-hero-s{font-size:.9rem;}
+  .k2-bag{grid-template-columns:1fr;}
+  .k2-sr{grid-template-columns:repeat(3,1fr);gap:.5rem;}
+  .k2-sn2{font-size:1.35rem;}
+  .k2-gal{max-width:100%;}
+  .k2-toast{left:.75rem;right:.75rem;max-width:none;}
+}
+{%- endstyle -%}
+
+<div class="k2" id="k2Section">
+
+  {%- if section.settings.show_scroll_progress -%}
+    <div class="k2-sp" id="k2SP"></div>
+  {%- endif -%}
+
+  {%- if section.settings.show_urgency and section.settings.urgency_text != blank -%}
+    <div class="k2-urg">
+      <span class="k2-ui">{{ section.settings.urgency_icon }}</span>
+      <span>{{ section.settings.urgency_text }}</span>
+    </div>
+  {%- endif -%}
+
+  <!-- HERO -->
+  <section class="k2-hero">
+    <div class="k2-hero-media">
+      {%- if section.settings.hero_video != blank -%}
+        {%- assign video = section.settings.hero_video -%}
+        {{ video | video_tag: autoplay: true, muted: true, loop: true, playsinline: true, preload: 'metadata', image_size: '1600x' }}
+      {%- elsif section.settings.hero_video_url != blank -%}
+        <video autoplay muted loop playsinline preload="metadata">
+          <source src="{{ section.settings.hero_video_url }}" type="video/mp4">
+        </video>
+      {%- elsif section.settings.hero_image != blank -%}
+        <img src="{{ section.settings.hero_image | image_url: width: 1600 }}" alt="{{ section.settings.hero_title_1 | escape }}" width="{{ section.settings.hero_image.width }}" height="{{ section.settings.hero_image.height }}" loading="eager" fetchpriority="high">
+      {%- endif -%}
+    </div>
+    <div class="k2-hero-overlay"></div>
+    <div class="k2-hero-in">
+      {%- if section.settings.hero_badge != blank -%}
+        <div class="k2-badge k2-r"><span class="k2-pulse"></span> {{ section.settings.hero_badge }}</div>
+      {%- endif -%}
+      <h1 class="k2-hero-t k2-r k2-d1">
+        {{ section.settings.hero_title_1 }}
+        {%- if section.settings.hero_title_2 != blank -%}<br><em>{{ section.settings.hero_title_2 }}</em>{%- endif -%}
+      </h1>
+      {%- if section.settings.hero_subtitle != blank -%}
+        <p class="k2-hero-s k2-r k2-d2">{{ section.settings.hero_subtitle }}</p>
+      {%- endif -%}
+      {%- if section.settings.hero_cta_text != blank -%}
+        <a href="#k2Symptoms" class="k2-hero-cta k2-r k2-d3">
+          {{ section.settings.hero_cta_text }}
+          <svg viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      {%- endif -%}
+    </div>
+  </section>
+
+  <!-- SYMPTOMS + TESTIMONIALS -->
+  <section class="k2-sec" id="k2Symptoms">
+    <div class="k2-c">
+      <div class="k2-row">
+        <div class="k2-col">
+          <div class="k2-lbl k2-r">{{ section.settings.symptoms_label }}</div>
+          <div class="k2-sym-list" id="k2SymList">
+            {%- for block in section.blocks -%}
+              {%- if block.type == 'symptom' -%}
+                <div class="k2-sym {% if block.settings.default_checked %}on{% endif %} k2-r" data-k2-sym {{ block.shopify_attributes }}>
+                  <div class="k2-chk">{%- if block.settings.default_checked -%}&#10003;{%- endif -%}</div>
+                  <span>{{ block.settings.text }}</span>
+                </div>
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+          <div class="k2-sym-ctr k2-r" id="k2SymCtr">
+            <svg viewBox="0 0 16 16" fill="none"><path d="M8 1v6l4 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5"/></svg>
+            <span id="k2CtrTxt"></span>
+          </div>
+        </div>
+        <div class="k2-col">
+          <div class="k2-test k2-r">
+            <div class="k2-lbl">{{ section.settings.testimonials_label }}</div>
+            <div class="k2-cw" id="k2Car" data-k2-car>
+              <div class="k2-cm">
+                <div class="k2-ct" id="k2CarTrack">
+                  {%- for block in section.blocks -%}
+                    {%- if block.type == 'testimonial' -%}
+                      <div class="k2-cs" {{ block.shopify_attributes }}>
+                        {%- if block.settings.image != blank -%}
+                          <img src="{{ block.settings.image | image_url: width: 400 }}" alt="{{ block.settings.name | escape }}" width="{{ block.settings.image.width }}" height="{{ block.settings.image.height }}" loading="lazy">
+                        {%- endif -%}
+                        <div class="k2-cs-ov">
+                          {%- if block.settings.video_url != blank -%}
+                            <div class="k2-sp-btn"><svg viewBox="0 0 16 16" fill="none"><polygon points="5,2 13,8 5,14" fill="white"/></svg></div>
+                          {%- endif -%}
+                          <div class="k2-sn">{{ block.settings.name }}</div>
+                        </div>
+                      </div>
+                    {%- endif -%}
+                  {%- endfor -%}
+                </div>
+              </div>
+              <button class="k2-ca prev" aria-label="Onceki">&#8249;</button>
+              <button class="k2-ca next" aria-label="Sonraki">&#8250;</button>
+              <div class="k2-cd" id="k2CarDots"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BEFORE / AFTER -->
+  {%- if section.settings.show_before_after -%}
+    <section class="k2-ba" style="background:white;border-top:1px solid var(--border);">
+      <div class="k2-c">
+        <div class="k2-row" style="align-items:center;">
+          <div class="k2-col">
+            <div class="k2-lbl k2-r">{{ section.settings.ba_label }}</div>
+            <div class="k2-h2 k2-r">{{ section.settings.ba_title }}</div>
+            <p class="k2-p k2-r" style="margin-bottom:1.25rem;">{{ section.settings.ba_subtitle }}</p>
+          </div>
+          <div class="k2-col">
+            <div class="k2-bag k2-r">
+              <div class="k2-bac before">
+                <div class="k2-bah">{{ section.settings.before_heading }}</div>
+                {%- for block in section.blocks -%}
+                  {%- if block.type == 'before_item' -%}
+                    <div class="k2-bai" {{ block.shopify_attributes }}><span class="k2-bad"></span>{{ block.settings.text }}</div>
+                  {%- endif -%}
+                {%- endfor -%}
+              </div>
+              <div class="k2-bac after">
+                <div class="k2-bah">{{ section.settings.after_heading }}</div>
+                {%- for block in section.blocks -%}
+                  {%- if block.type == 'after_item' -%}
+                    <div class="k2-bai" {{ block.shopify_attributes }}><span class="k2-bad"></span>{{ block.settings.text }}</div>
+                  {%- endif -%}
+                {%- endfor -%}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  {%- endif -%}
+
+  <!-- INGREDIENTS -->
+  <section class="k2-sec" style="background:var(--cream);border-top:1px solid var(--border);">
+    <div class="k2-c">
+      <div class="k2-lbl k2-r">{{ section.settings.formula_label }}</div>
+      <div class="k2-h2 k2-r">{{ section.settings.formula_title }}</div>
+      {%- if section.settings.formula_subtitle != blank -%}
+        <div class="k2-p k2-r" style="margin-bottom:1.25rem">{{ section.settings.formula_subtitle }}</div>
+      {%- endif -%}
+      <div class="k2-il">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'ingredient' -%}
+            <div class="k2-ir k2-r" {{ block.shopify_attributes }}>
+              <div class="k2-ii" style="background:{{ block.settings.bg_color }};">
+                {%- if block.settings.icon_image != blank -%}
+                  <img src="{{ block.settings.icon_image | image_url: width: 64 }}" alt="" width="24" height="24" loading="lazy" style="width:24px;height:24px;object-fit:contain;">
+                {%- else -%}
+                  {{ block.settings.icon_emoji }}
+                {%- endif -%}
+              </div>
+              <div class="k2-it">
+                <div class="k2-in">{{ block.settings.name }}</div>
+                <div class="k2-id">{{ block.settings.description }}</div>
+              </div>
+              <div class="k2-ido" style="color:{{ block.settings.text_color }};background:{{ block.settings.bg_color }};">{{ block.settings.dose }}</div>
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+      {%- if section.settings.show_stats -%}
+        <div class="k2-sr k2-r">
+          <div class="k2-sb"><div class="k2-sn2" data-k2-cnt="{{ section.settings.stat_1_value }}">0</div><div class="k2-sl">{{ section.settings.stat_1_label }}</div></div>
+          <div class="k2-sb"><div class="k2-sn2" data-k2-cnt="{{ section.settings.stat_2_value }}">0</div><div class="k2-sl">{{ section.settings.stat_2_label }}</div></div>
+          <div class="k2-sb"><div class="k2-sn2" data-k2-cnt="{{ section.settings.stat_3_value }}">0</div><div class="k2-sl">{{ section.settings.stat_3_label }}</div></div>
+        </div>
+      {%- endif -%}
+    </div>
+  </section>
+
+  <!-- PRODUCT -->
+  {%- assign product = section.settings.product -%}
+  <section class="k2-prod" style="background:var(--plum-p);border-top:1px solid var(--border);">
+    <div class="k2-c" style="display:flex;flex-direction:column;align-items:center;gap:1.5rem;">
+      <div class="k2-gal k2-r" id="k2Gal">
+        <div class="k2-gal-main" id="k2GalMain">
+          {%- assign gal_idx = 0 -%}
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'gallery_image' and block.settings.image != blank -%}
+              <img src="{{ block.settings.image | image_url: width: 600 }}" alt="{{ block.settings.alt | default: product.title | escape }}" width="{{ block.settings.image.width }}" height="{{ block.settings.image.height }}" {% if gal_idx == 0 %}class="on"{% endif %} data-idx="{{ gal_idx }}" loading="{% if gal_idx == 0 %}eager{% else %}lazy{% endif %}" {{ block.shopify_attributes }}>
+              {%- assign gal_idx = gal_idx | plus: 1 -%}
+            {%- endif -%}
+          {%- endfor -%}
+          {%- if gal_idx == 0 and product.featured_image -%}
+            <img src="{{ product.featured_image | image_url: width: 600 }}" alt="{{ product.title | escape }}" width="{{ product.featured_image.width }}" height="{{ product.featured_image.height }}" class="on" data-idx="0" loading="lazy">
+          {%- endif -%}
+        </div>
+        {%- if gal_idx > 1 -%}
+          <div class="k2-thumbs" id="k2GalTh">
+            {%- assign th_idx = 0 -%}
+            {%- for block in section.blocks -%}
+              {%- if block.type == 'gallery_image' and block.settings.image != blank -%}
+                <div class="k2-th {% if th_idx == 0 %}on{% endif %}" data-idx="{{ th_idx }}">
+                  <img src="{{ block.settings.image | image_url: width: 120 }}" alt="{{ block.settings.alt | escape }}" width="{{ block.settings.image.width }}" height="{{ block.settings.image.height }}" loading="lazy">
+                </div>
+                {%- assign th_idx = th_idx | plus: 1 -%}
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+          <div class="k2-gd" id="k2GalD">
+            {%- for i in (0..gal_idx) -%}
+              {%- if i < gal_idx -%}
+                <div class="k2-gdot {% if i == 0 %}on{% endif %}" data-idx="{{ i }}"></div>
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+          <div class="k2-swh">Kaydir <svg viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        {%- endif -%}
+      </div>
+      <div class="k2-meta">
+        <p class="k2-pn k2-r">{{ section.settings.product_name | default: product.title }}</p>
+        <p class="k2-ptag k2-r">{{ section.settings.product_tagline }}</p>
+        {%- if section.settings.review_text != blank -%}
+          <p class="k2-pstars k2-r">&#9733;&#9733;&#9733;&#9733;&#9733; <span>{{ section.settings.review_text }}</span></p>
+        {%- endif -%}
+        <p class="k2-pp k2-r">{%- if product -%}{{ product.price | money }}{%- else -%}{{ section.settings.fallback_price }}{%- endif -%}</p>
+        {%- if section.settings.shipping_text != blank -%}
+          <p class="k2-pps k2-r">
+            <svg viewBox="0 0 16 16" fill="none"><path d="M2 8.5l4 4 8-9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            {{ section.settings.shipping_text }}
+          </p>
+        {%- endif -%}
+        <a href="{{ product.url | default: section.settings.fallback_url }}" class="k2-cta k2-r">
+          {{ section.settings.cta_text | default: 'Sepete ekle' }}
+          <svg viewBox="0 0 16 16" fill="none" width="16" height="16"><path d="M1 1h2l2.5 9h7l2-6H5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6" cy="13" r="1" fill="currentColor"/><circle cx="12" cy="13" r="1" fill="currentColor"/></svg>
+        </a>
+        <div class="k2-tr k2-r">
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'trust_badge' -%}
+              <span class="k2-tb" {{ block.shopify_attributes }}>{{ block.settings.text }}</span>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STICKY ATC -->
+  {%- if section.settings.show_sticky_atc -%}
+    <div class="k2-atc" id="k2Atc">
+      <div class="k2-atc-img">
+        {%- if product.featured_image -%}
+          <img src="{{ product.featured_image | image_url: width: 100 }}" alt="{{ product.title | escape }}" width="{{ product.featured_image.width }}" height="{{ product.featured_image.height }}" loading="lazy">
+        {%- endif -%}
+      </div>
+      <div class="k2-atc-info">
+        <div class="k2-atc-n">{{ section.settings.product_name | default: product.title }}</div>
+        <div class="k2-atc-s">{%- if product -%}{{ product.price | money }}{%- else -%}{{ section.settings.fallback_price }}{%- endif -%} · Ucretsiz kargo</div>
+      </div>
+      <a href="{{ product.url | default: section.settings.fallback_url }}" class="k2-atc-btn">{{ section.settings.cta_text | default: 'Sepete ekle' }}</a>
+    </div>
+  {%- endif -%}
+
+  <!-- TOAST -->
+  {%- if section.settings.show_toast -%}
+    <div class="k2-toast" id="k2Toast">
+      <div class="k2-toast-av">&#128588;</div>
+      <div class="k2-toast-t">
+        <div class="k2-toast-n" id="k2TN"></div>
+        <div class="k2-toast-s" id="k2TS"></div>
+      </div>
+      <div class="k2-toast-x" id="k2TX">&times;</div>
+    </div>
+  {%- endif -%}
+
+</div>
+
+<script>
+(function(){
+  var root=document.getElementById('k2Section');
+  if(!root) return;
+
+  /* ── Scroll Progress + Sticky ATC ── */
+  var sp=document.getElementById('k2SP');
+  var atc=document.getElementById('k2Atc');
+  var prodSec=root.querySelector('.k2-prod');
+  var lastScroll=0;
+  function onScroll(){
+    var st=window.pageYOffset||document.documentElement.scrollTop;
+    var h=document.documentElement.scrollHeight-window.innerHeight;
+    if(sp&&h>0) sp.style.width=(st/h*100)+'%';
+    if(atc){
+      if(prodSec){
+        var pr=prodSec.getBoundingClientRect();
+        if(pr.bottom<0&&st>300) atc.classList.add('show');
+        else atc.classList.remove('show');
+      }else if(st>600){
+        atc.classList.add('show');
+      }else{
+        atc.classList.remove('show');
+      }
+    }
+    lastScroll=st;
+  }
+  window.addEventListener('scroll',onScroll,{passive:true});
+
+  /* ── Reveal Animations ── */
+  var reveals=root.querySelectorAll('.k2-r');
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){e.target.classList.add('v');io.unobserve(e.target);}
+      });
+    },{threshold:0.15,rootMargin:'0px 0px -40px 0px'});
+    reveals.forEach(function(el){io.observe(el);});
+  }else{
+    reveals.forEach(function(el){el.classList.add('v');});
+  }
+
+  /* ── Symptom Checklist ── */
+  var symList=document.getElementById('k2SymList');
+  var symCtr=document.getElementById('k2SymCtr');
+  var ctrTxt=document.getElementById('k2CtrTxt');
+  function updateSymCount(){
+    if(!symList||!symCtr||!ctrTxt) return;
+    var on=symList.querySelectorAll('.k2-sym.on').length;
+    var total=symList.querySelectorAll('.k2-sym').length;
+    if(on>0){
+      symCtr.classList.add('show');
+      if(on>=total-1) ctrTxt.textContent=on+'/'+total+' sectin — K2 tam sana gore formulize edildi.';
+      else if(on>=Math.ceil(total/2)) ctrTxt.textContent=on+'/'+total+' sectin — K2 sana destek olabilir.';
+      else ctrTxt.textContent=on+'/'+total+' sectin — K2 ile farkini hisset.';
+    }else{
+      symCtr.classList.remove('show');
+    }
+  }
+  if(symList){
+    symList.addEventListener('click',function(e){
+      var sym=e.target.closest('.k2-sym');
+      if(!sym) return;
+      sym.classList.toggle('on');
+      var chk=sym.querySelector('.k2-chk');
+      if(chk) chk.innerHTML=sym.classList.contains('on')?'&#10003;':'';
+      updateSymCount();
+    });
+    updateSymCount();
+  }
+
+  /* ── Animated Stat Counters ── */
+  var counters=root.querySelectorAll('[data-k2-cnt]');
+  function animateCounter(el){
+    var target=parseInt(el.getAttribute('data-k2-cnt'),10);
+    if(isNaN(target)) return;
+    var duration=1500;
+    var start=0;
+    var startTime=null;
+    function step(ts){
+      if(!startTime) startTime=ts;
+      var p=Math.min((ts-startTime)/duration,1);
+      var ease=1-Math.pow(1-p,3);
+      el.textContent=Math.floor(ease*target);
+      if(p<1) requestAnimationFrame(step);
+      else el.textContent=target;
+    }
+    requestAnimationFrame(step);
+  }
+  if(counters.length&&'IntersectionObserver' in window){
+    var cio=new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){animateCounter(e.target);cio.unobserve(e.target);}
+      });
+    },{threshold:0.3});
+    counters.forEach(function(c){cio.observe(c);});
+  }
+
+  /* ── Social Proof Toast ── */
+  var proofs=[
+    {% for block in section.blocks %}{% if block.type == 'social_proof' %}
+      {n:{{ block.settings.name | json }},t:{{ block.settings.time_text | json }}},
+    {% endif %}{% endfor %}
+  ];
+  var toast=document.getElementById('k2Toast');
+  var tn=document.getElementById('k2TN');
+  var ts2=document.getElementById('k2TS');
+  var tx=document.getElementById('k2TX');
+  if(toast&&proofs.length>0){
+    var pi=0;
+    var delay={{ section.settings.toast_delay | default: 6 }}*1000;
+    var interval={{ section.settings.toast_interval | default: 25 }}*1000;
+    function showToast(){
+      var p=proofs[pi%proofs.length];
+      if(tn) tn.textContent=p.n;
+      if(ts2) ts2.textContent=p.t;
+      toast.classList.add('show');
+      setTimeout(function(){toast.classList.remove('show');pi++;},5000);
+    }
+    setTimeout(function(){
+      showToast();
+      setInterval(showToast,interval);
+    },delay);
+    if(tx) tx.addEventListener('click',function(){toast.classList.remove('show');});
+  }
+
+  /* ── Product Gallery ── */
+  var galMain=document.getElementById('k2GalMain');
+  var galTh=document.getElementById('k2GalTh');
+  var galD=document.getElementById('k2GalD');
+  if(galMain){
+    var imgs=galMain.querySelectorAll('img');
+    var cur=0;
+    function showGalImg(idx){
+      if(idx<0||idx>=imgs.length) return;
+      imgs.forEach(function(img){img.classList.remove('on');});
+      imgs[idx].classList.add('on');
+      cur=idx;
+      if(galTh){
+        galTh.querySelectorAll('.k2-th').forEach(function(th){
+          th.classList.toggle('on',parseInt(th.getAttribute('data-idx'),10)===idx);
+        });
+      }
+      if(galD){
+        galD.querySelectorAll('.k2-gdot').forEach(function(d){
+          d.classList.toggle('on',parseInt(d.getAttribute('data-idx'),10)===idx);
+        });
+      }
+    }
+    if(galTh) galTh.addEventListener('click',function(e){
+      var th=e.target.closest('.k2-th');
+      if(th) showGalImg(parseInt(th.getAttribute('data-idx'),10));
+    });
+    if(galD) galD.addEventListener('click',function(e){
+      var d=e.target.closest('.k2-gdot');
+      if(d) showGalImg(parseInt(d.getAttribute('data-idx'),10));
+    });
+    /* swipe */
+    var gsx=0,gsy=0,gswiping=false;
+    galMain.addEventListener('touchstart',function(e){gsx=e.touches[0].clientX;gsy=e.touches[0].clientY;gswiping=true;},{passive:true});
+    galMain.addEventListener('touchend',function(e){
+      if(!gswiping) return;gswiping=false;
+      var dx=e.changedTouches[0].clientX-gsx;
+      var dy=e.changedTouches[0].clientY-gsy;
+      if(Math.abs(dx)>40&&Math.abs(dx)>Math.abs(dy)){
+        if(dx<0&&cur<imgs.length-1) showGalImg(cur+1);
+        else if(dx>0&&cur>0) showGalImg(cur-1);
+      }
+    },{passive:true});
+    /* auto-advance */
+    if(imgs.length>1){
+      setInterval(function(){showGalImg((cur+1)%imgs.length);},5000);
+    }
+  }
+
+  /* ── Testimonial Carousel ── */
+  var carTrack=document.getElementById('k2CarTrack');
+  var carDots=document.getElementById('k2CarDots');
+  var carWrap=document.getElementById('k2Car');
+  if(carTrack&&carWrap){
+    var slides=carTrack.querySelectorAll('.k2-cs');
+    var carIdx=0;
+    var carDragging=false,carStartX=0,carCurrentX=0,carOffset=0;
+
+    function getSlideWidth(){
+      if(!slides.length) return 0;
+      var style=getComputedStyle(slides[0]);
+      return slides[0].offsetWidth+parseFloat(style.marginRight||0);
+    }
+
+    function getVisibleCount(){
+      var w=window.innerWidth;
+      if(w>=1100) return 2.5;
+      if(w>=768) return 2;
+      return 2.3;
+    }
+
+    function maxCarIdx(){
+      var vis=getVisibleCount();
+      return Math.max(0,Math.ceil(slides.length-vis));
+    }
+
+    function setCarPos(animate){
+      var sw=getSlideWidth();
+      carOffset=-carIdx*sw;
+      carTrack.style.transition=animate?'transform .45s cubic-bezier(.22,1,.36,1)':'none';
+      carTrack.style.transform='translateX('+carOffset+'px)';
+      updateCarDots();
+    }
+
+    function buildCarDots(){
+      if(!carDots) return;
+      carDots.innerHTML='';
+      var max=maxCarIdx();
+      for(var i=0;i<=max;i++){
+        var d=document.createElement('div');
+        d.className='k2-dot'+(i===carIdx?' on':'');
+        d.setAttribute('data-idx',i);
+        carDots.appendChild(d);
+      }
+    }
+
+    function updateCarDots(){
+      if(!carDots) return;
+      carDots.querySelectorAll('.k2-dot').forEach(function(d){
+        d.classList.toggle('on',parseInt(d.getAttribute('data-idx'),10)===carIdx);
+      });
+    }
+
+    buildCarDots();
+    if(carDots) carDots.addEventListener('click',function(e){
+      var d=e.target.closest('.k2-dot');
+      if(d){carIdx=parseInt(d.getAttribute('data-idx'),10);setCarPos(true);}
+    });
+
+    /* arrows */
+    var prevBtn=carWrap.querySelector('.k2-ca.prev');
+    var nextBtn=carWrap.querySelector('.k2-ca.next');
+    if(prevBtn) prevBtn.addEventListener('click',function(){
+      if(carIdx>0){carIdx--;setCarPos(true);}
+    });
+    if(nextBtn) nextBtn.addEventListener('click',function(){
+      if(carIdx<maxCarIdx()){carIdx++;setCarPos(true);}
+    });
+
+    /* drag / swipe */
+    var dragStartX=0,dragStartY=0,isDragging=false,dragDist=0;
+    carTrack.addEventListener('touchstart',function(e){
+      dragStartX=e.touches[0].clientX;dragStartY=e.touches[0].clientY;isDragging=true;dragDist=0;
+      carTrack.classList.add('dragging');
+    },{passive:true});
+    carTrack.addEventListener('touchmove',function(e){
+      if(!isDragging) return;
+      var dx=e.touches[0].clientX-dragStartX;
+      var dy=e.touches[0].clientY-dragStartY;
+      if(Math.abs(dx)>Math.abs(dy)){
+        dragDist=dx;
+        carTrack.style.transition='none';
+        carTrack.style.transform='translateX('+(carOffset+dx)+'px)';
+      }
+    },{passive:true});
+    carTrack.addEventListener('touchend',function(){
+      if(!isDragging) return;isDragging=false;
+      carTrack.classList.remove('dragging');
+      if(Math.abs(dragDist)>40){
+        if(dragDist<0&&carIdx<maxCarIdx()) carIdx++;
+        else if(dragDist>0&&carIdx>0) carIdx--;
+      }
+      setCarPos(true);dragDist=0;
+    },{passive:true});
+
+    /* mouse drag */
+    carTrack.addEventListener('mousedown',function(e){
+      dragStartX=e.clientX;isDragging=true;dragDist=0;
+      carTrack.classList.add('dragging');
+      e.preventDefault();
+    });
+    document.addEventListener('mousemove',function(e){
+      if(!isDragging) return;
+      dragDist=e.clientX-dragStartX;
+      carTrack.style.transition='none';
+      carTrack.style.transform='translateX('+(carOffset+dragDist)+'px)';
+    });
+    document.addEventListener('mouseup',function(){
+      if(!isDragging) return;isDragging=false;
+      carTrack.classList.remove('dragging');
+      if(Math.abs(dragDist)>40){
+        if(dragDist<0&&carIdx<maxCarIdx()) carIdx++;
+        else if(dragDist>0&&carIdx>0) carIdx--;
+      }
+      setCarPos(true);dragDist=0;
+    });
+
+    window.addEventListener('resize',function(){buildCarDots();setCarPos(false);});
+  }
+
+})();
+</script>
+
+{% schema %}
+{
+  "name": "K2 Symptom Mirror",
+  "tag": "section",
+  "class": "k2-section",
+  "settings": [
+    { "type": "header", "content": "Renk ve Genel" },
+    {
+      "type": "color",
+      "id": "color_primary",
+      "label": "Ana renk (plum)",
+      "default": "#2D1B69"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_scroll_progress",
+      "label": "Scroll ilerleme cubugu goster",
+      "default": true
+    },
+
+    { "type": "header", "content": "Urgency Bar" },
+    {
+      "type": "checkbox",
+      "id": "show_urgency",
+      "label": "Aciliyet barini goster",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "urgency_icon",
+      "label": "Aciliyet ikonu",
+      "default": "⚡"
+    },
+    {
+      "type": "text",
+      "id": "urgency_text",
+      "label": "Aciliyet metni",
+      "default": "Bugun siparis ver, yarin kargoda"
+    },
+
+    { "type": "header", "content": "Hero" },
+    {
+      "type": "video",
+      "id": "hero_video",
+      "label": "Hero arka plan videosu"
+    },
+    {
+      "type": "url",
+      "id": "hero_video_url",
+      "label": "Video URL (alternatif)"
+    },
+    {
+      "type": "image_picker",
+      "id": "hero_image",
+      "label": "Hero arka plan gorseli (video yoksa)"
+    },
+    {
+      "type": "text",
+      "id": "hero_badge",
+      "label": "Badge metni",
+      "default": "2.400+ kadin tarafindan tercih ediliyor"
+    },
+    {
+      "type": "text",
+      "id": "hero_title_1",
+      "label": "Hero baslik (1. satir)",
+      "default": "Her ay ayni seyler mi?"
+    },
+    {
+      "type": "text",
+      "id": "hero_title_2",
+      "label": "Hero baslik (2. satir — italik)",
+      "default": "Artik mecbur degilsin."
+    },
+    {
+      "type": "textarea",
+      "id": "hero_subtitle",
+      "label": "Hero alt baslik"
+    },
+    {
+      "type": "text",
+      "id": "hero_cta_text",
+      "label": "Hero buton metni",
+      "default": "Kendini tani"
+    },
+
+    { "type": "header", "content": "Semptomlar" },
+    {
+      "type": "text",
+      "id": "symptoms_label",
+      "label": "Semptom bolum etiketi",
+      "default": "Hangileri sende var?"
+    },
+    {
+      "type": "text",
+      "id": "testimonials_label",
+      "label": "Referans bolum etiketi",
+      "default": "Bir de bizden dinle"
+    },
+
+    { "type": "header", "content": "Oncesi / Sonrasi" },
+    {
+      "type": "checkbox",
+      "id": "show_before_after",
+      "label": "Oncesi/Sonrasi bolumunu goster",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "ba_label",
+      "label": "Bolum etiketi",
+      "default": "Gercek sonuclar"
+    },
+    {
+      "type": "text",
+      "id": "ba_title",
+      "label": "Baslik",
+      "default": "K2 ile hayat degisir"
+    },
+    {
+      "type": "textarea",
+      "id": "ba_subtitle",
+      "label": "Alt baslik",
+      "default": "Duzenlı kullanim ile hissedilen farklar"
+    },
+    {
+      "type": "text",
+      "id": "before_heading",
+      "label": "Oncesi baslik",
+      "default": "Oncesi"
+    },
+    {
+      "type": "text",
+      "id": "after_heading",
+      "label": "Sonrasi baslik",
+      "default": "Sonrasi"
+    },
+
+    { "type": "header", "content": "Formul" },
+    {
+      "type": "text",
+      "id": "formula_label",
+      "label": "Bolum etiketi",
+      "default": "Icindekiler"
+    },
+    {
+      "type": "text",
+      "id": "formula_title",
+      "label": "Baslik",
+      "default": "Bilimsel destek, dogal formul"
+    },
+    {
+      "type": "textarea",
+      "id": "formula_subtitle",
+      "label": "Alt baslik"
+    },
+
+    { "type": "header", "content": "Istatistikler" },
+    {
+      "type": "checkbox",
+      "id": "show_stats",
+      "label": "Istatistikleri goster",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "stat_1_value",
+      "label": "Istatistik 1 deger",
+      "default": "2400"
+    },
+    {
+      "type": "text",
+      "id": "stat_1_label",
+      "label": "Istatistik 1 etiket",
+      "default": "Mutlu kullanici"
+    },
+    {
+      "type": "text",
+      "id": "stat_2_value",
+      "label": "Istatistik 2 deger",
+      "default": "94"
+    },
+    {
+      "type": "text",
+      "id": "stat_2_label",
+      "label": "Istatistik 2 etiket",
+      "default": "Memnuniyet orani %"
+    },
+    {
+      "type": "text",
+      "id": "stat_3_value",
+      "label": "Istatistik 3 deger",
+      "default": "30"
+    },
+    {
+      "type": "text",
+      "id": "stat_3_label",
+      "label": "Istatistik 3 etiket",
+      "default": "Gunde sonuc"
+    },
+
+    { "type": "header", "content": "Urun" },
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Urun sec"
+    },
+    {
+      "type": "text",
+      "id": "product_name",
+      "label": "Urun adi (ozel)",
+      "default": "K2 PMS Destek"
+    },
+    {
+      "type": "text",
+      "id": "product_tagline",
+      "label": "Urun alt yazisi",
+      "default": "Dogal PMS destek formulu"
+    },
+    {
+      "type": "text",
+      "id": "review_text",
+      "label": "Degerlendirme metni",
+      "default": "2.400+ degerlendirme"
+    },
+    {
+      "type": "text",
+      "id": "fallback_price",
+      "label": "Yedek fiyat (urun secili degilse)",
+      "default": "449,00 TL"
+    },
+    {
+      "type": "url",
+      "id": "fallback_url",
+      "label": "Yedek urun URL"
+    },
+    {
+      "type": "text",
+      "id": "shipping_text",
+      "label": "Kargo bilgisi",
+      "default": "Ucretsiz kargo · 1-3 is gunu"
+    },
+    {
+      "type": "text",
+      "id": "cta_text",
+      "label": "Sepete ekle butonu metni",
+      "default": "Sepete ekle"
+    },
+
+    { "type": "header", "content": "Sticky ATC Bar" },
+    {
+      "type": "checkbox",
+      "id": "show_sticky_atc",
+      "label": "Sticky sepet barini goster",
+      "default": true
+    },
+
+    { "type": "header", "content": "Social Proof Toast" },
+    {
+      "type": "checkbox",
+      "id": "show_toast",
+      "label": "Sosyal kanit bildirimini goster",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "toast_delay",
+      "label": "Ilk gosterim gecikmesi (sn)",
+      "min": 3,
+      "max": 30,
+      "step": 1,
+      "default": 6,
+      "unit": "sn"
+    },
+    {
+      "type": "range",
+      "id": "toast_interval",
+      "label": "Tekrar araligi (sn)",
+      "min": 10,
+      "max": 60,
+      "step": 5,
+      "default": 25,
+      "unit": "sn"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "symptom",
+      "name": "Semptom",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Semptom metni",
+          "default": "Regl oncesi kramplari"
+        },
+        {
+          "type": "checkbox",
+          "id": "default_checked",
+          "label": "Varsayilan olarak secili",
+          "default": false
+        }
+      ]
+    },
+    {
+      "type": "testimonial",
+      "name": "Referans",
+      "settings": [
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Isim",
+          "default": "Ayse"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Fotograf"
+        },
+        {
+          "type": "url",
+          "id": "video_url",
+          "label": "Video URL (opsiyonel)"
+        }
+      ]
+    },
+    {
+      "type": "before_item",
+      "name": "Oncesi maddesi",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Metin",
+          "default": "Siddetli kramplar"
+        }
+      ]
+    },
+    {
+      "type": "after_item",
+      "name": "Sonrasi maddesi",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Metin",
+          "default": "Hafif ve yonetilebilir donem"
+        }
+      ]
+    },
+    {
+      "type": "ingredient",
+      "name": "Icerik maddesi",
+      "settings": [
+        {
+          "type": "text",
+          "id": "icon_emoji",
+          "label": "Ikon (emoji)",
+          "default": "🌿"
+        },
+        {
+          "type": "image_picker",
+          "id": "icon_image",
+          "label": "Ikon gorseli (emoji yerine)"
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Icerik adi",
+          "default": "Vitex (Hayit)"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Aciklama",
+          "default": "Hormonal denge icin geleneksel bitki"
+        },
+        {
+          "type": "text",
+          "id": "dose",
+          "label": "Doz",
+          "default": "400mg"
+        },
+        {
+          "type": "color",
+          "id": "bg_color",
+          "label": "Arka plan rengi",
+          "default": "#E2F2EB"
+        },
+        {
+          "type": "color",
+          "id": "text_color",
+          "label": "Metin rengi",
+          "default": "#2D6B54"
+        }
+      ]
+    },
+    {
+      "type": "gallery_image",
+      "name": "Galeri gorseli",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Gorsel"
+        },
+        {
+          "type": "text",
+          "id": "alt",
+          "label": "Alt metin"
+        }
+      ]
+    },
+    {
+      "type": "trust_badge",
+      "name": "Guven rozeti",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Rozet metni",
+          "default": "GMP Sertifikali"
+        }
+      ]
+    },
+    {
+      "type": "social_proof",
+      "name": "Sosyal kanit",
+      "settings": [
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Isim",
+          "default": "Zeynep K."
+        },
+        {
+          "type": "text",
+          "id": "time_text",
+          "label": "Zaman metni",
+          "default": "2 saat once satin aldi"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "K2 Symptom Mirror",
+      "blocks": [
+        { "type": "symptom", "settings": { "text": "Regl oncesi kramplari", "default_checked": true } },
+        { "type": "symptom", "settings": { "text": "Siskinlik ve su tutma", "default_checked": false } },
+        { "type": "symptom", "settings": { "text": "Ruh hali degisimleri", "default_checked": true } },
+        { "type": "symptom", "settings": { "text": "Yorgunluk ve enerji dusuklugu", "default_checked": false } },
+        { "type": "symptom", "settings": { "text": "Bas agrisi / migren", "default_checked": false } },
+        { "type": "testimonial", "settings": { "name": "Ayse K." } },
+        { "type": "testimonial", "settings": { "name": "Zeynep D." } },
+        { "type": "testimonial", "settings": { "name": "Elif M." } },
+        { "type": "testimonial", "settings": { "name": "Selin T." } },
+        { "type": "testimonial", "settings": { "name": "Buse A." } },
+        { "type": "testimonial", "settings": { "name": "Defne Y." } },
+        { "type": "before_item", "settings": { "text": "Siddetli kramplari" } },
+        { "type": "before_item", "settings": { "text": "Surekli siskinlik" } },
+        { "type": "before_item", "settings": { "text": "Ani ruh hali degisimleri" } },
+        { "type": "before_item", "settings": { "text": "Agri kesiciye bagimlilik" } },
+        { "type": "after_item", "settings": { "text": "Hafif ve yonetilebilir donem" } },
+        { "type": "after_item", "settings": { "text": "Rahat ve hafif hissetme" } },
+        { "type": "after_item", "settings": { "text": "Dengeli ve sakin ruh hali" } },
+        { "type": "after_item", "settings": { "text": "Dogal destek ile ozgurluk" } },
+        { "type": "ingredient", "settings": { "icon_emoji": "🌿", "name": "Vitex (Hayit)", "description": "Hormonal denge icin geleneksel bitki", "dose": "400mg", "bg_color": "#E2F2EB", "text_color": "#2D6B54" } },
+        { "type": "ingredient", "settings": { "icon_emoji": "🧪", "name": "Magnezyum Bisglisinat", "description": "Kas gevsetici, kramp azaltici", "dose": "300mg", "bg_color": "#FCE8EC", "text_color": "#C2556A" } },
+        { "type": "ingredient", "settings": { "icon_emoji": "☀️", "name": "B6 Vitamini", "description": "Ruh hali ve enerji destegi", "dose": "25mg", "bg_color": "#FAF0DC", "text_color": "#B07B22" } },
+        { "type": "ingredient", "settings": { "icon_emoji": "🌸", "name": "Safran Ekstresi", "description": "Duygusal denge ve rahatlama", "dose": "30mg", "bg_color": "#F3E8F9", "text_color": "#7B3FA0" } },
+        { "type": "gallery_image", "settings": { "alt": "K2 PMS Destek urun gorseli" } },
+        { "type": "trust_badge", "settings": { "text": "GMP Sertifikali" } },
+        { "type": "trust_badge", "settings": { "text": "100% Dogal" } },
+        { "type": "trust_badge", "settings": { "text": "30 Gun Iade Garantisi" } },
+        { "type": "social_proof", "settings": { "name": "Zeynep K.", "time_text": "2 saat once satin aldi" } },
+        { "type": "social_proof", "settings": { "name": "Ayse M.", "time_text": "5 saat once satin aldi" } },
+        { "type": "social_proof", "settings": { "name": "Elif D.", "time_text": "Bugun 2 adet siparis verdi" } },
+        { "type": "social_proof", "settings": { "name": "Selin B.", "time_text": "Az once satin aldi" } },
+        { "type": "social_proof", "settings": { "name": "Defne T.", "time_text": "1 saat once satin aldi" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,130 @@
+{% comment %}FAQ Split — mobil font fix{% endcomment %}
+<section id="faq-{{ section.id }}" class="section">
+  <style>
+    #faq-{{ section.id }}{
+      --p:#493d9a;--lil:#dad2ff;
+      --bg:{{ section.settings.bg | default: '#f8f8f6' }};
+      --text:{{ section.settings.text | default: '#1a1a1a' }};
+      --muted:{{ section.settings.muted | default: 'rgba(26,26,26,.72)' }};
+      --line:rgba(73,61,154,.18);
+      --maxw:{{ section.settings.max_width | default: 1400 }}px;
+      --py:{{ section.settings.pad_y | default: 90 }}px;
+      --px:{{ section.settings.pad_x | default: 40 }}px;
+      background:var(--bg);color:var(--text);
+    }
+    #faq-{{ section.id }} .faq__wrap{max-width:var(--maxw);margin:0 auto;padding:var(--py) var(--px);}
+    #faq-{{ section.id }} .faq__grid{display:grid;grid-template-columns:minmax(280px,560px) 1fr;gap:clamp(24px,5vw,110px);align-items:start;}
+    #faq-{{ section.id }} .faq__eyebrow{display:inline-flex;align-items:center;gap:6px;font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--p);opacity:.72;margin-bottom:10px;}
+    #faq-{{ section.id }} .faq__eyebrow::before{content:'';display:inline-block;width:18px;height:1.5px;background:var(--p);opacity:.5;}
+    #faq-{{ section.id }} .faq__title{font-family:'Raleway',system-ui,sans-serif;font-size:clamp(22px,3vw,42px);font-weight:800;line-height:1.1;color:#1a1340;margin:0;letter-spacing:-.025em;}
+    #faq-{{ section.id }} .faq__title em{font-style:italic;color:var(--p);}
+    #faq-{{ section.id }} .faq__right{max-width:760px;margin-left:auto;}
+    #faq-{{ section.id }} .faq__list{border-top:1px solid var(--line);}
+    #faq-{{ section.id }} details.faq__item{border-bottom:1px solid var(--line);padding:18px 0;}
+    #faq-{{ section.id }} summary.faq__summary{list-style:none;display:grid;grid-template-columns:1fr 34px;gap:14px;align-items:start;cursor:pointer;user-select:none;}
+    #faq-{{ section.id }} summary.faq__summary::-webkit-details-marker{display:none;}
+    #faq-{{ section.id }} .faq__q{font-size:15px;font-weight:700;line-height:1.35;margin:0;color:#1a1a1a;letter-spacing:-.01em;transition:color .2s;}
+    #faq-{{ section.id }} details:hover .faq__q{color:var(--p);}
+    #faq-{{ section.id }} .faq__icon{width:32px;height:32px;display:grid;place-items:center;color:var(--p);border-radius:999px;border:1px solid rgba(73,61,154,.18);background:#fff;box-shadow:0 4px 12px rgba(73,61,154,.10);transition:transform .2s,background .2s;}
+    #faq-{{ section.id }} details.faq__item:hover .faq__icon{transform:translateY(-2px);background:var(--lil);}
+    #faq-{{ section.id }} details[open] .faq__icon{background:var(--p);color:#fff;border-color:var(--p);}
+    #faq-{{ section.id }} .faq__icon span{display:inline-block;font-size:17px;line-height:1;font-weight:600;}
+    #faq-{{ section.id }} details[open] .faq__icon .plus{display:none;}
+    #faq-{{ section.id }} details:not([open]) .faq__icon .minus{display:none;}
+    #faq-{{ section.id }} .faq__a{padding-top:10px;max-width:78ch;color:var(--muted);font-size:14px;line-height:1.7;}
+    #faq-{{ section.id }} .faq__a a{color:var(--p);text-decoration:underline;text-underline-offset:3px;}
+    #faq-{{ section.id }} details[open]{background:linear-gradient(90deg,rgba(218,210,255,.40) 0%,rgba(218,210,255,0) 100%);border-left:3px solid var(--p);margin-left:-3px;padding-left:3px;}
+    #faq-{{ section.id }} details[open] .faq__q{color:var(--p);}
+    @media(max-width:990px){
+      #faq-{{ section.id }} .faq__wrap{padding:48px 20px;}
+      #faq-{{ section.id }} .faq__grid{grid-template-columns:1fr;gap:24px;}
+      #faq-{{ section.id }} .faq__right{max-width:none;margin-left:0;}
+    }
+    @media(max-width:750px){
+      #faq-{{ section.id }} .faq__wrap{padding:36px 16px;}
+      #faq-{{ section.id }} .faq__title{font-size:20px;}
+      #faq-{{ section.id }} .faq__q{font-size:13px;}
+      #faq-{{ section.id }} .faq__icon{width:28px;height:28px;}
+      #faq-{{ section.id }} .faq__icon span{font-size:15px;}
+      #faq-{{ section.id }} details.faq__item{padding:14px 0;}
+      #faq-{{ section.id }} .faq__a{font-size:12px;padding-top:8px;}
+    }
+  </style>
+  <div class="faq__wrap">
+    <div class="faq__grid">
+      <div class="faq__left">
+        {%- if section.settings.eyebrow != blank -%}<p class="faq__eyebrow">{{ section.settings.eyebrow | escape }}</p>{%- endif -%}
+        {%- if section.settings.heading != blank -%}<h2 class="faq__title">{{ section.settings.heading }}</h2>{%- endif -%}
+      </div>
+      <div class="faq__right">
+        <div class="faq__list" role="region">
+          {%- assign i = 0 -%}
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'faq' -%}
+              {%- assign i = i | plus: 1 -%}
+              {%- assign open_default = false -%}
+              {%- if section.settings.open_first and i == 1 -%}{%- assign open_default = true -%}{%- endif -%}
+              <details class="faq__item" {% if open_default %}open{% endif %} {{ block.shopify_attributes }}>
+                <summary class="faq__summary">
+                  <p class="faq__q">{{ block.settings.question | escape }}</p>
+                  <div class="faq__icon" aria-hidden="true"><span class="plus">+</span><span class="minus">–</span></div>
+                </summary>
+                {%- if block.settings.answer != blank -%}<div class="faq__a rte">{{ block.settings.answer }}</div>{%- endif -%}
+              </details>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {%- assign faq_schema_index = 0 -%}
+    {%- for block in section.blocks -%}
+      {%- if block.type == 'faq' and block.settings.question != blank and block.settings.answer != blank -%}
+        {%- if faq_schema_index > 0 -%},{%- endif -%}
+        {
+          "@type": "Question",
+          "name": {{ block.settings.question | strip_html | strip_newlines | json }},
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": {{ block.settings.answer | strip_html | strip_newlines | json }}
+          }
+        }
+        {%- assign faq_schema_index = faq_schema_index | plus: 1 -%}
+      {%- endif -%}
+    {%- endfor -%}
+  ]
+}
+</script>
+{% schema %}
+{
+  "name": "FAQ split (.ki)",
+  "settings": [
+    {"type":"text","id":"eyebrow","label":"Üst etiket"},
+    {"type":"richtext","id":"heading","label":"Başlık","default":"<p>Merak ettikleriniz</p>"},
+    {"type":"checkbox","id":"open_first","label":"İlk maddeyi açık başlat","default":true},
+    {"type":"header","content":"Stil"},
+    {"type":"color","id":"bg","label":"Arka plan","default":"#f8f8f6"},
+    {"type":"color","id":"text","label":"Metin","default":"#1a1a1a"},
+    {"type":"color","id":"muted","label":"Soluk metin","default":"rgba(26,26,26,0.72)"},
+    {"type":"range","id":"max_width","label":"Maks. genişlik (px)","min":1000,"max":1600,"step":10,"default":1400},
+    {"type":"range","id":"pad_y","label":"Dikey dolgu (px)","min":24,"max":160,"step":4,"default":88},
+    {"type":"range","id":"pad_x","label":"Yatay dolgu (px)","min":16,"max":90,"step":2,"default":40}
+  ],
+  "blocks":[{"type":"faq","name":"SSS Maddesi","settings":[
+    {"type":"text","id":"question","label":"Soru","default":"Bu ürün ne işe yarar?"},
+    {"type":"richtext","id":"answer","label":"Cevap","default":"<p>Cevabınızı buraya ekleyin.</p>"}
+  ]}],
+  "presets":[{"name":"FAQ split (.ki)","blocks":[
+    {"type":"faq","settings":{"question":"Bu ürün ne işe yarar?"}},
+    {"type":"faq","settings":{"question":"Nasıl kullanılır?"}},
+    {"type":"faq","settings":{"question":"Kargo ne zaman gelir?"}},
+    {"type":"faq","settings":{"question":"İptal edebilir miyim?"}}
+  ]}]
+}
+{% endschema %}

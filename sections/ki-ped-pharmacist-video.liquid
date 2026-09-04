@@ -1,0 +1,110 @@
+{%- comment -%}Pharmacist-led education video. Media switches by current pad handle.{%- endcomment -%}
+{%- liquid
+  assign selected_video = section.settings.day_video
+  assign selected_image = section.settings.day_image
+  assign selected_label = section.settings.day_label
+  if product.handle == 'ki-hijyenik-gunduz-ped'
+    assign selected_video = section.settings.daily_video
+    assign selected_image = section.settings.daily_image
+    assign selected_label = section.settings.daily_label
+  elsif product.handle == 'ki-hijyenik-gece-ped'
+    assign selected_video = section.settings.night_video
+    assign selected_image = section.settings.night_image
+    assign selected_label = section.settings.night_label
+  endif
+-%}
+<style>
+  #KiPedExpert-{{ section.id }}{--kpe-purple:#493d9a;--kpe-dark:#1a1340;--kpe-muted:#706b7b;--kpe-line:rgba(73,61,154,.13);background:#fff;padding:{{ section.settings.padding_y }}px 0}
+  #KiPedExpert-{{ section.id }} *{box-sizing:border-box}
+  #KiPedExpert-{{ section.id }} .kpe-shell{width:min(1180px,calc(100% - 40px));margin:0 auto}
+  #KiPedExpert-{{ section.id }} .kpe-card{display:grid;grid-template-columns:minmax(0,.82fr) minmax(420px,1.18fr);overflow:hidden;border:1px solid var(--kpe-line);border-radius:26px;background:#fff;box-shadow:0 12px 38px rgba(73,61,154,.07)}
+  #KiPedExpert-{{ section.id }} .kpe-copy{padding:clamp(30px,5vw,64px);display:flex;flex-direction:column;justify-content:center;background:linear-gradient(145deg,#f4f1ff,#fff)}
+  #KiPedExpert-{{ section.id }} .kpe-eyebrow{margin:0 0 10px;color:var(--kpe-purple);font-size:10px;font-weight:850;letter-spacing:.16em;text-transform:uppercase}
+  #KiPedExpert-{{ section.id }} .kpe-title{margin:0;color:var(--kpe-dark);font-family:var(--font-heading-family),Raleway,sans-serif;font-size:clamp(28px,3.8vw,46px);line-height:1.06;letter-spacing:-.03em}
+  #KiPedExpert-{{ section.id }} .kpe-text{margin:17px 0 0;color:var(--kpe-muted);font-size:14px;line-height:1.7}
+  #KiPedExpert-{{ section.id }} .kpe-points{display:grid;gap:9px;margin:22px 0 0;padding:0;list-style:none}
+  #KiPedExpert-{{ section.id }} .kpe-points li{display:flex;align-items:center;gap:9px;color:var(--kpe-dark);font-size:12px;font-weight:700}
+  #KiPedExpert-{{ section.id }} .kpe-points svg{width:18px;height:18px;flex:0 0 auto;color:var(--kpe-purple);fill:none;stroke:currentColor;stroke-width:1.8}
+  #KiPedExpert-{{ section.id }} .kpe-media{position:relative;min-height:480px;background:linear-gradient(145deg,#20184d,#6355b4);overflow:hidden}
+  #KiPedExpert-{{ section.id }} .kpe-media video,#KiPedExpert-{{ section.id }} .kpe-media img{width:100%;height:100%;position:absolute;inset:0;object-fit:cover;display:block}
+  #KiPedExpert-{{ section.id }} .kpe-placeholder{position:absolute;inset:0;display:grid;place-items:center;padding:30px;color:#fff;text-align:center}
+  #KiPedExpert-{{ section.id }} .kpe-placeholder svg{width:72px;height:72px;margin-bottom:16px;fill:none;stroke:currentColor;stroke-width:1.4}
+  #KiPedExpert-{{ section.id }} .kpe-placeholder strong{display:block;font-size:20px}
+  #KiPedExpert-{{ section.id }} .kpe-placeholder span{display:block;margin-top:7px;color:rgba(255,255,255,.7);font-size:12px}
+  #KiPedExpert-{{ section.id }} .kpe-badge{position:absolute;left:18px;bottom:18px;z-index:2;display:flex;align-items:center;gap:9px;max-width:calc(100% - 36px);padding:10px 13px;border-radius:13px;background:rgba(255,255,255,.9);backdrop-filter:blur(10px);color:var(--kpe-dark);font-size:11px;font-weight:800;box-shadow:0 8px 24px rgba(0,0,0,.16)}
+  #KiPedExpert-{{ section.id }} .kpe-badge span{width:29px;height:29px;border-radius:50%;display:grid;place-items:center;background:var(--kpe-purple);color:#fff}
+  #KiPedExpert-{{ section.id }} .kpe-badge svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.8}
+  @media(max-width:749px){
+    #KiPedExpert-{{ section.id }}{padding:28px 0}
+    #KiPedExpert-{{ section.id }} .kpe-shell{width:calc(100% - 28px)}
+    #KiPedExpert-{{ section.id }} .kpe-card{grid-template-columns:1fr;border-radius:16px}
+    #KiPedExpert-{{ section.id }} .kpe-copy{padding:17px 16px}
+    #KiPedExpert-{{ section.id }} .kpe-eyebrow{margin-bottom:6px;font-size:8px}
+    #KiPedExpert-{{ section.id }} .kpe-title{font-size:23px}
+    #KiPedExpert-{{ section.id }} .kpe-text{margin-top:9px;font-size:11px;line-height:1.5}
+    #KiPedExpert-{{ section.id }} .kpe-points{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin-top:13px}
+    #KiPedExpert-{{ section.id }} .kpe-points li{align-items:flex-start;gap:4px;font-size:8.5px;line-height:1.25}
+    #KiPedExpert-{{ section.id }} .kpe-points svg{width:13px;height:13px}
+    #KiPedExpert-{{ section.id }} .kpe-media{min-height:0;aspect-ratio:16/9}
+    #KiPedExpert-{{ section.id }} .kpe-placeholder{padding:18px}
+    #KiPedExpert-{{ section.id }} .kpe-placeholder svg{width:42px;height:42px;margin-bottom:8px}
+    #KiPedExpert-{{ section.id }} .kpe-placeholder strong{font-size:14px}
+    #KiPedExpert-{{ section.id }} .kpe-placeholder span{font-size:9px}
+    #KiPedExpert-{{ section.id }} .kpe-badge{left:10px;bottom:10px;max-width:calc(100% - 20px);padding:7px 9px;border-radius:10px;font-size:9px}
+    #KiPedExpert-{{ section.id }} .kpe-badge span{width:23px;height:23px}
+  }
+</style>
+
+<section id="KiPedExpert-{{ section.id }}">
+  <div class="kpe-shell">
+    <div class="kpe-card">
+      <div class="kpe-copy">
+        <p class="kpe-eyebrow">{{ section.settings.eyebrow | escape }}</p>
+        <h2 class="kpe-title">{{ section.settings.heading | escape }}</h2>
+        <p class="kpe-text">{{ section.settings.description | escape }}</p>
+        <ul class="kpe-points">
+          <li><svg viewBox="0 0 24 24"><path d="M8 3h8M9 3v5l-5 9a2 2 0 0 0 1.8 3h12.4A2 2 0 0 0 20 17l-5-9V3M8 14h8"/></svg>İçerik ve katman yapısı</li>
+          <li><svg viewBox="0 0 24 24"><path d="M4 12h16M12 4v16"/><circle cx="12" cy="12" r="9"/></svg>Doğru ped boyunu seçme</li>
+          <li><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/><path d="m9 12 2 2 4-4"/></svg>Günlük kullanım önerileri</li>
+        </ul>
+      </div>
+      <div class="kpe-media">
+        {%- if selected_video != blank -%}
+          {{ selected_video | video_tag: autoplay: false, loop: false, muted: false, controls: true, playsinline: true, preload: 'metadata' }}
+        {%- elsif selected_image != blank -%}
+          {{ selected_image | image_url: width: 1400 | image_tag: widths: '480, 720, 960, 1200, 1400', sizes: '(max-width:749px) calc(100vw - 28px), 58vw', loading: 'lazy', alt: selected_label }}
+        {%- else -%}
+          <div class="kpe-placeholder"><div><svg viewBox="0 0 64 64"><circle cx="32" cy="22" r="10"/><path d="M14 54c2-13 9-20 18-20s16 7 18 20M22 47h20"/><path d="M48 10 55 6v12l-7-4z"/></svg><strong>Eczacı anlatımı yakında</strong><span>Video veya kapak görselini tema editöründen ekleyebilirsin.</span></div></div>
+        {%- endif -%}
+        <div class="kpe-badge"><span><svg viewBox="0 0 24 24"><path d="M8 3h8M9 3v5l-5 9a2 2 0 0 0 1.8 3h12.4A2 2 0 0 0 20 17l-5-9V3"/></svg></span>{{ selected_label | default: product.title | escape }}</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name":"Ped Eczacı Videosu",
+  "tag":"section",
+  "class":"section",
+  "settings":[
+    {"type":"range","id":"padding_y","label":"Dikey boşluk","min":28,"max":88,"step":4,"unit":"px","default":56},
+    {"type":"text","id":"eyebrow","label":"Üst etiket","default":"Eczacımız anlatıyor"},
+    {"type":"text","id":"heading","label":"Başlık","default":"Pedi bilimsel açıdan tanı"},
+    {"type":"textarea","id":"description","label":"Açıklama","default":"Eczacımız ürünün katmanlarını, içerik yaklaşımını ve hangi ped boyunun hangi ihtiyaca uygun olduğunu sade bir dille anlatıyor."},
+    {"type":"header","content":"Günlük ped medyası"},
+    {"type":"video","id":"daily_video","label":"Günlük ped videosu"},
+    {"type":"image_picker","id":"daily_image","label":"Günlük ped kapak görseli"},
+    {"type":"text","id":"daily_label","label":"Günlük ped video etiketi","default":"Günlük Ped · Eczacı Anlatımı"},
+    {"type":"header","content":"Gündüz ped medyası"},
+    {"type":"video","id":"day_video","label":"Gündüz ped videosu"},
+    {"type":"image_picker","id":"day_image","label":"Gündüz ped kapak görseli"},
+    {"type":"text","id":"day_label","label":"Gündüz ped video etiketi","default":"Gündüz Ped · Eczacı Anlatımı"},
+    {"type":"header","content":"Gece ped medyası"},
+    {"type":"video","id":"night_video","label":"Gece ped videosu"},
+    {"type":"image_picker","id":"night_image","label":"Gece ped kapak görseli"},
+    {"type":"text","id":"night_label","label":"Gece ped video etiketi","default":"Gece Ped · Eczacı Anlatımı"}
+  ],
+  "presets":[{"name":"Ped Eczacı Videosu"}]
+}
+{% endschema %}
